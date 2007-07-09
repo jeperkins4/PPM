@@ -31,6 +31,6 @@ test:
 production:
   adapter: mysql
   database: privateprison_production
-  username: root
-  password: 
+  username: private
+  password: pri$on
   host: localhost

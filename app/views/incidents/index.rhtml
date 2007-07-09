@@ -1,0 +1,28 @@
+<h2>Incidents</h2>
+
+<table>
+  <tr>
+    <th>Incident Number</th>
+    <th>Incident Date</th>
+    <th>Incident Type</th>
+    <th>Contract Manager Notified</th>
+    <th>Action Taken</th>
+    <th></th>
+  </tr>
+  
+<% for incident in @incidents %>
+  <tr>
+    <td><%=h incident.id %></td>
+    <td><%=h incident.incident_date %></td>
+    <td><%=h incident.incident_type.incident_type %></td>
+    <td><%=h (incident.contract_monitor_notified != nil) ? incident.contract_monitor_notified : 'Pending' %></td>
+    <td><%=h incident.action_type.action rescue 'Pending' %></td>
+    <td><%= link_to 'Show', incident_path(incident) %>
+    <%= link_to 'Edit', edit_incident_path(incident) %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Incident', new_incident_path %>

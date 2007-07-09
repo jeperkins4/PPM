@@ -1,0 +1,9 @@
+<h1>New Incident Type</h1>
+
+<%= error_messages_for :incident_type %>
+
+<% form_for(:incident_type, :url => incident_types_path) do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Back', incident_types_path %>

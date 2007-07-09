@@ -1,0 +1,18 @@
+<p>
+  <b>Follow up:</b>
+  <%=h @follow_up.follow_up %>
+</p>
+
+<p>
+  <b>Follow up date:</b>
+  <%=h @follow_up.follow_up_date %>
+</p>
+
+<p>
+  <b>Incident:</b>
+  <%=h @follow_up.incident.id %>
+</p>
+
+
+<%= link_to 'Edit', edit_follow_up_path(@follow_up) %> |
+<%= link_to 'Back', follow_ups_path %>

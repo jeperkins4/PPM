@@ -1,0 +1,24 @@
+<h1>Listing inmate_count_histories</h1>
+
+<table>
+  <tr>
+    <th>Inmate count</th>
+    <th>Facility</th>
+    <th>Count date</th>
+  </tr>
+  
+<% for inmate_count_history in @inmate_count_histories %>
+  <tr>
+    <td><%=h inmate_count_history.inmate_count %></td>
+    <td><%=h inmate_count_history.facility_id %></td>
+    <td><%=h inmate_count_history.count_date %></td>
+    <td><%= link_to 'Show', inmate_count_history_path(inmate_count_history) %></td>
+    <td><%= link_to 'Edit', edit_inmate_count_history_path(inmate_count_history) %></td>
+    <td><%= link_to 'Destroy', inmate_count_history_path(inmate_count_history), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New inmate_count_history', new_inmate_count_history_path %>

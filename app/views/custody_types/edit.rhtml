@@ -1,0 +1,10 @@
+<h2>Editing Custody Type</h2>
+
+<%= error_messages_for :custody_type %>
+
+<% form_for(:custody_type, :url => custody_type_path(@custody_type), :html => { :method => :put }) do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Show', custody_type_path(@custody_type) %> |
+<%= link_to 'Back', custody_types_path %>

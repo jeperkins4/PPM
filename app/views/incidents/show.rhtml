@@ -1,0 +1,67 @@
+<p>
+  <b>Incident date:</b>
+  <%=h @incident.incident_date %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @incident.description %>
+</p>
+
+<p>
+  <b>Incident type:</b>
+  <%=h @incident.incident_type.incident_type %>
+</p>
+
+<p>
+  <b>Facility:</b>
+  <%=h @incident.facility.facility %>
+</p>
+
+<p>
+  <b>Contract manager notified:</b>
+  <%=h ( @incident.contract_monitor_notified != nil) ? @incident.contract_monitor_notified : 'Pending' %>
+</p>
+
+<p>
+  <b>Bureau notified:</b>
+  <%=h ( @incident.bureau_notified != nil) ? @incident.bureau_notified : 'Pending' %>
+</p>
+
+<p>
+  <b>Warden notified:</b>
+  <%=h ( @incident.warden_notified  != nil) ? @incident.warden_notified : 'Pending' %>
+</p>
+
+<p>
+  <b>Investigation completed:</b>
+  <%=h ( @incident.investigation_completed  != nil) ? @incident.investigation_completed : 'Pending' %>
+</p>
+
+<p>
+  <b>Action type:</b>
+  <%=h @incident.action_type.action rescue 'Pending' %>
+</p>
+
+<%= link_to 'Edit', edit_incident_path(@incident) %> |
+<%= link_to 'Back', incidents_path %>
+
+<br />
+<br />
+
+<table>
+  <tr>
+    <th>Follow Up(s)</th>
+    <th>Follow Up Date</th>
+  </tr>
+
+<% @follow_ups.each do |follow_up| -%>
+  <tr>
+    <td><%=h follow_up.follow_up %></td>
+    <td><%=h follow_up.follow_up_date %></td>
+  </tr>
+<% end -%>
+</table>
+<p>
+    <%= link_to 'Add Follow Up', :controller => :follow_ups, :action => :new, :id => @incident.id  %>
+</p>

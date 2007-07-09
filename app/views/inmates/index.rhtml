@@ -1,0 +1,23 @@
+<h2>Inmate Count History</h2>
+
+<table>
+  <tr>
+    <th>Facility</th>
+    <th>Inmate count</th>
+    <th>Date collected</th>
+    <th></th>
+  </tr>
+  
+<% for inmate in @inmates %>
+  <tr>
+    <td><%=h inmate.facility.facility %></td>
+    <td><%=h inmate.inmate_count %></td>
+    <td><%=h inmate.date_collected %></td>
+    <td><%= link_to 'Show', inmate_path(inmate) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Count', new_inmate_path %>

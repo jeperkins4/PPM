@@ -1,0 +1,9 @@
+<h2>Incident Reports</h2>
+<% @incidents.each do |incident| -%>
+<p>Incident Date: <%= incident.incident_date %><p>
+<p>Reported: <%= incident.reported_date %><p>
+<p>Type: <%= incident.incident_type.incident_type %><p>
+<p>Action: <%= incident.action_type.action_type rescue 'Pending' %></p>
+<br />
+<hr>
+<% end -%>

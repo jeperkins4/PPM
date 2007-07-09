@@ -1,0 +1,18 @@
+ <p>
+    <b>Follow Up</b><br />
+    <%= f.text_area :follow_up %>
+  </p>
+
+  <p>
+    <b>Follow Up Date</b><br />
+    <%= f.date_select :follow_up_date %>
+  </p>
+
+  <p>
+    <b>Incident List</b><br />
+    <%= f.select( "incident_id", Incident.find(:all).collect {|i| [ i.id, i.id ] }, { :include_blank => false })%>
+  </p>
+
+  <p>
+    <%= submit_tag "Save" %>
+  </p>

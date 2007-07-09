@@ -1,0 +1,2 @@
+module IncidentClassesHelper
+end

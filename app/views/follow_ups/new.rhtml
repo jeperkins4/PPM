@@ -1,0 +1,9 @@
+<h3>New Follow Up</h3>
+
+<%= error_messages_for :follow_up %>
+
+<% form_for(:follow_up, :url => follow_ups_path) do |f| %>
+ <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Back', :controller => :incidents %>

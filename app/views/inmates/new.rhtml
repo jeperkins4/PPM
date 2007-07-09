@@ -1,0 +1,31 @@
+<h2>New Inmate Count</h2>
+
+<%= error_messages_for :inmate %>
+
+<% form_for(:inmate, :url => inmates_path) do |f| %>
+  <p>
+    <b>Facility</b><br />
+    <% if session[:access_level] != 'Administrator' -%>
+    <%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
+    <%= session[:facility].facility %>
+    <% else -%>
+    <%= f.select( "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => false })%>
+   <% end -%>
+  </p>
+
+  <p>
+    <b>Inmate Count</b><br />
+    <%= f.text_field :inmate_count %>
+  </p>
+
+  <p>
+    <b>Date collected</b><br />
+    <%= f.date_select :date_collected %>
+  </p>
+
+  <p>
+    <%= submit_tag "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', inmates_path %>

@@ -1,0 +1,18 @@
+<p>
+  <b>Inmate count:</b>
+  <%=h @inmate_count_history.inmate_count %>
+</p>
+
+<p>
+  <b>Facility:</b>
+  <%=h @inmate_count_history.facility_id %>
+</p>
+
+<p>
+  <b>Count date:</b>
+  <%=h @inmate_count_history.count_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_inmate_count_history_path(@inmate_count_history) %> |
+<%= link_to 'Back', inmate_count_histories_path %>

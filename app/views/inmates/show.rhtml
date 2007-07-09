@@ -1,0 +1,18 @@
+<p>
+  <b>Facility:</b>
+  <%=h @inmate.facility.facility %>
+</p>
+
+<p>
+  <b>Inmate count:</b>
+  <%=h @inmate.inmate_count %>
+</p>
+
+<p>
+  <b>Date collected:</b>
+  <%=h @inmate.date_collected %>
+</p>
+
+
+<%= link_to 'Edit', edit_inmate_path(@inmate) %> |
+<%= link_to 'Back', inmates_path %>

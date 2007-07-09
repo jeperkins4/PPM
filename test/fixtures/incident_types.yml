@@ -1,0 +1,133 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+1:
+  id: 1
+  incident_type: Aggravated Battery (Inmate vs. Inmate)
+  description: Replace Description
+2:
+  id: 2
+  incident_type: Assault or Battery on Inmate
+  description: Replace Description
+3:
+  id: 3
+  incident_type: Assault or Battery on Staff
+  description: Replace Description
+4:
+  id: 4
+  incident_type: Attempted Escape
+  description: Replace Description
+5:
+  id: 5
+  incident_type: Attempted Suicide
+  description: Replace Description
+6:
+  id: 6
+  incident_type: Battery on Law Enforcement Officer
+  description: Replace Description
+7:
+  id: 7
+  incident_type: Computer Security Incident
+  description: Replace Description
+8:
+  id: 8
+  incident_type: Drugs Found
+  description: Replace Description
+9:
+  id: 9
+  incident_type: Emergency Evacuation
+  description: Replace Description
+10:
+  id: 10
+  incident_type: Employee Death
+  description: Replace Description
+11:
+  id: 11
+  incident_type: Escape
+  description: Replace Description
+12:
+  id: 12
+  incident_type: Excessive Force
+  description: Replace Description
+13:
+  id: 13
+  incident_type: Fire
+  description: Replace Description
+14:
+  id: 14
+  incident_type: High Profile Incidents
+  description: Replace Description
+15:
+  id: 15
+  incident_type: Hostage Situation
+  description: Replace Description
+16:
+  id: 16
+  incident_type: Improper Conduct (Inmate)
+  description: Replace Description
+17:
+  id: 17
+  incident_type: Inmate Death
+  description: Replace Description
+18:
+  id: 18
+  incident_type: Inmate/Employee Work Stoppage
+  description: Replace Description
+19:
+  id: 19
+  incident_type: Major Disturbance
+  description: Replace Description
+20:
+  id: 20
+  incident_type: Natural or Environmental Disaster
+  description: Replace Description
+21:
+  id: 21
+  incident_type: Physical Abuse (Staff on Inmate)
+  description: Replace Description
+22:
+  id: 22
+  incident_type: Recovery of Contraband
+  description: Replace Description
+23:
+  id: 23
+  incident_type: Recovery of Weapon
+  description: Replace Description
+24:
+  id: 24
+  incident_type: Serious Accident
+  description: Replace Description
+25:
+  id: 25
+  incident_type: Serious Battery (life threatening)
+  description: Replace Description
+26:
+  id: 26
+  incident_type: Sexual Battery (inmate on inmate)
+  description: Replace Description
+27:
+  id: 27
+  incident_type: Sexual Battery (staff member)
+  description: Replace Description
+28:
+  id: 28
+  incident_type: Staff/Offender Relationship
+  description: Replace Description
+29:
+  id: 29
+  incident_type: Total Lockdown of Institution
+  description: Replace Description
+30:
+  id: 30
+  incident_type: Use of Force Reports
+  description: Replace Description
+31:
+  id: 31
+  incident_type: Use or Discovery of an Explosive
+  description: Replace Description
+32:
+  id: 32
+  incident_type: Use or Discovery of a Firearm
+  description: Replace Description
+33:
+  id: 33
+  incident_type: Weapon Found
+  description: Replace Description

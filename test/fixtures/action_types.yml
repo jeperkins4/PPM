@@ -1,0 +1,37 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  action: Downgraded
+  description: Replace Description
+two:
+  id: 2
+  action: Referred to Management
+  description: Replace Description
+three:
+  id: 3
+  action: Staff Termination
+  description: Replace Description
+four:
+  id: 4
+  action: Staff Resigned
+  description: Replace Description
+five:
+  id: 5
+  action: Staff Suspension
+  description: Replace Description
+six:
+  id: 6
+  action: Inmate Transferred
+  description: Replace Description
+seven:
+  id: 7
+  action: Documented in Personnel Record
+  description: Replace Description
+eight:
+  id: 8
+  action: Inmate Arrested
+  description: Replace Description
+nine:
+  id: 9
+  action: Disciplinary Report Issued to Inmate
+  description: Replace Description

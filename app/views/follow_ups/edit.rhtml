@@ -1,0 +1,10 @@
+<h1>Edit Follow Up</h1>
+
+<%= error_messages_for :follow_up %>
+
+<% form_for(:follow_up, :url => follow_up_path(@follow_up), :html => { :method => :put }) do |f| %>
+ <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Show', follow_up_path(@follow_up) %> |
+<%= link_to 'Back', follow_ups_path %>

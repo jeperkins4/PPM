@@ -1,0 +1,53 @@
+  <p>
+    <b>Facility</b><br />
+    <%= f.text_field :facility %>
+  </p>
+
+  <p>
+    <b>Address1</b><br />
+    <%= f.text_field :address1 %>
+  </p>
+
+  <p>
+    <b>Address2</b><br />
+    <%= f.text_field :address2 %>
+  </p>
+
+  <p>
+    <b>City</b><br />
+    <%= f.text_field :city %>
+  </p>
+
+  <p>
+    <b>State</b><br />
+    <%= f.text_field :state %>
+  </p>
+
+  <p>
+    <b>Zip</b><br />
+    <%= f.text_field :zip %>
+  </p>
+
+  <p>
+    <b>Phone Number</b><br />
+    <%= f.text_field :phone %>
+  </p>
+
+  <p>
+    <b>Warden</b><br />
+    <%= f.text_field :warden %>
+  </p>
+
+  <p>
+    <b>Contract Monitor</b><br />
+    <%= f.text_field :contract_monitor %>
+  </p>
+
+  <p>
+    <b>Custody type</b><br />
+    <%= f.select( "custody_type_id", CustodyType.find(:all).collect {|ct| [ ct.custody_type, ct.id ] }, { :include_blank => false })%>
+  </p>
+  
+  <p>
+    <%= submit_tag "Save" %>
+  </p>

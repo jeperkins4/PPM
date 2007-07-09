@@ -1,0 +1,13 @@
+<p>
+  <b>Investigator:</b>
+  <%=h @incident_investigator.investigator_id %>
+</p>
+
+<p>
+  <b>Incident:</b>
+  <%=h @incident_investigator.incident_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_incident_investigator_path(@incident_investigator) %> |
+<%= link_to 'Back', incident_investigators_path %>

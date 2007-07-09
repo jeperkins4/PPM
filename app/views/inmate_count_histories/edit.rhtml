@@ -1,0 +1,27 @@
+<h1>Editing inmate_count_history</h1>
+
+<%= error_messages_for :inmate_count_history %>
+
+<% form_for(:inmate_count_history, :url => inmate_count_history_path(@inmate_count_history), :html => { :method => :put }) do |f| %>
+  <p>
+    <b>Inmate count</b><br />
+    <%= f.text_field :inmate_count %>
+  </p>
+
+  <p>
+    <b>Facility</b><br />
+    <%= f.text_field :facility_id %>
+  </p>
+
+  <p>
+    <b>Count date</b><br />
+    <%= f.date_select :count_date %>
+  </p>
+
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', inmate_count_history_path(@inmate_count_history) %> |
+<%= link_to 'Back', inmate_count_histories_path %>

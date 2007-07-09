@@ -1,0 +1,777 @@
+/* LAYOUT */
+
+
+
+.wrapper {
+	width: 100%;
+	overflow: hidden;
+	background: #f2f2dc;
+	position: relative;
+}
+
+#main_block .wrapper {
+	overflow: visible;
+}
+
+#main_block, #main_sub_block
+	{
+	width: 100%;
+	display: inline;
+	float: left;
+	min-height: 1px;
+	}
+
+#main_block_content
+	{
+	margin-left: 200px;
+	position: relative;
+	}
+
+#content
+	{
+	margin-right: 225px;
+	position: relative;
+	}
+
+#nav_block
+	{
+	float: left;
+	width: 200px;
+	margin-left: -100%
+	}
+
+
+#notes
+	{
+	float: left;
+	width: 225px;
+	margin-left: -225px;
+	}
+
+
+
+
+
+/* DESIGN */
+
+body
+{
+	background-color: #326d97;
+	/* 2 x (LC fullwidth + CC padding) + RC fullwidth */
+	margin: 0 20px;
+	padding: 0;
+	font-family: 'trebuchet ms';
+	font-size: 80%;
+	padding-top: 10px;
+}
+
+
+#mainborder {
+	border: 5px #4c8bae solid;
+	margin-bottom: 15px;
+	clear: both;
+}
+
+
+/* Start Mac IE5 filter \*/
+#main__subblock, #nav_block, #notes, #main_block .wrapper
+	{
+	padding-bottom: 32767px !important;
+	margin-bottom: -32767px !important; 
+	}
+@media all and (min-width: 0px) {
+#main_sub_block, #nav_block, #notes, #notes, #main_block .wrapper
+	{
+	padding-bottom: 0 !important;
+	margin-bottom: 0 !important; 
+	}
+#main_sub_block:before, #nav_block:before, #notes:before, #notes, #main_block .wrapper:before
+	{
+	content: '[DO NOT LEAVE IT IS NOT REAL]';
+	display: block;
+	background: inherit;
+	padding-top: 32767px !important;
+	margin-bottom: -32767px !important;
+	height: 0;
+	}
+}
+/* End Mac IE5 filter */
+.wrapper
+	{
+	overflow-y: hidden; /* This hides the excess padding in non-IE browsers */
+	}
+/* we need this for IE 5.01 - otherwise the wrapper does not expand to the
+necessary height (unless fixed, this problem becomes even more acute 
+weirdness as the method is enhanced */
+.wrapper
+	{
+/* Normally a Holly-style hack height: 1% would suffice but that causes 
+IE 5.01 to completely collapse the wrapper - instead we float it */
+	float: left;
+/* NB. possibly only IE 5.01 needs to get this float value - otherwise 5.5 sometimes 
+(I saw it happen many moons ago) makes the width of wrapper too small 
+the float: none with the comment is ignored by 5.01,
+5.5 and above see it and carry on about their business
+It's probably fine to just remove it, but it's left here 
+just in case that many moons ago problem rears its head again */
+	float/**/: none;
+	}
+/* easy clearing */
+.wrapper:after
+	{
+	content: '[DO NOT LEAVE IT IS NOT REAL]'; 
+	display: block; 
+	height: 0; 
+	clear: both; 
+	visibility: hidden;
+	}
+.wrapper
+	{
+	display: inline-block;
+	}
+/*\*/
+.wrapper
+	{
+	display: block;
+	}
+/* end easy clearing */
+#footer
+	{
+	clear: both;
+	}
+/* Safari needs this - otherwise the ghost overflow, though painted 
+correctly obscures links and form elements that by rights should be above it.
+An unintended side-effect is that it cause such elements to vanish in IE 5.01
+and 5.5, hence the child selector hack */
+* > #footer, * > form, * > .output
+	{
+	position: relative;
+	z-index: 1000;
+	}
+
+
+p {
+	margin-top: 1em;
+}
+
+a, .fauxlink
+{
+	color: #890C08;
+	text-decoration: underline;
+	font-weight: normal;
+}
+
+.fauxlink {cursor: pointer;}
+
+
+a.selected, p.selected { 
+	background-color: #E0D6B9; 
+	font-weight: bold;
+}
+
+a:hover { background-color: #E0D6B9; }
+a img { border: 0px; }
+
+
+
+#accessibility
+{
+	position: absolute;
+	left: 0px;
+	top: -500px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+
+
+#header {
+	background: no-repeat #fff url(/images/dmsheaderseal.jpg);
+	height: 125px;
+}
+
+#header img
+{
+	float: right;
+	margin: 35px 15px 0px 0px;
+}
+
+#header span { display: none; }
+
+
+#toptools {
+	position: relative;
+}
+
+#toptools_back {
+	width: 100%;
+	margin-top:0px;
+	height:40px;
+	background: #E4E4C3 url(/images/footerback.gif) repeat-x bottom;
+}
+
+#toptools h1
+{
+	color:#B6B67C;
+	border:none;
+	text-align:center;
+}
+
+#toptools_back2 {
+	width: 100%;
+	height:32px;
+	background: #CDCDA5;
+}
+
+ul#tabs
+{
+	padding: 1em;
+	margin: 0px;
+	font-size: 90%;
+}
+
+
+ul#tabs li
+{
+	list-style-type: none;
+	display: inline;
+	margin: 0px 6px;
+}
+
+div#search
+{
+	font-size: 80%;
+	padding: .25em;
+	width: 235px;
+	float: right;
+	padding-top: .5em;
+
+}
+
+div#search form
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+* html div#search, * html ul#tabs { margin: 0px; }
+
+
+#supergraphic {
+	margin: 0;
+	clear: both;
+	overflow: hidden !important;
+	height: 170px;
+	width: 100%;
+	position: relative;
+	}
+
+#supergraphic_box {
+	position: absolute;
+}
+
+#supergraphic_box img{
+	height: 170px;
+}
+
+
+#content-design
+	{
+	padding: 10px 2% 20px 2%;
+	}
+
+#nav_block { background: #c9c99a; }
+#notes { background: #d9d9b4; }
+
+#head, #footer
+{
+	text-align: center;
+	padding: 0.3em 0;
+	margin: 0px;
+}
+
+
+#footer
+{
+	background: #E4E4C3 url(/images/footerback.gif) repeat-x bottom;
+	font-size: 90%;
+
+}
+
+
+h1, h2, h3, h4, h5, h6
+{
+	margin: 10px 0px 0px 0px;
+	padding: 0px;
+	font-weight: normal;
+	font-family: georgia, serif;
+}
+
+h1
+{
+	font-size: 210%;
+	border-bottom: 1px solid #A6A66D;
+	margin: 0px;
+}
+
+h2 { font-size: 160%; }
+h3 { font-size: 115%; }
+h4 { font-size: 100%; }
+
+#nav_block h2, #notes h2, #header h2
+{
+	background: #d9d998;
+	padding: 6px;
+	margin-top: 0px;
+	color: #683c07;
+}
+
+
+#notes h4, #quicklinks h4 {
+	border-top: 1px solid #666;
+	font-size: 120%;
+	margin: auto 5px auto 5px;
+}																		
+
+
+
+/*** General Content ***/
+
+#nav_block p.selected {padding: 0; font-size: 100%}
+#nav_block p, #notes p
+{
+	padding: 0px 10px 0px 10px;
+	font-size: 90%;
+}
+
+
+/*** Home Page Only ***/
+p#subscribe
+{
+	padding: 8px;
+	margin: 0px;
+	background: #ADAD7B;
+}
+
+#subscribe img { float: right; }
+
+#banners { 
+	text-align: center; 
+	margin-top: 50px
+}
+
+p#date
+{
+	text-align: center;
+	margin: 0px;
+	padding: 1em;
+	font-size: 80%;
+	font-family: 'century gothic', sans-serif;
+	font-weight: bold;
+}
+
+#homequicklinks li a
+{
+	vertical-align: -1px;
+	padding-left: 5px;
+}
+
+#content h2, #contentnonotes h2
+{
+	clear: left;
+	font-family: Century Gothic;
+	font-weight: bolder;
+	border-bottom: 1px solid #A6A66D;
+	width: 100%;
+}
+
+#content h2 a, #contentnonotes h2 a { font-weight: bolder; text-decoration: none;}
+
+#content h2 span, #contentnonotes h2 span
+{
+	float: right;
+	font-size: 55%;
+	font-style: italic;
+	font-weight: normal;
+	margin-top: 8px;
+}
+
+#content .divdesc, #content .switchcontent, #contentnonotes .divdesc, #contentnonotes .switchcontent
+{
+	background: #ededca;
+	text-align: left;
+	font-size: 90%;
+	margin-top: 8px;
+}
+
+#content ul.divbureaus, #contentnonotes ul.divbureaus
+{
+	margin: 10px 0px 0px 10px;
+	padding: 0px;
+}
+
+#content ul.divbureaus li, #contentnonotes  ul.divbureaus li
+{
+	display: inline;
+	list-style-type: none;
+}
+
+ul#egov
+{
+	list-style-type: none;
+	margin: 0px 0px -1px 0px;
+	padding: 0px 10px 20px 10px;
+	}
+
+ul#egov li { border-bottom: 1px solid #A6A66D; clear: both; height: 35px; 	padding-top: 15px;}
+
+ul#egov li a, ul#homequicklinks li a {font-weight: bold;  font-family: 'century gothic'; font-size: 100%;}
+
+
+#egov li img {
+	margin-top: -15px;
+	float: left;
+	padding: 5px;
+}
+
+
+#homequicklinks li img {
+	margin-top: -15px;
+	float: left;
+	padding: 5px;
+}
+
+
+ul#homequicklinks {
+	list-style-type: none;
+	margin: 10px 10px;
+	padding: 0px;
+}
+
+
+ul#homequicklinks li
+{
+	line-height: 1.2em;
+	background-repeat: no-repeat;
+	padding: .7em 10px .7em 0px;
+	background-position: 0;
+	margin: 0px;
+}
+
+ul#homequicklinks li#employees { background-image: url(/images/li_employee.gif); }
+ul#homequicklinks li#retirees { background-image: url(/images/li_retiree.gif); }
+ul#homequicklinks li#visitors { background-image: url(/images/li_visitor.gif); }
+ul#homequicklinks li#vendors { background-image: url(/images/li_vendor.gif); }
+
+
+/* RENDERED TABLE */
+
+table.renderedtable td
+{ 
+    margin: 0px;
+    padding: 3px;
+    border-top: 0px solid;
+    border-left: 0px solid;
+    border-color: #555;
+}
+
+table.renderedtable
+{ 
+    border-right: 0px solid;
+    border-bottom: 0px solid;
+    border-color: #555;
+}
+
+td {
+	background: #E4E4C3;
+}
+
+#contractsearch table {
+	border: 1px solid black;
+}
+
+table.spastc td, table.spastc th {
+	/border: 1px solid black;
+}
+
+.break {
+	clear: both;
+}
+
+/*** Navigation ***/
+ul#navi {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	font-size: 90%;
+	background-color: #DBDEBB;
+}
+ 
+ul#navi a {
+	text-decoration: none;
+}
+
+ul#navi p {
+	margin: 0;
+}
+
+ul#navi .firstup {
+	border: 0;
+}
+
+ul#navi li {
+	padding: 3px 8px;
+	border-top: 1px solid #999;
+}
+
+ul#navi ul {
+	list-style-type: none;
+	margin-left: 2%;
+	width: 98%;
+	padding: 0;
+}
+
+
+div#backto {
+	padding: 3px 8px 8px 16px;
+	background: url(/images/uparrow.gif) no-repeat 2px 0px;
+}
+
+div#quicklinks h4 {
+	padding-bottom: 5px;
+}
+
+div#quicklinks p {
+	padding: 0px 5px 0px 10px;
+	margin-top: 0px;
+}
+
+.date {
+	font-weight: bold;
+}
+
+table {
+	height: 100%;
+}
+
+#tabs form {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+#tabs form input#keep-me-updated {
+	width: 60px;
+	border: none;
+	background: transparent;
+	font-size: 100%;
+	color: #890C08;
+	text-decoration: underline;
+	font-weight: normal;
+	cursor: pointer;
+}
+
+.attribute-short .renderedtable {
+	display: none;
+}
+
+.class-folder hr {
+	display: none;
+}
+
+#contractsearch {
+	float: right;
+}
+
+
+
+#content-design table tr td {
+	vertical-align: top;
+}
+
+#notes h3 {
+	padding-left: 6px;
+}
+
+
+
+#homequicklinks {
+	text-indent: -4px;
+}
+
+#content-design h1 {
+	margin-bottom: 10px;
+}
+
+#ratethiscontract {
+	float: right;
+	background: #e4e4c3;
+	padding: 4px;
+	border: 1px solid black;
+}
+
+.embedfile {
+	float: none;
+}
+
+#add_new_pat {
+	float: left;
+}
+
+#recent_pats {
+	width: 60%;
+	padding-left: 5%;
+}
+
+#recent_pats h3 {
+	font-size: 120%;
+	font-weight: bold;
+}
+
+.divbureaus a {
+	color: black;
+}
+
+.iconblock {
+	font-size: 85%;
+}
+
+#notes h4 a, #notes h4 .date {
+	font-weight: 700;
+	font-family: 'century gothic', sans-serif;
+	font-size: 85%;
+}
+
+
+
+.hide_from_nav {
+	display: none;
+}
+
+table.clear_back, table.clear_back tr td {
+	background-color: transparent;
+}
+
+ol.A {
+ list-style-type: upper-alpha;
+}
+
+ol.a {
+ list-style-type: lower-alpha;
+}
+
+ol.I {
+ list-style-type: upper-roman;
+}
+
+ol.i {
+ list-style-type: lower-roman;
+}
+
+ol.1 {
+ list-style-type: decimal;
+}
+
+td.darker {
+	background: #DEDEBF;
+}
+
+
+#notes table p {
+	padding: 3px;
+	margin: 0;
+}
+
+#notes table {
+	width: 210px;
+}
+
+#reader_links h3 {
+	font-size: 130%;
+}
+
+a {
+	word-wrap: break-word;
+}
+
+table.browse {
+	width: 98%;
+}
+
+#login_info_box {
+	float: right;
+	width: 30%;
+	padding: 8px;
+}
+
+.hidden {
+	display: none;
+}
+
+.edit_user_inputs {
+	width: 50%;
+}
+
+.edit_user_inputs .element {
+	position: relative;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.edit_user_inputs input {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+li.faq_question {font-weight: bold; font-size: 110%;}
+li.faq_question div.faq_answer {font-weight: normal; font-size: 90%;}
+
+.spa_stc_list {
+	overflow-x: auto;
+	overflow-y: hidden;
+	width: 100%;
+}
+
+.db_notify_custom label {
+	display: inline;
+}
+
+/* Flash Notice Style */
+
+div.notice {
+	display:block;
+    background-color:#ffffff;
+    color:#890C08;
+    border:solid 1px #890C08;
+    width:400px;
+    padding:5px 0 5px 0;
+    text-align:center;
+}
+
+/* Table Styles */
+
+table {
+	margin-top: 20px;
+	margin-left: 40px;
+	border-collapse: collapse;
+}
+
+tr{
+	background:none;
+}
+
+
+th {
+	margin-right:10px;
+	padding:0 20px;
+	background-color:#CDCDA5;
+}
+
+td {
+	padding:0 10px;
+	border-right: dotted 1px 	#CDCDA5;
+	border-bottom: dotted 1px 	#CDCDA5;
+	text-align: left;
+}

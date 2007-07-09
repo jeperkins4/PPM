@@ -1,0 +1,131 @@
+/* eZ2004 pagelayout stylesheet */
+
+/* Page setup */
+
+body
+{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background-image: none;
+    background-repeat: repeat-x;
+    background-attachment: fixed;
+    background-color: #ffffff;
+    margin: 10px;
+    padding: 0;
+}
+
+div.title {
+	font-size: 150%;
+	font-weight: bolder;
+}
+
+table#outside
+{
+    width: 0px;
+    padding: 0;
+    margin: 0;
+}
+
+table {
+	width: 100%;
+	display: block;
+}
+
+.small {
+	font-size: 80%;
+}
+
+table#outside td#outsidecell
+{
+    background-color: #ffffff;
+    padding: 2px;
+    text-align: left;
+}
+
+div#maincontainer
+{
+    background-color: #ffffff;
+    width: 100%;
+    text-align: left;
+    position: relative;
+}
+
+div.accessibility
+{
+  display: none;
+}
+
+div#header
+{
+  display: none;
+}
+
+div#toptools
+{
+  display: none;
+}
+
+div#supergraphic
+{
+  display: none;
+}
+
+div#content, div#contentnonotes
+{
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: top left;
+    min-height: 350px;
+    position: relative;
+    text-align: left;
+}
+
+
+#footer a
+{	color: white;
+}
+
+#footer a:visited
+{	color: white;
+}
+
+.object-left span
+{	font-size: 80%;
+}
+
+
+div#contentareaspacing
+{
+    margin: 0;
+    padding: 0;
+}
+
+table#maindividertable
+{
+    width: 100%;
+    margin: 0;
+}
+
+td#maincontent
+{
+    padding: 0 18px 0 0;
+    vertical-align: top;
+}
+
+div#footer
+{
+    font-size: 90%;
+    color: #dfe8f3;
+    background-color: #3c78c1;
+    padding: 0;
+    text-align: center;
+}
+
+.moreabout {
+	display: none;
+}
+
+ul.divbureaus li
+{
+	display: inline;
+	list-style-type: none;
+}

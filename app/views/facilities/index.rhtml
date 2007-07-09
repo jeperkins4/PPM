@@ -1,0 +1,28 @@
+<h2>Facilities</h2>
+
+<table>
+  <tr>
+    <th>Facility</th>
+    <th>Contract Monitor</th>
+    <th>Warden</th>
+    <th>Custody Type</th>
+    <th>Phone Number</th>
+    <th></th>
+  </tr>
+  
+<% for facility in @facilities %>
+  <tr>
+    <td><%=h facility.facility %></td>
+    <td><%=h facility.contract_monitor %></td>
+    <td><%=h facility.warden %></td>
+    <td><%=h facility.custody_type.custody_type rescue '' %></td>
+    <td><%=h facility.phone %></td>
+    <td><%= link_to 'Show', facility_path(facility) %>
+    <%= link_to 'Edit', edit_facility_path(facility) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Facility', new_facility_path %>

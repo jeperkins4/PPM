@@ -1,0 +1,29 @@
+<h2>Users</h2>
+
+<table>
+  <tr>
+    <th>Firstname</th>
+    <th>Lastname</th>
+    <th>Username</th>
+    <th>User type</th>
+    <th>Facility</th>
+    <th></th>
+  </tr>
+  
+<% for user in @users %>
+  <tr>
+    <td><%=h user.firstname %></td>
+    <td><%=h user.lastname %></td>
+    <td><%=h user.name %></td>
+    <td><%=h user.user_type.user_type %></td>
+    <td><%=h user.facility.facility rescue 'Administrator' %></td>
+    <td><%= link_to 'Show', user_path(user) %>
+    <%= link_to 'Edit', edit_user_path(user) %>
+    <%= link_to 'Destroy', user_path(user), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New user', new_user_path %>

@@ -14,7 +14,7 @@
   <tr>
     <td><%=h incident.id %></td>
     <td><%=h incident.incident_date %></td>
-    <td><%=h incident.incident_type.incident_type %></td>
+    <td><%=h incident.incident_type.incident_type rescue '' %></td>
     <td><%=h (incident.contract_monitor_notified != nil) ? incident.contract_monitor_notified : 'Pending' %></td>
     <td><%=h incident.action_type.action rescue 'Pending' %></td>
     <td><%= link_to 'Show', incident_path(incident) %>

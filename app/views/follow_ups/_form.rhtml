@@ -9,8 +9,9 @@
   </p>
 
   <p>
-    <b>Incident List</b><br />
-    <%= f.select( "incident_id", Incident.find(:all).collect {|i| [ i.id, i.id ] }, { :include_blank => false })%>
+    <b>Incident Number</b><br />
+	 <%= f.text_field :incident_id, :value => @incident.id, :style => 'display:none;' %>
+    <%= @incident.id %>
   </p>
 
   <p>

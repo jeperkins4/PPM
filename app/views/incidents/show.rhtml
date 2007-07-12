@@ -49,19 +49,17 @@
 <br />
 <br />
 
-<table>
-  <tr>
-    <th>Follow Up(s)</th>
-    <th>Follow Up Date</th>
-  </tr>
 
+<fieldset>
+<legend>Folow Ups</legend>	
 <% @follow_ups.each do |follow_up| -%>
-  <tr>
-    <td><%=h follow_up.follow_up %></td>
-    <td><%=h follow_up.follow_up_date %></td>
-  </tr>
+ 
+    <b><%=h follow_up.follow_up_date %></b><br />
+    <p><%=h follow_up.follow_up %>&nbsp;<%= link_to 'View', follow_up_path(@incident, follow_up) %></p>
+
+ <hr> 
 <% end -%>
-</table>
+</fieldset>
 <p>
-    <%= link_to 'Add Follow Up', :controller => :follow_ups, :action => :new, :id => @incident.id  %>
+    <%= link_to 'Add Follow Up', new_follow_up_path(@incident)  %>
 </p>

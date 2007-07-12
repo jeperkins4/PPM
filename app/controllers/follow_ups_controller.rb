@@ -1,8 +1,9 @@
 class FollowUpsController < ApplicationController
+  before_filter :find_incident
   layout 'administration'
-  # GET /follow_ups.xml
+  
   def index
-    @follow_ups = FollowUp.find(:all)
+    @follow_ups = @incident.follow_ups.find(:all)
 
     respond_to do |format|
       format.html # index.rhtml
@@ -40,7 +41,7 @@ class FollowUpsController < ApplicationController
       if @follow_up.save
         flash[:notice] = 'FollowUp was successfully created.'
         format.html { redirect_to follow_up_url(@follow_up) }
-        format.xml  { head :created, :location => follow_up_url(@follow_up) }
+        format.xml  { head :created, :location => incident_path(@incident) }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @follow_up.errors.to_xml }
@@ -76,4 +77,10 @@ class FollowUpsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  protected
+  def find_incident
+    @incident = Incident.find(params[:incident_id])
+  end
+  
 end

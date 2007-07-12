@@ -1,11 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :access_levels
-
-  map.resources :user_types
-
-  map.resources :users
-
-  map.resources :inmates, :incident_investigators, :incidents, :investigators, :follow_ups, :action_types, :incident_classes, :incident_types, :custody_types, :facilities
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
   
@@ -26,6 +20,23 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
   # Install the default route as the lowest priority.
+  
+  map.resources :access_levels, 
+                :user_types, 
+                :users, 
+                :inmates, 
+                :incident_investigators, 
+                :investigators, 
+                :action_types, 
+                :incident_classes, 
+                :incident_types, 
+                :custody_types, 
+                :facilities
+  
+  map.resources :incidents do |incidents|
+     incidents.resources :follow_ups
+  end
+  
   map.start '', :controller => 'login', :action => 'index'
   map.reporting 'reports', :controller => 'reports', :action => 'index'
 end

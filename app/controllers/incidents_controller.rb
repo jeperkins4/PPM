@@ -36,7 +36,6 @@ class IncidentsController < ApplicationController
   # POST /incidents.xml
   def create
     @incident = Incident.new(params[:incident])
-
     respond_to do |format|
       if @incident.save
         flash[:notice] = 'Incident was successfully created.'

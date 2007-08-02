@@ -775,3 +775,30 @@ td {
 	border-bottom: dotted 1px 	#CDCDA5;
 	text-align: left;
 }
+
+.print table {
+	margin-top: 20px;
+	margin-left: 40px;
+	border:solid 1px #000000;
+	border-collapse: collapse;
+	background-color:#ffffff;
+}
+
+.print tr{
+	background:none;
+	border:solid 1px #000000;
+}
+
+.print th {
+	margin-right:10px;
+	padding:0 20px;
+	border:solid 1px #000000;
+	background-color:#999999;
+}
+
+.print td {
+	padding:0 10px;
+	background-color:#ffffff;
+	text-align: center;
+	border:solid 1px #000000;
+}

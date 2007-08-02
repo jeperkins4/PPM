@@ -1,4 +1,4 @@
-<h3>New Incident</h3>
+<h2>New Incident</h2>
 
 <%= error_messages_for :incident %>
 
@@ -31,6 +31,31 @@
     <% else -%>
     <%= f.select( "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => false })%>
    <% end -%>
+  </p>
+  
+    <p>
+    <b>Contract manager notified</b><br />
+    <%= f.date_select :contract_monitor_notified %>
+  </p>
+
+  <p>
+    <b>Bureau notified</b><br />
+    <%= f.date_select :bureau_notified %>
+  </p>
+
+  <p>
+    <b>Warden notified</b><br />
+    <%= f.date_select :warden_notified %>
+  </p>
+
+  <p>
+    <b>Investigation completed</b><br />
+    <%= f.date_select :investigation_completed %>
+  </p>
+
+  <p>
+    <b>Action type</b><br />
+    <%= f.select( "action_type_id", ActionType.find(:all).collect {|at| [ at.action, at.id ] }, { :include_blank => true })%>
   </p>
  
   <p>

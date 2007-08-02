@@ -1,9 +1,11 @@
 <h2>Incident Report</h2>
 <br />
-<% form_for(:incident, :action => :index, :method => 'post') do |f| %>
+<% form_for(:report, :action => :index, :method => 'post') do |f| %>
 <p style="float:right;">
-<%= link_to "Export to PDF", :action => :index %> 
 <%= image_tag('/images/pdficon_large.gif', :alt => '', :border => 0) %>
+<%= link_to "Export to PDF", :action => :index %> 
+<%= image_tag('/images/excel_large.gif', :alt => '', :border => 0) %> 
+<%= link_to "Export to Excel", :action => :index %> 
 </p>
 <p style="float:left;">
 <p><b>Filter Incidents By Date:</b></p>
@@ -14,20 +16,25 @@
 <p>
 <%= button_to "Filter Incidents" %>
 </p>
-
 </p>
 <% end -%>
 <p>
-<%= @test %>
-<fieldset style="background:#ffffff;">
-<legend style="background:#ffffff; border:solid 1px #75736E; padding:5px 5px 5px 5px;">Incidents</legend>
+<table class="print">
+	<th><b>Incident Date</b></th>
+	<th><b>Incident Number</b></th>
+	<th><b>Facility</b></th>
+	<th><b>Description</b></th>
+	<th><b>Class</b></th>
+	<th><b>Investigator</b></th>
 <% @incidents.each do |incident| -%>
-<p>Incident Date: <%= incident.incident_date %><p>
-<p>Reported: <%= incident.reported_date %><p>
-<p>Type: <%= incident.incident_type.incident_type %><p>
-<p>Action: <%= incident.action_type.action_type rescue 'Pending' %></p>
-<br />
-<hr>
+<tr>
+<td><%= incident.incident_date %></td>
+<td><%= incident.id %></td>
+<td><%= incident.facility.facility %></td>
+<td><%= incident.incident_type.incident_type %></td>
+<td><%= incident.action_type.action_type rescue 'Pending' %></td>
+<td><%= incident.action_type.action_type rescue 'Pending' %></td>
+</tr>
 <% end -%>
-</fieldset>
+</table>
 </p>

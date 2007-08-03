@@ -5,6 +5,7 @@ class LoginController < ApplicationController
     if request.post?
       user = User.authenticate( params[:name], params[:password] )
       if user
+        session[:user_id] = user.id
         session[:user] = user.firstname + ' ' + user.lastname
         session[:name] = user.name
         session[:access_level] = user.user_type.access_level.access_level

@@ -1,4 +1,5 @@
 class FacilitiesController < ApplicationController
+  before_filter :admin_authenticate
   layout 'administration'
   # GET /facilities
   # GET /facilities.xml

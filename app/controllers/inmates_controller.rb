@@ -1,4 +1,5 @@
 class InmatesController < ApplicationController
+  before_filter :authenticate 
   layout 'administration'
   def index
     @inmates = Inmate.find(:all)

@@ -1,4 +1,5 @@
 class ActionTypesController < ApplicationController
+  before_filter :admin_authenticate
   layout 'administration'
   # GET /action_types.xml
   def index

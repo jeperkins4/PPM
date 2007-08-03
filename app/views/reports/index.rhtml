@@ -3,9 +3,9 @@
 <% form_for(:report, :action => :index, :method => 'post') do |f| %>
 <p style="float:right;">
 <%= image_tag('/images/pdficon_large.gif', :alt => '', :border => 0) %>
-<%= link_to "Export to PDF", :action => :index %> 
+<%= link_to "Export to PDF", :action => :export_pdf %> 
 <%= image_tag('/images/excel_large.gif', :alt => '', :border => 0) %> 
-<%= link_to "Export to Excel", :action => :index %> 
+<%= link_to "Export to Excel", :action => :export_excel %> 
 </p>
 <p style="float:left;">
 <p><b>Filter Incidents By Date:</b></p>
@@ -32,7 +32,7 @@
 <td><%= incident.id %></td>
 <td><%= incident.facility.facility %></td>
 <td><%= incident.incident_type.incident_type %></td>
-<td><%= incident.action_type.action_type rescue 'Pending' %></td>
+<td><%= incident.incident_class.incident_class rescue 'Pending' %></td>
 <td><%= incident.action_type.action_type rescue 'Pending' %></td>
 </tr>
 <% end -%>

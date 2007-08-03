@@ -1,4 +1,5 @@
 class IncidentInvestigatorsController < ApplicationController
+  before_filter :admin_authenticate
   layout 'administration'
   # GET /incident_investigators.xml
   def index

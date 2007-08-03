@@ -1,4 +1,5 @@
 class FollowUpsController < ApplicationController
+  before_filter :authenticate 
   before_filter :find_incident
   layout 'administration'
   

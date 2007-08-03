@@ -1,4 +1,5 @@
 class CustodyTypesController < ApplicationController
+  before_filter :admin_authenticate
   layout 'administration'
   # GET /custody_types.xml
   def index

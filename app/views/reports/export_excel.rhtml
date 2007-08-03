@@ -1,0 +1,18 @@
+<table border=1>
+	<th><b>Incident Date</b></th>
+	<th><b>Incident Number</b></th>
+	<th><b>Facility</b></th>
+	<th><b>Description</b></th>
+	<th><b>Class</b></th>
+	<th><b>Investigator</b></th>
+<% @incidents.each do |incident| -%>
+<tr>
+<td><%= incident.incident_date %></td>
+<td><%= incident.id %></td>
+<td><%= incident.facility.facility %></td>
+<td><%= incident.incident_type.incident_type %></td>
+<td><%= incident.incident_class.incident_class rescue 'Pending' %></td>
+<td><%= incident.action_type.action_type rescue 'Pending' %></td>
+</tr>
+<% end -%>
+</table>

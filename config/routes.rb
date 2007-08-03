@@ -39,4 +39,5 @@ ActionController::Routing::Routes.draw do |map|
   
   map.start '', :controller => 'login', :action => 'index'
   map.reporting 'reports', :controller => 'reports', :action => 'index'
+  map.connect ':controller/:action/:id'
 end

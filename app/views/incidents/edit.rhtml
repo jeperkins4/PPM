@@ -17,6 +17,11 @@
     <b>Description</b><br />
     <%= f.text_area :description %>
   </p>
+  
+  <p>
+    <b>Incident Class</b><br />
+    <%= f.select( "incident_class_id", IncidentClass.find(:all).collect {|ic| [ ic.incident_class, ic.id ] }, { :include_blank => true }) %>     
+  </p>
 
   <p>
     <b>Incident type</b><br />

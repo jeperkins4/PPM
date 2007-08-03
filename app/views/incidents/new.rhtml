@@ -19,10 +19,16 @@
   </p>
 
   <p>
+    <b>Incident Class</b><br />
+    <%= f.select( "incident_class_id", IncidentClass.find(:all).collect {|ic| [ ic.incident_class, ic.id ] }, { :include_blank => true }) %>     
+  </p>
+  
+  <p>
     <b>Incident type</b><br />
     <%= f.select( "incident_type_id", IncidentType.find(:all).collect {|it| [ it.incident_type, it.id ] }, { :include_blank => true }) %>
     &nbsp;&nbsp;<b>Other</b>&nbsp;<%= f.text_field :incident_type_other %>     
   </p>
+  
   <p>
     <b>Facility</b><br />
     <% if session[:access_level] != 'Administrator' -%>

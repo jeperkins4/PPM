@@ -1,5 +1,5 @@
 class AccessLevelsController < ApplicationController
- 
+before_filter :admin_authenticate
 layout 'administration'
 
   def index

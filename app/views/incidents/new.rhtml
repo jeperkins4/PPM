@@ -39,7 +39,12 @@
    <% end -%>
   </p>
   
-    <p>
+  <p>
+    <b>Investigator</b><br />
+    <%= f.select( "investigator_id", Investigator.find(:all).collect {|i| [ i.firstname + ' ' + i.lastname , i.id ] }, { :include_blank => true }) %>   
+  </p>
+  
+  <p>
     <b>Contract manager notified</b><br />
     <%= f.date_select :contract_monitor_notified %>
   </p>

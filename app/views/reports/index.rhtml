@@ -33,7 +33,8 @@
 <td><%= incident.facility.facility %></td>
 <td><%= incident.incident_type.incident_type %></td>
 <td><%= incident.incident_class.incident_class rescue 'Pending' %></td>
-<td><%= incident.action_type.action_type rescue 'Pending' %></td>
+<% @investigator = Investigator.find_by_id(incident.investigator_id) -%>
+<td><%=h @investigator.firstname + ' ' + @investigator.lastname  rescue 'Pending' %></td>
 </tr>
 <% end -%>
 </table>

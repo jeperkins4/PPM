@@ -38,6 +38,11 @@
     <%= f.select( "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => false })%>
    <% end -%>
   </p>
+  
+  <p>
+    <b>Investigator</b><br />
+    <%= f.select( "investigator_id", Investigator.find(:all).collect {|i| [ i.firstname + ' ' + i.lastname , i.id ] }, { :include_blank => true }) %>   
+  </p>
 
   <p>
     <b>Contract manager notified</b><br />

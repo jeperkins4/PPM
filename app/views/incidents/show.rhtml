@@ -19,6 +19,12 @@
 </p>
 
 <p>
+  <b>Investigator:</b>
+  <% @investigator = Investigator.find_by_id(@incident.investigator_id) -%>
+  <%=h @investigator.firstname + ' ' + @investigator.lastname  rescue 'Pending' %>
+</p>
+
+<p>
   <b>Contract manager notified:</b>
   <%=h ( @incident.contract_monitor_notified != nil) ? @incident.contract_monitor_notified : 'Pending' %>
 </p>

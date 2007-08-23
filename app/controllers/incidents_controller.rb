@@ -3,7 +3,11 @@ class IncidentsController < ApplicationController
   layout 'administration'
   # GET /incidents.xml
   def index
-    @incidents = Incident.find(:all)
+     if session[:access_level] == 'Administrator'
+        @incidents = Incident.find(:all)
+      else
+        @incidents = session[:facility].incidents.find(:all)
+     end
 
     respond_to do |format|
       format.html # index.rhtml
@@ -14,7 +18,11 @@ class IncidentsController < ApplicationController
   # GET /incidents/1
   # GET /incidents/1.xml
   def show
-    @incident = Incident.find(params[:id])
+    if session[:access_level] == 'Administrator'
+        @incident = Incident.find(params[:id])
+      else
+        @incident = session[:facility].incidents.find(params[:id])
+     end
     @follow_ups = @incident.follow_ups.find(:all)
 
     respond_to do |format|
@@ -37,6 +45,21 @@ class IncidentsController < ApplicationController
   # POST /incidents.xml
   def create
     @incident = Incident.new(params[:incident])
+    if params[:incident][:bureau_notified] == 0
+      params[:incident][:bureau_notified_date] = ''
+    end
+    if params[:incident][:contract_manager_notified] == 0
+      params[:incident][:contract_manager_notified_date] = ''
+    end
+    if params[:incident][:warden_notified] == 0
+      params[:incident][:warden_notified_date] = ''
+    end
+    if params[:incident][:facility_investigation_complete] == 0
+      params[:incident][:facility_investigation_complete_date] = ''
+    end
+    if params[:incident][:investigation_closed] == 0
+      params[:incident][:investigation_closed_date] = Time.now()
+    end
     respond_to do |format|
       if @incident.save
         flash[:notice] = 'Incident was successfully created.'
@@ -52,7 +75,11 @@ class IncidentsController < ApplicationController
   # PUT /incidents/1
   # PUT /incidents/1.xml
   def update
-    @incident = Incident.find(params[:id])
+     if session[:access_level] == 'Administrator'
+        @incident = Incident.find(params[:id])
+      else
+        @incident = session[:facility].incidents.find(params[:id])
+     end
 
     respond_to do |format|
       if @incident.update_attributes(params[:incident])
@@ -69,7 +96,11 @@ class IncidentsController < ApplicationController
   # DELETE /incidents/1
   # DELETE /incidents/1.xml
   def destroy
-    @incident = Incident.find(params[:id])
+    if session[:access_level] == 'Administrator'
+        @incident = Incident.find(params[:id])
+      else
+        @incident = session[:facility].incidents.find(params[:id])
+     end
     @incident.destroy
 
     respond_to do |format|

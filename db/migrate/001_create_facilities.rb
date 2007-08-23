@@ -9,7 +9,6 @@ class CreateFacilities < ActiveRecord::Migration
       t.column :state, :string
       t.column :zip, :string
       t.column :phone, :string
-      t.column :custody_type_id, :integer
     end
   end
 

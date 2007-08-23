@@ -1,9 +1,9 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
-
-  belongs_to :user_type
-  belongs_to :facility
+  
+belongs_to :user_type
+belongs_to :facility
   
   validates_presence_of  :name
   validates_uniqueness_of :name

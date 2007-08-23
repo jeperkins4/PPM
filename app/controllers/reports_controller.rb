@@ -5,13 +5,52 @@ class ReportsController < ApplicationController
   layout 'administration', :except => :export_pdf
   
   def index
-    @incidents = Incident.find(:all)
+    @type = params[:report_type] rescue ''
+    @type_select = "<option>Choose Type</option>,
+                    <option>Incident</option>,
+                    <option>Inmate Count</option>"
     if @request.post?
       params[:report][:begin_date] = Date.new(params[:report].delete('begin_date(1i)').to_i, params[:report].delete('begin_date(2i)').to_i, (params[:report].delete('begin_date(3i)')||1).to_i) if params[:report]['begin_date(3i)']
       params[:report][:end_date] = Date.new(params[:report].delete('end_date(1i)').to_i, params[:report].delete('end_date(2i)').to_i, (params[:report].delete('end_date(3i)')||1).to_i) if params[:report]['end_date(3i)']
+      @use_date = params[:use_date] rescue 0
       @begin = params[:report][:begin_date]
       @end = params[:report][:end_date]
-      @incidents = Incident.find(:all, :conditions => ["incident_date >= ? and incident_date <= ?", @begin, @end])     
+      @mins = params[:report][:mins] rescue ''
+      @incident_type = params[:report][:incident_type_id] rescue ''
+      @search_string = ""
+      
+      if @use_date == 1
+        @search_string += " incident_date >= ? and incident_date <= ? "
+      else
+        @search_string += " incident_date <> ? and incident_date <> ? "
+        @begin = ''
+        @end = ''
+      end
+      unless @mins == "" or @mins == nil
+        @search_string += " and mins = ? "
+      else
+        @search_string += " or mins <> ? "
+      end 
+      unless @incident_type  == "" or @incident_type == nil
+        @search_string += " and incident_type_id = ? "
+      else
+        @search_string += " or incident_type_id <> ? "
+      end
+      
+      case @type = params[:report_type]
+        
+      when 'Incident'
+        @type_select = "<option>Choose Type</option>, <option selected='true'>Incident</option>, <option>Inmate Count</option>"
+        if session[:access_level] == 'Administrator'
+          @incidents = Incident.find(:all, :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type])
+        else
+          @incidents = session[:facility].incidents.find(:all, :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type])
+        end
+        
+      when 'Inmate Count'
+        @type_select = "<option>Choose Type</option>, <option>Incident</option>, <option selected='true'>Inmate Count</option>"
+      end
+      
     end
   end
   

@@ -1,0 +1,28 @@
+<h1>Listing position_archives</h1>
+
+<table>
+  <tr>
+    <th>Position</th>
+    <th>Filled date</th>
+    <th>Vacant date</th>
+    <th>Employee id exit</th>
+    <th>Employee id start</th>
+  </tr>
+  
+<% for position_archive in @position_archives %>
+  <tr>
+    <td><%=h position_archive.position_id %></td>
+    <td><%=h position_archive.filled_date %></td>
+    <td><%=h position_archive.vacant_date %></td>
+    <td><%=h position_archive.employee_id_exit %></td>
+    <td><%=h position_archive.employee_id_start %></td>
+    <td><%= link_to 'Show', position_archive_path(position_archive) %></td>
+    <td><%= link_to 'Edit', edit_position_archive_path(position_archive) %></td>
+    <td><%= link_to 'Destroy', position_archive_path(position_archive), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New position_archive', new_position_archive_path %>

@@ -53,34 +53,31 @@
     <div id='nav_block'>
         
    			   		   			   		   			   
-	    <p><%= session[:facility].facility rescue 'Administrator' %> - <%= session[:user] rescue 'N/A' %></p>
+	    <p><%= session[:facility].facility rescue 'Administrator' %> <br />User: <%= session[:user] rescue 'N/A' %></p>
         <ul id='navi'>
-            <% unless session[:access_level] != 'Administrator' -%>
+            <% if session[:access_level] == 'Administrator' -%>
             <li class="menu-level-0 ">
               Administrative
 		    </li>
             <li class="menu-level-0 ">
               <ul>
                 <li class="menu-level-1 firstup ">
-        	      <a href="/facilities/">Facilities</a>
+        	      <a href="/facilities">Facilities</a>
 	            </li>
                 <li class="menu-level-1 ">
-                 <a href="/users/">User Management</a>
+                 <a href="/users">User Management</a>
 	            </li>
                 <li class="menu-level-1 ">
-        		  <a href="/custody_types/">Custody Types</a>
+        		  <a href="/custody_types">Custody Types</a>
 	            </li>
                 <li class="menu-level-1 ">
-        		  <a href="/investigators/">Investigators</a>
-	            </li>
-                <li class="menu-level-1 ">
-                    <a href="/incident_types/">Incident Types</a>
+                    <a href="/incident_types">Incident Types</a>
 		        </li>
                 <li class="menu-level-1 ">
-                    <a href="/incident_classes/">Incident Classes</a>
+                    <a href="/incident_classes">Incident Classes</a>
                 </li>
                 <li class="menu-level-1 ">
-                    <a href="/action_types/">Actions Taken</a>
+                    <a href="/action_types">Actions Taken</a>
                 </li>
               </ul>
             </li>
@@ -91,18 +88,21 @@
 		    <li class="menu-level-0 ">
               <ul>
                 <li class="menu-level-1 firstup ">
-        		  <a href="/incidents/">Incident Reporting</a>
+        		  <a href="/incidents">Incident Reporting</a>
                 </li>
                 <li class="menu-level-1 ">
-                  <a href="/inmates/">Inmate Count</a>
+                  <a href="/inmate_counts">Inmate Count</a>
                 </li>
+                <li class="menu-level-1 ">
+        		  <a href="/investigators">Investigators</a>
+	            </li>
 		        <li class="menu-level-1 ">
-                  <a href="/reports/">Reports</a>
+                  <a href="/reports">Reports</a>
                 </li>
            </ul>
             </li>
             <li class="menu-level-0 ">
-            <a href="/">Log out</a>
+            <a href="/login/logout">Logout</a>
             </li>
           </ul>
 	   </div><!-- navblock -->

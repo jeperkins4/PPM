@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 19) do
+ActiveRecord::Schema.define(:version => 28) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -19,6 +19,19 @@ ActiveRecord::Schema.define(:version => 19) do
     t.column "description",  :text
   end
 
+  create_table "employees", :force => true do |t|
+    t.column "first_name", :string
+    t.column "last_name",  :string
+    t.column "address_1",  :string
+    t.column "address_2",  :string
+    t.column "city",       :string
+    t.column "state",      :string
+    t.column "zip",        :integer
+    t.column "phone",      :string
+    t.column "email",      :string
+    t.column "active",     :integer
+  end
+
   create_table "facilities", :force => true do |t|
     t.column "facility",         :string
     t.column "shortname",        :string
@@ -28,9 +41,18 @@ ActiveRecord::Schema.define(:version => 19) do
     t.column "state",            :string
     t.column "zip",              :string
     t.column "phone",            :string
-    t.column "custody_type_id",  :integer
     t.column "warden",           :string
     t.column "contract_monitor", :string
+  end
+
+  create_table "facility_custodies", :force => true do |t|
+    t.column "facility_id",     :integer
+    t.column "custody_type_id", :integer
+  end
+
+  create_table "facility_custody_types", :force => true do |t|
+    t.column "facility_id",     :integer
+    t.column "custody_type_id", :integer
   end
 
   create_table "follow_ups", :force => true do |t|
@@ -56,26 +78,37 @@ ActiveRecord::Schema.define(:version => 19) do
   end
 
   create_table "incidents", :force => true do |t|
-    t.column "incident_date",             :date
-    t.column "reported_date",             :date
-    t.column "inspector_general",         :date
-    t.column "description",               :text
-    t.column "incident_type_id",          :integer
-    t.column "facility_id",               :integer
-    t.column "contract_monitor_notified", :date
-    t.column "bureau_notified",           :date
-    t.column "warden_notified",           :date
-    t.column "investigation_completed",   :date
-    t.column "action_type_id",            :integer
-    t.column "incident_type_other",       :string
-    t.column "incident_class_id",         :integer
-    t.column "investigator_id",           :integer
+    t.column "incident_date",                        :date
+    t.column "reported_date",                        :date
+    t.column "inspector_general",                    :date
+    t.column "description",                          :text
+    t.column "incident_type_id",                     :integer
+    t.column "facility_id",                          :integer
+    t.column "contract_manager_notified_date",       :date
+    t.column "bureau_notified_date",                 :date
+    t.column "warden_notified_date",                 :date
+    t.column "facility_investigation_complete_date", :date
+    t.column "action_type_id",                       :integer
+    t.column "incident_type_other",                  :string
+    t.column "incident_class_id",                    :integer
+    t.column "investigator_id",                      :integer
+    t.column "mins",                                 :string
+    t.column "action_type_other",                    :string
+    t.column "designee_name",                        :string
+    t.column "contract_manager_notified",            :integer
+    t.column "warden_notified",                      :integer
+    t.column "bureau_notified",                      :integer
+    t.column "facility_investigation_complete",      :integer
+    t.column "investigation_closed",                 :integer
+    t.column "investigation_closed_date",            :date
+    t.column "entity_closing",                       :string
   end
 
-  create_table "inmates", :force => true do |t|
-    t.column "facility_id",    :integer
-    t.column "inmate_count",   :integer
-    t.column "date_collected", :date
+  create_table "inmate_counts", :force => true do |t|
+    t.column "facility_id",     :integer
+    t.column "inmate_count",    :integer
+    t.column "date_collected",  :date
+    t.column "custody_type_id", :integer
   end
 
   create_table "investigators", :force => true do |t|
@@ -85,6 +118,31 @@ ActiveRecord::Schema.define(:version => 19) do
     t.column "email",       :string
     t.column "entity",      :string
     t.column "facility_id", :integer
+  end
+
+  create_table "position_archives", :force => true do |t|
+    t.column "position_id",       :integer
+    t.column "filled_date",       :date
+    t.column "vacant_date",       :date
+    t.column "employee_id_exit",  :integer
+    t.column "employee_id_start", :integer
+  end
+
+  create_table "position_types", :force => true do |t|
+    t.column "type",        :string
+    t.column "description", :text
+  end
+
+  create_table "positions", :force => true do |t|
+    t.column "title",                   :string
+    t.column "position_type_id",        :integer
+    t.column "salary",                  :integer, :limit => 10, :precision => 10, :scale => 0
+    t.column "description",             :text
+    t.column "facility_id",             :integer
+    t.column "position_number",         :integer
+    t.column "contracted_position",     :integer
+    t.column "date_of_waiver_approval", :date
+    t.column "iwtf_position",           :integer
   end
 
   create_table "sessions", :force => true do |t|

@@ -754,14 +754,14 @@ div.notice {
 
 table {
 	margin-top: 20px;
-	margin-left: 40px;
+	margin-left: 20px;
 	border-collapse: collapse;
+	border:solid 2px #CDCDA5;
 }
 
 tr{
 	background:none;
 }
-
 
 th {
 	margin-right:10px;
@@ -771,12 +771,12 @@ th {
 
 td {
 	padding:0 10px;
-	border-right: dotted 1px 	#CDCDA5;
-	border-bottom: dotted 1px 	#CDCDA5;
 	text-align: left;
+	border-bottom:solid 1px #CDCDA5;
 }
 
 .print table {
+	width:95%;
 	margin-top: 20px;
 	margin-left: 40px;
 	border:solid 1px #000000;

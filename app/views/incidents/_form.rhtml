@@ -1,0 +1,103 @@
+ <table width='80%'>
+ 	<tr>
+ 		<td width='50%'>
+ 		  <p>
+            <b>MINS Number: </b><br />
+			<%= f.text_field :mins, :size => 20 %>
+         </p>
+      
+ 		</td>
+ 		<td>
+ 	      <p>
+			<b>Facility: </b><br />
+			<% if session[:access_level] != 'Administrator' -%>
+				<%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
+				<%= session[:facility].facility %>
+			<% else -%>
+				<%= f.select( "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => false })%>
+			<% end -%>
+		  </p>
+ 		</td>
+ 
+ 	</tr>
+  <tr>
+  	<td>  <p>
+    <b>Incident Date: </b><br />
+    <%= f.date_select :incident_date %>
+  </p></td>
+  		<td>  <p>
+    <b>Incident Reported: </b><br />
+    <%= f.date_select :reported_date %>
+  </p></td>
+  </tr>
+  <tr>
+  			<td>
+ 			 <p>
+    <b>Incident Class: </b><br />
+    <%= f.select( "incident_class_id", IncidentClass.find(:all).collect {|ic| [ ic.incident_class, ic.id ] }, { :include_blank => true }) %>     
+  </p>
+ 		</td>
+  <td><p>
+    <b>Investigator: </b><br />
+    <%= f.select( "investigator_id", Investigator.find(:all).collect {|i| [ i.firstname + ' ' + i.lastname , i.id ] }, { :include_blank => true }) %>   
+  </p></td>
+  </tr>
+  <tr>
+  	<td>  <p>
+    <b>Incident type: </b><br />
+    <%= f.select( "incident_type_id", IncidentType.find(:all).collect {|it| [ it.incident_type, it.id ] }, { :include_blank => true }) %>   
+  </p></td>
+  <td><p><b>Other Incident Type: </b><br /> <%= f.text_field :incident_type_other %></td></p>
+  </tr>
+   <tr>
+  	<td> <p>
+    <b>Action type: </b><br />
+    <%= f.select( "action_type_id", ActionType.find(:all).collect {|at| [ at.action, at.id ] }, { :include_blank => true })%>
+  </p></td>
+  <td><p>
+  	<b>Other Action Type: </b><br /><%= f.text_field :action_type_other %>
+  </p></td>
+  </tr>
+  <tr>
+  	<td>  <p>
+    <b>Warden or Designee Notified: </b><%= f.check_box :warden_notified %><br />
+    <%= f.date_select :warden_notified_date %>
+	   
+  </p></td>
+  <td><p><b>Designee Name: </b><br /><%= f.text_field :designee_name %>  </p></td>
+  </tr>
+  <tr>
+  	<td>  <p>
+    <b>Contract Manager Notified:</b><%= f.check_box :contract_manager_notified %><br />
+    <%= f.date_select :contract_manager_notified_date %>
+  </p></td>
+  	<td>  <p>
+    <b>Bureau Notified:</b><%= f.check_box :bureau_notified %><br />
+    <%= f.date_select :bureau_notified_date %>
+  </p></td>
+  <tr/>
+  <tr>
+  	<td>
+  		<p>
+    <b>Facility Investigation Complete:</b><%= f.check_box :facility_investigation_complete %><br />
+    <%= f.date_select :facility_investigation_complete_date %>
+  </p></td>
+  <td><p>  <b>Investigation Closed: </b><%= f.check_box :investigation_closed %><br />
+    <%= f.date_select :investigation_closed_date %> </p></td>
+  </tr>
+  <tr>
+  	<td colspan=2><b>Entity Closing Investigation:</b><br />
+    <%= f.text_field :entity_closing %> <p></td>
+  </tr>
+  <tr>
+  	<td colspan=2><p>
+    <b>Description: </b><br />
+    <%= f.text_area :description, :cols => 80, :rows => 10 %>
+  </p></td>
+  </tr>
+  <tr><td colspan=2> 
+    <%= submit_tag "Save" %>
+  </p></td>
+  </tr>
+  </table><br />
+ 

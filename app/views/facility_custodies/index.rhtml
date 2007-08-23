@@ -1,0 +1,22 @@
+<h1>Listing facility_custodies</h1>
+
+<table>
+  <tr>
+    <th>Facility</th>
+    <th>Custody</th>
+  </tr>
+  
+<% for facility_custody in @facility_custodies %>
+  <tr>
+    <td><%=h facility_custody.facility_id %></td>
+    <td><%=h facility_custody.custody_id %></td>
+    <td><%= link_to 'Show', facility_custody_path(facility_custody) %></td>
+    <td><%= link_to 'Edit', edit_facility_custody_path(facility_custody) %></td>
+    <td><%= link_to 'Destroy', facility_custody_path(facility_custody), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New facility_custody', new_facility_custody_path %>

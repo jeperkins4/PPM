@@ -40,7 +40,7 @@ class FollowUpsController < ApplicationController
 
     respond_to do |format|
       if @follow_up.save
-        flash[:notice] = 'FollowUp was successfully created.'
+        flash[:notice] = 'Follow Up was successfully added.'
         format.html { redirect_to follow_up_url(@follow_up) }
         format.xml  { head :created, :location => incident_path(@incident) }
       else

@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  custody_type: Minimum Custody
+  description: Replace Description
+two:
+  id: 2
+  custody_type: Medium Custody
+  description: Replace Description
+three:
+  id: 3
+  custody_type: Closed Custody
+  description: Replace Description
+four:
+  id: 4
+  custody_type: Community Custody
+  description: Replace Description

@@ -5,12 +5,17 @@
 
 <p>
   <b>Facility:</b>
-  <%=h @inmate_count.facility_id %>
+  <%=h @inmate_count.facility.facility %>
 </p>
 
 <p>
-  <b>Count date:</b>
-  <%=h @inmate_count.count_date %>
+  <b>Custody Type:</b>
+  <%=h @inmate_count.custody_type.custody_type %>
+</p>
+
+<p>
+  <b>Date Collected:</b>
+  <%=h @inmate_count.date_collected %>
 </p>
 
 

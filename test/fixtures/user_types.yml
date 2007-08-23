@@ -1,0 +1,16 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  user_type: Web Developer
+  description: Full Rights
+  access_level_id: 1
+two:
+  id: 2
+  user_type: Administrator
+  description: Full Rights
+  access_level_id: 1
+three:
+  id: 3
+  user_type: Contract Manager
+  description: Belongs to a Facility
+  access_level_id: 2

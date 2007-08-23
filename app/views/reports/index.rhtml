@@ -1,35 +1,40 @@
-<h2>Incident Report</h2>
+<h2>Report Dashboard</h2>
 <br />
+
 <% form_for(:report, :action => :index, :method => 'post') do |f| %>
-<p style="float:right;">
-<%= image_tag('/images/pdficon_large.gif', :alt => '', :border => 0) %>
+<table>
+<b>Filters: <%= @search_string %></b>
+	<tr>
+		<td width='15%'>Report Type:</td>
+		<td>
+			<%= select_tag :report_type,
+ 			    		 @type_select,
+                          :onchange => "JavaScript:submit()" %></td></tr>
+<% if @type == 'Incident' -%>
+	<tr><td>MINS Number:</td><td> <%= f.text_field :mins %></td></tr>
+	<tr><td>Incident Type:</td><td><%= f.select( "incident_type_id", IncidentType.find(:all).collect {|it| [ it.incident_type, it.id ] }, { :include_blank => true }) %></td></tr>
+<% end -%>
+	<tr><td>Between:</td><td> 
+<%= f.date_select :begin_date %> and 
+<%= f.date_select :end_date %>Use Date: <%= check_box_tag 'use_date' %></td></tr>
+<tr><td><br /><%= button_to "Build Report" %></td><td><%= image_tag('/images/pdficon_large.gif', :alt => '', :border => 0) %>
 <%= link_to "Export to PDF", :action => :export_pdf %> 
 <%= image_tag('/images/excel_large.gif', :alt => '', :border => 0) %> 
-<%= link_to "Export to Excel", :action => :export_excel %> 
-</p>
-<p style="float:left;">
-<p><b>Filter Incidents By Date:</b></p>
-<label><b>Start Date:</b></label>
-<%= f.date_select :begin_date %>&nbsp;&nbsp;&nbsp;
-<label><b>End Date:</b></label>
-<%= f.date_select :end_date %>
-<p>
-<%= button_to "Filter Incidents" %>
-</p>
-</p>
-<% end -%>
-<p>
+<%= link_to "Export to Excel", :action => :export_excel %> </td></tr>
+</table>
+<% end -%>	
+<% unless @incidents.nil? -%>	
 <table class="print">
+	<th><b>MINS Number</b></th>
 	<th><b>Incident Date</b></th>
-	<th><b>Incident Number</b></th>
 	<th><b>Facility</b></th>
-	<th><b>Description</b></th>
+	<th><b>Incident Type</b></th>
 	<th><b>Class</b></th>
 	<th><b>Investigator</b></th>
 <% @incidents.each do |incident| -%>
 <tr>
+<td><a href='incidents/<%= incident.id %>'><%= incident.mins %></a></td>
 <td><%= incident.incident_date %></td>
-<td><%= incident.id %></td>
 <td><%= incident.facility.facility %></td>
 <td><%= incident.incident_type.incident_type %></td>
 <td><%= incident.incident_class.incident_class rescue 'Pending' %></td>
@@ -38,4 +43,4 @@
 </tr>
 <% end -%>
 </table>
-</p>
+<% end -%>

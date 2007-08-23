@@ -43,12 +43,20 @@
   <%=h @facility.contract_monitor %>
 </p>
 
-<p>
-  <b>Custody Type:</b>
-  <%=h @facility.custody_type.custody_type %>
-</p>
-
 
 
 <%= link_to 'Edit', edit_facility_path(@facility) %> |
 <%= link_to 'Back', facilities_path %>
+
+<p>
+<fieldset>
+<legend>Custody Types</legend>
+<% @facility_custodies.each do |facility_custody| -%>
+    <b><%=h facility_custody.custody_type.custody_type %></b>
+    <%= link_to 'Destroy', facility_custody_path(@facility, facility_custody), :confirm => 'Are you sure?', :method => :delete %><br />
+<% end -%>
+</fieldset>
+<p>
+    <%= link_to 'Add Custody Type', new_facility_custody_path(@facility)  %>
+</p>
+</p>

@@ -7,10 +7,10 @@ class CreateIncidents < ActiveRecord::Migration
       t.column :description, :text
       t.column :incident_type_id, :integer
       t.column :facility_id, :integer
-      t.column :contract_monitor_notified, :date
-      t.column :bureau_notified, :date
-      t.column :warden_notified, :date
-      t.column :investigation_completed, :date
+      t.column :contract_manager_notified_date, :date
+      t.column :bureau_notified_date, :date
+      t.column :warden_notified_date, :date
+      t.column :facility_investigation_complete_date, :date
       t.column :action_type_id, :integer
     end
   end

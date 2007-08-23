@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  
 
   # The priority is based upon order of creation: first created -> highest priority.
   
@@ -31,11 +30,21 @@ ActionController::Routing::Routes.draw do |map|
                 :incident_classes, 
                 :incident_types, 
                 :custody_types, 
-                :facilities
+                :position_types,
+                :positions,
+                :inmate_counts,
+                :position_archives,
+                :employees
+                
+                
   
   map.resources :incidents do |incidents|
      incidents.resources :follow_ups
-  end
+   end
+   
+   map.resources :facilities do |facilities|
+     facilities.resources :facility_custodies
+   end
   
   map.start '', :controller => 'login', :action => 'index'
   map.reporting 'reports', :controller => 'reports', :action => 'index'

@@ -1,6 +1,9 @@
 class Facility < ActiveRecord::Base
-  belongs_to :custody_type
   has_many :investigators
   has_many :users
-  has_many :inmates
+  has_many :inmate_counts
+  has_many :facility_custodies
+  has_many :custody_types, :through => :facility_custodies
+  has_many :positions
+  has_many :incidents
 end

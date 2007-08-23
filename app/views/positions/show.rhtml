@@ -1,0 +1,48 @@
+<p>
+  <b>Title:</b>
+  <%=h @position.title %>
+</p>
+
+<p>
+  <b>Position type:</b>
+  <%=h @position.position_type_id %>
+</p>
+
+<p>
+  <b>Salary:</b>
+  <%=h @position.salary %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @position.description %>
+</p>
+
+<p>
+  <b>Facility:</b>
+  <%=h @position.facility_id %>
+</p>
+
+<p>
+  <b>Position number:</b>
+  <%=h @position.position_number %>
+</p>
+
+<p>
+  <b>Contracted position:</b>
+  <%=h @position.contracted_position %>
+</p>
+
+<p>
+  <b>Date of waiver approval:</b>
+  <%=h @position.date_of_waiver_approval %>
+</p>
+
+<p>
+  <b>Iwtf position:</b>
+  <%=h @position.iwtf_position %>
+</p>
+
+
+<%= link_to 'Edit', edit_position_path(@position) %> |
+<%= link_to 'Back', positions_path %>

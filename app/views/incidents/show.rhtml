@@ -26,22 +26,22 @@
 
 <p>
   <b>Contract manager notified:</b>
-  <%=h ( @incident.contract_monitor_notified != nil) ? @incident.contract_monitor_notified : 'Pending' %>
+  <%=h ( @incident.contract_manager_notified == 1) ? 'Yes' : 'No' %>
 </p>
 
 <p>
   <b>Bureau notified:</b>
-  <%=h ( @incident.bureau_notified != nil) ? @incident.bureau_notified : 'Pending' %>
+  <%=h ( @incident.bureau_notified == 1) ? 'Yes' : 'No' %>
 </p>
 
 <p>
   <b>Warden notified:</b>
-  <%=h ( @incident.warden_notified  != nil) ? @incident.warden_notified : 'Pending' %>
+  <%=h ( @incident.warden_notified  == 1) ? 'Yes' : 'No' %>
 </p>
 
 <p>
   <b>Investigation completed:</b>
-  <%=h ( @incident.investigation_completed  != nil) ? @incident.investigation_completed : 'Pending' %>
+  <%=h ( @incident.facility_investigation_complete  == 1) ? 'Yes' : 'No' %>
 </p>
 
 <p>

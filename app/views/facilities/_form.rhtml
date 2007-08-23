@@ -42,11 +42,6 @@
     <b>Contract Manager</b><br />
     <%= f.text_field :contract_monitor %>
   </p>
-
-  <p>
-    <b>Custody type</b><br />
-    <%= f.select( "custody_type_id", CustodyType.find(:all).collect {|ct| [ ct.custody_type, ct.id ] }, { :include_blank => false })%>
-  </p>
   
   <p>
     <%= submit_tag "Save" %>

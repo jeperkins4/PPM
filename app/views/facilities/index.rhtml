@@ -5,7 +5,6 @@
     <th>Facility</th>
     <th>Contract Manager</th>
     <th>Warden</th>
-    <th>Custody Type</th>
     <th>Phone Number</th>
     <th></th>
   </tr>
@@ -15,7 +14,6 @@
     <td><%=h facility.facility %></td>
     <td><%=h facility.contract_monitor %></td>
     <td><%=h facility.warden %></td>
-    <td><%=h facility.custody_type.custody_type rescue '' %></td>
     <td><%=h facility.phone %></td>
     <td><%= link_to 'Show', facility_path(facility) %>
     <%= link_to 'Edit', edit_facility_path(facility) %></td>

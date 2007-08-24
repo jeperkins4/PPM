@@ -48,5 +48,6 @@ ActionController::Routing::Routes.draw do |map|
   
   map.start '', :controller => 'login', :action => 'index'
   map.reporting 'reports', :controller => 'reports', :action => 'index'
+  map.reset 'reset_password', :controller => 'users', :action => 'reset_password'
   map.connect ':controller/:action/:id'
 end

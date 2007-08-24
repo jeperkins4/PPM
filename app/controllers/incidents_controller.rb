@@ -3,44 +3,44 @@ class IncidentsController < ApplicationController
   layout 'administration'
   # GET /incidents.xml
   def index
-     if session[:access_level] == 'Administrator'
-        @incidents = Incident.find(:all)
-      else
-        @incidents = session[:facility].incidents.find(:all)
-     end
-
+    if session[:access_level] == 'Administrator'
+      @incidents = Incident.find(:all)
+    else
+      @incidents = session[:facility].incidents.find(:all)
+    end
+    
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @incidents.to_xml }
     end
   end
-
+  
   # GET /incidents/1
   # GET /incidents/1.xml
   def show
     if session[:access_level] == 'Administrator'
-        @incident = Incident.find(params[:id])
-      else
-        @incident = session[:facility].incidents.find(params[:id])
-     end
+      @incident = Incident.find(params[:id])
+    else
+      @incident = session[:facility].incidents.find(params[:id])
+    end
     @follow_ups = @incident.follow_ups.find(:all)
-
+    
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @incident.to_xml }
     end
   end
-
+  
   # GET /incidents/new
   def new
     @incident = Incident.new
   end
-
+  
   # GET /incidents/1;edit
   def edit
     @incident = Incident.find(params[:id])
   end
-
+  
   # POST /incidents
   # POST /incidents.xml
   def create
@@ -71,16 +71,16 @@ class IncidentsController < ApplicationController
       end
     end
   end
-
+  
   # PUT /incidents/1
   # PUT /incidents/1.xml
   def update
-     if session[:access_level] == 'Administrator'
-        @incident = Incident.find(params[:id])
-      else
-        @incident = session[:facility].incidents.find(params[:id])
-     end
-
+    if session[:access_level] == 'Administrator'
+      @incident = Incident.find(params[:id])
+    else
+      @incident = session[:facility].incidents.find(params[:id])
+    end
+    
     respond_to do |format|
       if @incident.update_attributes(params[:incident])
         flash[:notice] = 'Incident was successfully updated.'
@@ -92,17 +92,17 @@ class IncidentsController < ApplicationController
       end
     end
   end
-
+  
   # DELETE /incidents/1
   # DELETE /incidents/1.xml
   def destroy
     if session[:access_level] == 'Administrator'
-        @incident = Incident.find(params[:id])
-      else
-        @incident = session[:facility].incidents.find(params[:id])
-     end
+      @incident = Incident.find(params[:id])
+    else
+      @incident = session[:facility].incidents.find(params[:id])
+    end
     @incident.destroy
-
+    
     respond_to do |format|
       format.html { redirect_to incidents_url }
       format.xml  { head :ok }

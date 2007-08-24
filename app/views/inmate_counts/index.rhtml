@@ -16,7 +16,9 @@
     <td><%=h inmate_count.custody_type.custody_type %></td>
     <td><%=h inmate_count.date_collected %></td>
     <td><%= link_to 'Show', inmate_count_path(inmate_count) %>
+	<% if session[:access_level] == 'Administrator' -%>
     <%= link_to 'Edit', edit_inmate_count_path(inmate_count) %>
+	<% end -%>
   </td>
   </tr>
 <% end %>
@@ -24,4 +26,4 @@
 
 <br />
 
-<%= link_to 'Enter Count', new_inmate_count_path %>
+<%= link_to 'Enter Counts', new_inmate_count_path %>

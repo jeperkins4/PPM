@@ -1,27 +1,35 @@
-  <p>
-    <b>Facility</b><br />
+ 
+    
     <% if session[:access_level] != 'Administrator' -%>
     <%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
-    <%= session[:facility].facility %>
+    <h4><%= session[:facility].facility %></h4>
+	<% @custody_types.each do |custody_type| -%>
+  <p><b><%= custody_type.custody_type %></b></p>
+    <p style="margin-left:5px;">
+    Count:
+	<%= text_field_tag "custody_types[#{custody_type[:id]}]" %>
+  </p>
+  
+  <% end -%>
     <% else -%>
+	<p><b>Facility</b></p>
+	<p>
     <%= f.select( "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => false })%>
-   <% end -%>
-  </p>
-
-  <p>
-    <b>Inmate count</b><br />
-    <%= f.text_field :inmate_count %>
-  </p>
-
-  <p>
+	</p>
+	<p><b>Inmate Count</b><br />
+	<%= f.text_field :inmate_count %>
+	</p>
+	<p>
     <b>Custody Type</b><br />
    <%= f.select( "custody_type_id", CustodyType.find(:all).collect {|ct| [ ct.custody_type, ct.id ] }, { :include_blank => false })%>
   </p>
-
-  <p>
+   <p>
     <b>Date collected</b><br />
     <%= f.date_select :date_collected %>
   </p>
+   <% end -%>
+  
+  
 
   <p>
     <%= submit_tag "Save" %>

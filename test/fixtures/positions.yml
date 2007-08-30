@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  title: MyString
+  position_type_id: 1
+  salary: 9.99
+  description: MyText
+  facility_id: 1
+two:
+  id: 2
+  title: MyString
+  position_type_id: 1
+  salary: 9.99
+  description: MyText
+  facility_id: 1

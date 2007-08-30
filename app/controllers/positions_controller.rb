@@ -1,11 +1,15 @@
 class PositionsController < ApplicationController
-
-layout 'administration'
-
+  
+  before_filter :admin_authenticate, :except => :reset_password
+  layout 'administration'
+  
+  
+  # GET /positions
+  # GET /positions.xml
   def index
     @positions = Position.find(:all)
 
-    respond_to do |format|
+      respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @positions.to_xml }
     end

@@ -1,0 +1,30 @@
+<p>
+  <b>Position:</b>
+  <%=h @position_number.position_id %>
+</p>
+
+<p>
+  <b>Position num:</b>
+  <%=h @position_number.position_num %>
+</p>
+
+<p>
+  <b>Contracted position:</b>
+  <%=h (@position_number.contracted_position == 1) ? "Yes" : "No" %>
+</p>
+
+<p>
+  <b>Iwtf:</b>
+  <%=h (@position_number.iwtf == 1) ? "Yes":"No" %>
+</p>
+
+<p>
+  <b>Waiver approval date:</b>
+  <%=h @position_number.waiver_approval_date %>
+</p>
+
+
+
+
+<%= link_to 'Edit', edit_position_number_path(@position_number) %> |
+<%= link_to 'Back', position_numbers_path %>

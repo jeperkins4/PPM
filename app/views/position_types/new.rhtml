@@ -5,12 +5,12 @@
 <% form_for(:position_type, :url => position_types_path) do |f| %>
   <p>
     <b>Type</b><br />
-    <%= f.text_field :type %>
+    <%= f.text_field :position_type %>
   </p>
 
   <p>
     <b>Description</b><br />
-    <%= f.text_area :description %>
+        <%= f.text_area :description, :cols => 45, :rows => 3 %>
   </p>
 
   <p>

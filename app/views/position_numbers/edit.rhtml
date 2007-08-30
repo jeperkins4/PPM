@@ -1,0 +1,10 @@
+<h1>Editing position_number</h1>
+
+<%= error_messages_for :position_number %>
+
+<% form_for(:position_number, :url => position_number_path(@position_number), :html => { :method => :put }) do |f| %>
+<%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Show', position_number_path(@position_number) %> |
+<%= link_to 'Back', position_numbers_path %>

@@ -1,0 +1,28 @@
+<h1>Listing position_numbers</h1>
+
+<table>
+  <tr>
+    <th>Position</th>
+    <th>Position num</th>
+    <th>Contracted position</th>
+    <th>Waiver approval date</th>
+    <th>Iwtf</th>
+  </tr>
+  
+<% for position_number in @position_numbers %>
+  <tr>
+    <td><%=h position_number.position_id %></td>
+    <td><%=h position_number.position_num %></td>
+    <td><%=h position_number.contracted_position %></td>
+    <td><%=h position_number.waiver_approval_date %></td>
+    <td><%=h position_number.iwtf %></td>
+    <td><%= link_to 'Show', position_number_path(position_number) %></td>
+    <td><%= link_to 'Edit', edit_position_number_path(position_number) %></td>
+    <td><%= link_to 'Destroy', position_number_path(position_number), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New position_number', new_position_number_path %>

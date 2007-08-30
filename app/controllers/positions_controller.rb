@@ -1,8 +1,6 @@
 class PositionsController < ApplicationController
-  
-  before_filter :admin_authenticate, :except => :reset_password
-  layout 'administration'
-  
+    before_filter :admin_authenticate, :except => :reset_password
+  layout 'administration'  
   
   # GET /positions
   # GET /positions.xml

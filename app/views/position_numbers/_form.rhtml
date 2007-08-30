@@ -1,0 +1,29 @@
+  <p>
+    <b>Position</b><br />
+     <%= f.select("position_id", Position.find(:all).collect {|p| [ p.title, p.id ] }, { :include_blank => true })%>
+  </p>
+
+  <p>
+    <b>Position num</b><br />
+    <%= f.text_field :position_num %>
+  </p>
+
+  <p>
+   <b>Contracted position</b><br />
+ <%= f.check_box :contracted_position %>
+  </p>
+  
+  <p>
+   	<b>IWTF</b><br />
+   		 <%= f.check_box :iwtf %>
+  </p>
+
+		<p>
+		   <b>Waiver approval date</b><br />
+		   <%= f.date_select :waiver_approval_date %>
+ 		 </p>
+
+
+  <p>
+    <%= submit_tag "Update" %>
+  </p>

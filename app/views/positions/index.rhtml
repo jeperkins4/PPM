@@ -1,0 +1,28 @@
+<h1>Listing positions</h1>
+
+<table>
+  <tr>
+  	<th>Facility</th>
+    <th>Position Type</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Salary</th>
+  </tr>
+  
+<% for position in @positions %>
+  <tr>
+    <td><%=h position.facility.facility %></td>
+	<td><%=h position.position_type.position_type %></td>
+	<td><%=h position.title %></td>    
+	<td><%=h position.description %></td>
+    <td><%=h position.salary %></td>
+    <td><%= link_to 'Show', position_path(position) %></td>
+    <td><%= link_to 'Edit', edit_position_path(position) %></td>
+    <td><%= link_to 'Destroy', position_path(position), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New position', new_position_path %>

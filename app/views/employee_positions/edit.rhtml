@@ -1,0 +1,37 @@
+<h1>Editing employee_position</h1>
+
+<%= error_messages_for :employee_position %>
+
+<% form_for(:employee_position, :url => employee_position_path(@employee_position), :html => { :method => :put }) do |f| %>
+  <p>
+    <b>Position number</b><br />
+    <%= f.text_field :position_number_id %>
+  </p>
+
+  <p>
+    <b>Employee</b><br />
+    <%= f.text_field :employee_id %>
+  </p>
+
+  <p>
+    <b>Start date</b><br />
+    <%= f.date_select :start_date %>
+  </p>
+
+  <p>
+    <b>End date</b><br />
+    <%= f.date_select :end_date %>
+  </p>
+
+  <p>
+    <b>Salary</b><br />
+    <%= f.text_field :salary %>
+  </p>
+
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', employee_position_path(@employee_position) %> |
+<%= link_to 'Back', employee_positions_path %>

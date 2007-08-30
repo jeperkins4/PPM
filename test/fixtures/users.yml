@@ -1,2 +1,10 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
+one:
+  id: 1
+  firstname: Anthony
+  lastname: Roeder
+  name: aroeder
+  email: anthony.roeder
+  hashed_password: dd92062ba70cf5d8e76bbc4905eab6f928b17955
+  salt: 380918700.0935853881500537
+  user_type_id: 1

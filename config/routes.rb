@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   
   # Sample of regular route:
@@ -31,12 +33,11 @@ ActionController::Routing::Routes.draw do |map|
                 :incident_types, 
                 :custody_types, 
                 :position_types,
-                :positions,
                 :inmate_counts,
-                :position_archives,
+                :employee_positions,
+                :position_numbers ,
+                :positions,
                 :employees
-                
-                
   
   map.resources :incidents do |incidents|
      incidents.resources :follow_ups

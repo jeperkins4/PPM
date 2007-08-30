@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 28) do
+ActiveRecord::Schema.define(:version => 31) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -19,17 +19,34 @@ ActiveRecord::Schema.define(:version => 28) do
     t.column "description",  :text
   end
 
+  create_table "employee_position_hists", :force => true do |t|
+    t.column "position_number_id", :integer
+    t.column "employee_id",        :integer
+    t.column "start_date",         :date
+    t.column "end_date",           :date
+    t.column "salary",             :integer, :limit => 10, :precision => 10, :scale => 0
+  end
+
+  create_table "employee_positions", :force => true do |t|
+    t.column "position_number_id", :integer
+    t.column "employee_id",        :integer
+    t.column "start_date",         :date
+    t.column "end_date",           :date
+    t.column "salary",             :integer, :limit => 10, :precision => 10, :scale => 0
+  end
+
   create_table "employees", :force => true do |t|
-    t.column "first_name", :string
-    t.column "last_name",  :string
-    t.column "address_1",  :string
-    t.column "address_2",  :string
-    t.column "city",       :string
-    t.column "state",      :string
-    t.column "zip",        :integer
-    t.column "phone",      :string
-    t.column "email",      :string
-    t.column "active",     :integer
+    t.column "facility_id", :integer
+    t.column "first_name",  :string
+    t.column "last_name",   :string
+    t.column "address_1",   :string
+    t.column "address_2",   :string
+    t.column "city",        :string
+    t.column "state",       :string
+    t.column "zip",         :integer
+    t.column "phone",       :string
+    t.column "email",       :string
+    t.column "active",      :integer
   end
 
   create_table "facilities", :force => true do |t|
@@ -120,29 +137,31 @@ ActiveRecord::Schema.define(:version => 28) do
     t.column "facility_id", :integer
   end
 
-  create_table "position_archives", :force => true do |t|
-    t.column "position_id",       :integer
-    t.column "filled_date",       :date
-    t.column "vacant_date",       :date
-    t.column "employee_id_exit",  :integer
-    t.column "employee_id_start", :integer
+  create_table "position_hists", :force => true do |t|
+    t.column "position_id", :integer
+    t.column "salary",      :integer, :limit => 10, :precision => 10, :scale => 0
+    t.column "eddft",       :date
+  end
+
+  create_table "position_numbers", :force => true do |t|
+    t.column "position_id",          :integer
+    t.column "position_num",         :integer
+    t.column "contracted_position",  :integer
+    t.column "waiver_approval_date", :date
+    t.column "iwtf",                 :integer
   end
 
   create_table "position_types", :force => true do |t|
-    t.column "type",        :string
-    t.column "description", :text
+    t.column "position_type", :string
+    t.column "description",   :text
   end
 
   create_table "positions", :force => true do |t|
-    t.column "title",                   :string
-    t.column "position_type_id",        :integer
-    t.column "salary",                  :integer, :limit => 10, :precision => 10, :scale => 0
-    t.column "description",             :text
-    t.column "facility_id",             :integer
-    t.column "position_number",         :integer
-    t.column "contracted_position",     :integer
-    t.column "date_of_waiver_approval", :date
-    t.column "iwtf_position",           :integer
+    t.column "title",            :string
+    t.column "position_type_id", :integer
+    t.column "salary",           :integer, :limit => 10, :precision => 10, :scale => 0
+    t.column "description",      :text
+    t.column "facility_id",      :integer
   end
 
   create_table "sessions", :force => true do |t|

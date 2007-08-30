@@ -1,6 +1,7 @@
 class CreateEmployees < ActiveRecord::Migration
   def self.up
     create_table :employees do |t|
+      t.column :facility_id, :integer
       t.column :first_name, :string
       t.column :last_name, :string
       t.column :address_1, :string

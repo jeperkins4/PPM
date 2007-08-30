@@ -1,7 +1,7 @@
 class CreatePositionTypes < ActiveRecord::Migration
   def self.up
     create_table :position_types do |t|
-      t.column :type, :string
+      t.column :position_type, :string
       t.column :description, :text
     end
   end

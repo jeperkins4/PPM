@@ -1,11 +1,15 @@
 class PositionsController < ApplicationController
-    before_filter :admin_authenticate, :except => :reset_password
+ # before_filter :admin_authenticate, :except => :reset_password
   layout 'administration'  
   
   # GET /positions
   # GET /positions.xml
   def index
+   if session[:access_level] == 'Administrator'
     @positions = Position.find(:all)
+   else
+     @positions =  session[:facility].positions.find(:all)
+   end
 
       respond_to do |format|
       format.html # index.rhtml
@@ -16,8 +20,13 @@ class PositionsController < ApplicationController
   # GET /positions/1
   # GET /positions/1.xml
   def show
-    @position = Position.find(params[:id])
-
+    
+    if session[:access_level] == 'Administrator'
+      @position = Position.find(params[:id])
+    else    
+      @position =  session[:facility].positions.find(params[:id])
+    end
+    
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @position.to_xml }
@@ -71,7 +80,13 @@ class PositionsController < ApplicationController
   # DELETE /positions/1
   # DELETE /positions/1.xml
   def destroy
+    
+ if session[:access_level] == 'Administrator'    
     @position = Position.find(params[:id])
+  else
+    @position = session[:facility].positions.find(params[:id])
+  end
+  
     @position.destroy
 
     respond_to do |format|

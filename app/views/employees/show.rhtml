@@ -1,6 +1,6 @@
 <p>
   <b>Facility:</b>
-  <%=h @employee.facility_id %>
+  <%=h @employee.facility.facility %>
 </p>
 
 <p>
@@ -50,9 +50,9 @@
 
 <p>
   <b>Active:</b>
-  <%=h @employee.active %>
+  <%=h (@employee.active == 1)? "Yes":"No" -%>
 </p>
 
 
-<%= link_to 'Edit', edit_employee_path(@employee) %> |
+<%= link_to 'Edit', edit_employee_path(@employee) %>
 <%= link_to 'Back', employees_path %>

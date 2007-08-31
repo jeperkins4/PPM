@@ -1,66 +1,9 @@
-<h1>New employee</h1>
+<h1>New Employee</h1>
 
 <%= error_messages_for :employee %>
 
 <% form_for(:employee, :url => employees_path) do |f| %>
-  <p>
-    <b>Facility</b><br />
-    <%= f.text_field :facility_id %>
-  </p>
-
-  <p>
-    <b>First name</b><br />
-    <%= f.text_field :first_name %>
-  </p>
-
-  <p>
-    <b>Last name</b><br />
-    <%= f.text_field :last_name %>
-  </p>
-
-  <p>
-    <b>Address 1</b><br />
-    <%= f.text_field :address_1 %>
-  </p>
-
-  <p>
-    <b>Address 2</b><br />
-    <%= f.text_field :address_2 %>
-  </p>
-
-  <p>
-    <b>City</b><br />
-    <%= f.text_field :city %>
-  </p>
-
-  <p>
-    <b>State</b><br />
-    <%= f.text_field :state %>
-  </p>
-
-  <p>
-    <b>Zip</b><br />
-    <%= f.text_field :zip %>
-  </p>
-
-  <p>
-    <b>Phone</b><br />
-    <%= f.text_field :phone %>
-  </p>
-
-  <p>
-    <b>Email</b><br />
-    <%= f.text_field :email %>
-  </p>
-
-  <p>
-    <b>Active</b><br />
-    <%= f.text_field :active %>
-  </p>
-
-  <p>
-    <%= submit_tag "Create" %>
-  </p>
+ <%= render :partial => 'form', :locals => {:f => f} %>
 <% end %>
 
 <%= link_to 'Back', employees_path %>

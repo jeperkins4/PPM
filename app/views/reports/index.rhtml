@@ -9,7 +9,7 @@
 		<td>
 			<%= select_tag :report_type,
  			    		 @type_select,
-                          :onchange => "JavaScript:submit()" %></td></tr>
+                          :onchange => "JavaScript:reload()" %></td></tr>
   <% if session[:access_level] == 'Administrator' -%>
   <tr>
   	<td>Facility:</td>

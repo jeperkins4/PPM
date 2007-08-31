@@ -4,8 +4,13 @@ class EmployeesController < ApplicationController
   # GET /employees
   # GET /employees.xml
   def index
-    @employees = Employee.find(:all)
-
+    
+    if session[:access_level] == 'Administrator'
+      @employees = Employee.find(:all)
+    else
+      @employees =  session[:facility].employees.find(:all)
+    end
+    
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @employees.to_xml }
@@ -15,7 +20,11 @@ class EmployeesController < ApplicationController
   # GET /employees/1
   # GET /employees/1.xml
   def show
-    @employee = Employee.find(params[:id])
+     if session[:access_level] == 'Administrator'
+        @employee = Employee.find(params[:id])
+    else
+      @employee =  session[:facility].employees.find(params[:id])
+    end
 
     respond_to do |format|
       format.html # show.rhtml
@@ -70,9 +79,14 @@ class EmployeesController < ApplicationController
   # DELETE /employees/1
   # DELETE /employees/1.xml
   def destroy
-    @employee = Employee.find(params[:id])
-    @employee.destroy
-
+    
+    if session[:access_level] == 'Administrator'
+      @employee = Employee.find(params[:id])
+    else
+      @employee = session[:facility].employees.find(params[:id])
+    end
+      @employee.destroy
+      
     respond_to do |format|
       format.html { redirect_to employees_url }
       format.xml  { head :ok }

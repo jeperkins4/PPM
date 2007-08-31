@@ -1,4 +1,4 @@
-<h1>Listing position_numbers</h1>
+<h1>Listing Position Number</h1>
 
 <table>
   <tr>
@@ -7,18 +7,18 @@
     <th>Contracted position</th>
     <th>Waiver approval date</th>
     <th>IWTF</th>
+	<th></th>
   </tr>
   
 <% for position_number in @position_numbers %>
   <tr>
     <td><%=h position_number.position.title %></td>
     <td><%=h position_number.position_num %></td>
-    <td><%=h (position_number.contracted_position == 1) ? "Yes":"No" %></td>
+    <td><%=h (position_number.contracted_position == 1) ? "Yes":"No" -%></td>
     <td><%=h position_number.waiver_approval_date %></td>
     <td><%=h (position_number.iwtf == 1) ? "Yes":"No" %></td>
-    <td><%= link_to 'Show', position_number_path(position_number) %></td>
-    <td><%= link_to 'Edit', edit_position_number_path(position_number) %></td>
-    <td><%= link_to 'Destroy', position_number_path(position_number), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', position_number_path(position_number) %> <%= link_to 'Edit', edit_position_number_path(position_number) %>
+    <%= link_to 'Destroy', position_number_path(position_number), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

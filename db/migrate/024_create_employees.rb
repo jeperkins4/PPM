@@ -4,13 +4,7 @@ class CreateEmployees < ActiveRecord::Migration
       t.column :facility_id, :integer
       t.column :first_name, :string
       t.column :last_name, :string
-      t.column :address_1, :string
-      t.column :address_2, :string
-      t.column :city, :string
-      t.column :state, :string
-      t.column :zip, :integer
-      t.column :phone, :string
-      t.column :email, :string
+      t.column :emplid, :string   
       t.column :active, :integer
     end
   end

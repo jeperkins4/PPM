@@ -39,13 +39,7 @@ ActiveRecord::Schema.define(:version => 31) do
     t.column "facility_id", :integer
     t.column "first_name",  :string
     t.column "last_name",   :string
-    t.column "address_1",   :string
-    t.column "address_2",   :string
-    t.column "city",        :string
-    t.column "state",       :string
-    t.column "zip",         :integer
-    t.column "phone",       :string
-    t.column "email",       :string
+    t.column "emplid",      :string
     t.column "active",      :integer
   end
 
@@ -145,7 +139,7 @@ ActiveRecord::Schema.define(:version => 31) do
 
   create_table "position_numbers", :force => true do |t|
     t.column "position_id",          :integer
-    t.column "position_num",         :integer
+    t.column "position_num",         :string
     t.column "contracted_position",  :integer
     t.column "waiver_approval_date", :date
     t.column "iwtf",                 :integer

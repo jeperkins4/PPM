@@ -83,11 +83,17 @@ class EmployeePositionsController < ApplicationController
   
   def set_facility
     if request.post?
-      unless session[:facility]
+      if params[:facility][:facility_id] != ""
         session[:facility] = Facility.find(params[:facility][:facility_id])
       end
-      @position_number = PositionNumber.find(params[:facility][:position_number_id])
-      session[:position_salary] = Position.find(@position_number.position_id) 
+      if params[:facility][:position_number_id] != ""
+        session[:position_number] = PositionNumber.find(params[:facility][:position_number_id])
+        session[:position_salary] = Position.find(session[:position_number].position_id) 
+      end
+    
+      if params[:position_salary] == ""
+        session[:position_salary] = 0        
+      end
       
       redirect_to new_employee_position_path
     end

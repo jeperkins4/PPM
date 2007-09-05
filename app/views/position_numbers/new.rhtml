@@ -2,8 +2,21 @@
 
 <%= error_messages_for :position_number %>
 
+<% form_tag(:action => :set_facility) do -%>
+	<% if session[:access_level] == 'Administrator' -%>
+		<p><b>Select A Facility to Manage </b></p>
+		<p><%= select("facility", "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true, :selected => (session[:facility]) ? session[:facility].id : "" },{:onchange => "JavaScript:submit()"}) -%></p>
+	<% else -%>
+	 <p>
+		<b>Your Facility</b><br />
+		<%= session[:facility].facility rescue 'Administrator' %>
+	</p>
+<% end -%>
+<% end -%>
+
 <% form_for(:position_number, :url => position_numbers_path) do |f| %>
 <%= render :partial => 'form', :locals => {:f => f} %>
+
 <% end %>
 
 <%= link_to 'Back', position_numbers_path %>

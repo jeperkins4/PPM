@@ -2,6 +2,9 @@
 
 <table>
   <tr>
+  	<% if session[:access_level] == 'Administrator' -%>
+ 	   <th>Facility</th>
+<% end -%>
     <th>Position</th>
     <th>Position num</th>
     <th>Contracted position</th>
@@ -12,6 +15,9 @@
   
 <% for position_number in @position_numbers %>
   <tr>
+ <% if session[:access_level] == 'Administrator' -%>
+ 	   <td><%=h position_number.position.facility.facility %></td>
+<% end -%>
     <td><%=h position_number.position.title %></td>
     <td><%=h position_number.position_num %></td>
     <td><%=h (position_number.contracted_position == 1) ? "Yes":"No" -%></td>

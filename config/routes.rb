@@ -35,7 +35,7 @@ ActionController::Routing::Routes.draw do |map|
                 :position_types,
                 :inmate_counts,
                 :employee_positions,
-                :position_numbers ,
+                :position_numbers,
                 :positions,
                 :employees
   

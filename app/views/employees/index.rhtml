@@ -5,13 +5,7 @@
     <th>Facility</th>
     <th>First name</th>
     <th>Last name</th>
-    <th>Address 1</th>
-    <th>Address 2</th>
-    <th>City</th>
-    <th>State</th>
-    <th>Zip</th>
-    <th>Phone</th>
-    <th>Email</th>
+	<th> Employee ID</th>
     <th>Active</th>
 	<th></th>
   </tr>
@@ -21,13 +15,7 @@
     <td><%=h employee.facility.facility %></td>
     <td><%=h employee.first_name %></td>
     <td><%=h employee.last_name %></td>
-    <td><%=h employee.address_1 %></td>
-    <td><%=h employee.address_2 %></td>
-    <td><%=h employee.city %></td>
-    <td><%=h employee.state %></td>
-    <td><%=h employee.zip %></td>
-    <td><%=h employee.phone %></td>
-    <td><%=h employee.email %></td>
+    <td><%=h employee.emplid %></td>
     <td><%=h (employee.active == 1)? "Yes":"No" -%></td>
     <td><%= link_to 'Show', employee_path(employee) %> <%= link_to 'Edit', edit_employee_path(employee) %>
     <%= link_to 'Destroy', employee_path(employee), :confirm => 'Are you sure?', :method => :delete %></td>

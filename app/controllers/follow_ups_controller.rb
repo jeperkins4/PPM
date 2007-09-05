@@ -41,7 +41,7 @@ class FollowUpsController < ApplicationController
     respond_to do |format|
       if @follow_up.save
         flash[:notice] = 'Follow Up was successfully added.'
-        format.html { redirect_to follow_up_url(@follow_up) }
+        format.html { redirect_to incident_path(@incident) }
         format.xml  { head :created, :location => incident_path(@incident) }
       else
         format.html { render :action => "new" }
@@ -58,7 +58,7 @@ class FollowUpsController < ApplicationController
     respond_to do |format|
       if @follow_up.update_attributes(params[:follow_up])
         flash[:notice] = 'FollowUp was successfully updated.'
-        format.html { redirect_to follow_up_url(@follow_up) }
+        format.html { redirect_to incident_path(@incident) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -16,7 +16,6 @@ class FacilitiesController < ApplicationController
   # GET /facilities/1.xml
   def show
     @facility = Facility.find(params[:id])
-    @facility_custodies = FacilityCustody.find(:all)
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @facility.to_xml }

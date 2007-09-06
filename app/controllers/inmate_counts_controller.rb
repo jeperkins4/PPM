@@ -32,7 +32,7 @@ class InmateCountsController < ApplicationController
     if session[:access_level] == 'Administrator'
       @inmate_count = InmateCount.new
     else
-      @custody_types = session[:facility].custody_types.find(:all)
+      @custody_types = CustodyTypes.find(:all)
       @inmate_count = session[:facility].inmate_counts.new
     end
   end
@@ -59,7 +59,7 @@ class InmateCountsController < ApplicationController
         end
       end
     else
-      @custody_types = CustodyType.find(:all)
+      @custody_types = CustodyTypes.find(:all)
       params[:custody_types].each_pair do |custody_type, count|
         
         @inmate_count = InmateCount.create(:facility_id     => session[:facility].id,

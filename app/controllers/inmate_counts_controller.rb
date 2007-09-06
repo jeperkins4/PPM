@@ -59,7 +59,7 @@ class InmateCountsController < ApplicationController
         end
       end
     else
-      @custody_types = session[:facility].custody_types.find(:all)
+      @custody_types = CustodyType.find(:all)
       params[:custody_types].each_pair do |custody_type, count|
         
         @inmate_count = InmateCount.create(:facility_id     => session[:facility].id,

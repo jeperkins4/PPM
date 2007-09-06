@@ -1,6 +1,7 @@
 class EmployeePositionsController < ApplicationController
   
   layout 'administration'
+
   
   # GET /employee_positions
   # GET /employee_positions.xml
@@ -83,19 +84,20 @@ class EmployeePositionsController < ApplicationController
   
   def set_facility
     if request.post?
+      session[:position] = nil
+      session[:position_number] = nil
+      
       if params[:facility][:facility_id] != ""
         session[:facility] = Facility.find(params[:facility][:facility_id])
       end
-      if params[:facility][:position_number_id] != ""
-        session[:position_number] = PositionNumber.find(params[:facility][:position_number_id])
-        session[:position_salary] = Position.find(session[:position_number].position_id) 
+      if params[:facility][:position_id] != ""
+        session[:position] = Position.find(params[:facility][:position_id])
       end
-    
-      if params[:position_salary] == ""
-        session[:position_salary] = 0        
+      if params[:position][:position_number_id] != ""
+        session[:position_number] = PositionNumber.find(params[:position][:position_number_id])
       end
       
-      redirect_to new_employee_position_path
+      redirect_to new_employee_position_path      
     end
   end
 end

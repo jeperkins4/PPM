@@ -2,7 +2,10 @@
 
 <%= error_messages_for :position_number %>
 
-<p><%=@position_number.position.facility.facility %></p>
+<p>
+    <b>Facility</b><br />
+	<%=@position_number.position.facility.facility%>
+</p>
 
 <% form_for(:position_number, :url => position_number_path(@position_number), :html => { :method => :put }) do |f| %>
 <%= render :partial => 'form', :locals => {:f => f} %>

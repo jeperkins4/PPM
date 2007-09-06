@@ -2,22 +2,27 @@
 
 <%= error_messages_for :employee_position %>
   
-	<% form_tag(:action => :set_facility) do -%>
-	<% if session[:access_level] == 'Administrator' -%>
-	<p><b>Select A Facility to Manage </b></p>
-  	<p><%= select("facility", "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true, :selected => (session[:facility]) ? session[:facility].id : "" },{:onchange => "JavaScript:submit()"}) -%></p>
-	 <% else -%>
+<% form_tag(:action => :set_facility) do -%>
+  <% if session[:access_level] == 'Administrator' -%>
+	<b>Select A Facility to Manage </b><br />
+  	 <%= select("facility", "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true, :selected => (session[:facility]) ? session[:facility].id : "" },{:onchange => "JavaScript:submit()"}) -%>
+  <% else -%>
 	 <p>
-	<b>Your Facility</b><br />
-	 <%= session[:facility].facility rescue 'Administrator' %>
-	</p>
+	  <b>Your Facility</b><br />
+	  <%= session[:facility].facility rescue 'Administrator' %>
+	 </p>
   <% end -%>
-   <p>
-	<b>Position number</b><br />	
-		<%= select("facility","position_number_id", (session[:facility]) ? session[:facility].position_numbers.find(:all).collect {|pn| [ pn.position_num, pn.id ] } : '', { :include_blank => true, :selected => (session[:position_number]) ? session[:position_number].id : "" },{:onchange => "JavaScript:submit()"})%>
+
+  <p>
+   <b>Positions</b><br />	
+   <%= select("facility","position_id", (session[:facility]) ? session[:facility].positions.find(:all).collect {|pn| [ pn.title, pn.id ] } : '', { :include_blank => true, :selected => (session[:position]) ? session[:position].id : "" },{:onchange => "JavaScript:submit()"})%>
+  </p>  
+  <p>
+   <b>Position number</b><br />	
+   <%= select("position","position_number_id", (session[:position]) ? session[:position].position_numbers.find(:all).collect {|pn| [ pn.position_num, pn.id ] } : '', { :include_blank => true, :selected => (session[:position_number]) ? session[:position_number].id : "" })%>
   </p>
 
-  <% end -%>
+<% end -%>
 
 <% form_for(:employee_position, :url => employee_positions_path) do |f| %>
 <%= render :partial => 'form', :locals => {:f => f} %>

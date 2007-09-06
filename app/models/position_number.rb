@@ -3,5 +3,5 @@ class PositionNumber < ActiveRecord::Base
   validates_uniqueness_of :position_num
   has_many :employee_positions
   
-    validates_existence_of :position
+  validates_existence_of :position
 end

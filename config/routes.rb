@@ -42,10 +42,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :incidents do |incidents|
      incidents.resources :follow_ups
    end
-   
-   map.resources :facilities do |facilities|
-     facilities.resources :facility_custodies
-   end
   
   map.start '', :controller => 'login', :action => 'index'
   map.reporting 'reports', :controller => 'reports', :action => 'index'

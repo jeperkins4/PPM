@@ -24,7 +24,17 @@ class EmployeePositionsController < ApplicationController
   # GET /employee_positions/1
   # GET /employee_positions/1.xml
   def show
-    @employee_position = EmployeePosition.find(params[:id])
+    if session[:access_level] == 'Administrator'
+      @employee_position = EmployeePosition.find(params[:id])
+    else
+      @position_facility = session[:facility].position_numbers
+      @employee_positions = []
+      @position_facility.each do |pf|
+        if EmployeePosition.find(params[:id]).position_number_id == pf.id then
+          @employee_position = EmployeePosition.find(params[:id])
+        end
+      end  
+    end    
     
     respond_to do |format|
       format.html # show.rhtml
@@ -80,7 +90,17 @@ class EmployeePositionsController < ApplicationController
   # DELETE /employee_positions/1
   # DELETE /employee_positions/1.xml
   def destroy
-    @employee_position = EmployeePosition.find(params[:id])
+    if session[:access_level] == 'Administrator'
+      @employee_position = EmployeePosition.find(params[:id])
+    else
+      @position_facility = session[:facility].position_numbers
+      @employee_positions = []
+      @position_facility.each do |pf|
+        if EmployeePosition.find(params[:id]).position_number_id == pf.id then
+          @employee_position = EmployeePosition.find(params[:id])
+        end
+      end
+    end
     @employee_position.destroy
     
     respond_to do |format|

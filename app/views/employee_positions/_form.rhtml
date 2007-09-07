@@ -1,6 +1,8 @@
 
-
-	<%= f.text_field :position_number_id, :value => (session[:position_number]) ? session[:position_number].id : "", :style => "display:none;" %>
+ <p>
+   <b>Position number</b><br />	
+   <%= f.select("position_number_id", (session[:position]) ? session[:position].position_numbers.find(:all).collect {|pn| [ pn.position_num, pn.id ] } : '', { :include_blank => true, :selected => (session[:position_number]) ? session[:position_number].id : "" })%>
+ </p>
 	
   <p>
     <b>Employee</b><br />

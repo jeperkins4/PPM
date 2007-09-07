@@ -12,17 +12,16 @@
 	  <%= session[:facility].facility rescue 'Administrator' %>
 	 </p>
   <% end -%>
+<% end -%>
 
+<% form_tag(:action => :set_facility2) do -%>
   <p>
    <b>Positions</b><br />	
-   <%= select("facility","position_id", (session[:facility]) ? session[:facility].positions.find(:all).collect {|pn| [ pn.title, pn.id ] } : '', { :include_blank => true, :selected => (session[:position]) ? session[:position].id : "" },{:onchange => "JavaScript:submit()"})%>
+   <%= select("facility","position_id", (session[:facility]) ? session[:facility].positions.find(:all).collect {|pn| [ pn.title, pn.id ] } : '', { :include_blank => true, :selected => (session[:position]) ? session[:position].id : ""},{:onchange => "JavaScript:submit()"})%>
   </p>  
-  <p>
-   <b>Position number</b><br />	
-   <%= select("position","position_number_id", (session[:position]) ? session[:position].position_numbers.find(:all).collect {|pn| [ pn.position_num, pn.id ] } : '', { :include_blank => true, :selected => (session[:position_number]) ? session[:position_number].id : "" })%>
-  </p>
-
 <% end -%>
+
+
 
 <% form_for(:employee_position, :url => employee_positions_path) do |f| %>
 <%= render :partial => 'form', :locals => {:f => f} %>

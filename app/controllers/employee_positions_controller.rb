@@ -1,5 +1,5 @@
 class EmployeePositionsController < ApplicationController
-  
+  before_filter :authenticate
   layout 'administration'
   
   
@@ -50,6 +50,8 @@ class EmployeePositionsController < ApplicationController
   # GET /employee_positions/1;edit
   def edit
     @employee_position = EmployeePosition.find(params[:id])
+    session[:position] = @employee_position.position_number.position
+    session[:facility] = session[:position].facility
   end
   
   # POST /employee_positions

@@ -4,12 +4,12 @@
 
 <p>
   <b>Position's Facility</b><br />
-	  <%= session[:facility].facility rescue 'Administrator' %>
+	  <%= session[:facility].facility %>
 </p>
 
 <p>
 	  <b>Position</b><br />
-	  <%= session[:position].title rescue 'Administrator' %>
+	  <%= session[:position].title%>
 </p>
 
 <% form_for(:employee_position, :url => employee_position_path(@employee_position), :html => { :method => :put }) do |f| %>

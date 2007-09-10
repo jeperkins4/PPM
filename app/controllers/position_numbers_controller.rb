@@ -1,10 +1,14 @@
 class PositionNumbersController < ApplicationController
-  
+   before_filter :authenticate
   layout 'administration'
   # GET /position_numbers
   # GET /position_numbers.xml
   def index
-    @position_numbers = PositionNumber.find(:all)
+    if session[:access_level] == 'Administrator'
+      @position_numbers = PositionNumber.find(:all)
+    else
+      @position_numbers = session[:facility].position_numbers.find(:all)
+    end
     
     respond_to do |format|
       format.html # index.rhtml
@@ -15,7 +19,11 @@ class PositionNumbersController < ApplicationController
   # GET /position_numbers/1
   # GET /position_numbers/1.xml
   def show
-    @position_number = PositionNumber.find(params[:id])
+    if session[:access_level] == 'Administrator'
+      @position_number = PositionNumber.find(params[:id])
+    else
+      @position_number = session[:facility].position_numbers.find(params[:id])
+    end
     
     respond_to do |format|
       format.html # show.rhtml
@@ -30,8 +38,8 @@ class PositionNumbersController < ApplicationController
   
   # GET /position_numbers/1;edit
   def edit
-      @position_number = PositionNumber.find(params[:id])
-      session[:facility] = @position_number.position.facility
+    @position_number = PositionNumber.find(params[:id])
+    session[:facility] = @position_number.position.facility
   end
   
   # POST /position_numbers
@@ -71,7 +79,13 @@ class PositionNumbersController < ApplicationController
   # DELETE /position_numbers/1
   # DELETE /position_numbers/1.xml
   def destroy
-    @position_number = PositionNumber.find(params[:id])
+    if session[:access_level] == 'Administrator'
+      @position_number = PositionNumber.find(params[:id])
+      
+    else
+      @position_number = session[:facility].position_numbers.find(params[:id])
+    end
+    
     @position_number.destroy
     
     respond_to do |format|
@@ -85,7 +99,7 @@ class PositionNumbersController < ApplicationController
       if params[:facility][:facility_id] != ""
         session[:facility] = Facility.find(params[:facility][:facility_id])
       end      
-
+      
       redirect_to new_position_number_path
     end
   end 

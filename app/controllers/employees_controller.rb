@@ -1,4 +1,5 @@
 class EmployeesController < ApplicationController
+  before_filter :authenticate
   layout 'administration'
   
   # GET /employees

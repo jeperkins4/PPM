@@ -1,5 +1,5 @@
 class PositionsController < ApplicationController
- # before_filter :admin_authenticate, :except => :reset_password
+ before_filter :authenticate, :except => :reset_password
   layout 'administration'  
   
   # GET /positions

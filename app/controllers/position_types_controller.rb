@@ -1,5 +1,5 @@
 class PositionTypesController < ApplicationController
-
+ before_filter :authenticate
 layout 'administration'
 
   def index

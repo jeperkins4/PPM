@@ -6,6 +6,7 @@ class CreateEmployeePositionHists < ActiveRecord::Migration
       t.column :start_date, :date
       t.column :end_date, :date
       t.column :salary, :decimal
+      t.column :create_date, :date
     end
   end
 

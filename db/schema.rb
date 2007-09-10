@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 31) do
     t.column "start_date",         :date
     t.column "end_date",           :date
     t.column "salary",             :integer, :limit => 10, :precision => 10, :scale => 0
+    t.column "create_date",        :date
   end
 
   create_table "employee_positions", :force => true do |t|
@@ -140,9 +141,8 @@ ActiveRecord::Schema.define(:version => 31) do
   create_table "position_numbers", :force => true do |t|
     t.column "position_id",          :integer
     t.column "position_num",         :string
-    t.column "contracted_position",  :integer
+    t.column "position_type",        :string
     t.column "waiver_approval_date", :date
-    t.column "iwtf",                 :integer
   end
 
   create_table "position_types", :force => true do |t|

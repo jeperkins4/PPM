@@ -6,7 +6,7 @@
 	
   <p>
     <b>Employee</b><br />
-	<%= f.select("employee_id", (session[:facility]) ? session[:facility].employees.find(:all).collect {|em| [ em.first_name + ' ' + em.last_name, em.id ] } : '', { :include_blank => true })-%>
+	<%= f.select("employee_id", (session[:facility]) ? session[:facility].employees.find(:all, :conditions => 'active = 1').collect {|em| [ em.first_name + ' ' + em.last_name, em.id ] } : '', { :include_blank => true })-%>
   </p>
 
   <p>

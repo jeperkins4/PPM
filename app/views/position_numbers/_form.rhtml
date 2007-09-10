@@ -8,22 +8,20 @@
     <%= f.text_field :position_num %>
   </p>
 
-  <p>
-   <b>Contracted position</b><br />
- <%= f.check_box :contracted_position %>
-  </p>
+  <b>Position Type</b><br />
   
-  <p>
-   	<b>IWTF</b><br />
-   		 <%= f.check_box :iwtf %>
-  </p>
+   <p> <%= radio_button "position_number", "position_type", "contract" %> Contracted &nbsp;&nbsp
+	<%= radio_button "position_number", "position_type", "iwtf" %>IWTF 
+   </p>
+   
+ <br \>
 
-		<p>
-		   <b>Waiver approval date</b><br />
-		   <%= f.date_select :waiver_approval_date %>
- 		 </p>
+ <p>
+   <b>Waiver approval date</b><br />
+   <%= f.date_select :waiver_approval_date,:include_blank => true %>
+ </p>
+ 
 
-
-  <p>
+ <p>
     <%= submit_tag "Save" %>
   </p>

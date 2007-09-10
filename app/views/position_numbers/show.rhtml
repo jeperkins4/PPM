@@ -14,17 +14,12 @@
 </p>
 
 <p>
-  <b>Contracted position:</b>
-  <%=h (@position_number.contracted_position == 1) ? "Yes" : "No" -%>
+  <b>Position Type:</b>
+  <%=h @position_number.position_type.upcase %>
 </p>
 
 <p>
-  <b>IWTF:</b>
-  <%=h (@position_number.iwtf == 1) ? "Yes":"No" %>
-</p>
-
-<p>
-  <b>Waiver approval date:</b>
+  <b>Waiver Date:</b>
   <%=h @position_number.waiver_approval_date %>
 </p>
 

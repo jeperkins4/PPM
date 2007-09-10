@@ -3,9 +3,8 @@ class CreatePositionNumbers < ActiveRecord::Migration
     create_table :position_numbers do |t|
       t.column :position_id, :integer
       t.column :position_num, :string
-      t.column :contracted_position, :integer
+      t.column :position_type, :string
       t.column :waiver_approval_date, :date
-      t.column :iwtf, :integer
     end
   end
 

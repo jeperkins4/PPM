@@ -4,20 +4,21 @@
   </p>
 
   <p>
-    <b>Position num</b><br />
+    <b>Position Number</b><br />
     <%= f.text_field :position_num %>
   </p>
 
-  <b>Position Type</b><br />
+  <b>Special Position Type</b><br />
   
-   <p> <%= radio_button "position_number", "position_type", "contract" %> Contracted &nbsp;&nbsp
+   <p> <%= radio_button "position_number", "position_type", "none", :checked => true %> None &nbsp;&nbsp
+   <%= radio_button "position_number", "position_type", "contract" %> Contracted &nbsp;&nbsp
 	<%= radio_button "position_number", "position_type", "iwtf" %>IWTF 
    </p>
    
  <br \>
 
  <p>
-   <b>Waiver approval date</b><br />
+   <b>Waiver Date</b><br />
    <%= f.date_select :waiver_approval_date,:include_blank => true %>
  </p>
  

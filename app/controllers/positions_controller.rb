@@ -1,22 +1,22 @@
 class PositionsController < ApplicationController
- before_filter :authenticate, :except => :reset_password
+  before_filter :authenticate, :except => :reset_password
   layout 'administration'  
   
   # GET /positions
   # GET /positions.xml
   def index
-   if session[:access_level] == 'Administrator'
-    @positions = Position.find(:all)
-   else
-     @positions =  session[:facility].positions.find(:all)
-   end
-
-      respond_to do |format|
+    if session[:access_level] == 'Administrator'
+      @positions = Position.find(:all)
+    else
+      @positions =  session[:facility].positions.find(:all)
+    end
+    
+    respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @positions.to_xml }
     end
   end
-
+  
   # GET /positions/1
   # GET /positions/1.xml
   def show
@@ -32,22 +32,22 @@ class PositionsController < ApplicationController
       format.xml  { render :xml => @position.to_xml }
     end
   end
-
+  
   # GET /positions/new
   def new
     @position = Position.new
   end
-
+  
   # GET /positions/1;edit
   def edit
     @position = Position.find(params[:id])
   end
-
+  
   # POST /positions
   # POST /positions.xml
   def create
     @position = Position.new(params[:position])
-
+    
     respond_to do |format|
       if @position.save
         flash[:notice] = 'Position was successfully created.'
@@ -59,11 +59,15 @@ class PositionsController < ApplicationController
       end
     end
   end
-
+  
   # PUT /positions/1
   # PUT /positions/1.xml
   def update
     @position = Position.find(params[:id])
+    @salary = params[:position][:salary]
+    if @position.salary.to_i = @salary.to_i
+       bang!
+    end
 
     respond_to do |format|
       if @position.update_attributes(params[:position])
@@ -76,19 +80,19 @@ class PositionsController < ApplicationController
       end
     end
   end
-
+  
   # DELETE /positions/1
   # DELETE /positions/1.xml
   def destroy
     
- if session[:access_level] == 'Administrator'    
-    @position = Position.find(params[:id])
-  else
-    @position = session[:facility].positions.find(params[:id])
-  end
-  
+    if session[:access_level] == 'Administrator'    
+      @position = Position.find(params[:id])
+    else
+      @position = session[:facility].positions.find(params[:id])
+    end
+    
     @position.destroy
-
+    
     respond_to do |format|
       format.html { redirect_to positions_url }
       format.xml  { head :ok }

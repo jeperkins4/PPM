@@ -52,6 +52,7 @@ class EmployeePositionsController < ApplicationController
     @employee_position = EmployeePosition.find(params[:id])
     session[:position] = @employee_position.position_number.position
     session[:facility] = session[:position].facility
+    session[:position_number] = @employee_position.position_number
   end
   
   # POST /employee_positions
@@ -78,13 +79,21 @@ class EmployeePositionsController < ApplicationController
     @employee_position = EmployeePosition.find(params[:id])
     
     respond_to do |format|
-      if @employee_position.update_attributes(params[:employee_position])
-        flash[:notice] = 'EmployeePosition was successfully updated.'
-        format.html { redirect_to employee_position_url(@employee_position) }
-        format.xml  { head :ok }
+      if params[:employee_position][:end_date] == ""
+        if @employee_position.update_attributes(params[:employee_position])
+          flash[:notice] = 'EmployeePosition was successfully updated.'
+          format.html { redirect_to employee_position_url(@employee_position) }
+          format.xml  { head :ok }
+        else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @employee_position.errors.to_xml }
+        end
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @employee_position.errors.to_xml }
+        params[:employee_position][:create_date] = Time.now
+        @employee_position_history = EmployeePositionHist.new(params[:employee_position])
+        @employee_position_history.save
+        @employee_position.destroy
+         format.html {redirect_to employee_positions_path}
       end
     end
   end

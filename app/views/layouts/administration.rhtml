@@ -53,7 +53,7 @@
     <div id='nav_block'>
         
    			   		   			   		   			   
-	    <p><%= session[:facility].facility rescue 'Administrator' %> <br />User: <%= session[:user] rescue 'N/A' %></p>
+	    <p>Managing: <%= session[:facility].facility rescue 'Administrator' %> <br />User: <%= session[:user] rescue 'N/A' %> <br />Type: <%= session[:user_type] %></p>
         <ul id='navi'>
             <% if session[:access_level] == 'Administrator' -%>
             <li class="menu-level-0 ">

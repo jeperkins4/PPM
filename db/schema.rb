@@ -19,6 +19,14 @@ ActiveRecord::Schema.define(:version => 31) do
     t.column "description",  :text
   end
 
+  create_table "emp_pos_all", :force => true do |t|
+    t.column "position_number_id", :integer
+    t.column "employee_id",        :integer
+    t.column "start_date",         :date
+    t.column "end_date",           :date
+    t.column "salary",             :integer, :limit => 10, :precision => 10, :scale => 0
+  end
+
   create_table "employee_position_hists", :force => true do |t|
     t.column "position_number_id", :integer
     t.column "employee_id",        :integer
@@ -133,9 +141,12 @@ ActiveRecord::Schema.define(:version => 31) do
   end
 
   create_table "position_hists", :force => true do |t|
-    t.column "position_id", :integer
-    t.column "salary",      :integer, :limit => 10, :precision => 10, :scale => 0
-    t.column "eddft",       :date
+    t.column "title",            :string
+    t.column "position_type_id", :integer
+    t.column "salary",           :integer, :limit => 10, :precision => 10, :scale => 0
+    t.column "description",      :text
+    t.column "facility_id",      :integer
+    t.column "create_date",      :date
   end
 
   create_table "position_numbers", :force => true do |t|

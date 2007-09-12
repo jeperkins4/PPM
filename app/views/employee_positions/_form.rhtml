@@ -11,7 +11,7 @@
 
   <p>
     <b>Start date</b><br />
-    <%= f.date_select(:start_date ,:include_blank => true)-%>
+    <%= f.date_select(:start_date ,:default => Date.today)-%>
   </p>
 
   <p>
@@ -21,7 +21,6 @@
 
   <p>
     <b>Salary</b><br />
-	<%= f.text_field :salary, :value => (session[:position]) ? session[:position].salary : nil, :style => "display:none;" -%>
 	<%= (session[:position]) ? number_to_currency(session[:position].salary) : "0.00" %>
   </p>
 

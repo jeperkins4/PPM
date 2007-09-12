@@ -1,4 +1,4 @@
-<h1>Listing Employee Positions</h1>
+<h1>Listing Active Employee Positions</h1>
 
 <table>
   <tr>
@@ -6,11 +6,6 @@
 	<th>Position</th>
     <th>Position number</th>
     <th>Employee</th>
-<!--
-    <th>Start date</th>
-    <th>End date</th>
-    <th>Salary</th>
--->
 	<th></th>
   </tr>
   
@@ -20,11 +15,6 @@
   	<td><%=h employee_position.position_number.position.title%></td>
     <td><%=h employee_position.position_number.position_num %></td>
     <td><%=h employee_position.employee.first_name + ' ' + employee_position.employee.last_name %></td>
-<!--
-	<td><%=h employee_position.start_date %></td>
-    <td><%=h employee_position.end_date %></td>
-    <td><%=h number_to_currency(employee_position.salary) %></td>
--->
     <td><%= link_to 'Show', employee_position_path(employee_position) %> <%= link_to 'Edit', edit_employee_position_path(employee_position) %>
     <%= link_to 'Destroy', employee_position_path(employee_position), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

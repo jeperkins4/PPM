@@ -5,7 +5,6 @@ class CreateEmployeePositions < ActiveRecord::Migration
       t.column :employee_id, :integer
       t.column :start_date, :date
       t.column :end_date, :date
-      t.column :salary, :decimal
     end
   end
 

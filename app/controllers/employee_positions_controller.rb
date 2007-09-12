@@ -79,21 +79,45 @@ class EmployeePositionsController < ApplicationController
     @employee_position = EmployeePosition.find(params[:id])
     
     respond_to do |format|
-      if params[:employee_position][:end_date] == ""
+      if params[:employee_position]['end_date(1i)'] == "" ||
+        params[:employee_position]['end_date(2i)'] == "" || 
+        params[:employee_position]['end_date(3i)'] == "" then
+        
+        params[:employee_position]['end_date(1i)'] = ""
+        params[:employee_position]['end_date(2i)'] = ""
+        params[:employee_position]['end_date(3i)'] = ""
+        
         if @employee_position.update_attributes(params[:employee_position])
+          
           flash[:notice] = 'EmployeePosition was successfully updated.'
           format.html { redirect_to employee_position_url(@employee_position) }
           format.xml  { head :ok }
+          
         else
+          
           format.html { render :action => "edit" }
           format.xml  { render :xml => @employee_position.errors.to_xml }
+          
         end
+        
       else
-        params[:employee_position][:create_date] = Time.now
-        @employee_position_history = EmployeePositionHist.new(params[:employee_position])
-        @employee_position_history.save
-        @employee_position.destroy
-         format.html {redirect_to employee_positions_path}
+        @start_date = Date.new(params[:employee_position].delete('start_date(1i)').to_i, params[:employee_position].delete('start_date(2i)').to_i, (params[:employee_position].delete('start_date(3i)')||1).to_i) if params[:employee_position]['start_date(3i)']
+        @end_date = Date.new(params[:employee_position].delete('end_date(1i)').to_i, params[:employee_position].delete('end_date(2i)').to_i, (params[:employee_position].delete('end_date(3i)')||1).to_i) if params[:employee_position]['end_date(3i)'] 
+        
+        if @end_date > @start_date
+          params[:employee_position][:create_date] = Time.now
+          params[:employee_position][:salary] = session[:position][:salary]
+          params[:employee_position][:start_date] = @start_date
+          params[:employee_position][:end_date] = @end_date          
+          @employee_position_history = EmployeePositionHist.new(params[:employee_position])
+          @employee_position_history.save
+          @employee_position.destroy
+          flash[:notice] = "End Date Added - Row has been archived"
+          format.html {redirect_to employee_positions_path}
+        else
+          flash[:notice] = "End Date must be greater than the Start Date"
+          format.html { render :action => "edit" }
+        end
       end
     end
   end

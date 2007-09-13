@@ -3,7 +3,8 @@ class IncidentTypesController < ApplicationController
   layout 'administration'
   # GET /incident_types.xml
   def index
-    @incident_types = IncidentType.find(:all)
+    @incident_type_pages, @incident_types = paginate :incident_types
+    #IncidentType.find(:all)
 
     respond_to do |format|
       format.html # index.rhtml

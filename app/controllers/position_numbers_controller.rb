@@ -93,14 +93,4 @@ class PositionNumbersController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
-  def set_facility
-    if request.post?
-      if params[:facility][:facility_id] != ""
-        session[:facility] = Facility.find(params[:facility][:facility_id])
-      end      
-      
-      redirect_to new_position_number_path
-    end
-  end 
 end

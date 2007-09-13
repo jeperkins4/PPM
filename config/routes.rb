@@ -24,6 +24,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :access_levels, 
                 :user_types, 
+                :facilities,
                 :users, 
                 :inmates, 
                 :incident_investigators, 

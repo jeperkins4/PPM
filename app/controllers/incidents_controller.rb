@@ -3,11 +3,7 @@ class IncidentsController < ApplicationController
   layout 'administration'
   # GET /incidents.xml
   def index
-    if session[:access_level] == 'Administrator'
-      @incidents = Incident.find(:all)
-    else
-      @incidents = session[:facility].incidents.find(:all)
-    end
+    @incidents = session[:facility].incidents.find(:all)
     
     respond_to do |format|
       format.html # index.rhtml
@@ -18,12 +14,8 @@ class IncidentsController < ApplicationController
   # GET /incidents/1
   # GET /incidents/1.xml
   def show
-    if session[:access_level] == 'Administrator'
-      @incident = Incident.find(params[:id])
-    else
-      @incident = session[:facility].incidents.find(params[:id])
-    end
-    @follow_ups = @incident.follow_ups.find(:all)
+    @incident = session[:facility].incidents.find(params[:id])
+    follow_ups = @incident.follow_ups.find(:all)
     
     respond_to do |format|
       format.html # show.rhtml
@@ -96,11 +88,7 @@ class IncidentsController < ApplicationController
   # DELETE /incidents/1
   # DELETE /incidents/1.xml
   def destroy
-    if session[:access_level] == 'Administrator'
-      @incident = Incident.find(params[:id])
-    else
-      @incident = session[:facility].incidents.find(params[:id])
-    end
+    @incident = session[:facility].incidents.find(params[:id])
     @incident.destroy
     
     respond_to do |format|

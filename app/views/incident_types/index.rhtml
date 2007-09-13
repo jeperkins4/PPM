@@ -19,5 +19,14 @@
 </table>
 
 <br />
-
+<p>
+<%= link_to 'Previous page', ({
+                :action => 'index',
+                :page => @incident_type_pages.current.previous }) \
+                if @incident_type_pages.current.previous %>
+<%= link_to 'Next page', ({
+                :action => 'index',
+                :page => @incident_type_pages.current.next}) \
+                if @incident_type_pages.current.next %>
+</p>
 <%= link_to 'New Incident Type', new_incident_type_path %>

@@ -4,11 +4,7 @@ class InmateCountsController < ApplicationController
   layout 'administration'
   
   def index
-    if session[:access_level] == 'Administrator'
-      @inmate_counts = InmateCount.find(:all)
-    else
-      @inmate_counts = session[:facility].inmate_counts.find(:all)
-    end
+    @inmate_counts = session[:facility].inmate_counts.find(:all)
     
     respond_to do |format|
       format.html # index.rhtml
@@ -29,12 +25,8 @@ class InmateCountsController < ApplicationController
   
   # GET /inmate_counts/new
   def new
-    if session[:access_level] == 'Administrator'
-      @inmate_count = InmateCount.new
-    else
-      @custody_types = CustodyType.find(:all)
-      @inmate_count = session[:facility].inmate_counts.new
-    end
+    @custody_types = CustodyType.find(:all)
+    @inmate_count = session[:facility].inmate_counts.new
   end
   
   # GET /inmate_counts/1;edit
@@ -45,32 +37,17 @@ class InmateCountsController < ApplicationController
   # POST /inmate_counts
   # POST /inmate_counts.xml
   def create
-    if session[:access_level] == 'Administrator'
-      @inmate_count = InmateCount.new(params[:inmate_count])
+    @custody_types = CustodyType.find(:all)
+    params[:custody_types].each_pair do |custody_type, count|
       
-      respond_to do |format|
-        if @inmate_count.save
-          flash[:notice] = 'InmateCount was successfully created.'
-          format.html { redirect_to inmate_count_url(@inmate_count) }
-          format.xml  { head :created, :location => inmate_count_url(@inmate_count) }
-        else
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @inmate_count.errors.to_xml }
-        end
-      end
-    else
-      @custody_types = CustodyType.find(:all)
-      params[:custody_types].each_pair do |custody_type, count|
-        
-        @inmate_count = InmateCount.create(:facility_id     => session[:facility].id,
-                                           :inmate_count    => count,
-                                           :custody_type_id => custody_type,
-                                           :date_collected  => Time.now()
-        )  
-      end
-      flash[:notice] = 'Inmate count(s) were successfully recorded.'
-      redirect_to inmate_counts_path
+      @inmate_count = InmateCount.create(:facility_id     => session[:facility].id,
+                                         :inmate_count    => count,
+                                         :custody_type_id => custody_type,
+                                         :date_collected  => Time.now()
+      )  
     end
+    flash[:notice] = 'Inmate count(s) were successfully recorded.'
+    redirect_to inmate_counts_path
   end
   
   # PUT /inmate_counts/1

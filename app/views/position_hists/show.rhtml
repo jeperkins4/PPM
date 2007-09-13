@@ -1,0 +1,18 @@
+<p>
+  <b>Position:</b>
+  <%=h @position_hist.position.title %>
+</p>
+
+<p>
+  <b>Salary:</b>
+  <%=h number_to_currency(@position_hist.salary) %>
+</p>
+
+<p>
+  <b>Create date:</b>
+  <%=h @position_hist.create_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_position_hist_path(@position_hist) %> |
+<%= link_to 'Back', position_hists_path %>

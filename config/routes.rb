@@ -38,6 +38,7 @@ ActionController::Routing::Routes.draw do |map|
                 :employee_position_hists,
                 :position_numbers,
                 :positions,
+                :position_hists,
                 :employees
   
   map.resources :incidents do |incidents|

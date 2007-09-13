@@ -132,12 +132,9 @@ ActiveRecord::Schema.define(:version => 31) do
   end
 
   create_table "position_hists", :force => true do |t|
-    t.column "title",            :string
-    t.column "position_type_id", :integer
-    t.column "salary",           :integer, :limit => 10, :precision => 10, :scale => 0
-    t.column "description",      :text
-    t.column "facility_id",      :integer
-    t.column "create_date",      :date
+    t.column "position_id", :integer
+    t.column "salary",      :integer, :limit => 10, :precision => 10, :scale => 0
+    t.column "create_date", :date
   end
 
   create_table "position_numbers", :force => true do |t|

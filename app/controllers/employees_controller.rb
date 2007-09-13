@@ -7,7 +7,7 @@ class EmployeesController < ApplicationController
   def index
     
     if session[:access_level] == 'Administrator'
-      @employees = Employee.find(:all)
+      @employees = Employee.find(:all, :order => 'facility_id')
     else
       @employees =  session[:facility].employees.find(:all)
     end

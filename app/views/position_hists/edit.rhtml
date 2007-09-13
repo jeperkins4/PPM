@@ -1,0 +1,27 @@
+<h1>Editing Position History</h1>
+
+<%= error_messages_for :position_hist %>
+
+<% form_for(:position_hist, :url => position_hist_path(@position_hist), :html => { :method => :put }) do |f| %>
+  <p>
+    <b>Position</b><br />
+    <%= f.text_field :position_id %>
+  </p>
+
+  <p>
+    <b>Salary</b><br />
+    <%= f.text_field :salary %>
+  </p>
+
+  <p>
+    <b>Create date</b><br />
+    <%= f.date_select :create_date %>
+  </p>
+
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', position_hist_path(@position_hist) %> |
+<%= link_to 'Back', position_hists_path %>

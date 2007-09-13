@@ -23,7 +23,10 @@
     <td><%=h position_number.position_type.upcase %></td>
     <td><%=h position_number.waiver_approval_date %></td>
     <td><%= link_to 'Show', position_number_path(position_number) %> <%= link_to 'Edit', edit_position_number_path(position_number) %>
-    <%= link_to 'Destroy', position_number_path(position_number), :confirm => 'Are you sure?', :method => :delete %></td>
+<% if session[:access_level] == 'Administrator' -%>
+    <%= link_to 'Destroy', position_number_path(position_number), :confirm => 'Are you sure?', :method => :delete %>
+	<% end -%>
+	</td>
   </tr>
 <% end %>
 </table>

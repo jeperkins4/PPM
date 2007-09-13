@@ -20,7 +20,7 @@
 
 <p>
   <b>Salary:</b>
-  <%=h @position.salary %>
+  <%=h number_to_currency(@position.salary) %>
 </p>
 
 <%= link_to 'Edit', edit_position_path(@position) %> |

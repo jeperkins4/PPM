@@ -16,9 +16,12 @@
 	<td><%=h position.position_type.position_type %></td>
 	<td><%=h position.title %></td>    
 	<td><%=h position.description %></td>
-    <td><%=h position.salary %></td>
+    <td><%=h number_to_currency(position.salary) %></td>
     <td><%= link_to 'Show', position_path(position) %> <%= link_to 'Edit', edit_position_path(position) %>
-	<%= link_to 'Destroy', position_path(position), :confirm => 'Are you sure?', :method => :delete %></td>
+<% if session[:access_level] == 'Administrator' -%>
+	<%= link_to 'Destroy', position_path(position), :confirm => 'Are you sure?', :method => :delete %>
+<% end %>	
+	</td>
   </tr>
 <% end %>
 </table>

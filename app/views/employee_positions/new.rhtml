@@ -5,7 +5,7 @@
 <% form_tag(:action => :set_facility) do -%>
   <% if session[:access_level] == 'Administrator' -%>
 	<b>Select A Facility to Manage </b><br />
-  	 <%= select("facility", "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true, :selected => (session[:facility]) ? session[:facility].id : "" },{:onchange => "JavaScript:submit()"}) -%>
+  	 <%= select("facility", "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true, :selected => (session[:facility]) ? session[:facility].id : "", :order => session[:facility].facility },{:onchange => "JavaScript:submit()"}) -%>
   <% else -%>
 	 <p>
 	  <b>Your Facility</b><br />

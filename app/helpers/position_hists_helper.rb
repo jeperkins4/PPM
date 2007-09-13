@@ -1,0 +1,2 @@
+module PositionHistsHelper
+end

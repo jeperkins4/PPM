@@ -68,12 +68,9 @@ class PositionsController < ApplicationController
       
       if @position.salary.to_i != (params[:position][:salary]).to_i
         session[:position_history] = @position
-        @position_history = PositionHist.new( :title             => session[:position_history].title, 
-                                              :position_type_id  => session[:position_history].position_type_id,
+        @position_history = PositionHist.new( :position_id  => session[:position_history].id,
                                               :salary            => session[:position_history].salary,
-                                              :description       => session[:position_history].description, 
-                                              :facility_id       => session[:position_history].facility_id, 
-                                              :create_date       => Time.now )
+                                              :create_date       => Time.now)
         @position_history.save
         
         @position.update_attributes(params[:position])

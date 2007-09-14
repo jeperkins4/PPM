@@ -1,0 +1,39 @@
+<h2>Position Reporting</h2>
+<br />
+
+CRITERIA:
+
+
+<table>
+ <tr>
+    <th>Position Type</th>
+    <th>Position Number</th>
+    <th>Position Title</th>
+    <th>Vacting Employee</th>
+	<th>Date Vacated</th>
+	<th>Hire Date</th>
+	<th>Employee Filling</th>
+	<th>Salary</th>
+	<th>Position Type</th>
+	<th>Date Waiver Approval</th>	
+  </tr>
+  
+ <% for position_report in @position_report %>
+  <tr>
+  	<td><%= position_report.position_number.position.position_type.position_type %></td>
+ 	<td><%= position_report.position_number.position_num %></td>
+	<td><%= position_report.position_number.position.title %></td>
+	<td><%= position_report.employee.first_name + ' ' + position_report.employee.last_name  %></td>
+	<td><%= position_report.end_date %></td>
+	<td><%= %></td>
+	<td></td>
+	<td><%= number_to_currency(position_report.salary) %></td>
+	<td><%= position_report.position_number.position_type %></td>
+	<td><%= position_report.position_number.waiver_approval_date%></td>
+  </tr>
+<% end %>  
+
+
+</table>
+
+<br />

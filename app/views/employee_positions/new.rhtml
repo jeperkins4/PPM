@@ -2,22 +2,16 @@
 
 <%= error_messages_for :employee_position %>
   
-<% form_tag(:action => :set_facility) do -%>
-  <% if session[:access_level] == 'Administrator' -%>
-	<b>Select A Facility to Manage </b><br />
-  	 <%= select("facility", "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true, :selected => (session[:facility]) ? session[:facility].id : "", :order => session[:facility].facility },{:onchange => "JavaScript:submit()"}) -%>
-  <% else -%>
-	 <p>
-	  <b>Your Facility</b><br />
+ <p>
+  <b>Your Facility</b><br />
 	  <%= session[:facility].facility rescue 'Administrator' %>
-	 </p>
-  <% end -%>
-<% end -%>
+  </p>
+
 
 <% form_tag(:action => :set_facility2) do -%>
   <p>
    <b>Positions</b><br />	
-   <%= select("facility","position_id", (session[:facility]) ? session[:facility].positions.find(:all).collect {|pn| [ pn.title, pn.id ] } : '', { :include_blank => true, :selected => (session[:position]) ? session[:position].id : ""},{:onchange => "JavaScript:submit()"})%>
+   <%= select("facility","position_id", (session[:facility]) ? session[:facility].positions.find(:all, :order => :title).collect {|pn| [ pn.title, pn.id ] } : '', { :include_blank => true, :selected => (session[:position]) ? session[:position].id : ""},{:onchange => "JavaScript:submit()"})%>
   </p>  
 <% end -%>
 

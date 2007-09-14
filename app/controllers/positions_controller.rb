@@ -5,11 +5,7 @@ class PositionsController < ApplicationController
   # GET /positions
   # GET /positions.xml
   def index
-    if session[:access_level] == 'Administrator'
-      @positions = Position.find(:all)
-    else
-      @positions =  session[:facility].positions.find(:all)
-    end
+    @positions =  session[:facility].positions.find(:all)
     
     respond_to do |format|
       format.html # index.rhtml
@@ -21,11 +17,7 @@ class PositionsController < ApplicationController
   # GET /positions/1.xml
   def show
     
-    if session[:access_level] == 'Administrator'
-      @position = Position.find(params[:id])
-    else    
-      @position =  session[:facility].positions.find(params[:id])
-    end
+    @position =  session[:facility].positions.find(params[:id])
     
     respond_to do |format|
       format.html # show.rhtml
@@ -69,8 +61,8 @@ class PositionsController < ApplicationController
       if @position.salary.to_i != (params[:position][:salary]).to_i
         session[:position_history] = @position
         @position_history = PositionHist.new( :position_id  => session[:position_history].id,
-                                              :salary            => session[:position_history].salary,
-                                              :create_date       => Time.now)
+                                             :salary            => session[:position_history].salary,
+                                             :create_date       => Time.now)
         @position_history.save
         
         @position.update_attributes(params[:position])
@@ -93,12 +85,8 @@ class PositionsController < ApplicationController
   # DELETE /positions/1.xml
   def destroy
     
-    if session[:access_level] == 'Administrator'    
-      @position = Position.find(params[:id])
-    else
-      @position = session[:facility].positions.find(params[:id])
-    end
-    
+    @position = session[:facility].positions.find(params[:id])
+    s
     @position.destroy
     
     respond_to do |format|

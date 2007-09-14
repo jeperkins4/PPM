@@ -1,12 +1,8 @@
  <p>
     <b>Facility</b><br />
-   			<% if session[:access_level] != 'Administrator' -%>
-				<%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
-				<%= session[:facility].facility %>
-			<% else -%>
-				<%= f.select("facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => false })%>
-			<% end -%>
-  </p>
+	<%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
+	<%= session[:facility].facility %>
+ </p>
 
   <p>
     <b>First name</b><br />

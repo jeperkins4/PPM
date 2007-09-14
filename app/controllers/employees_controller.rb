@@ -6,48 +6,41 @@ class EmployeesController < ApplicationController
   # GET /employees.xml
   def index
     
-    if session[:access_level] == 'Administrator'
-      @employees = Employee.find(:all, :order => 'facility_id')
-    else
-      @employees =  session[:facility].employees.find(:all)
-    end
+    @employees =  session[:facility].employees.find(:all, :order => 'facility_id')
     
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @employees.to_xml }
     end
   end
-
+  
   # GET /employees/1
   # GET /employees/1.xml
   def show
-     if session[:access_level] == 'Administrator'
-        @employee = Employee.find(params[:id])
-    else
-      @employee =  session[:facility].employees.find(params[:id])
-    end
-
+    
+    @employee =  session[:facility].employees.find(params[:id])
+    
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @employee.to_xml }
     end
   end
-
+  
   # GET /employees/new
   def new
     @employee = Employee.new
   end
-
+  
   # GET /employees/1;edit
   def edit
     @employee = Employee.find(params[:id])
   end
-
+  
   # POST /employees
   # POST /employees.xml
   def create
     @employee = Employee.new(params[:employee])
-
+    
     respond_to do |format|
       if @employee.save
         flash[:notice] = 'Employee was successfully created.'
@@ -59,12 +52,12 @@ class EmployeesController < ApplicationController
       end
     end
   end
-
+  
   # PUT /employees/1
   # PUT /employees/1.xml
   def update
     @employee = Employee.find(params[:id])
-
+    
     respond_to do |format|
       if @employee.update_attributes(params[:employee])
         flash[:notice] = 'Employee was successfully updated.'
@@ -76,18 +69,14 @@ class EmployeesController < ApplicationController
       end
     end
   end
-
+  
   # DELETE /employees/1
   # DELETE /employees/1.xml
   def destroy
+   
+       @employee = session[:facility].employees.find(params[:id])
+       @employee.destroy
     
-    if session[:access_level] == 'Administrator'
-      @employee = Employee.find(params[:id])
-    else
-      @employee = session[:facility].employees.find(params[:id])
-    end
-      @employee.destroy
-      
     respond_to do |format|
       format.html { redirect_to employees_url }
       format.xml  { head :ok }

@@ -10,12 +10,6 @@
 			<%= select_tag :report_type,
  			    		 @type_select,
                           :onchange => "JavaScript:submit()" %></td></tr>
-  <% if session[:access_level] == 'Administrator' -%>
-  <tr>
-  	<td>Facility:</td>
-  	<td><%= f.select("facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true }) %></td>
-  </tr>
-  <% end -%>
 <tr><td>Use Date:</td><td><%= select_tag :use_date,
  			    		  @date_select,
                           :onchange => "JavaScript:submit()" %></td></tr>

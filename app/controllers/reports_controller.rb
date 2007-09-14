@@ -1,10 +1,7 @@
-require 'pdf/writer'
-#require 'pdf/techbook'
-#require 'htmldoc'
 
 class ReportsController < ApplicationController
   before_filter :authenticate 
-  layout 'administration', :except => :export_pdf
+  layout 'administration'
   
   def index
     session[:report] = nil
@@ -35,29 +32,13 @@ class ReportsController < ApplicationController
     render :type => 'application/vnd.ms-excel', :layout => false
   end
   
-#  def export_pdf
-#    @incidents = session[:report]
-#    build_pdf
-#    open '/public/pdf/#{@filename}.pdf', :type => 'application/pdf'
-#  end
-#  
-#  def build_pdf
-#    @incidents = session[:report]
-#    @filename = 'incident-' + Time.now.to_s
-#    pdf = PDF::HTMLDoc.new 
-#    pdf.set_option :outfile, "/public/pdf/#{@filename}.pdf"
-#    pdf << (render 'reports/export_excel')
-#    pdf.generate
-#    return @filename
-#  end
-  
   def build_report_incident
     @type_select = "<option>Choose Type</option>, <option selected='true'>Incident</option>, <option>Inmate Count</option>"
 
     @use_date = params[:use_date] rescue ''
     @mins = params[:report][:mins] rescue ''
     @incident_type = params[:report][:incident_type_id] rescue ''
-    @facility = params[:report][:facility_id] rescue ''
+    @facility = session[:facility]
     @search_string = ""
     
     unless @facility == ''
@@ -91,11 +72,7 @@ class ReportsController < ApplicationController
       @search_string += " and incident_type_id <> ? "
     end
     
-    if session[:access_level] == 'Administrator'
-      session[:report] = Incident.find(:all, :conditions => [ "" + @search_facility + " " + @search_string + "", @facility, @begin, @end, @mins, @incident_type])
-    else
       session[:report] = session[:facility].incidents.find(:all, :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type])
-    end
   end
   
   def build_report_inmate_counts  

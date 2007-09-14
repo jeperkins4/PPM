@@ -39,7 +39,7 @@
 					  <% end -%>
                     </div>
                   <% end -%>
-				  <h1 >Bureau of Private Prison Monitoring <%= @page %></h1>
+				  <h1 >Bureau of Private Prison Monitoring</h1>
                 </div>			
             </div>
             <div class='wrapper'>
@@ -58,10 +58,8 @@
         </div><!-- main_block_content -->
     </div><!-- main_block -->
     
-    <div id='nav_block'>
-        
-   			   		   			   		   			   
-	    <p>Managing: <%= session[:facility].facility rescue 'Administrator' %> <br />User: <%= session[:user] rescue 'N/A' %> <br />Type: <%= session[:user_type] %></p>
+    <div id='nav_block'>  		   			   		   			   
+	    <p>Managing: <%= session[:facility].facility rescue 'Administrator' %></p> <p>User: <%= session[:user] rescue 'N/A' %></p> <p>Type: <%= session[:user_type] %></p>
 		 	
         <ul id='navi'>
             <% if session[:access_level] == 'Administrator' -%>
@@ -88,6 +86,9 @@
                 <li class="menu-level-1 ">
                     <a href="/action_types">Actions Taken</a>
                 </li>
+				<li class="menu-level-1 ">
+                  <a href="/position_types">Position Types</a>
+                </li>
 				  <li class="menu-level-1 ">
                     <a href="/employee_position_hists">Employee Position History</a>
                 </li>
@@ -102,46 +103,36 @@
 		    </li>           
 		    <li class="menu-level-0 ">
               <ul>
-                <li class="menu-level-1 firstup ">
-        		  <a href="/incidents">Incident Reporting</a>
-                </li>
-                <li class="menu-level-1 ">
-                  <a href="/inmate_counts">Inmate Count</a>
-                </li>
-                <li class="menu-level-1 ">
-        		  <a href="/investigators">Investigators</a>
-	            </li>
-		        <li class="menu-level-1 ">
+              	 <li class="menu-level-1 firstup ">
                   <a href="/reports">Reports</a>
                 </li>
-		        <li class="menu-level-1 ">
-                  <a href="/reset_password">Change Password</a>
+                <li class="menu-level-1  ">
+        		  <a href="/incidents">Incident Tracking</a>
                 </li>
-			  </li>
-			</ul>
-
-		<!-- Anthony Defined -->				
-			 <li class="menu-level-0 ">
-             Position Tracking
-		    </li>
-            <li class="menu-level-0 ">
-              <ul>
 				<li class="menu-level-1 ">
                   <a href="/employees">Manage Employees</a>
                 </li>
 				<li class="menu-level-1 ">
-                  <a href="/position_types">Position Types</a>
+                  <a href="/employee_positions">Employee Positions</a>
                 </li>
+				<li class="menu-level-1 ">
+        		  <a href="/investigators">Investigators</a>
+	            </li>
 				<li class="menu-level-1 ">
                   <a href="/positions">Define Positions</a>
                 </li>
 				<li class="menu-level-1 ">
                   <a href="/position_numbers">Position Numbers</a>
                 </li>
-				<li class="menu-level-1 ">
-                  <a href="/employee_positions">Employee Positions</a>
+                <li class="menu-level-1 ">
+                  <a href="/inmate_counts">Inmate Count</a>
                 </li>
-	<!-- Anthony Defined -->				
+		       
+		        <li class="menu-level-1 ">
+                  <a href="/reset_password">Change Password</a>
+                </li>
+			  </li>
+			</ul>			
               </li>
 			 </ul>
             <li class="menu-level-0 ">

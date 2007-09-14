@@ -4,8 +4,8 @@
 class ApplicationController < ActionController::Base
   # Pick a unique cookie name to distinguish our session data from others'
   session :session_key => '_privateprison_session_id'
-  before_filter :set_facility, :except => [ :login, :facilities ]
   before_filter :set_page
+  before_filter :set_facility
   
   def admin_authenticate
     if session[:user_id]
@@ -30,9 +30,30 @@ class ApplicationController < ActionController::Base
   def set_facility
     if session[:access_level] == 'Administrator'
       unless params[:set_facility] 
-         unless session[:facility]           
-          render :text => "Please select a facility from the drop down above to continue.", :layout => true
-         end
+        unless session[:facility]
+          @page_check = 0
+          ['facilities',
+          'users',
+          'custody_types',
+          'action_types',
+          'access_levels',
+          'user_types',
+          'login',
+          'loginlogout',
+          'incident_types',
+          'position_hists',
+          'employee_position_hists',
+          'incident_classes',
+          'reset_password'].each do |page_check|
+            @page = page_check
+            if request.request_uri.split('/').to_s == page_check
+              @page_check += 1
+            end
+          end
+          if @page_check == 0
+            render :text => "Please select a facility from the drop down above to continue.", :layout => true
+          end
+        end
       else
         if params[:set_facility][:facility_id] != ""
           session[:facility] = Facility.find(params[:set_facility][:facility_id])

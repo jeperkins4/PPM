@@ -17,6 +17,11 @@
     <b>Track Position</b><br />
         <%= f.check_box :deductable %>
   </p>
+  
+   <p>
+   <b>Days Allowed Vacant</b><br />
+      <%= f.text_field :deduction_days, :size => 5%>
+  </p>
 
   <p>
     <%= submit_tag "Update" %>

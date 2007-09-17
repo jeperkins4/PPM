@@ -13,6 +13,10 @@
   <%=h (@position_type.deductable== 1)? "Yes":"No" %>
 </p>
 
+<p>
+   <b>Days Allowed Vacant:</b>
+      <%=h @position_type.deduction_days %>
+</p>
 
 <%= link_to 'Edit', edit_position_type_path(@position_type) %> |
 <%= link_to 'Back', position_types_path %>

@@ -31,8 +31,8 @@ class ApplicationController < ActionController::Base
     if session[:access_level] == 'Administrator'
       unless params[:set_facility] 
         unless session[:facility]
-          @page = []
           @page_check = 0
+          @page_check2 = 0
           ['facilities',
           'users',
           'custody_types',
@@ -49,9 +49,11 @@ class ApplicationController < ActionController::Base
           'contexts',
           'prompts'].each do |page_check|
             request.request_uri.split('/').each do |page|
-              if page.to_s == page_check
-                @page_check += 1
-              end
+              page.split('?').each do |page2|
+                if page2.to_s == page_check
+                  @page_check += 1
+                end
+              end 
             end
           end
           if @page_check == 0
@@ -72,6 +74,6 @@ class ApplicationController < ActionController::Base
   
   def set_page
     @host = request.host
-    @page = request.request_uri.split('/')
+    @page = request.request_uri.split('?')
   end
 end

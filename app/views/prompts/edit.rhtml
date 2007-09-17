@@ -1,0 +1,10 @@
+<h2>Edit Log Question</h2>
+
+<%= error_messages_for :prompt %>
+
+<% form_for(:prompt, :url => prompt_path(@prompt), :html => { :method => :put }) do |f| %>
+      <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Show', prompt_path(@prompt) %> |
+<%= link_to 'Back', prompts_path %>

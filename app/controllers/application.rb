@@ -31,6 +31,7 @@ class ApplicationController < ActionController::Base
     if session[:access_level] == 'Administrator'
       unless params[:set_facility] 
         unless session[:facility]
+          @page = []
           @page_check = 0
           ['facilities',
           'users',
@@ -39,15 +40,18 @@ class ApplicationController < ActionController::Base
           'access_levels',
           'user_types',
           'login',
-          'loginlogout',
           'incident_types',
           'position_hists',
+          'position_types',
           'employee_position_hists',
           'incident_classes',
-          'reset_password'].each do |page_check|
-            @page = page_check
-            if request.request_uri.split('/').to_s == page_check
-              @page_check += 1
+          'reset_password',
+          'contexts',
+          'prompts'].each do |page_check|
+            request.request_uri.split('/').each do |page|
+              if page.to_s == page_check
+                @page_check += 1
+              end
             end
           end
           if @page_check == 0

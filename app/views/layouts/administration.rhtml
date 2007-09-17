@@ -38,8 +38,13 @@
                       	<%= f.text_field :return_page, :value => @page,  :style => 'display:none;' %>
 					  <% end -%>
                     </div>
+					<% else -%> 
+					<div id='search'>
+						<label class='accessibility'>Managing:</label>
+						<%= session[:facility].facility %>
+					</div>
                   <% end -%>
-				  <h1 >Bureau of Private Prison Monitoring</h1>
+				  <h1>Bureau of Private Prison Monitoring</h1>
                 </div>			
             </div>
             <div class='wrapper'>
@@ -59,7 +64,7 @@
     </div><!-- main_block -->
     
     <div id='nav_block'>  		   			   		   			   
-	    <p>Managing: <%= session[:facility].facility rescue 'Administrator' %></p> <p>User: <%= session[:user] rescue 'N/A' %></p> <p>Type: <%= session[:user_type] %></p>
+	   <p><%= session[:user] rescue 'N/A' %> - <%= session[:user_type] %></p>
 		 	
         <ul id='navi'>
             <% if session[:access_level] == 'Administrator' -%>
@@ -74,26 +79,33 @@
                 <li class="menu-level-1 ">
                  <a href="/users">User Management</a>
 	            </li>
-                <li class="menu-level-1 ">
+				<li class="menu-level-1 ">
         		  <a href="/custody_types">Custody Types</a>
 	            </li>
                 <li class="menu-level-1 ">
                     <a href="/incident_types">Incident Types</a>
 		        </li>
+				<li class="menu-level-1 ">
+                  <a href="/position_types">Position Types</a>
+                </li>
                 <li class="menu-level-1 ">
                     <a href="/incident_classes">Incident Classes</a>
                 </li>
                 <li class="menu-level-1 ">
                     <a href="/action_types">Actions Taken</a>
                 </li>
-				<li class="menu-level-1 ">
-                  <a href="/position_types">Position Types</a>
-                </li>
+				
 				  <li class="menu-level-1 ">
                     <a href="/employee_position_hists">Employee Position History</a>
                 </li>
 				<li class="menu-level-1 ">
                     <a href="/position_hists">Position History</a>
+                </li>
+				<li class="menu-level-1 ">
+                    <a href="/contexts">Log Categories</a>
+                </li>
+				<li class="menu-level-1 ">
+                    <a href="/prompts">Log Questions</a>
                 </li>
               </ul>
             </li>

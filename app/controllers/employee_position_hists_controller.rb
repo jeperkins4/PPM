@@ -1,7 +1,7 @@
 class EmployeePositionHistsController < ApplicationController
 
  before_filter :admin_authenticate, :except => :reset_password
-  layout 'administration'  
+ layout 'administration'  
   
   # GET /employee_position_hists
   # GET /employee_position_hists.xml

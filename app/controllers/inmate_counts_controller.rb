@@ -39,9 +39,8 @@ class InmateCountsController < ApplicationController
   def create
     @custody_types = CustodyType.find(:all)
     params[:custody_types].each_pair do |custody_type, count|
-      
       @inmate_count = InmateCount.create(:facility_id     => session[:facility].id,
-                                         :inmate_count    => count,
+                                         :inmate_count    => (count != '') ? count : 0,
                                          :custody_type_id => custody_type,
                                          :date_collected  => Time.now()
       )  

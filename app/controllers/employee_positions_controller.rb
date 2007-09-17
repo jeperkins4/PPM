@@ -10,7 +10,6 @@ class EmployeePositionsController < ApplicationController
     @employee_positions = []
     @position_facility.each do |pf|
       @employee_positions += EmployeePosition.find(:all, :conditions => ['position_number_id = ?', pf.id])
-      
     end
     respond_to do |format|
       format.html # index.rhtml

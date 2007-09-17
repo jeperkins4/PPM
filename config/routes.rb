@@ -39,7 +39,9 @@ ActionController::Routing::Routes.draw do |map|
                 :positions,
                 :position_hists,
                 :position_reports,
-                :employees
+                :employees,
+                :prompts,
+                :contexts
   
   map.resources :incidents do |incidents|
      incidents.resources :follow_ups

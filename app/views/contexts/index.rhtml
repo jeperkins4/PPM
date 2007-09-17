@@ -1,0 +1,31 @@
+<h2>Accountability Log Categories</h2>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th></th>
+  </tr>
+  
+<% for context in @contexts %>
+  <tr>
+    <td><%=h context.title %></td>
+    <td><%=h context.description %></td>
+    <td><%= link_to 'Show', context_path(context) %> <%= link_to 'Edit', edit_context_path(context) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<p>
+<%= link_to 'Previous page', ({
+                :action => 'index',
+                :page => @context_pages.current.previous }) \
+                if @context_pages.current.previous %>
+<%= link_to 'Next page', ({
+                :action => 'index',
+                :page => @context_pages.current.next}) \
+                if @context_pages.current.next %>
+</p>
+
+<%= link_to 'New Accountability Log Category', new_context_path %>

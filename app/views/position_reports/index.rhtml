@@ -2,6 +2,23 @@
 <br />
 
 CRITERIA:
+<table>
+<% form_for(:position_report, :url => position_reports_path) do |f| %>
+<tr>
+	<td>Date:<%= f.date_select :search_date, :order => [:month, :year] %></td>
+</tr>
+<tr>
+<% if session[:access_level] != 'Administrator' -%>
+	<td>Facility:<%= select("facility", "facility_id", Facility.find(:all, :order => :facility).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true, :selected => (session[:facility]) ? session[:facility].id : ""}) -%></td>
+<% else -%>
+	<td>Facility:<%= session[:facility].facility %> </td>
+<% end -%>
+</tr>
+<tr>
+<td><br /><center><%= button_to "Run Report" %></center></td>
+</tr>
+<% end-%>
+</table>
 
 
 <table>
@@ -9,29 +26,29 @@ CRITERIA:
     <th>Position Type</th>
     <th>Position Number</th>
     <th>Position Title</th>
-    <th>Vacting Employee</th>
-	<th>Date Vacated</th>
-	<th>Hire Date</th>
-	<th>Employee Filling</th>
+    <th>Employee</th>
+	<th>Start Date</th>
+	<th>End Date</th>
 	<th>Salary</th>
-	<th>Position Type</th>
+	<th>Special Position Type</th>
 	<th>Date Waiver Approval</th>	
   </tr>
   
- <% for position_report in @position_report %>
+<% for dep in  @deductable_employee_positions %>
+ 
   <tr>
-  	<td><%= position_report.position_number.position.position_type.position_type %></td>
- 	<td><%= position_report.position_number.position_num %></td>
-	<td><%= position_report.position_number.position.title %></td>
-	<td><%= position_report.employee.first_name + ' ' + position_report.employee.last_name  %></td>
-	<td><%= position_report.end_date %></td>
-	<td><%= %></td>
-	<td></td>
-	<td><%= number_to_currency(position_report.salary) %></td>
-	<td><%= position_report.position_number.position_type %></td>
-	<td><%= position_report.position_number.waiver_approval_date%></td>
+  	<td><%= dep.position_number.position.position_type.position_type %></td>
+ 	<td><%= dep.position_number.position_num %></td>
+	<td><%= dep.position_number.position.title %></td>
+	<td><%= dep.employee.first_name + ' ' + dep.employee.last_name %></td>
+	<td><%= dep.start_date %></td>
+	<td><%= dep.end_date %></td>
+	<td><%= number_to_currency(dep.position_number.position.salary) %></td>
+	<td><%= dep.position_number.position_type.upcase %></td>
+	<td><%= dep.position_number.waiver_approval_date%></td>
   </tr>
-<% end %>  
+<% end %>
+  
 
 
 </table>

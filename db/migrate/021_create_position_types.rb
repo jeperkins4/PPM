@@ -3,6 +3,7 @@ class CreatePositionTypes < ActiveRecord::Migration
     create_table :position_types do |t|
       t.column :position_type, :string
       t.column :description, :text
+      t.column :deductable , :integer
     end
   end
 

@@ -1,13 +1,39 @@
 class PositionReportsController < ApplicationController
-    layout 'administration'  
+  layout 'administration'  
   def index
-    @position_report = EmployeePositionHist.find(:all)
+    @deductable_position_type = PositionType.find(:all, :conditions => ['deductable = ?', 1])
+    @deductable_positions = []    
+    @deductable_position_type.each do |dpt|
+      @deductable_positions += Position.find(:all, :conditions => ['position_type_id = ? and facility_id = ?', dpt.id, session[:facility].id])
+    end    
+    @deductable_position_numbers = []    
+    
+    if @deductable_positions != nil
+      @deductable_positions.each do |dp|        
+        @deductable_position_numbers += PositionNumber.find(:all, :conditions => ['position_id = ? and position_type = ? and waiver_approval_date is null', dp.id, "none"])        
+      end     
+    end    
+    
+    @deductable_employee_positions = []   
+    
+    if @deductable_position_numbers != nil
+      @deductable_position_numbers.each do |dpn|
+        @deductable_employee_positions += EmployeePosition.find(:all, :conditions =>['position_number_id = ?',dpn.id])
+      end     
+      @deductable_position_numbers.each do |dpn|
+        @deductable_employee_positions += EmployeePositionHist.find(:all, :conditions =>['position_number_id = ?',dpn.id])
+      end 
+    end
+    
+    
+    @history_position = EmployeePositionHist.find(:all)
+    @current_position = EmployeePosition.find(:all)
   end
   
-    
+  
   def build_report_incident
     @type_select = "<option>Choose Type</option>, <option selected='true'>Incident</option>, <option>Inmate Count</option>"
-
+    
     @use_date = params[:use_date] rescue ''
     @mins = params[:report][:mins] rescue ''
     @incident_type = params[:report][:incident_type_id] rescue ''

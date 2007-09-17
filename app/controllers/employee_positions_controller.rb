@@ -52,6 +52,7 @@ class EmployeePositionsController < ApplicationController
   # POST /employee_positions.xml
   def create
     
+    
     @employee_position = EmployeePosition.new(params[:employee_position])
     
     respond_to do |format|
@@ -63,6 +64,7 @@ class EmployeePositionsController < ApplicationController
         format.html { render :action => "new" }
         format.xml  { render :xml => @employee_position.errors.to_xml }
       end
+      
     end
   end
   

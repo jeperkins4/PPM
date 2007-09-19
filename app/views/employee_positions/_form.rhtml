@@ -23,7 +23,7 @@
     <b>Salary</b><br />
 	<%= (session[:position]) ? number_to_currency(session[:position].salary) : "0.00" %>
   </p>
-
+  
   <p>
     <%= submit_tag "Save" %>
   </p>

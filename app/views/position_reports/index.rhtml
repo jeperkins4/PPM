@@ -3,22 +3,48 @@
 
 CRITERIA:
 <table>
-<% form_for(:position_report, :url => position_reports_path) do |f| %>
+<% form_for(:position_report, :action => :index, :method => 'post') do |f| %>
 <tr>
 	<td>Date:<%= f.date_select :search_date, :order => [:month, :year] %></td>
 </tr>
 <tr>
-<% if session[:access_level] != 'Administrator' -%>
-	<td>Facility:<%= select("facility", "facility_id", Facility.find(:all, :order => :facility).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true, :selected => (session[:facility]) ? session[:facility].id : ""}) -%></td>
-<% else -%>
 	<td>Facility:<%= session[:facility].facility %> </td>
-<% end -%>
 </tr>
 <tr>
 <td><br /><center><%= button_to "Run Report" %></center></td>
 </tr>
 <% end-%>
+<tr><td><%=	link_to(image_tag("/images/excel_large.gif", :border => 0), :action => :export_excel )%></td></tr>
 </table>
+
+All Deductable Position Numbers:
+<% for x in  @deductable_position_numbers %>
+<%= x.position_num %>
+<% end %>
+<br \>
+
+History with Current Activity:
+<% for x in  @history_with_current %>
+<%= x.position_number.position_num %>
+<% end %>
+<br \>
+
+History Without Current Activity:
+<% for x in  @history_without_current %>
+<%= x.position_number.position_num %>
+<% end %>
+<br \>
+
+Current With No History Activity:
+<% for x in @current_with_no_history %>
+<%= x.position_number.position_num %>
+<% end %>
+
+<br \>
+
+<% for x in @sort_report %>
+<%= x[:position_type] %>
+<% end %>
 
 
 <table>
@@ -26,27 +52,27 @@ CRITERIA:
     <th>Position Type</th>
     <th>Position Number</th>
     <th>Position Title</th>
-    <th>Employee</th>
+    <th>Employee Vacating</th>
+	<th>Date Vacated</th>
 	<th>Start Date</th>
-	<th>End Date</th>
-	<th>Salary</th>
-	<th>Special Position Type</th>
-	<th>Date Waiver Approval</th>	
+	<th>Employee Filling</th>
+	<th>Days Outstanding</th>	
   </tr>
   
-<% for dep in  @deductable_employee_positions %>
- 
+<% for dep in  @sort_report %>
+<% @filling_name = Employee.find_by_id(dep[:employee_hire])-%>
+<% @exiting_name = Employee.find_by_id(dep[:employee_vacate])-%>
+
   <tr>
-  	<td><%= dep.position_number.position.position_type.position_type %></td>
- 	<td><%= dep.position_number.position_num %></td>
-	<td><%= dep.position_number.position.title %></td>
-	<td><%= dep.employee.first_name + ' ' + dep.employee.last_name %></td>
-	<td><%= dep.start_date %></td>
-	<td><%= dep.end_date %></td>
-	<td><%= number_to_currency(dep.position_number.position.salary) %></td>
-	<td><%= dep.position_number.position_type.upcase %></td>
-	<td><%= dep.position_number.waiver_approval_date%></td>
-  </tr>
+  	<td><%= dep[:position_type] %></td>
+ 	<td><%= dep[:position_number] %></td>
+	<td><%= dep[:position_title] %></td>
+ 	<td><%= (@exiting_name) ? @exiting_name.first_name + " " + @exiting_name.last_name : "" %></td>
+	<td><%= dep[:vacate_date] %></td>
+	<td><%= dep[:hire_date] %></td>
+    <td><%= (@filling_name) ? @filling_name.first_name + " " + @filling_name.last_name : "" %></td>
+	<td><%= dep[:validation_days] %></td>
+</tr>
 <% end %>
   
 

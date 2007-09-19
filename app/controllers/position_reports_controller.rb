@@ -1,90 +1,92 @@
 class PositionReportsController < ApplicationController
   layout 'administration'  
   def index
+    
     @deductable_position_type = PositionType.find(:all, :conditions => ['deductable = ?', 1])
-    @deductable_positions = []    
-    @deductable_position_type.each do |dpt|
-      @deductable_positions += Position.find(:all, :conditions => ['position_type_id = ? and facility_id = ?', dpt.id, session[:facility].id])
-    end    
-    @deductable_position_numbers = []    
+    @deductable_positions = Position.find(:all, :conditions => ['position_type_id IN (?) and facility_id = ?', @deductable_position_type, session[:facility].id])
     
     if @deductable_positions != nil
-      @deductable_positions.each do |dp|        
-        @deductable_position_numbers += PositionNumber.find(:all, :conditions => ['position_id = ? and position_type = ? and waiver_approval_date is null', dp.id, "none"])        
-      end     
+      @deductable_position_numbers = PositionNumber.find(:all, :conditions => ['position_id IN (?) AND position_type = ? and waiver_approval_date is null', @deductable_positions, "none"])        
     end    
     
-    @deductable_employee_positions = []   
-    
     if @deductable_position_numbers != nil
-      @deductable_position_numbers.each do |dpn|
-        @deductable_employee_positions += EmployeePosition.find(:all, :conditions =>['position_number_id = ?',dpn.id])
-      end     
-      @deductable_position_numbers.each do |dpn|
-        @deductable_employee_positions += EmployeePositionHist.find(:all, :conditions =>['position_number_id = ?',dpn.id])
-      end 
+      @deductable_employee_positions = EmployeePosition.find(:all, :conditions =>['position_number_id IN (?)',@deductable_position_numbers])
+    end     
+    
+    @deductable_current_position_numbers = EmployeePosition.find(:all, :select =>'position_number_id as id, position_number_id',:conditions =>['position_number_id IN (?)',@deductable_position_numbers])
+    @deductable_historic_position_numbers = EmployeePositionHist.find(:all, :select =>'position_number_id as id',:conditions =>['position_number_id IN (?)',@deductable_position_numbers])
+    
+    if @deductable_current_position_numbers.empty?
+      @deductable_current_position_numbers = ""
+    end
+    
+    if @deductable_historic_position_numbers.empty?
+      @deductable_historic_position_numbers = ""
+    end
+    
+    @history_with_current = []
+    
+    # @history_with_current = EmployeePositionHist.find(:all, :select => 'DISTINCT position_number_id',:conditions =>['position_number_id IN (?)',@deductable_current_position_numbers])
+    @history_without_current  = EmployeePositionHist.find(:all, 
+                                                          :select => 'DISTINCT position_number_id',
+                                                          :conditions =>['position_number_id IN (?) AND position_number_id NOT IN (?)',@deductable_position_numbers, @deductable_current_position_numbers ])
+ 
+    @current_with_no_history = EmployeePosition.find(:all, 
+                                                     :select =>'DISTINCT position_number_id',
+                                                     :conditions =>['position_number_id IN (?) AND position_number_id NOT IN (?)',@deductable_position_numbers,@deductable_historic_position_numbers])
+    
+    @deductable_current_position_numbers.each do |dcpn|
+      @history_with_current += EmployeePositionHist.find(:all, 
+                                                         :select =>['a.position_number_id, a.employee_id as filling_employee, a.start_date, b.end_date,
+                                                          b.employee_id as leaving_employee, DATEDIFF(a.start_date, b.end_date) as days_outstanding'],
+      :from => ['employee_positions a, employee_position_hists b'],
+      :conditions =>['a.position_number_id = b.position_number_id and a.position_number_id = ? and DATEDIFF(a.start_date, b.end_date) >= ? AND 
+                                                     b.end_date = (SELECT MAX(end_date) FROM employee_position_hists where position_number_id = ?)',
+      dcpn.id,dcpn.position_number.position.position_type.deduction_days, dcpn.id])
     end
     
     
-    @history_position = EmployeePositionHist.find(:all)
-    @current_position = EmployeePosition.find(:all)
+    @history = []
+    @sort_report = []    
+    
+    @history_without_current.each do |hwc|
+      @history += EmployeePositionHist.find(:all, 
+      :select => ['position_number_id, NULL as filling_employee, NULL as start_date, end_date, employee_id as leaving_employee, DATEDIFF(CURDATE(), end_date) as days_outstanding'], 
+      :conditions => ['position_number_id = ? and DATEDIFF(CURDATE(), end_date) >= ? and 
+      end_date = (SELECT MAX(end_date) FROM employee_position_hists where 
+      position_number_id = ?)',hwc.position_number_id, hwc.position_number.position.position_type.deduction_days, hwc.position_number_id])
+    end
+    
+    #   @current_with_no_history.each do |hwc|
+    #     @current2 += EmployeePosition.find(:all, :select => ['position_number_id, employee_id as filling_employee, start_date, end_date, NULL as leaving_employee'], :conditions => ['position_number_id = ?',hwc.position_number_id])
+    #   end        
+    
+    @report = @history_with_current + @history
+    
+    @report.each do |r|
+      @sort_report += [{:position_type=> r.position_number.position.position_type.position_type, 
+        :position_number => r.position_number.position_num,
+        :position_title => r.position_number.position.title,
+        :employee_vacate => r.leaving_employee,
+        :vacate_date => r.end_date,
+        :hire_date => r.start_date,
+        :employee_hire => r.filling_employee,
+        :salary => r.position_number.position.salary,
+        :special_position_type => r.position_number.position_type,
+        :date_waiver_approval => r.position_number.waiver_approval_date,
+        :validation_days => r.days_outstanding
+      }]
+    end
+    
+    session[:report] = @sort_report = @sort_report.sort_by{|sr| sr[:position_type]}
+    
   end
   
-  
-  def build_report_incident
-    @type_select = "<option>Choose Type</option>, <option selected='true'>Incident</option>, <option>Inmate Count</option>"
-    
-    @use_date = params[:use_date] rescue ''
-    @mins = params[:report][:mins] rescue ''
-    @incident_type = params[:report][:incident_type_id] rescue ''
-    @facility = params[:report][:facility_id] rescue ''
-    @search_string = ""
-    
-    unless @facility == ''
-      @search_facility = " facility_id = ? and"
-    else
-      @search_facility = " facility_id <> ? and"
-    end
-    
-    if @use_date == 'Yes'
-      @search_string += "incident_date >= ? and incident_date <= ? "
-      @date_select = "<option selected=true>Yes</option>, <option>No</option>"
-      params[:report][:begin_date] = Date.new(params[:report].delete('begin_date(1i)').to_i, params[:report].delete('begin_date(2i)').to_i, (params[:report].delete('begin_date(3i)')||1).to_i) if params[:report]['begin_date(3i)']
-      params[:report][:end_date] = Date.new(params[:report].delete('end_date(1i)').to_i, params[:report].delete('end_date(2i)').to_i, (params[:report].delete('end_date(3i)')||1).to_i) if params[:report]['end_date(3i)'] 
-      @begin = params[:report][:begin_date]
-      @end = params[:report][:end_date]
-    else
-      @search_string += "incident_date <> ? and incident_date <> ? "
-      @date_select = "<option>Yes</option>, <option selected=true>No</option>"
-      @begin = ''
-      @end = ''
-    end
-    
-    unless @mins == '' or @mins == nil
-      @search_string += " and mins = ? "
-    else
-      @search_string += " and mins <> ? "
-    end 
-    unless @incident_type  == '' or @incident_type == nil
-      @search_string += " and incident_type_id = ? "
-    else
-      @search_string += " and incident_type_id <> ? "
-    end
-    
-    if session[:access_level] == 'Administrator'
-      session[:report] = Incident.find(:all, :conditions => [ "" + @search_facility + " " + @search_string + "", @facility, @begin, @end, @mins, @incident_type])
-    else
-      session[:report] = session[:facility].incidents.find(:all, :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type])
-    end
+  def export_excel
+    @report = session[:report]
+    response.headers['CONTENT-TYPE'] = 'application/vnd.ms-excel'
+    response.headers['CONTENT-DISPOSITION'] = 'attachment; filename="Incident Report -' + Time.now.to_s + '.xls"'
+    render :type => 'application/vnd.ms-excel', :layout => false
   end
   
-  def build_report_inmate_counts  
-    
-    @type_select = "<option>Choose Type</option>, <option>Incident</option>, <option selected='true'>Inmate Count</option>"
-    if session[:access_level] == 'Administrator'
-      session[:report] = InmateCount.find(:all, :conditions => [ "" + @search_facility + " " + @search_string + "", @facility])
-    else
-      session[:report] = session[:facility].inmate_counts.find(:all, :conditions => ["" + @search_string + "", @begin, @end])
-    end
-  end
 end

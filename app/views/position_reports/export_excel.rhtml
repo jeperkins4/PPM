@@ -1,0 +1,42 @@
+<table border=1 width='100%'>
+	<tr align='center'>
+		<td colspan=6>
+			<h3>Position Vacancy Report - <%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date %><h3>
+		<td>
+	</tr>
+	<td>
+    <th>Position Type</th>
+    <th>Position Number</th>
+    <th>Position Title</th>
+    <th>Employee Vacating</th>
+	<th>Date Vacated</th>
+	<th>Start Date</th>
+   <th>Employee Filling</th>
+	<th>Salary</th>
+	<th>Special Position Type</th>
+	<th>Date Waiver Approval</th>
+	<th>Days Outstanding</th>	
+  </tr>
+  
+  <% for dep in  @report %>
+<% @filling_name = Employee.find_by_id(dep[:employee_hire])-%>
+<% @exiting_name = Employee.find_by_id(dep[:employee_vacate])-%>
+
+  <tr>
+  	<td></td>
+  	<td><%= dep[:position_type] %></td>
+ 	<td><%= dep[:position_number] %></td>
+	<td><%= dep[:position_title] %></td>
+ 	<td><%= (@exiting_name) ? @exiting_name.first_name + " " + @exiting_name.last_name : "" %></td>
+	<td><%= dep[:vacate_date] %></td>
+	<td><%= dep[:hire_date] %></td>
+    <td><%= (@filling_name) ? @filling_name.first_name + " " + @filling_name.last_name : "" %></td>
+	<td><%= number_to_currency(dep[:salary]) %></td>
+	<td><%= dep[:special_position_type] %></td>
+	<td><%= dep[:date_waiver_approval] %></td>
+	<td><%= dep[:validation_days]%></td>
+
+  </tr>
+<% end %>
+  
+</table>

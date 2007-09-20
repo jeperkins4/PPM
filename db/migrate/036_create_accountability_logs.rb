@@ -11,6 +11,6 @@ class CreateAccountabilityLogs < ActiveRecord::Migration
   end
   
   def self.down
-    drop_table :accountability_log
+    drop_table :accountability_logs
   end
 end

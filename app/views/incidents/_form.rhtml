@@ -21,7 +21,7 @@
   <tr>
   	<td>  <p>
     <b>Incident Date: </b><br />
-    <%= f.date_select :incident_date %>
+    <%= f.date_select :incident_date, { :include_blank => true } %>
   </p></td>
   		<td>  <p>
     <b>Incident Reported: </b><br />
@@ -58,30 +58,30 @@
   </tr>
   <tr>
   	<td>  <p>
-    <b>Warden or Designee Notified: </b><%= f.check_box :warden_notified %><br />
-    <%= f.date_select :warden_notified_date %>
+    <b>Warden or Designee Notified: </b><br />
+    <%= f.date_select :warden_notified_date, { :include_blank => true } %>
 	   
   </p></td>
   <td><p><b>Designee Name: </b><br /><%= f.text_field :designee_name %>  </p></td>
   </tr>
   <tr>
   	<td>  <p>
-    <b>Contract Manager Notified:</b><%= f.check_box :contract_manager_notified %><br />
-    <%= f.date_select :contract_manager_notified_date %>
+    <b>Contract Manager Notified:</b><br />
+    <%= f.date_select :contract_manager_notified_date, { :include_blank => true } %>
   </p></td>
   	<td>  <p>
-    <b>Bureau Notified:</b><%= f.check_box :bureau_notified %><br />
-    <%= f.date_select :bureau_notified_date %>
+    <b>Bureau Notified:</b><br />
+    <%= f.date_select :bureau_notified_date, { :include_blank => true } %>
   </p></td>
   <tr/>
   <tr>
   	<td>
   		<p>
-    <b>Facility Investigation Complete:</b><%= f.check_box :facility_investigation_complete %><br />
-    <%= f.date_select :facility_investigation_complete_date %>
+    <b>Facility Investigation Complete:</b><br />
+    <%= f.date_select :facility_investigation_complete_date, { :include_blank => true } %>
   </p></td>
   <td><p>  <b>Investigation Closed: </b><%= f.check_box :investigation_closed %><br />
-    <%= f.date_select :investigation_closed_date %> </p></td>
+    <%= f.date_select :investigation_closed_date, { :include_blank => true } %> </p></td>
   </tr>
   <tr>
   	<td colspan=2><b>Entity Closing Investigation:</b><br />

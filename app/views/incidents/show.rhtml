@@ -10,7 +10,7 @@
 
 <p>
   <b>Incident type:</b>
-  <%=h @incident.incident_type.incident_type %>
+  <%=h (@incident.incident_type) ? @incident.incident_type.incident_type : @incident.incident_type_other  %>
 </p>
 
 <p>
@@ -26,22 +26,22 @@
 
 <p>
   <b>Contract manager notified:</b>
-  <%=h ( @incident.contract_manager_notified == 1) ? 'Yes' : 'No' %>
+  <%=h ( @incident.contract_manager_notified_date) ? @incident.contract_manager_notified_date : 'No' %>
 </p>
 
 <p>
   <b>Bureau notified:</b>
-  <%=h ( @incident.bureau_notified == 1) ? 'Yes' : 'No' %>
+  <%=h (@incident.bureau_notified_date) ? @incident.bureau_notified_date : 'Pending' %>
 </p>
 
 <p>
   <b>Warden notified:</b>
-  <%=h ( @incident.warden_notified  == 1) ? 'Yes' : 'No' %>
+  <%=h (@incident.warden_notified_date) ? @incident.warden_notified_date : 'Pending' %>
 </p>
 
 <p>
   <b>Investigation completed:</b>
-  <%=h ( @incident.facility_investigation_complete  == 1) ? 'Yes' : 'No' %>
+  <%=h (@incident.facility_investigation_complete_date) ? @incident.facility_investigation_complete_date : 'Pending' %>
 </p>
 
 <p>

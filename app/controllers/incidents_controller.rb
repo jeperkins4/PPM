@@ -16,7 +16,7 @@ class IncidentsController < ApplicationController
   # GET /incidents/1.xml
   def show
     @incident = session[:facility].incidents.find(params[:id])
-    follow_ups = @incident.follow_ups.find(:all)
+    @follow_ups = @incident.follow_ups.find(:all)
     
     respond_to do |format|
       format.html # show.rhtml
@@ -38,21 +38,6 @@ class IncidentsController < ApplicationController
   # POST /incidents.xml
   def create
     @incident = Incident.new(params[:incident])
-    if params[:incident][:bureau_notified] == 0
-      params[:incident][:bureau_notified_date] = ''
-    end
-    if params[:incident][:contract_manager_notified] == 0
-      params[:incident][:contract_manager_notified_date] = ''
-    end
-    if params[:incident][:warden_notified] == 0
-      params[:incident][:warden_notified_date] = ''
-    end
-    if params[:incident][:facility_investigation_complete] == 0
-      params[:incident][:facility_investigation_complete_date] = ''
-    end
-    if params[:incident][:investigation_closed] == 0
-      params[:incident][:investigation_closed_date] = Time.now()
-    end
     respond_to do |format|
       if @incident.save
         flash[:notice] = 'Incident was successfully created.'

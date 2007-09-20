@@ -14,8 +14,8 @@
   <tr>
     <td><%=h incident.mins %></td>
     <td><%=h incident.incident_date %></td>
-    <td><%=h incident.incident_type.incident_type rescue '' %></td>
-    <td><%=h (incident.contract_manager_notified == 1) ? 'Yes' : 'No' %></td>
+    <td><%=h (incident.incident_type) ? incident.incident_type.incident_type : incident.incident_type_other %></td>
+    <td><%=h (incident.contract_manager_notified_date) ? incident.contract_manager_notified_date : 'Pending' %></td>
     <td><%=h incident.action_type.action rescue 'Pending' %></td>
     <td><%= link_to 'Show', incident_path(incident) %>
     <%= link_to 'Edit', edit_incident_path(incident) %>

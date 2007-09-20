@@ -10,7 +10,7 @@
 
   <p>
     <b>Category</b><br />
-	<%= f.select( "context_id", Context.find(:all).collect {|c| [ c.title, c.id ] }, { :include_blank => false })%>
+	<%= f.select( "context_id", Context.find(:all, :order => :title).collect {|c| [ c.title, c.id ] }, { :include_blank => false })%>
   </p>
 
   <p>

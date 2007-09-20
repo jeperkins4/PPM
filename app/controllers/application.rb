@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   # Pick a unique cookie name to distinguish our session data from others'
   session :session_key => '_privateprison_session_id'
   before_filter :set_page
-  before_filter :set_facility
+  before_filter :set_facility, :except => ''
   
   def admin_authenticate
     if session[:user_id]

@@ -1,9 +1,16 @@
+
+
 <table border=1 width='100%'>
 	<tr align='center'>
-		<td colspan=6>
+		<td colspan=12>
 			<h3>Position Vacancy Report - <%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date %><h3>
-		<td>
-	</tr>
+	</td></tr>
+<tr align='center'>
+	<td colspan=12>
+<center><h3><%= session[:facility].facility %></h3></center>
+<center><h3><%= @criteria_date.strftime("%B - %Y") %> Report</h3></center>
+</td></tr>
+
 	<td>
     <th>Position Type</th>
     <th>Position Number</th>
@@ -17,6 +24,7 @@
 	<th>Date Waiver Approval</th>
 	<th>Days Outstanding</th>	
   </tr>
+  </td>
   
   <% for dep in  @report %>
 <% @filling_name = Employee.find_by_id(dep[:employee_hire])-%>

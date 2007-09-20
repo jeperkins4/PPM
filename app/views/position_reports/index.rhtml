@@ -1,7 +1,12 @@
-<h2>Position Reporting</h2>
+<h2>Position Vacancy Reporting</h2>
 <br />
 
-CRITERIA:
+<center><h3><%= session[:facility].facility %></h3></center>
+<center><h3><%= @criteria_date.strftime("%B - %Y") %> Report</h3>
+<br \>
+
+<!--
+<center><h5>(activity from <%= @criteria_date.at_beginning_of_month.strftime("%B %d, %Y") %> thru <%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %>)</h5></center>
 <table>
 <% form_for(:position_report, :action => :index, :method => 'post') do |f| %>
 <tr>
@@ -14,8 +19,16 @@ CRITERIA:
 <td><br /><center><%= button_to "Run Report" %></center></td>
 </tr>
 <% end-%>
-<tr><td><%=	link_to(image_tag("/images/excel_large.gif", :border => 0), :action => :export_excel )%></td></tr>
-</table>
+-->
+
+Please export to excel to see detailed report:<br \>
+<%=	link_to(image_tag("/images/excel_large.gif", :alt=> 'Export to Excel',:border => 0), :action => :export_excel )%></td></tr>
+</center>
+
+<% if session[:user_type] == 'Web Developer' %>
+
+Debug Info:
+<br \>
 
 All Deductable Position Numbers:
 <% for x in  @deductable_position_numbers %>
@@ -42,10 +55,7 @@ Current With No History Activity:
 
 <br \>
 
-<% for x in @sort_report %>
-<%= x[:position_type] %>
 <% end %>
-
 
 <table>
  <tr>

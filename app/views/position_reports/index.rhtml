@@ -2,8 +2,11 @@
 <br />
 
 <center><h3><%= session[:facility].facility %></h3></center>
-<center><h3><%= @criteria_date.strftime("%B - %Y") %> Report</h3>
+<center><h3><%= @criteria_date.strftime("%B - %Y") %> Report</h3></center><br \>
+<center><h4>NOTE: All reported rows and calculations are generated using a criteria date of <B><%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %></B>
+ which is reflective of the last calendar day of the previous month.</h4></center>
 <br \>
+
 
 <!--
 <center><h5>(activity from <%= @criteria_date.at_beginning_of_month.strftime("%B %d, %Y") %> thru <%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %>)</h5></center>
@@ -31,15 +34,20 @@ Debug Info:
 <br \>
 
 All Deductable Position Numbers:
-<% for x in  @deductable_position_numbers %>
+<% for x in @deductable_position_numbers %>
 <%= x.position_num %>
 <% end %>
 <br \>
+
 Not Assigned Position Numbers:
-<% for x in  @not_assigned_report %>
+<% for x in  @not_assigned %>
 <%= x.position_num %>
 <% end %>
-
+<br \>
+NEWLY ASSIGNED with deductions:
+<% for x in  @newly_assigned_with_deductions %>
+<%= x.position_number.position_num %>
+<% end %>
 <br \>
 History with Current Activity:
 <% for x in  @history_with_current %>

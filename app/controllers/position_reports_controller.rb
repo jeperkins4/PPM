@@ -16,26 +16,41 @@ class PositionReportsController < ApplicationController
       @deductable_position_numbers = PositionNumber.find(:all, :conditions => ['position_id IN (?) AND position_type = ? and waiver_approval_date is null', @deductable_positions, "none"])        
     end    
       
-    #Find all deductable current positions that fall outside the acceptable period of days
-    @deductable_current_position_numbers = EmployeePosition.find(:all, 
-                                           :select =>'DISTINCT position_number_id as id, position_number_id',
-                                           :conditions =>['position_number_id IN (?) AND start_date > DATE_ADD(LAST_DAY(?),
-                                           INTERVAL 1 DAY) and start_date <= LAST_DAY(?)',
-                                           @deductable_position_numbers, 2.months.ago, @criteria_date])
-    
+   
     #Find all deductable historic positions that fall outside the acceptable period 
     # of days because they have not been filled yet as of report run time
     @deductable_historic_position_numbers = EmployeePositionHist.find(:all, 
                                             :select =>'DISTINCT position_number_id as id',
                                             :conditions =>['position_number_id IN (?)',@deductable_position_numbers])
+                                            
+@newly_assigned_with_deductions = []   
 
-    #Find all deductable positions that have been created but never filled at least once
-    @not_assigned =PositionNumber.find(:all, 
-                                       :conditions => ['position_id IN (?) AND position_type = ? 
-                                       and waiver_approval_date is null 
-                                       AND id not in(?) and id not in (?)', 
-                                       @deductable_positions, "none", @deductable_current_position_numbers, 
-                                       @deductable_historic_position_numbers])        
+  if @deductable_historic_position_numbers.empty?
+      @deductable_historic_position_numbers = ""
+    end
+                                            
+    @deductable_position_numbers.each do |dpn|
+      @newly_assigned_with_deductions += EmployeePosition.find(:all, :from=>'employee_positions a, position_numbers b', :conditions=>['a.position_number_id = b.id 
+                                                                            and a.position_number_id = ? and DATEDIFF(a.start_date, b.created_on) > ? AND start_date > DATE_ADD(LAST_DAY(?),
+                                                                            INTERVAL 1 DAY) and start_date <= LAST_DAY(?) AND a.position_number_id not in (?)',
+                                                                            dpn.id, dpn.position.position_type.deduction_days, 2.months.ago, @criteria_date, @deductable_historic_position_numbers])
+   end
+
+    #Find all deductable current positions that fall outside the acceptable period of days
+    #inlcuding newly created positions
+   if @newly_assigned_with_deductions.empty?
+      @newly_assigned_with_deductions = ""
+    end
+    
+      @deductable_current_position_numbers = EmployeePosition.find(:all, 
+                                           :select =>'DISTINCT position_number_id as id, position_number_id',
+                                           :conditions =>['(position_number_id IN (?) AND position_number_id not in (?))
+                                           AND start_date <= LAST_DAY(?)',
+                                           @deductable_position_numbers, @newly_assigned_with_deductions, @criteria_date])
+                                           
+                                                                    
+   
+         
     
     if @deductable_current_position_numbers.empty?
       @deductable_current_position_numbers = ""
@@ -44,6 +59,20 @@ class PositionReportsController < ApplicationController
     if @deductable_historic_position_numbers.empty?
       @deductable_historic_position_numbers = ""
     end
+    
+    if @newly_assigned_with_deductions.empty?
+      @newly_assigned_with_deductions = ""
+    end
+    
+     #Find all deductable positions that have been created but never filled at least once
+     @not_assigned =PositionNumber.find(:all, 
+                                       :conditions => ['(id not in(?) AND id not in (?) and id not in (?)) and id in (?)', 
+                                       @deductable_current_position_numbers, 
+                                       @deductable_historic_position_numbers,
+                                       @newly_assigned_with_deductions,
+                                       @deductable_position_numbers])
+                                       
+     
     
     @history_with_current = []
     
@@ -55,9 +84,8 @@ class PositionReportsController < ApplicationController
     
     @current_with_no_history = EmployeePosition.find(:all, 
                                :select =>'DISTINCT position_number_id',
-                               :conditions =>['position_number_id IN (?) AND position_number_id NOT IN (?) and 
-                               start_date > DATE_ADD(LAST_DAY(?),INTERVAL 1 DAY) and start_date <= LAST_DAY(?)',
-                               @deductable_position_numbers,@deductable_historic_position_numbers, 2.months.ago, @criteria_date])
+                               :conditions =>['position_number_id IN (?) AND position_number_id NOT IN (?) and start_date <= LAST_DAY(?)',
+                               @deductable_position_numbers,@deductable_historic_position_numbers, @criteria_date])
     
     #Select all history rows that have current activity that fall outside the allowable time limit for vacancy.  This array 
     # only pulls in the previous months activity based on the run date.  The last day of the previous month is used as date criteria
@@ -75,6 +103,10 @@ class PositionReportsController < ApplicationController
     end
 
     @not_assigned_report = []
+    @newly_assigned_with_deductions_report = []
+
+    
+    
     @not_assigned.each do |na|
       @not_assigned_report += PositionNumber.find(:all,
                               :select=>['id, position_id, position_num, position_type, waiver_approval_date, created_on,
@@ -99,6 +131,22 @@ class PositionReportsController < ApplicationController
       
       
     @report = @history_with_current + @history
+    
+        
+    @newly_assigned_with_deductions.each do |nawd|
+          @sort_report += [{:position_type=> nawd.position_number.position.position_type.position_type, 
+        :position_number => nawd.position_num,
+        :position_title => nawd.position_number.position.title,
+        :employee_vacate => "",
+        :vacate_date => "",
+        :hire_date => nawd.start_date,
+        :employee_hire => nawd.employee_id,
+        :salary => nawd.position_number.position.salary,
+        :special_position_type => nawd.position_number.position_type,
+        :date_waiver_approval => nawd.position_number.waiver_approval_date,
+        :validation_days => nawd.start_date.to_date - nawd.created_on.to_date
+      }]
+    end
     
     @not_assigned_report.each do |nar|
       @sort_report += [{:position_type=> nar.position.position_type.position_type, 
@@ -143,7 +191,7 @@ class PositionReportsController < ApplicationController
     @facility_positions = Position.find(:all, :conditions=>['facility_id = ?', session[:facility].id])
     
     @possible_lateral_employees = EmployeePosition.find(:all, :select=>'DISTINCT a.employee_id', :from=>['employee_positions a, employee_position_hists b'],
-    :conditions =>['a.employee_id = b.employee_id and a.employee_id IN (?)', @facility_employees])
+    :conditions =>['a.employee_id = b.employee_id and a.employee_id IN (?) AND a.start_date < LAST_DAY(?)', @facility_employees, @criteria_date])
     
     @report = []
     
@@ -156,7 +204,7 @@ class PositionReportsController < ApplicationController
           :position_title => @old_position_number.first.position_number.position.title,
           :old_position_number => @old_position_number.first.position_number.position_num,
           :new_position_number => @new_position_number.first.position_number.position_num,
-          :employee_vacate => @old_position_number.first.employee.first_name,
+          :employee_vacate => @old_position_number.first.employee.first_name + " " + @old_position_number.first.employee.last_name ,
           :vacate_date => @old_position_number.first.end_date,
           :hire_date => @new_position_number.first.start_date
         }]

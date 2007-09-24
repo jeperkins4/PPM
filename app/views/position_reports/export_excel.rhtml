@@ -9,6 +9,7 @@
 	<td colspan=12>
 <center><h3><%= session[:facility].facility %></h3></center>
 <center><h3><%= @criteria_date.strftime("%B - %Y") %> Report</h3></center>
+<center><h4>NOTE: All reported rows and calculations are generated using a criteria date of <B><%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %></B></h4>
 </td></tr>
 
 	<td>
@@ -35,10 +36,10 @@
   	<td><%= dep[:position_type] %></td>
  	<td><%= dep[:position_number] %></td>
 	<td><%= dep[:position_title] %></td>
- 	<td><%= (@exiting_name) ? @exiting_name.first_name + " " + @exiting_name.last_name : "" %></td>
+ 	 	<td><%= (@exiting_name) ? @exiting_name.first_name + " " + @exiting_name.last_name : "NEW" %></td>
 	<td><%= dep[:vacate_date] %></td>
 	<td><%= dep[:hire_date] %></td>
-    <td><%= (@filling_name) ? @filling_name.first_name + " " + @filling_name.last_name : "" %></td>
+     <td><%= (@filling_name) ? @filling_name.first_name + " " + @filling_name.last_name : "" %></td>
 	<td><%= number_to_currency(dep[:salary]) %></td>
 	<td><%= dep[:special_position_type] %></td>
 	<td><%= dep[:date_waiver_approval] %></td>

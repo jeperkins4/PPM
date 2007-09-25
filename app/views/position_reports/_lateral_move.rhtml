@@ -1,0 +1,34 @@
+<table width = "50%">
+<tr><td><h2>Lateral Move Tracking Report for <%= @criteria_date.strftime("%B %Y") %> <%=link_to(image_tag("/images/excel_large.gif", :size => "30x33", :alt=> 'Export to Excel',:border => 0), :action => :export_excel )-%></h2></td></tr>
+<tr><td>Generated For: <B><%= session[:facility].facility %></B></td></tr>
+<tr><td>NOTE: All reported rows and calculations are generated using a criteria date of <B><%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %></B>
+ which is reflective of the last calendar day of the previous month.</td></tr>
+ <tr><td> </td></tr>
+ 
+</table>
+<table>
+ <tr>
+    <th>Position Type</th>
+    <th>Position Title</th>
+    <th>Old Position Number</th>
+	<th>New Position Number</th>	
+    <th>Employee</th>
+	<th>Date Vacated</th>
+	<th>Start Date</th>
+ </tr>
+ <tr>
+
+	<% for x in @report %>
+<tr>
+	<td><%= x[:position_type] %></td>
+	<td><%= x[:position_title] %></td>
+	<td><%= x[:old_position_number] %></td>
+	<td><%= x[:new_position_number] %></td>
+	<td><%= x[:employee_vacate] %></td>
+	<td><%= x[:vacate_date] %></td>
+	<td><%= x[:hire_date] %></td>
+</tr>
+	<% end %>
+	
+</table>
+

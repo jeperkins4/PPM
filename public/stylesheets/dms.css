@@ -771,7 +771,7 @@ th {
 
 td {
 	padding:0 10px;
-	text-align: center;
+	text-align: left;
 	border-bottom:solid 1px #CDCDA5;
 }
 
@@ -799,6 +799,6 @@ td {
 .print td {
 	padding:0 10px;
 	background-color:#ffffff;
-	text-align: center;
+	text-align: left;
 	border:solid 1px #000000;
 }

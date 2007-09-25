@@ -1,10 +1,29 @@
 <h2>Accountability Log</h2>
-
-<%= calendar %>
-
-<p>
-	To begin entering/editing an accountability log please select a month above to continue.
-</p>	
-
+<% form_tag 'accountability_logs', :action => "index" do %>
+	<% @categories.each do |category| -%>
+		<h3><b><%= category.title %></b></h3>
+		<table>
+			<% @questions = Prompt.find(:all, :conditions =>  ['active = ? and context_id = ?', 1, category.id]) -%> 
+			<% @questions.each do |question| -%>
+				<tr>
+				<td><b><%=  question.question %>:</b></td><td><%= text_field_tag "question[#{question.id}]" %></td>
+			<% end -%>
+		</table>
+		<p>
+			<%= submit_tag 'Record/Update' %>
+		</p>
+	<% end -%>
+<% end -%>
+<br />
+<%= link_to 'Previous page', ({
+                :action => 'index',
+                :page => @category_pages.current.previous }) \
+                if @category_pages.current.previous %>
+<%= link_to 'Next page', ({
+                :action => 'index',
+                :page => @category_pages.current.next}) \
+                if @category_pages.current.next %>
+<br />
+<%= link_to "Home", '/accountability_logs' %>
 
 

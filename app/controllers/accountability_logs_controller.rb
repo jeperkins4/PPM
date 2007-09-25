@@ -3,14 +3,16 @@ class AccountabilityLogsController < ApplicationController
   layout 'administration'
   
   def index
-    if request.post?
-      bang!
-    end
+     @category_pages, @categories = paginate :context, :per_page => 1
+  end
+  
+  def set_category
+    #(params[:context].nil?) ? @category = session[:contexts].first : @category = Context.find(:all, :conditions => ["id = ?", params[:context]])
+     (@area.lower_item.nil?) ? redirect_to(:action => 'index') : redirect_to(:action => :capture, :context => @context.lower_item.id)  
   end
   
   def capture
-    @category = Context.find(:all)
-    @questions = Prompt.find(:all, :conditions =>  ['active = ? and context_id = ?', 1, @category[2].id])
+     redirect_to @category_pages.current.next if @category_pages.current.next
   end
   
   def collect
@@ -19,6 +21,7 @@ class AccountabilityLogsController < ApplicationController
   
   def set_calendar
     session[:date] = Date.new()
-    redirect_to :action => 'capture'
+    session[:category] = Context.find(:all)
+    redirect_to :action => :capture
   end
 end

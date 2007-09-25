@@ -765,7 +765,8 @@ tr{
 
 th {
 	margin-right:10px;
-	padding:0 20px;
+	text-align: left;
+	padding:0 10px;
 	background-color:#CDCDA5;
 }
 
@@ -791,7 +792,8 @@ td {
 
 .print th {
 	margin-right:10px;
-	padding:0 20px;
+	padding:0 10px;
+	text-align: left;
 	border:solid 1px #000000;
 	background-color:#999999;
 }

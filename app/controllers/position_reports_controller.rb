@@ -224,6 +224,7 @@ class PositionReportsController < ApplicationController
         }]
       end
     end
+     session[:report] = @report
   end
   
   def export_excel    

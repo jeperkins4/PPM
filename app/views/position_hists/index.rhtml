@@ -16,7 +16,7 @@
     <td><%=h number_to_currency(position_hist.salary) %></td>
     <td><%=h position_hist.create_date %></td>
     <td><%= link_to 'Show', position_hist_path(position_hist) %> 
-<% if session[:access_level] == 'Administrator' -%>	
+<% if session[:user_type] == 'Web Developer' -%>	
 	<%= link_to 'Edit', edit_position_hist_path(position_hist) %>
     <%= link_to 'Destroy', position_hist_path(position_hist), :confirm => 'Are you sure?', :method => :delete %>
 <% end -%>

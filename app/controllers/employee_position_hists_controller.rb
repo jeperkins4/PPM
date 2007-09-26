@@ -6,7 +6,9 @@ class EmployeePositionHistsController < ApplicationController
   # GET /employee_position_hists
   # GET /employee_position_hists.xml
   def index
-    @employee_position_hists = EmployeePositionHist.find(:all)
+    
+    @facility_position_numbers = session[:facility].position_numbers.find(:all)    
+    @employee_position_hists = EmployeePositionHist.find_all_by_position_number_id(@facility_position_numbers)
     
     respond_to do |format|
       format.html # index.rhtml

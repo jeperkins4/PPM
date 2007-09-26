@@ -4,9 +4,9 @@
   <tr>
   	<th>Facility</th>
 	<th>Position</th>
-    <th>Position number</th>
+    <th>Position Num</th>
     <th>Employee</th>
-	<th> Salary </th>
+	<th>Sal. </th>
 	<th>Start Date</th>
 	<th>End Date</th>
 	<th></th>
@@ -18,11 +18,11 @@
   	<td><%=h employee_position_hist.position_number.position.title %></td>
     <td><%=h employee_position_hist.position_number.position_num %></td>
     <td><%=h employee_position_hist.employee.first_name + ' ' + employee_position_hist.employee.last_name rescue ' ' %></td>
-	<td><%=h employee_position_hist.salary %></td>
+	<td><%=h number_to_currency(employee_position_hist.salary) %></td>
 	<td><%=h employee_position_hist.start_date %></td>
 	<td><%=h employee_position_hist.end_date %></td>	
     <td><%= link_to 'Show', employee_position_hist_path(employee_position_hist) %>
-<% if session[:access_level] == 'Administrator' -%>
+<% if session[:user_type] == 'Web Developer' -%>
 	<%= link_to 'Edit', edit_employee_position_hist_path(employee_position_hist) %>
 	<%= link_to 'Destroy', employee_position_hist_path(employee_position_hist), :confirm => 'Are you sure?', :method => :delete %>
 <% end -%>

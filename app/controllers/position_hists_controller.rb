@@ -6,8 +6,9 @@ class PositionHistsController < ApplicationController
   # GET /position_hists
   # GET /position_hists.xml
   def index
-    @position_hists = PositionHist.find(:all)
-
+    
+    @position_hists = session[:facility].position_hists.find(:all, :order=> "create_date DESC, position_id")
+   
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @position_hists.to_xml }

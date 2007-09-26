@@ -4,6 +4,7 @@ class Facility < ActiveRecord::Base
   has_many :inmate_counts
   has_many :positions
   has_many :position_numbers, :through => :positions
+  has_many :position_hists, :through => :positions
   has_many :incidents
   has_many :employees
 end

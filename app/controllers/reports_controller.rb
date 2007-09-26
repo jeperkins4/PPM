@@ -8,8 +8,7 @@ class ReportsController < ApplicationController
     @type = params[:report_type] rescue ''
     @use_date = params[:use_date] rescue ''
     @type_select = "<option>Choose Type</option>,
-                    <option>Incident</option>,
-                    <option>Inmate Count</option>"
+                    <option>Incident</option>"
     @date_select = "<option>No</option>,
                     <option>Yes</option>"
     if request.post?
@@ -17,10 +16,6 @@ class ReportsController < ApplicationController
         
       when 'Incident'   
         build_report_incident
-        
-      when 'Inmate Count'
-        #build_report_inmate_counts
-        render :text => "Coming Soon", :layout => true
       end
     end
   end
@@ -28,12 +23,13 @@ class ReportsController < ApplicationController
   def export_excel
     @incidents = session[:report]
     response.headers['CONTENT-TYPE'] = 'application/vnd.ms-excel'
+    response.headers['CONTENT-TYPE'] = 'application/vnd.ms-excel'
     response.headers['CONTENT-DISPOSITION'] = 'attachment; filename="Incident Report -' + Time.now.to_s + '.xls"'
     render :type => 'application/vnd.ms-excel', :layout => false
   end
   
   def build_report_incident
-    @type_select = "<option>Choose Type</option>, <option selected='true'>Incident</option>, <option>Inmate Count</option>"
+    @type_select = "<option>Choose Type</option>, <option selected='true'>Incident</option>"
 
     @use_date = params[:use_date] rescue ''
     @mins = params[:report][:mins] rescue ''
@@ -73,15 +69,5 @@ class ReportsController < ApplicationController
     end
     
       session[:report] = session[:facility].incidents.find(:all, :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type])
-  end
-  
-  def build_report_inmate_counts  
-    
-    @type_select = "<option>Choose Type</option>, <option>Incident</option>, <option selected='true'>Inmate Count</option>"
-    if session[:access_level] == 'Administrator'
-      session[:report] = InmateCount.find(:all, :conditions => [ "" + @search_facility + " " + @search_string + "", @facility])
-    else
-      session[:report] = session[:facility].inmate_counts.find(:all, :conditions => ["" + @search_string + "", @begin, @end])
-    end
   end
 end

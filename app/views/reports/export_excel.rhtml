@@ -4,13 +4,16 @@
 			<h3>Incident Report - <%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date %><h3>
 		<td>
 	</tr>
+	<tr align='center'>
 	<th><b>Mins Number</b></th>
 	<th><b>Incident Date</b></th>
 	<th><b>Facility</b></th>
 	<th><b>Incident Type</b></th>
 	<th><b>Class</b></th>
 	<th><b>Investigator</b></th>
+</tr>
 <% @incidents.each do |incident| -%>
+
 <tr align='center'>
 <td><%= incident.mins %></td>
 <td><%= incident.incident_date %></td>

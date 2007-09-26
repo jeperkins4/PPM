@@ -38,7 +38,7 @@
 	<th><b>Investigator</b></th>
 <% session[:report].each do |incident| -%>
 <tr>
-<td><a href='incidents/<%= incident.id %>'><%= incident.mins %></a></td
+<td><a href='incidents/<%= incident.id %>'><%= incident.mins %></a></td>
 <td><%= incident.incident_date %></td>
 <td><%= incident.facility.facility %></td>
 <td><%= incident.incident_type.incident_type %></td>

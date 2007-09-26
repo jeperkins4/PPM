@@ -1,5 +1,7 @@
 <h2>Accountability Log</h2>
+<p><%= session[:facility].facility %></p>
 <% form_tag 'accountability_logs', :action => "index" do %>
+<%= text_field_tag :category, :page, :value => request.request_uri, :style => 'display:none;' %>
 	<% @categories.each do |category| -%>
 		<h3><b><%= category.title %></b></h3>
 		<table>
@@ -7,9 +9,14 @@
 			<% @questions.each do |question| -%>
 				<tr>
 				<td><b><%=  question.question %>:</b></td><td><%= text_field_tag "question[#{question.id}]" %></td>
+				</tr>
 			<% end -%>
 		</table>
-		<p>
+		<p style="margin-left:20px;">
+			Additional Information:<br />
+			<%= text_area_tag "log[#{category.id}]", nil, :size => "60x8" %>
+		</p>
+		<p style="margin-left:20px;">
 			<%= submit_tag 'Record/Update' %>
 		</p>
 	<% end -%>

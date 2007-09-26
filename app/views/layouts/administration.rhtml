@@ -65,7 +65,7 @@
     
     <div id='nav_block'>  		   			   		   			   
 	   <p><%= session[:user] rescue 'N/A' %> - <%= session[:user_type] %></p>
-		 	
+		 	<p><a href="/reset_password">Change Password</a> | <a href="/login/logout">Logout</a></p>
         <ul id='navi'>
             <% if session[:access_level] == 'Administrator' -%>
             <li class="menu-level-0 ">
@@ -145,15 +145,12 @@
 				 <li class="menu-level-1 ">
                   <a href="/accountability_logs">Accountability Logs</a>
                 </li>
-		        <li class="menu-level-1 ">
-                  <a href="/reset_password">Change Password</a>
-                </li>
 			  </li>
 			</ul>			
               </li>
 			 </ul>
             <li class="menu-level-0 ">
-            <a href="/login/logout">Logout</a>
+          &nbsp;
             </li>
           </ul>
 	   </div><!-- navblock -->

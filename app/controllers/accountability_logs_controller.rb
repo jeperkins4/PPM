@@ -3,7 +3,11 @@ class AccountabilityLogsController < ApplicationController
   layout 'administration'
   
   def index
-     @category_pages, @categories = paginate :context, :per_page => 1
+    unless request.post?
+      @category_pages, @categories = paginate :context, :per_page => 1
+    else
+      collect
+    end
   end
   
   def set_category
@@ -12,13 +16,13 @@ class AccountabilityLogsController < ApplicationController
   end
   
   def capture
-     redirect_to @category_pages.current.next if @category_pages.current.next
-  end
-  
-  def collect
     
   end
   
+  def collect
+    redirect_to params[:category]
+  end
+
   def set_calendar
     session[:date] = Date.new()
     session[:category] = Context.find(:all)

@@ -149,9 +149,10 @@ class EmployeePositionsController < ApplicationController
   
   def set_facility2
     if request.post?
+      
       session[:position] = Position.find(params[:facility][:position_id])
       redirect_to new_employee_position_path   
-    end      
+    end
   end
   
 end

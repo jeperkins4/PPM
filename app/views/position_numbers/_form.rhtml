@@ -1,6 +1,6 @@
   <p>
     <b>Position</b><br />
-     <%= f.select("position_id", (session[:facility]) ? session[:facility].positions.find(:all).collect {|p| [ p.title, p.id ]} : "", { :include_blank => true })%>
+     <%= f.select("position_id", (session[:facility]) ? session[:facility].positions.find(:all, :order=> 'title').collect {|p| [ p.title, p.id ]} : "", { :include_blank => true })%>
   </p>
 
   <p>

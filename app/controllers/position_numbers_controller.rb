@@ -5,7 +5,7 @@ class PositionNumbersController < ApplicationController
   # GET /position_numbers.xml
   def index
     
-    @position_numbers = session[:facility].position_numbers.find(:all)
+    @position_numbers = session[:facility].position_numbers.find(:all, :order=>'position_num')
     
     respond_to do |format|
       format.html # index.rhtml

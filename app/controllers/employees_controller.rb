@@ -6,7 +6,7 @@ class EmployeesController < ApplicationController
   # GET /employees.xml
   def index
     
-    @employees =  session[:facility].employees.find(:all, :order => 'facility_id')
+    @employees =  session[:facility].employees.find(:all, :order =>['first_name, last_name'])
     
     respond_to do |format|
       format.html # index.rhtml

@@ -5,7 +5,7 @@ class PositionsController < ApplicationController
   # GET /positions
   # GET /positions.xml
   def index
-    @positions =  session[:facility].positions.find(:all)
+    @positions =  session[:facility].positions.find(:all, :order=>'position_type_id, title')
     
     respond_to do |format|
       format.html # index.rhtml
@@ -86,7 +86,7 @@ class PositionsController < ApplicationController
   def destroy
     
     @position = session[:facility].positions.find(params[:id])
-    s
+
     @position.destroy
     
     respond_to do |format|

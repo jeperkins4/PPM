@@ -199,34 +199,7 @@ class PositionReportsController < ApplicationController
     
     session[:report] = @sort_report = @sort_report.sort_by{|sr| sr[:position_type]}
   end
-  
-  def lateral_move     
-    @facility_employees = Employee.find(:all, :conditions=>['facility_id = ?', session[:facility].id])
-    @facility_positions = Position.find(:all, :conditions=>['facility_id = ?', session[:facility].id])
-    
-    @possible_lateral_employees = EmployeePosition.find(:all, :select=>'DISTINCT a.employee_id', :from=>['employee_positions a, employee_position_hists b'],
-    :conditions =>['a.employee_id = b.employee_id and a.employee_id IN (?) AND a.start_date < LAST_DAY(?)', @facility_employees, @criteria_date])
-    
-    @report = []
-    
-    @possible_lateral_employees.each do |ple|
-      @new_position_number = EmployeePosition.find(:all, :conditions=>['employee_id = ?',ple.employee_id])
-      @old_position_number = EmployeePositionHist.find(:all, :conditions=>['employee_id = ? AND end_date = (SELECT MAX(end_date) FROM employee_position_hists where employee_id = ?)',ple.employee_id, ple.employee_id])
-      
-      if @new_position_number.first.position_number.position_id == @old_position_number.first.position_number.position_id
-        @report += [{:position_type=> @old_position_number.first.position_number.position.position_type.position_type,
-          :position_title => @old_position_number.first.position_number.position.title,
-          :old_position_number => @old_position_number.first.position_number.position_num,
-          :new_position_number => @new_position_number.first.position_number.position_num,
-          :employee_vacate => @old_position_number.first.employee.first_name + " " + @old_position_number.first.employee.last_name ,
-          :vacate_date => @old_position_number.first.end_date,
-          :hire_date => @new_position_number.first.start_date
-        }]
-      end
-    end
-     session[:report] = @report
-  end
-  
+  s
   def export_excel    
     @now = Time.now
     @criteria_date = @now.last_month

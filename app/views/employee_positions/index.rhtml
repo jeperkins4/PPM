@@ -19,8 +19,10 @@
     <%= link_to 'Destroy', employee_position_path(employee_position), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
+ <tr>RESULTS: <%= pagination_links(@employee_position_pages)%></tr>
 </table>
-
+<tr>RESULTS: <%= pagination_links(@employee_position_pages) %></tr>
+<br />
 <br />
 
 <%= link_to 'New Employee Position', new_employee_position_path %>

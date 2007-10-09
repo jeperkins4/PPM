@@ -1,7 +1,7 @@
 Please select a report to run:
 <% form_tag(:action => :index) do -%>
   <p>
-   <%= select(:id, :selection, ["Vacancy", "Lateral Move"], {:include_blank=> true},{:onchange => "JavaScript:submit()"})%>
+   <%= select(:id, :selection, ["Vacancy"], {:include_blank=> true},{:onchange => "JavaScript:submit()"})%>
   </p>  
 <% end -%>
 <HR>

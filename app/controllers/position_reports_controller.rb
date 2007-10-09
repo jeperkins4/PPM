@@ -10,9 +10,6 @@ class PositionReportsController < ApplicationController
         session[:report_selection] = params[:id][:selection]
         
         case session[:report_selection]
-        when "Lateral Move"
-          @results = 'lateral_move'
-          lateral_move
         when "Vacancy"
           @results = 'vacancy'
           vacancy
@@ -199,7 +196,7 @@ class PositionReportsController < ApplicationController
     
     session[:report] = @sort_report = @sort_report.sort_by{|sr| sr[:position_type]}
   end
-  s
+  
   def export_excel    
     @now = Time.now
     @criteria_date = @now.last_month

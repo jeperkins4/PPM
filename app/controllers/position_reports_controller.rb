@@ -127,7 +127,7 @@ class PositionReportsController < ApplicationController
         }]
     end
     
-     session[:report] = @sort_report = @report.sort_by{|r| r[:position_type]}
+    session[:report] = @sort_report = @report.sort_by{|r| r[:position_type]}
     
   end
   

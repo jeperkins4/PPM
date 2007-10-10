@@ -3,24 +3,19 @@ class AccountabilityLogsController < ApplicationController
   layout 'administration'
   
   def index
-    unless request.post?
       @category_pages, @categories = paginate :context, :per_page => 1
-    else
-      collect
-    end
-  end
-  
-  def set_category
-    #(params[:context].nil?) ? @category = session[:contexts].first : @category = Context.find(:all, :conditions => ["id = ?", params[:context]])
-     (@area.lower_item.nil?) ? redirect_to(:action => 'index') : redirect_to(:action => :capture, :context => @context.lower_item.id)  
-  end
-  
-  def capture
-    
+      if request.post?
+        session[:questions] = params[:questions]
+        session[:context_log] = params[:log]
+        redirect_to :action => :collect
+      end
   end
   
   def collect
-    redirect_to params[:category]
+    #bang!
+    @questions = session[:questions]
+    @log = session[:context_log]
+    #redirect_to params[:category]
   end
 
   def set_calendar

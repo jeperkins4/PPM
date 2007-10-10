@@ -1,0 +1,7 @@
+<h2>Collect Test</h2>
+<% @questions.each_pair do |k,v| -%>
+question: <%= k %> response: <%= v %><br />
+<%  end -%>
+<% @log.each_pair do |w,x| -%>
+context: <%= w %> log: <%= x %><br />
+<%  end -%>

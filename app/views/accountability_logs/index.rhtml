@@ -1,6 +1,6 @@
 <h2>Accountability Log</h2>
 <p><%= session[:facility].facility %></p>
-<% form_tag 'accountability_logs', :action => "index" do %>
+<% form_tag 'accountability_logs', :enctype => 'multipart/form-data' do %>
 <%= text_field_tag :category, :page, :value => request.request_uri, :style => 'display:none;' %>
 	<% @categories.each do |category| -%>
 		<h3><b><%= category.title %></b></h3>
@@ -8,7 +8,7 @@
 			<% @questions = Prompt.find(:all, :conditions =>  ['active = ? and context_id = ?', 1, category.id]) -%> 
 			<% @questions.each do |question| -%>
 				<tr>
-				<td><b><%=  question.question %>:</b></td><td><%= text_field_tag "question[#{question.id}]" %></td>
+				<td><b><%=  question.question %>:</b></td><td><%= text_field_tag "questions[#{question.id}]" %></td>
 				</tr>
 			<% end -%>
 		</table>

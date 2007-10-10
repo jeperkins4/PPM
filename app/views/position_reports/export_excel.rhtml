@@ -3,19 +3,13 @@
 <table border=1 width='100%'>
 	<tr align='center'>
 		<td colspan=12>
-		<% if session[:report_selection] == "Vacancy" -%>
-			<h3>Position Vacancy Report - <%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date %><h3>
-		<% else -%>
-			<h3>Lateral Move Tracking Report - <%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date %><h3>
-		<% end -%>
-	</td></tr>
+		<h3>Position Vacancy Report - <%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date %><h3>
+		</td></tr>
 <tr align='center'>
 	<td colspan=12>
 <center><h3><%= @criteria_date.strftime("%B - %Y") %> Report</h3></center>
 <center><h4>NOTE: All reported rows and calculations are generated using a criteria date of <B><%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %></B></h4>
 </td></tr>
-
-<% if session[:report_selection] == "Vacancy" -%>
 	<td>
     <th>Position Type</th>
     <th>Position Number</th>
@@ -31,50 +25,16 @@
   </tr>
   </td>
   
-  <% for dep in  @report %>
+<% for dep in  @report %>
 <% @filling_name = Employee.find_by_id(dep[:employee_hire])-%>
 <% @exiting_name = Employee.find_by_id(dep[:employee_vacate])-%>
 
   <tr>
   	<td></td>
-  	<td><%= dep[:position_type] %></td>
- 	<td><%= dep[:position_number] %></td>
-	<td><%= dep[:position_title] %></td>
- 	 	<td><%= (@exiting_name) ? @exiting_name.first_name + " " + @exiting_name.last_name : "NEW" %></td>
-	<td><%= dep[:vacate_date] %></td>
-	<td><%= dep[:hire_date] %></td>
-     <td><%= (@filling_name) ? @filling_name.first_name + " " + @filling_name.last_name : "" %></td>
-	<td><%= number_to_currency(dep[:salary]) %></td>
-	<td><%= dep[:special_position_type] %></td>
-	<td><%= dep[:date_waiver_approval] %></td>
-	<td><%= dep[:validation_days]%></td>
-
+	<td><%= dep[:position_type] %></td>
+    <td><%= dep[:position_number] %></td>
+    <td><%= dep[position_title] %></td>
+   
   </tr>
-<% end %>
- 
- <% else -%>
- 
- <tr>
-    <th>Position Type</th>
-    <th>Position Title</th>
-    <th>Old Position Number</th>
-	<th>New Position Number</th>	
-    <th>Employee</th>
-	<th>Date Vacated</th>
-	<th>Start Date</th>
- </tr>
-  
-  	<% for x in @report %>
-<tr>
-	<td><%= x[:position_type] %></td>
-	<td><%= x[:position_title] %></td>
-	<td><%= x[:old_position_number] %></td>
-	<td><%= x[:new_position_number] %></td>
-	<td><%= x[:employee_vacate] %></td>
-	<td><%= x[:vacate_date] %></td>
-	<td><%= x[:hire_date] %></td>
-</tr>
-<% end %>
- 
- <% end %>
+
 </table>

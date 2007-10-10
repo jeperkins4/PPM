@@ -8,34 +8,25 @@ All Deductable Position Numbers:
 <%= x.position_num %>
 <% end %>
 <br \>
-
-Not Assigned Position Numbers:
-<% for x in  @not_assigned %>
+Not Assigned with deductions:
+<% for x in  @not_assigned_position_numbers %>
 <%= x.position_num %>
 <% end %>
 <br \>
-NEWLY ASSIGNED with deductions:
-<% for x in  @newly_assigned_with_deductions %>
+History with Current Activity with deductions:
+<% for x in  @current_assigned_with_history %>
 <%= x.position_number.position_num %>
 <% end %>
 <br \>
-History with Current Activity:
-<% for x in  @history_with_current %>
-<%= x.position_number.position_num %>
-<% end %>
-<br \>
-
-History Without Current Activity:
-<% for x in  @history_without_current %>
+History Without Current Activity with deductions:
+<% for x in  @history_with_no_current %>
 <%= x.position_number.position_num %><br \>
 <% end %>
 <br \>
-
-Current With No History Activity:
-<% for x in @current_with_no_history %>
+Current With No History Activity with deductions:
+<% for x in @current_assigned_no_history %>
 <%= x.position_number.position_num %>
 <% end %>
-
 <br \>
 <% end %>
 
@@ -56,7 +47,7 @@ Current With No History Activity:
 	<th>Date Vacated</th>
 	<th>Start Date</th>
 	<th>Employee Filling</th>
-	<th>Days Outstanding</th>	
+	<th>Vacant</th>	
   </tr>
   
 <% for dep in  @sort_report %>
@@ -71,12 +62,15 @@ Current With No History Activity:
 	<td><%= dep[:vacate_date] %></td>
 	<td><%= dep[:hire_date] %></td>
     <td><%= (@filling_name) ? @filling_name.first_name + " " + @filling_name.last_name : "" %></td>
+<% if dep[:validation_days] >= Time.days_in_month(@criteria_date.month, @criteria_date.year)%>	
+	<td><%= Time.days_in_month(@criteria_date.month, @criteria_date.year) %></td>
+<% else %>
 	<td><%= dep[:validation_days] %></td>
+<% end %>
 </tr>
 <% end %>
-  
-
 
 </table>
+
 
 <br />

@@ -48,13 +48,15 @@ class EmployeePositionsController < ApplicationController
   
   # GET /employee_positions/new
   def new
-    @assigned_numbers = EmployeePosition.find(:all, :select=>'position_number_id as id')
+    @assigned_numbers = EmployeePosition.find(:all, :select=>'position_number_id as id' )
     @assigned_employees = EmployeePosition.find(:all, :select=>'employee_id as id')
     @employee_position = EmployeePosition.new
   end
   
   # GET /employee_positions/1;edit
   def edit
+    @assigned_numbers = EmployeePosition.find(:all, :select=>'position_number_id as id', :conditions=>['id <> ?', params[:id]])
+    @assigned_employees = EmployeePosition.find(:all, :select=>'employee_id as id', :conditions=>['id <> ?', params[:id]])
     @employee_position = EmployeePosition.find(params[:id])
     session[:position] = @employee_position.position_number.position
     session[:facility] = session[:position].facility
@@ -86,6 +88,11 @@ class EmployeePositionsController < ApplicationController
   # PUT /employee_positions/1.xml
   def update
     @employee_position = EmployeePosition.find(params[:id])
+    @assigned_numbers = EmployeePosition.find(:all, :select=>'position_number_id as id', :conditions=>['id <> ?', params[:id]])
+    @assigned_employees = EmployeePosition.find(:all, :select=>'employee_id as id', :conditions=>['id <> ?', params[:id]])
+    session[:position] = @employee_position.position_number.position
+    session[:facility] = session[:position].facility
+    session[:position_number] = @employee_position.position_number
     
     respond_to do |format|
       if params[:employee_position]['end_date(1i)'] == "" ||
@@ -104,8 +111,8 @@ class EmployeePositionsController < ApplicationController
           
         else
           
-          format.html { render :action => "edit" }
-          format.xml  { render :xml => @employee_position.errors.to_xml }
+          format.html {render :action => "edit"}
+          format.xml  {render :xml => @employee_position.errors.to_xml}
           
         end
         
@@ -180,12 +187,13 @@ class EmployeePositionsController < ApplicationController
   end
   
   
-  def set_facility2
+  def set_position_new
+    
     if request.post?
       
       session[:position] = Position.find(params[:facility][:position_id])
       redirect_to new_employee_position_path   
     end
-  end
+  end 
   
 end

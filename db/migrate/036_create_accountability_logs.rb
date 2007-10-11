@@ -4,7 +4,7 @@ class CreateAccountabilityLogs < ActiveRecord::Migration
       t.column :facility_id, :integer
       t.column :context_id,  :integer
       t.column :prompt_id,   :integer
-      t.column :response,    :string
+      t.column :response,    :integer
       t.column :log_year,    :integer
       t.column :log_month,   :integer
       t.column :created_on,  :date

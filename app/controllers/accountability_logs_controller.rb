@@ -14,37 +14,62 @@ class AccountabilityLogsController < ApplicationController
   def collect
     @questions = session[:questions]
     @log = session[:context_log]
-    @month = session[:month]
+     (session[:month]) ? @month = session[:month] : @month = Time.now.month
     @year = Time.now.year
     @log.each_pair do | context_id, log_detail|
       @context_id = context_id
-      @log_detail = log_detail
-    end
-    
-    @questions.each_pair do |prompt_id, response|
-      @update_response = AccountabilityLogs.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and prompt_id = ? and facility_id = ?', @year, @month, @context_id, prompt_id, session[:facility].id])
-      unless @update_response then
-        @question_response = AccountabilityLogs.new(:facility_id => session[:facility].id,
-                                           :context_id => @context_id,
-                                           :prompt_id => prompt_id,
-                                           :response => response,
-                                           :log_year => @year,
-                                           :log_month => @month,
-                                           :created_by => session[:user]     
-        )
-        @question_response.save
-      else
-        @update_response.update_attributes(:facility_id => session[:facility].id,
-                                           :context_id => @context_id,
-                                           :prompt_id => prompt_id,
-                                           :response => response,
-                                           :log_year => @year,
-                                           :log_month => @month,
-                                           :created_by => session[:user]      
-        )
+      if log_detail != "" then
+        @update_log = AccountabilityLogDetails.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and facility_id = ?', @year, @month, @context_id, session[:facility].id])
+        unless @update_log then
+          @log_details_new = AccountabilityLogDetails.new(:facility_id => session[:facility].id,
+                                                          :context_id => @context_id,
+                                                          :detail_response => log_detail,
+                                                          :log_year => @year,
+                                                          :log_month => @month,
+                                                          :created_by => session[:user]
+          )
+          @log_details_new.save
+        else
+          @update_log.update_attributes(:facility_id => session[:facility].id,
+                                        :context_id => @context_id,
+                                        :detail_response => log_detail,
+                                        :log_year => @year,
+                                        :log_month => @month,
+                                        :created_by => session[:user]
+          )
+        end
       end
     end
-    
+    @not_updated = 0
+    @questions.each_pair do |prompt_id, response|
+      if response.to_s =~ /\A[+-]?\d+\Z/ then
+        @update_response = AccountabilityLogs.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and prompt_id = ? and facility_id = ?', @year, @month, @context_id, prompt_id, session[:facility].id])
+        unless @update_response then
+          @question_response = AccountabilityLogs.new(:facility_id => session[:facility].id,
+                                                      :context_id => @context_id,
+                                                      :prompt_id => prompt_id,
+                                                      :response => response,
+                                                      :log_year => @year,
+                                                      :log_month => @month,
+                                                      :created_by => session[:user]     
+          )
+          @question_response.save
+        else
+          @update_response.update_attributes(:facility_id => session[:facility].id,
+                                             :context_id => @context_id,
+                                             :prompt_id => prompt_id,
+                                             :response => response,
+                                             :log_year => @year,
+                                             :log_month => @month,
+                                             :created_by => session[:user]      
+          )
+        end
+      else
+        @not_updated += 1
+      end
+    end
+     (@not_updated > 0) ? flash[:notice] = "The information for this category was recorded/updated. But #{@not_updated} fields not recorded/updated, count must be a number." : flash[:notice] = "The information for this category was recorded/updated. "
+    redirect_to :back
   end
   
   def set_calendar

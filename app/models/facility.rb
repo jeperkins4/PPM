@@ -8,4 +8,5 @@ class Facility < ActiveRecord::Base
   has_many :incidents
   has_many :employees
   has_many :accountability_logs
+  has_many :accountability_log_details
 end

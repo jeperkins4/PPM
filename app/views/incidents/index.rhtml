@@ -1,5 +1,7 @@
 <h2>Incidents</h2>
-
+<% unless @incident_pages.length < 2 -%>
+Page: <%= pagination_links(@incident_pages)%>
+<% end -%>
 <table>
   <tr>
     <th>Mins Number</th>
@@ -22,7 +24,6 @@
   </tr>
 <% end %>
 </table>
-
 <br />
 
 <%= link_to 'New Incident', new_incident_path %>

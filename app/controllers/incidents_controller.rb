@@ -4,7 +4,13 @@ class IncidentsController < ApplicationController
   layout 'administration'
   # GET /incidents.xml
   def index
-    @incidents = session[:facility].incidents.find(:all)
+    
+    @incident_pages = Paginator.new self, session[:facility].incidents.count, 20, params[:page]
+    @incidents = session[:facility].incidents.find :all, 
+                                                   :order => 'incident_date, mins',
+                                                   :limit  =>  @incident_pages.items_per_page,
+                                                   :offset =>  @incident_pages.current.offset,
+                                                   :conditions => ['investigation_closed <> ?', 1]
     
     respond_to do |format|
       format.html # index.rhtml

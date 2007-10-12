@@ -6,8 +6,7 @@ class EmployeePositionsController < ApplicationController
   # GET /employee_positions
   # GET /employee_positions.xml
   def index
-    flash[:notice] = nil
-    
+       
     @position_numbers = []
     @employee_position_all = []
     

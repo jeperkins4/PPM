@@ -13,6 +13,9 @@ class PositionReportsController < ApplicationController
         when "Vacancy"
           @results = 'vacancy'
           vacancy
+        when "Deduction"
+          @results = 'deduction'
+          vacancy
         end
       end
     end    
@@ -42,7 +45,7 @@ class PositionReportsController < ApplicationController
                                                             and id not in (select position_number_id from employee_position_hists where start_date <= LAST_DAY(?))
                                                             and created_on <= LAST_DAY(?) and datediff(LAST_DAY(?),created_on) > ?', dpn.id,
                                                             @criteria_date, @criteria_date,@criteria_date, @criteria_date,dpn.position.position_type.deduction_days])    
-      
+   
       @current_assigned_no_history += EmployeePosition.find(:all,:from =>'employee_positions ep, position_numbers pn',:conditions =>['ep.position_number_id = ? and ep.position_number_id = pn.id
                                                              and ep.start_date between ? AND ? and ep.position_number_id not in (select position_number_id from employee_position_hists)
                                                              and datediff(ep.start_date ,pn.created_on) > ?', dpn.id, @criteria_date.at_beginning_of_month, 
@@ -73,9 +76,17 @@ class PositionReportsController < ApplicationController
         :hire_date => "",
         :employee_hire => "",
         :salary => napn.position.salary,
+        :salary120 => (napn.position.salary * 1.2),
+        :salaryday => ((napn.position.salary * 1.2) / 365),
+        :totaldeduc => (((napn.position.salary * 1.2) / 365) *
+                      (@criteria_date.at_end_of_month.to_date - 
+                            napn.created_on.to_date - 
+                            napn.position.position_type.deduction_days)),
         :special_position_type => napn.position_type,
         :date_waiver_approval => napn.waiver_approval_date,
-        :validation_days => @criteria_date.at_end_of_month.to_date - napn.created_on.to_date - Time.days_in_month(@criteria_date.month, @criteria_date.year)
+        :validation_days => @criteria_date.at_end_of_month.to_date - 
+                            napn.created_on.to_date - 
+                            napn.position.position_type.deduction_days
       }]
     end
 
@@ -87,11 +98,19 @@ class PositionReportsController < ApplicationController
         :employee_vacate => "",
         :vacate_date => "",
         :hire_date => canh.start_date,
-        :employee_hire => canh.employee.first_name + " " + canh.employee.last_name,
+        :employee_hire => canh.employee_id,
         :salary => canh.position_number.position.salary,
+        :salary120 => (canh.position_number.position.salary * 1.2),
+        :salaryday => ((canh.position_number.position.salary * 1.2) / 365),
+        :totaldeduc => (((canh.position_number.position.salary * 1.2) / 365) *
+                      (canh.start_date.to_date -
+                            canh.created_on.to_date -
+                            canh.position_number.position.position_type.deduction_days)),
         :special_position_type => canh.position_number.position_type,
         :date_waiver_approval => canh.position_number.waiver_approval_date,
-        :validation_days => @criteria_date.at_end_of_month.to_date - canh.start_date.to_date - Time.days_in_month(@criteria_date.month, @criteria_date.year)
+        :validation_days => canh.start_date.to_date -
+                            canh.created_on.to_date -
+                            canh.position_number.position.position_type.deduction_days
        }]
     end
     
@@ -105,9 +124,17 @@ class PositionReportsController < ApplicationController
         :hire_date => cawh.start_date,
         :employee_hire => cawh.filling_employee,
         :salary => cawh.position_number.position.salary,
+        :salary120 => (cawh.position_number.position.salary * 1.2),
+        :salaryday => ((cawh.position_number.position.salary * 1.2) / 365),
+        :totaldeduc => (((cawh.position_number.position.salary * 1.2) / 365) *
+                      (cawh.start_date.to_date - 
+                            cawh.end_date - 
+                            cawh.position_number.position.position_type.deduction_days)),
         :special_position_type => cawh.position_number.position_type,
         :date_waiver_approval => cawh.position_number.waiver_approval_date,
-        :validation_days => cawh.start_date.to_date - cawh.end_date.to_date - Time.days_in_month(@criteria_date.month, @criteria_date.year)
+        :validation_days => cawh.start_date.to_date - 
+                            cawh.end_date - 
+                            cawh.position_number.position.position_type.deduction_days
        }]
     end
     
@@ -121,13 +148,22 @@ class PositionReportsController < ApplicationController
         :hire_date => "",
         :employee_hire => "",
         :salary => hwnc.position_number.position.salary,
+        :salary120 => (hwnc.position_number.position.salary * 1.2),
+        :salaryday => ((hwnc.position_number.position.salary * 1.2) / 365),
+        :totaldeduc => (((hwnc.position_number.position.salary * 1.2) / 365) *
+                      (@criteria_date.at_end_of_month.to_date - 
+                            hwnc.end_date.to_date - 
+                            hwnc.position_number.position.position_type.deduction_days)),
         :special_position_type => hwnc.position_number.position_type,
         :date_waiver_approval => hwnc.position_number.waiver_approval_date,
-        :validation_days => @criteria_date.at_end_of_month.to_date - hwnc.end_date - Time.days_in_month(@criteria_date.month, @criteria_date.year)
+        :validation_days => @criteria_date.at_end_of_month.to_date - 
+                            hwnc.end_date.to_date - 
+                            hwnc.position_number.position.position_type.deduction_days
         }]
-    end
-    
-    session[:report] = @sort_report = @report.sort_by{|r| r[:position_type]}
+      end
+
+     @totaldeduction = 0 
+     session[:report] = @sort_report = @report.sort_by{|r| r[:position_type]}
     
   end
   
@@ -135,6 +171,7 @@ class PositionReportsController < ApplicationController
   def export_excel    
     @now = Time.now
     @criteria_date = @now.last_month
+    @totaldeduction = 0
     
     @report = session[:report]
     response.headers['CONTENT-TYPE'] = 'application/vnd.ms-excel'

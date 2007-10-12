@@ -1,5 +1,13 @@
 <h2>Incidents</h2>
-<% unless @incident_pages.length < 2 -%>
+<p>
+	<% if @status.to_i == 0 -%>
+	<b>Open</b> | <%= link_to "Closed", :action => 'index', :status => 1 %>
+	<% end -%>
+	<% if @status.to_i == 1 -%>
+	<%= link_to "Open", :action => 'index', :status => 0 %> | <b>Closed</b>
+	<% end -%>
+</p>
+<% if @incident_pages.length.to_i > 1 -%>
 Page: <%= pagination_links(@incident_pages)%>
 <% end -%>
 <table>
@@ -12,14 +20,27 @@ Page: <%= pagination_links(@incident_pages)%>
     <th></th>
   </tr>
   
-<% for incident in @incidents %>
+<% for incident in @incidents -%>
+  <% unless @status.to_i == 1 -%>
+  
+  	<% @date_diff = Time.now.to_date - incident.incident_date.to_date -%>
+	 <% if @date_diff.to_i >= 30 -%>
+	   <% @bg_color = '#FFFF00' -%>
+	 <% end -%>
+	 <% if @date_diff.to_i >= 60 -%>
+	   <% @bg_color = '#FF9900' -%>
+	 <% end -%>
+     <% if @date_diff.to_i >= 90 -%>
+	   <% @bg_color = '#FF3300' -%>	
+     <% end -%>
+  <% end -%>
   <tr>
-    <td><%=h incident.mins %></td>
-    <td><%=h incident.incident_date %></td>
-    <td><%=h (incident.incident_type) ? incident.incident_type.incident_type : incident.incident_type_other %></td>
-    <td><%=h (incident.contract_manager_notified_date) ? incident.contract_manager_notified_date : 'Pending' %></td>
-    <td><%=h incident.action_type.action rescue 'Pending' %></td>
-    <td><%= link_to 'Show', incident_path(incident) %>
+    <td bgcolor="<%= @bg_color rescue '' %>"><%=h incident.mins %></td>
+    <td bgcolor="<%= @bg_color rescue '' %>"><%=h incident.incident_date %></td>
+    <td bgcolor="<%= @bg_color rescue '' %>"><%=h (incident.incident_type) ? incident.incident_type.incident_type : incident.incident_type_other %></td>
+    <td bgcolor="<%= @bg_color rescue '' %>"><%=h (incident.contract_manager_notified_date) ? incident.contract_manager_notified_date : 'Pending' %></td>
+    <td bgcolor="<%= @bg_color rescue '' %>"><%=h incident.action_type.action rescue 'Pending' %></td>
+    <td bgcolor="<%= @bg_color rescue '' %>"><%= link_to 'Show', incident_path(incident) %>
     <%= link_to 'Edit', edit_incident_path(incident) %>
   </tr>
 <% end %>

@@ -483,10 +483,6 @@ table.renderedtable
     border-color: #555;
 }
 
-td {
-	background: #E4E4C3;
-}
-
 #contractsearch table {
 	border: 1px solid black;
 }
@@ -760,7 +756,7 @@ table {
 }
 
 tr{
-	background:none;
+	background: #E4E4C3;
 }
 
 th {

@@ -80,11 +80,13 @@
     <b>Facility Investigation Complete:</b><br />
     <%= f.date_select :facility_investigation_complete_date, { :include_blank => true } %>
   </p></td>
-  <td><p>  <b>Investigation Closed: </b><%= f.check_box :investigation_closed %><br />
+  <td><p>  <b>Date Investigation Closed: </b><%= f.check_box :investigation_closed %><br />
     <%= f.date_select :investigation_closed_date, { :include_blank => true } %> </p></td>
   </tr>
   <tr>
-  	<td colspan=2><b>Entity Closing Investigation:</b><br />
+  	<td><b>Entity Closing Investigation:</b><br />
+    <%= f.text_field :entity_closing %> <p></td>
+	<td><b>Only:</b><br />
     <%= f.text_field :entity_closing %> <p></td>
   </tr>
   <tr>

@@ -6,19 +6,12 @@ class EmployeePositionsController < ApplicationController
   # GET /employee_positions
   # GET /employee_positions.xml
   def index
-       
-    @position_numbers = []
-    @employee_position_all = []
     
-    @positions = session[:facility].positions.find(:all,:order=>'title ASC')
-    
-    @positions.each do |p|
-      @position_numbers += PositionNumber.find(:all,:conditions=>['position_id = ?', p.id])
-    end
-    
-    @position_numbers.each do |pf|
-      @employee_position_all += EmployeePosition.find(:all,:conditions => ['position_number_id = ?', pf.id])
-    end
+  @employee_position_all = EmployeePosition.find(:all, 
+                           :from=>'employee_positions ep, position_numbers pn, positions p, facilities f',
+                           :conditions=>['ep.position_number_id = pn.id and pn.position_id = p.id and p.facility_id = f.id
+                                          and f.id = ?', session[:facility][:id]])
+    #end
     
     @employee_position_pages, @employee_positions = paginate_collection @employee_position_all, :page => params[:page]
     

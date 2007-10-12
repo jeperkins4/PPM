@@ -5,8 +5,8 @@ class PositionReportsController < ApplicationController
     @now = Time.now
     @criteria_date = @now.last_month
         
-    if request.post?
-      unless params[:id] == ""
+    if request.post?      
+       unless params[:id] == ""
         session[:report_selection] = params[:id][:selection]
         
         case session[:report_selection]
@@ -40,7 +40,7 @@ class PositionReportsController < ApplicationController
     @history_with_no_current = []
     @report = []
     
-    @deductable_position_numbers.each do |dpn|     
+ @deductable_position_numbers.each do |dpn|     
       @not_assigned_position_numbers += PositionNumber.find(:all, :conditions =>['id = ? and id not in(select position_number_id from employee_positions where start_date <= LAST_DAY(?))
                                                             and id not in (select position_number_id from employee_position_hists where start_date <= LAST_DAY(?))
                                                             and created_on <= LAST_DAY(?) and datediff(LAST_DAY(?),created_on) > ?', dpn.id,

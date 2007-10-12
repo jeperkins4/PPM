@@ -5,7 +5,10 @@ class PositionNumbersController < ApplicationController
   # GET /position_numbers.xml
   def index
     
-    @position_numbers = session[:facility].position_numbers.find(:all, :order=>'position_num')
+    @position_numbers_filter = session[:facility].position_numbers.find(:all, :order=>'position_num')
+    
+       
+    @position_number_pages, @position_numbers = paginate_collection @position_numbers_filter, :page => params[:page]
     
     respond_to do |format|
       format.html # index.rhtml

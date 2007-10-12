@@ -6,6 +6,6 @@ class AddPrecisionToSalaryOnPositionAndEmployeePositionHist < ActiveRecord::Migr
     end
     
     def self.down
-      raise ActiveRecord::IrreversibleMigration
+      
     end
   end

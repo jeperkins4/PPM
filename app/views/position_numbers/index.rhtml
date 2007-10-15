@@ -1,5 +1,7 @@
 <h1>Position Numbers</h1>
 
+<%= link_to 'Add New Position Number', new_position_number_path %>
+
 <table>
   <tr>
   	<% if session[:access_level] == 'Administrator' -%>
@@ -39,4 +41,4 @@
 
 <br />
 
-<%= link_to 'New Position Number', new_position_number_path %>
+<%= link_to 'Add New Position Number', new_position_number_path %>

@@ -1,5 +1,5 @@
-<h1>Current Employee Positions</h1>
-
+<h1>Employee Position Tracking</h1>
+<%= link_to 'Track new employee/position number', new_employee_position_path %>
 <table>
   <tr>
   	<th>Facility</th>
@@ -16,7 +16,9 @@
     <td><%=h employee_position.position_number.position_num %></td>
     <td><%=h employee_position.employee.first_name + ' ' + employee_position.employee.last_name %></td>
     <td><%= link_to 'Show', employee_position_path(employee_position) %> <%= link_to 'Edit', edit_employee_position_path(employee_position) %>
+<% if session[:access_level] == 'Administrator' -%>	
     <%= link_to 'Destroy', employee_position_path(employee_position), :confirm => 'Are you sure?', :method => :delete %></td>
+<% end %>
   </tr>
 <% end %>
  <tr>RESULTS: <%= pagination_links(@employee_position_pages)%></tr>
@@ -25,4 +27,4 @@
 <br />
 <br />
 
-<%= link_to 'New Employee Position', new_employee_position_path %>
+<%= link_to 'Track new employee/position number', new_employee_position_path %>

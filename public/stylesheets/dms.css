@@ -778,12 +778,11 @@ td {
 	margin-left: 40px;
 	border:solid 1px #000000;
 	border-collapse: collapse;
-	background-color:#ffffff;
 }
 
 .print tr{
-	background:none;
 	border:solid 1px #000000;
+	background-color:#ffffff;
 }
 
 .print th {
@@ -796,7 +795,6 @@ td {
 
 .print td {
 	padding:0 10px;
-	background-color:#ffffff;
 	text-align: left;
 	border:solid 1px #000000;
 }

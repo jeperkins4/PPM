@@ -1,51 +1,48 @@
 <h2>Report Dashboard</h2>
-<br />
 
 <% form_for(:report, :action => :index, :method => 'post') do |f| %>
+
 <table>
-<b>Filters: <%# @search_string %></b>
 	<tr>
 		<td width='15%'>Report Type:</td>
 		<td>
-			<%= select_tag :report_type,
- 			    		 @type_select,
-                          :onchange => "JavaScript:submit()" %></td></tr>
-<tr><td>Use Date:</td><td><%= select_tag :use_date,
- 			    		  @date_select,
-                          :onchange => "JavaScript:submit()" %></td></tr>
-<% if @use_date == 'Yes' -%>
-	<tr><td>Between:</td><td> 
-<%= f.date_select :begin_date %> and 
-<%= f.date_select :end_date %></td></tr>
-<% end -%>
-<% if @type == 'Incident' -%>
-	<tr><td>MINS Number:</td><td> <%= f.text_field :mins %></td></tr>
-	<tr><td>Incident Type:</td><td><%= f.select( "incident_type_id", IncidentType.find(:all).collect {|it| [ it.incident_type, it.id ] }, { :include_blank => true }) %></td></tr>
-<% end -%>
-<tr><td><br /><%= button_to "Build Report" %></td><td>
-<%=	link_to(image_tag("/images/excel_large.gif", :border => 0), :action => :export_excel )%>
-<%#	link_to(image_tag("/images/pdficon_large.gif", :border => 0), :action => :export_pdf)%>
-</td></tr>
+			<%= f.select :report_type, ["Choose Type","Incident"], {:selected => (session[:type]) ? session[:type] : ''}, {:onchange => "JavaScript:submit()"} %>
+		</td>
+	</tr>
+	<tr>
+		<td>Use Date:</td>
+		<td><%= f.select :use_date, ["No","Yes"], {:selected => (session[:use_date]) ? session[:use_date] : ''}, {:onchange => "JavaScript:submit()"} %>
+		</td>
+	</tr>
+	<% if session[:use_date] == 'Yes' -%>
+		<tr>
+			<td>Between:</td>
+			<td><%= f.date_select :begin_date %> and <%= f.date_select :end_date %></td>
+		</tr>
+	<% end -%>
+	<% if session[:type] == 'Incident' -%>
+		<tr>
+		    <td width='15%'>Status:</td>
+			<td><%= f.select :status, ["Open","Closed","All"], {:selected => (session[:status]) ? session[:status] : ''}, {:onchange => "JavaScript:submit()"} %></td>
+	    </tr>
+		<tr>
+			<td>MINS Number:</td>
+			<td> <%= f.text_field :mins %></td>
+		</tr>
+		<tr>
+			<td>Incident Type:</td>
+			<td><%= f.select( "incident_type_id", IncidentType.find(:all).collect {|it| [ it.incident_type, it.id ] }, { :include_blank => true }) %></td>
+		</tr>
+	<% end -%>
+	<tr>
+		<td><br /><%= button_to "Build Report" %></td>
+		<td><%=	link_to(image_tag("/images/excel_large.gif", :border => 0), :action => :export_excel )%></td>
+	</tr>
 </table>
-<% end -%>	
+<% end -%>
+
 <% unless session[:report].nil? -%>	
 <table class="print">
-	<th><b>MINS Number</b></th>
-	<th><b>Incident Date</b></th>
-	<th><b>Facility</b></th>
-	<th><b>Incident Type</b></th>
-	<th><b>Class</b></th>
-	<th><b>Investigator</b></th>
-<% session[:report].each do |incident| -%>
-<tr>
-<td><a href='incidents/<%= incident.id %>'><%= incident.mins %></a></td>
-<td><%= incident.incident_date %></td>
-<td><%= incident.facility.facility %></td>
-<td><%= incident.incident_type.incident_type %></td>
-<td><%= incident.incident_class.incident_class rescue 'Pending' %></td>
-<% @investigator = Investigator.find_by_id(incident.investigator_id) -%>
-<td><%=h @investigator.firstname + ' ' + @investigator.lastname  rescue 'Pending' %></td>
-</tr>
-<% end -%>
+	<%= render :partial => session[:type].downcase %>
 </table>
 <% end -%>

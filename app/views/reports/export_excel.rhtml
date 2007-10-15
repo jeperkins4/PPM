@@ -1,27 +1,8 @@
 <table border=1 width='100%'>
 	<tr align='center'>
 		<td colspan=6>
-			<h3>Incident Report - <%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date %><h3>
+			<h3><%= session[:type] %> Report - <%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date %><h3>
 		<td>
 	</tr>
-	<tr align='center'>
-	<th><b>Mins Number</b></th>
-	<th><b>Incident Date</b></th>
-	<th><b>Facility</b></th>
-	<th><b>Incident Type</b></th>
-	<th><b>Class</b></th>
-	<th><b>Investigator</b></th>
-</tr>
-<% @incidents.each do |incident| -%>
-
-<tr align='center'>
-<td><%= incident.mins %></td>
-<td><%= incident.incident_date %></td>
-<td><%= incident.facility.facility %></td>
-<td><%= incident.incident_type.incident_type %></td>
-<td><%= incident.incident_class.incident_class rescue 'Pending' %></td>
-<% @investigator = Investigator.find_by_id(incident.investigator_id) -%>
-<td><%=h @investigator.firstname + ' ' + @investigator.lastname  rescue 'Pending' %></td>
-</tr>
-<% end -%>
+<%= render :partial => session[:type].downcase %>
 </table>

@@ -3,7 +3,7 @@ class InvestigatorsController < ApplicationController
   layout 'administration'
   # GET /investigators.xml
   def index
-    @investigators = Investigator.find(:all)
+    @investigators = session[:facility].investigators.find(:all)
 
     respond_to do |format|
       format.html # index.rhtml

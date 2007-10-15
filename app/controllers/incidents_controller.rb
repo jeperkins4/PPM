@@ -10,14 +10,6 @@ class IncidentsController < ApplicationController
                                                     :order => 'incident_date, mins',
                                                     :per_page => 20,
                                                     :conditions => ['investigation_closed = ? and facility_id = ?', @status, session[:facility].id]
-
-    
-#    @incident_pages = Paginator.new self, session[:facility].incidents.count, 20, params[:page]
-#    @incidents = session[:facility].incidents.find :all, 
-#                                                   :order => 'incident_date, mins',
-#                                                   :limit  =>  @incident_pages.items_per_page,
-#                                                   :offset =>  @incident_pages.current.offset,
-#                                                   :conditions => ['investigation_closed = ?', @status]
     
     respond_to do |format|
       format.html # index.rhtml

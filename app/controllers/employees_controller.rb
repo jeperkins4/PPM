@@ -3,11 +3,10 @@ class EmployeesController < ApplicationController
   layout 'administration'
   
   # GET /employees
-  # GET /employees.xml
+  # GET /employees.xml  
   def index
     
-    @employee_filter =  session[:facility].employees.find(:all, :order =>['first_name, last_name'])
-    
+    @employee_filter =  session[:facility].employees.find(:all, :order =>['first_name, last_name'])     
     @employee_pages, @employees = paginate_collection @employee_filter, :page => params[:page]
     
     respond_to do |format|
@@ -75,13 +74,26 @@ class EmployeesController < ApplicationController
   # DELETE /employees/1
   # DELETE /employees/1.xml
   def destroy
-   
-       @employee = session[:facility].employees.find(params[:id])
-       @employee.destroy
+    
+    @employee = session[:facility].employees.find(params[:id])
+    @employee.destroy
     
     respond_to do |format|
       format.html { redirect_to employees_url }
       format.xml  { head :ok }
     end
   end
+  
+  def set_filter
+    session[:search_dropdown] = params[:id][:filter_drop] rescue ''
+    session[:search_text] = params[:employee][:filter_text] rescue ''
+    if session[:search_dropdown].to_s != nil and session[:search_dropdown] != "" then
+      session[:test] =  @search = session[:search_dropdown] + " like " + '"' + session[:search_text] + "%%" + '"'
+      @employee_filter =  session[:facility].employees.find(:all, :conditions=> ["#{@search}"], :order =>['first_name, last_name'])
+      @employee_pages, @employees = paginate_collection @employee_filter, :page => params[:page]
+      render :action => 'index'
+    else
+      redirect_to :action => 'index'
+    end   
+  end  
 end

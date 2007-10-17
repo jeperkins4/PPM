@@ -32,7 +32,7 @@
                 <div id='toptools_back'>
 				  <% if session[:access_level] == 'Administrator' -%>
 	  		        <div id='search'>
-				      <% form_for :set_facility do |f| -%>
+				      <% form_for (:set_facility, :url => {:action => :index}) do |f| -%>
 	 			        <label class='accessibility' for='facility_facility_id'>Select A Facility to Manage</label>
   	                    <%= f.select(:facility_id, Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true, :selected => (session[:facility]) ? session[:facility].id : '' },{:onchange => "JavaScript:submit()"}) -%>
                       	<%= f.text_field :return_page, :value => @page,  :style => 'display:none;' %>

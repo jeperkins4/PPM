@@ -2,11 +2,21 @@
 <%= link_to 'Add New Employee', new_employee_path %>
 <br \><br \>
 <tr>RESULTS: <%= pagination_links(@employee_pages)%></tr>
+<br \>
+
+<table>
+	
+<% form_for(:employee, :url => {:action => :set_filter}) do |f| %>
+  <tr><td>	Filter: <%= select(:id, :filter_drop, ["first_name","last_name", "tea_status"], {:include_blank=> true})%></td.
+	<td><%= f.text_field :filter_text %></td> <td><%= button_to "Filter" %></td>
+ <% end %>
+</tr>
 <table>
   <tr>
     <th>Facility</th>
     <th>First name</th>
     <th>Last name</th>
+    <th>TEA Status</th>
     <th>Active</th>
 	<th></th>
   </tr>
@@ -16,6 +26,7 @@
     <td><%=h employee.facility.facility %></td>
     <td><%=h employee.first_name %></td>
     <td><%=h employee.last_name %></td>
+	 <td><%=h employee.tea_status.upcase %></td>
     <td><%=h (employee.active == 1)? "Yes":"No" -%></td>
     <td><%= link_to 'Show', employee_path(employee) %> <%= link_to 'Edit', edit_employee_path(employee) %>
 <% if session[:access_level] == 'Administrator' -%>	

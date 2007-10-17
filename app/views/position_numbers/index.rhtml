@@ -2,7 +2,6 @@
 
 <%= link_to 'Add New Position Number', new_position_number_path %>
 
-
 <table>	
 <% form_for(:position_number, :url => {:action => :set_filter}) do |f| %>
   <tr><td>	Filter: <%= select(:id, :filter_drop, [["Position Number","pn.position_num"],["Position Title","p.title"]], {:include_blank=> true})%></td.
@@ -43,11 +42,15 @@
 	</td>
   </tr>
 <% end %>
-<tr>RESULTS: <%= pagination_links(@position_number_pages)%> </tr>
+
+<% if @position_number_pages != nil then %>
+<tr>RESULTS:  <%= pagination_links(@position_number_pages)%> </tr>
+<% end %>
+
 </table>
-
+<% if @position_number_pages != nil then %>
 <tr>RESULTS: <%= pagination_links(@position_number_pages)%> </tr>
-
+<% end %>
 <br />
 
 <%= link_to 'Add New Position Number', new_position_number_path %>

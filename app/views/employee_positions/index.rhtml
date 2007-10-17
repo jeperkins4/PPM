@@ -31,9 +31,13 @@
 <% end %>
   </tr>
 <% end %>
+<% if @employee_position_pages != nil then %>
  <tr>RESULTS: <%= pagination_links(@employee_position_pages)%></tr>
+ <% end %>
 </table>
-<tr>RESULTS: <%= pagination_links(@employee_position_pages) %></tr>
+<% if @employee_position_pages != nil then %>
+ <tr>RESULTS: <%= pagination_links(@employee_position_pages)%></tr>
+ <% end %>
 <br />
 <br />
 

@@ -89,8 +89,8 @@ class EmployeesController < ApplicationController
     session[:search_text] = params[:employee][:filter_text] rescue ''
     if session[:search_dropdown].to_s != nil and session[:search_dropdown] != "" then
       session[:test] =  @search = session[:search_dropdown] + " like " + '"' + session[:search_text] + "%%" + '"'
-      @employee_filter =  session[:facility].employees.find(:all, :conditions=> ["#{@search}"], :order =>['first_name, last_name'])
-      @employee_pages, @employees = paginate_collection @employee_filter, :page => params[:page]
+      @employees =  session[:facility].employees.find(:all, :conditions=> ["#{@search}"], :order =>['first_name, last_name'])
+#      @employee_pages, @employees = paginate_collection @employee_filter, :page => params[:page]
       render :action => 'index'
     else
       redirect_to :action => 'index'

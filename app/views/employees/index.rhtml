@@ -1,7 +1,7 @@
 <h1>Employees</h1>
 <%= link_to 'Add New Employee', new_employee_path %>
 <br \><br \>
-<tr>RESULTS: <%= pagination_links(@employee_pages)%></tr>
+
 <br \>
 
 <table>
@@ -34,9 +34,14 @@
 <% end %>
   </tr>
 <% end %>
+<% if @employee_pages  != nil then %>
+<tr>RESULTS: <%= pagination_links(@employee_pages)%></tr>
+<% end %>
 </table>
 <br />
+<% if @employee_pages != nil then %>
 <tr>RESULTS: <%= pagination_links(@employee_pages)%></tr>
+<% end %>
 <br />
 
 

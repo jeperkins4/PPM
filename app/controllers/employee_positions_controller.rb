@@ -197,12 +197,12 @@ class EmployeePositionsController < ApplicationController
       @search = 'ep.employee_id = e.id and ep.position_number_id = pn.id and pn.position_id = p.id and p.facility_id = f.id and ' +
                  session[:search_dropdown] + " like " + '"' + session[:search_text] + "%" + '"' + ' and f.id = ?'
       
-     @employee_position_all = EmployeePosition.find(:all, :select => 'ep.id as id, ep.position_number_id, ep.employee_id, ep.start_date,
+     @employee_positions = EmployeePosition.find(:all, :select => 'ep.id as id, ep.position_number_id, ep.employee_id, ep.start_date,
                                                  ep.end_date', :order=>'p.title',
     :from=>'employees e, employee_positions ep, position_numbers pn, positions p, facilities f',
     :conditions=>["#{@search}", session[:facility][:id]])
     
-      @employee_position_pages, @employee_positions = paginate_collection @employee_position_all, :page => params[:page]
+  #    @employee_position_pages, @employee_positions = paginate_collection @employee_position_all, :page => params[:page]
       render :action => 'index'
     else
       redirect_to :action => 'index'

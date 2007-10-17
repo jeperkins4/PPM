@@ -85,4 +85,20 @@ class PositionNumbersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+   def set_filter
+    session[:search_dropdown] = params[:id][:filter_drop] rescue ''
+    session[:search_text] = params[:position_number][:filter_text] rescue ''
+    if session[:search_dropdown].to_s != nil and session[:search_dropdown] != "" then
+      @search = 'pn.position_id = p.id and ' + session[:search_dropdown] + " like " + '"' + session[:search_text] + "%%" + '"' + 
+      ' and p.facility_id = ?'
+      @position_numbers_filter =  PositionNumber.find(:all, :select => 'pn.id as id, pn.position_id, pn.position_num, pn.position_type,
+       pn.waiver_approval_date, pn.created_on',:from => 'position_numbers pn , positions p',
+                  :conditions=> ["#{@search}",session[:facility][:id]],:order=>'pn.position_num')
+      @position_number_pages, @position_numbers = paginate_collection @position_numbers_filter, :page => params[:page]
+      render :action => 'index'
+    else
+      redirect_to :action => 'index'
+    end   
+  end  
 end

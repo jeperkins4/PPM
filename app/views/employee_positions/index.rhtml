@@ -1,5 +1,15 @@
 <h1>Employee Position Tracking</h1>
 <%= link_to 'Track new employee/position number', new_employee_position_path %>
+
+<table>
+	
+<% form_for(:employee_position, :url => {:action => :set_filter}) do |f| %>
+  <tr><td>	Filter: <%= select(:id, :filter_drop, [["Position Number","pn.position_num"],["Position Title","p.title"],["First Name","e.first_name"],["Last Name","e.last_name"]], {:include_blank=> true})%></td.
+	<td><%= f.text_field :filter_text %></td> <td><%= button_to "Filter" %></td>
+ <% end %>
+</tr>
+<table>
+
 <table>
   <tr>
   	<th>Facility</th>

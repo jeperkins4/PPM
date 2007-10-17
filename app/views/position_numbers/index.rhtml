@@ -2,6 +2,15 @@
 
 <%= link_to 'Add New Position Number', new_position_number_path %>
 
+
+<table>	
+<% form_for(:position_number, :url => {:action => :set_filter}) do |f| %>
+  <tr><td>	Filter: <%= select(:id, :filter_drop, [["Position Number","pn.position_num"],["Position Title","p.title"]], {:include_blank=> true})%></td.
+	<td><%= f.text_field :filter_text %></td> <td><%= button_to "Filter" %></td>
+ <% end %>
+</tr>
+</table>
+	
 <table>
   <tr>
   	<% if session[:access_level] == 'Administrator' -%>

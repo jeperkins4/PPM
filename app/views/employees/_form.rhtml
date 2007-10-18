@@ -14,11 +14,13 @@
     <%= f.text_field :last_name %>
   </p>
   
-  <b>TEA Status</b><br />
+  <b>Employee Status</b><br />
   
-   <p> <%= radio_button "employee", "tea_status", "certified", :checked => true %> Certified &nbsp;&nbsp
-   <%= radio_button "employee", "tea_status", "facility" %> TEA Facility &nbsp;&nbsp
-	<%= radio_button "employee", "tea_status", "academy" %>TEA Academy
+   <p> 
+    <%= radio_button "employee", "tea_status", "facility", :checked => true %> TEA Facility &nbsp;&nbsp
+	<%= radio_button "employee", "tea_status", "academy" %>TEA Academy &nbsp;&nbsp
+    <%= radio_button "employee", "tea_status", "certified" %> Certified &nbsp;&nbsp
+	<%= radio_button "employee", "tea_status", "na" %>N/A
    </p>
 
   <p>

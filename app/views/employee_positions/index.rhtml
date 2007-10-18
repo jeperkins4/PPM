@@ -16,15 +16,17 @@
 	<th>Position</th>
     <th>Position number</th>
     <th>Employee</th>
+	 <th>Start Date</th>
 	<th></th>
   </tr>
   
 <% for employee_position in @employee_positions %>
   <tr>
   	<td><%=h employee_position.position_number.position.facility.facility%></td>
-  	<td><%=h employee_position.position_number.position.title%></td>
-    <td><%=h employee_position.position_number.position_num %></td>
-    <td><%=h employee_position.employee.first_name + ' ' + employee_position.employee.last_name %></td>
+  	<td><%= link_to employee_position.position_number.position.title, edit_position_path(employee_position.position_number.position.id) %></td>
+    <td><%= link_to employee_position.position_number.position_num, edit_position_number_path(employee_position.position_number.id) %></td>
+	<td><%= link_to (employee_position.employee.first_name + ' ' + employee_position.employee.last_name),edit_employee_path(employee_position.employee_id) %></td>
+	<td><%=h employee_position.start_date %></td>
     <td><%= link_to 'Show', employee_position_path(employee_position) %> <%= link_to 'Edit', edit_employee_position_path(employee_position) %>
 <% if session[:access_level] == 'Administrator' -%>	
     <%= link_to 'Destroy', employee_position_path(employee_position), :confirm => 'Are you sure?', :method => :delete %></td>

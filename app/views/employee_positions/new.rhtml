@@ -25,7 +25,7 @@
 	
   <p>
     <b>Employee</b><br />
-	<%= f.select("employee_id", (session[:facility]) ? session[:facility].employees.find(:all, :conditions =>['active = 1 and tea_status = "certified" and id not in (?)',@assigned_employees], :order => :first_name).collect {|em| [ em.first_name + ' ' + em.last_name, em.id ] } : '', { :include_blank => true })-%>
+	<%= f.select("employee_id", (session[:facility]) ? session[:facility].employees.find(:all, :conditions =>['active = 1 and tea_status in ("certified","na") and id not in (?)',@assigned_employees], :order => :first_name).collect {|em| [ em.first_name + ' ' + em.last_name, em.id ] } : '', { :include_blank => true })-%>
   </p>
 
   <p>

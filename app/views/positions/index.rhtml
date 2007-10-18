@@ -3,7 +3,6 @@
 <%= link_to 'Create New position', new_position_path %>
 <table>
   <tr>
-  	<th>Facility</th>
     <th>Position Type</th>
     <th>Title</th>
     <th>Description</th>
@@ -13,7 +12,6 @@
   
 <% for position in @positions %>
   <tr>
-    <td><%=h position.facility.facility %></td>
 	<td><%=h position.position_type.position_type %></td>
 	<td><%=h position.title %></td>    
 	<td><%=h position.description %></td>

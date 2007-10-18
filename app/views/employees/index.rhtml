@@ -13,7 +13,6 @@
 </tr>
 <table>
   <tr>
-    <th>Facility</th>
     <th>First name</th>
     <th>Last name</th>
     <th>Employee Status</th>
@@ -23,10 +22,9 @@
   
 <% for employee in @employees %>
   <tr>
-    <td><%=h employee.facility.facility %></td>
     <td><%=h employee.first_name %></td>
     <td><%=h employee.last_name %></td>
-	 <td><%=h employee.tea_status.upcase %></td>
+	<td><%=h employee.tea_status.upcase %></td>
     <td><%=h (employee.active == 1)? "Yes":"No" -%></td>
     <td><%= link_to 'Show', employee_path(employee) %> <%= link_to 'Edit', edit_employee_path(employee) %>
 <% if session[:access_level] == 'Administrator' -%>	

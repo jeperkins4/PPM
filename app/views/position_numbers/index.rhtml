@@ -12,9 +12,6 @@
 	
 <table>
   <tr>
-  	<% if session[:access_level] == 'Administrator' -%>
- 	   <th>Facility</th>
-<% end -%>
 	<th>Position Type</th>
     <th>Position</th>	
     <th>Position Num</th>
@@ -26,9 +23,6 @@
   
 <% for position_number in @position_numbers %>
   <tr>
- <% if session[:access_level] == 'Administrator' -%>
- 	   <td><%=h position_number.position.facility.facility %></td>
-<% end -%>
     <td><%=h position_number.position.position_type.position_type %></td>
     <td><%=h position_number.position.title %></td>
     <td><%=h position_number.position_num %></td>

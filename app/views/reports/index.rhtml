@@ -17,7 +17,7 @@
 	<% if session[:use_date] == 'Yes' -%>
 		<tr>
 			<td>Between:</td>
-			<td><%= f.date_select :begin_date %> and <%= f.date_select :end_date %></td>
+			<td><%= f.date_select :begin_date, :seleceted => (session[:begin_date]) ? session[:begin_date] : '' %> and <%= f.date_select :end_date, :seleceted => (session[:end_date]) ? session[:end_date] : ''  %></td>
 		</tr>
 	<% end -%>
 	<% if session[:type] == 'Incident' -%>

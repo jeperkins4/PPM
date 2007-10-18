@@ -37,7 +37,7 @@
  		</td>
   <td><p>
     <b>Investigator: </b><br />
-    <%= f.select( "investigator_id", Investigator.find(:all).collect {|i| [ i.firstname + ' ' + i.lastname , i.id ] }, { :include_blank => true }) %>   
+    <%= f.select( "investigator_id", session[:facility].investigators.find(:all).collect {|i| [ i.firstname + ' ' + i.lastname , i.id ] }, { :include_blank => true }) %>   
   </p></td>
   </tr>
   <tr>

@@ -50,7 +50,7 @@
 </p>
 
 <%= link_to 'Edit', edit_incident_path(@incident) %> |
-<%= link_to 'Back', incidents_path %>
+<%= link_to 'Back', request.env['HTTP_REFERER'] %>
 
 <br />
 <br />

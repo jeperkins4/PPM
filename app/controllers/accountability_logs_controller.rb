@@ -42,7 +42,8 @@ class AccountabilityLogsController < ApplicationController
     end
     @not_updated = 0
     @questions.each_pair do |prompt_id, response|
-      if response.to_s =~ /\A[+-]?\d+\Z/ then
+      
+      if response.split(".").to_s =~ /\A[+-]?\d+\Z/ then
         @update_response = AccountabilityLogs.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and prompt_id = ? and facility_id = ?', @year, @month, @context_id, prompt_id, session[:facility].id])
         unless @update_response then
           @question_response = AccountabilityLogs.new(:facility_id => session[:facility].id,

@@ -7,10 +7,19 @@ class ReportsController < ApplicationController
     session[:type] = 'Choose Type'
     session[:use_date] = 'No'
     session[:status] = 'Open'
+    session[:begin_date] = ''
+    session[:end_date] = ''
     if request.post?
      (params[:report][:report_type]) ? session[:type] = params[:report][:report_type] : session[:type] = 'Choose Type'
      (params[:report][:use_date]) ? session[:use_date] = params[:report][:use_date] : session[:use_date] = 'No'
      (params[:report][:status]) ? session[:status] = params[:report][:status] : session[:status] = 'Open'
+      if session[:use_date] == 'Yes'
+        @search_string += "incident_date >= ? and incident_date <= ? "
+        params[:report][:begin_date] = Date.new(params[:report].delete('begin_date(1i)').to_i, params[:report].delete('begin_date(2i)').to_i, (params[:report].delete('begin_date(3i)')||1).to_i) if params[:report]['begin_date(3i)']
+        params[:report][:end_date] = Date.new(params[:report].delete('end_date(1i)').to_i, params[:report].delete('end_date(2i)').to_i, (params[:report].delete('end_date(3i)')||1).to_i) if params[:report]['end_date(3i)'] 
+        session[:begin_date] = params[:report][:begin_date]
+        session[:end_date] = params[:report][:end_date]
+      end
     end
     case session[:type].downcase
     when 'incident'   
@@ -34,10 +43,10 @@ class ReportsController < ApplicationController
     
     if session[:use_date] == 'Yes'
       @search_string += "incident_date >= ? and incident_date <= ? "
-      params[:report][:begin_date] = Date.new(params[:report].delete('begin_date(1i)').to_i, params[:report].delete('begin_date(2i)').to_i, (params[:report].delete('begin_date(3i)')||1).to_i) if params[:report]['begin_date(3i)']
-      params[:report][:end_date] = Date.new(params[:report].delete('end_date(1i)').to_i, params[:report].delete('end_date(2i)').to_i, (params[:report].delete('end_date(3i)')||1).to_i) if params[:report]['end_date(3i)'] 
-      @begin = params[:report][:begin_date]
-      @end = params[:report][:end_date]
+      #params[:report][:begin_date] = Date.new(params[:report].delete('begin_date(1i)').to_i, params[:report].delete('begin_date(2i)').to_i, (params[:report].delete('begin_date(3i)')||1).to_i) if params[:report]['begin_date(3i)']
+      #params[:report][:end_date] = Date.new(params[:report].delete('end_date(1i)').to_i, params[:report].delete('end_date(2i)').to_i, (params[:report].delete('end_date(3i)')||1).to_i) if params[:report]['end_date(3i)'] 
+      @begin = session[:begin_date]
+      @end = session[:end_date]
     else
       @search_string += "incident_date <> ? and incident_date <> ? "
       @begin = ''

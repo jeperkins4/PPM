@@ -35,12 +35,12 @@
   </tr>
 <% end %>
 <% if @employee_pages  != nil then %>
-<tr>RESULTS: <%= pagination_links(@employee_pages)%></tr>
+<tr>RESULTS: <%= pagination_links(@employee_pages, :window_size => 10)%></tr>
 <% end %>
 </table>
 <br />
 <% if @employee_pages != nil then %>
-<tr>RESULTS: <%= pagination_links(@employee_pages)%></tr>
+<tr>RESULTS: <%= pagination_links(@employee_pages, :window_size => 10)%></tr>
 <% end %>
 <br />
 

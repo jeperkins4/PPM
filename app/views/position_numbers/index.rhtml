@@ -44,12 +44,12 @@
 <% end %>
 
 <% if @position_number_pages != nil then %>
-<tr>RESULTS:  <%= pagination_links(@position_number_pages)%> </tr>
+<tr>RESULTS:  <%= pagination_links(@position_number_pages, :window_size => 10)%> </tr>
 <% end %>
 
 </table>
 <% if @position_number_pages != nil then %>
-<tr>RESULTS: <%= pagination_links(@position_number_pages)%> </tr>
+<tr>RESULTS: <%= pagination_links(@position_number_pages, :window_size => 10)%> </tr>
 <% end %>
 <br />
 

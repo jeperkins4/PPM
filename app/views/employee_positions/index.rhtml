@@ -4,7 +4,7 @@
 <table>
 	
 <% form_for(:employee_position, :url => {:action => :set_filter}) do |f| %>
-  <tr><td>	Filter: <%= select(:id, :filter_drop, [["Position Number","pn.position_num"],["Position Title","p.title"],["First Name","e.first_name"],["Last Name","e.last_name"]], {:include_blank=> true})%></td.
+  <tr><td>	Filter: <%= select(:id, :filter_drop, [["Position Number","pn.position_num"],["Position Title","p.title"],["First Name","e.first_name"],["Last Name","e.last_name"],["Salary","salary"]], {:include_blank=> true})%></td.
 	<td><%= f.text_field :filter_text %></td> <td><%= button_to "Filter" %></td>
  <% end %>
 </tr>
@@ -36,11 +36,11 @@
   </tr>
 <% end %>
 <% if @employee_position_pages != nil then %>
- <tr>RESULTS: <%= pagination_links(@employee_position_pages)%></tr>
+ <tr>RESULTS: <%= pagination_links(@employee_position_pages, :window_size => 10)%></tr>
  <% end %>
 </table>
 <% if @employee_position_pages != nil then %>
- <tr>RESULTS: <%= pagination_links(@employee_position_pages)%></tr>
+ <tr>RESULTS: <%= pagination_links(@employee_position_pages, :window_size => 10)%></tr>
  <% end %>
 <br />
 <br />

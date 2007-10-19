@@ -6,7 +6,7 @@ class EmployeesController < ApplicationController
   # GET /employees.xml  
   def index
     
-    @employee_filter =  session[:facility].employees.find(:all, :order =>['first_name, last_name'])     
+    @employee_filter =  session[:facility].employees.find(:all, :order =>['last_name, first_name'])     
     @employee_pages, @employees = paginate_collection @employee_filter, :page => params[:page]
     
     respond_to do |format|

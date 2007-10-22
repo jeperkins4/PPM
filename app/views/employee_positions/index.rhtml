@@ -4,7 +4,7 @@
 <table>
 	
 <% form_for(:employee_position, :url => {:action => :set_filter}) do |f| %>
-  <tr><td>	Filter: <%= select(:id, :filter_drop, [["Position Number","pn.position_num"],["Position Title","p.title"],["First Name","e.first_name"],["Last Name","e.last_name"],["Salary","salary"]], {:include_blank=> true})%></td.
+  <tr><td>	Filter: <%= select(:id, :filter_drop, [["Position Number","pn.position_num"],["Position Title","p.title"],["First Name","e.first_name"],["Last Name","e.last_name"],["Salary","p.salary"], ["Status","e.tea_status"]], {:include_blank=> true})%></td.
 	<td><%= f.text_field :filter_text %></td> <td><%= button_to "Filter" %></td>
  <% end %>
 </tr>

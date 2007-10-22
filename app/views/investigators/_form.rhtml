@@ -25,7 +25,8 @@
 
   <p>
     <b>Facility</b><br />
-    <%= f.select( "facility_id", Facility.find(:all).collect {|f| [ f.facility, f.id ] }, { :include_blank => false })%>
+	<%= session[:facility].facility %>
+    <%= f.text_field :entity, :value => session[:facility].id, :style => 'display:none;'%>
   </p>
 
   <p>

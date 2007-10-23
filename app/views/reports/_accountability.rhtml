@@ -1,0 +1,91 @@
+<tr><td colspan="15"><h3 align='center'><%= session[:facility].facility %> Accountatbility Log </h3></td></tr>
+<% session[:report].each do |category| -%>
+	<tr><td colspan="15"><h3 align='center'><%= category.title %></h3></td></tr>
+	<th><b>Questions</b></th>
+	<th><b>July</b></th>
+	<th><b>Aug.</b></th>
+	<th><b>Sept.</b></th>
+	<th><b>Oct.</b></th>
+	<th><b>Nov.</b></th>
+	<th><b>Dec.</b></th>
+	<th><b>Jan.</b></th>
+	<th><b>Feb.</b></th>
+	<th><b>March</b></th>
+	<th><b>April</b></th>
+	<th><b>May</b></th>
+	<th><b>June</b></th>
+	<th><b>Total</b></th>
+	<% @questions = category.prompts.find :all, :order => 'question' -%>
+		<% @july = 0 -%>
+		<% @aug = 0 -%>
+		<% @sept = 0 -%>
+		<% @oct = 0 -%>
+		<% @nov = 0 -%>
+		<% @dec = 0 -%>
+		<% @jan = 0 -%>
+		<% @feb = 0 -%>
+		<% @march = 0 -%>
+		<% @april = 0 -%>
+		<% @may = 0 -%>
+		<% @june = 0 -%>
+	<% @questions.each do |question| -%>
+	<% @sum = 0 -%>
+		<tr>
+		<td><%= question.question %></td>
+		<% [7,8,9,10,11,12,1,2,3,4,5,6].each do |month| -%>
+		<% @count = AccountabilityLogs.find(:first, :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id = ?', session[:facility],month,Time.now.year,question.id])  -%>
+		<% (@count) ? @sum += @count.response : '' -%>
+		<td><%= (@count) ? @count.response : '0'  %></td>
+		<% if question.used_in_total == 1 -%>
+			<% 
+			case month
+				when 7
+				(@count) ? @july += @count.response : ''
+				when 8
+				(@count) ? @aug += @count.response : ''
+				when 9
+				(@count) ? @sept += @count.response : ''
+				when 10
+				(@count) ? @oct += @count.response : ''
+				when 11
+				(@count) ? @nov += @count.response : ''
+				when 12
+				(@count) ? @dec += @count.response : ''
+				when 1
+				(@count) ? @jan += @count.response : ''
+				when 2
+				(@count) ? @feb += @count.response : ''
+				when 3
+				(@count) ? @march += @count.response : ''
+				when 4
+				(@count) ? @april += @count.response : ''
+				when 5
+				(@count) ? @may += @count.response : ''
+				when 6 
+				(@count) ? @jun += @count.response : ''
+			 end 
+			-%>
+		<% end -%>
+	<% end -%>
+	<td><%= number_with_precision(@sum, 2) %></td>
+	</tr>
+	<% end -%>
+	<tr><td colspan="15" bgcolor="#CCCCCC">&nbsp;</td></tr>
+	<tr>
+		<td><b>Total:</b></td>
+		<td><%= @july %></td>
+		<td><%= @aug %></td>
+		<td><%= @sept %></td>
+		<td><%= @oct %></td>
+		<td><%= @nov %></td>
+		<td><%= @dec %></td>
+		<td><%= @jan %></td>
+		<td><%= @feb %></td>
+		<td><%= @march %></td>
+		<td><%= @april %></td>
+		<td><%= @may%></td>
+		<td><%= @june %></td>
+		<td colspan=1 bgcolor="#CCCCCC"></td>
+	</tr>
+    <tr><td colspan="14" bgcolor="#666666">&nbsp;</td></tr>
+<% end -%>

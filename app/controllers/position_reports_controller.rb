@@ -1,6 +1,6 @@
 class PositionReportsController < ApplicationController
   layout 'administration'    
-  
+    
   def index
     @now = Time.now
     @criteria_date = @now.last_month
@@ -108,9 +108,7 @@ class PositionReportsController < ApplicationController
                             canh.position_number.position.position_type.deduction_days)),
         :special_position_type => canh.position_number.position_type,
         :date_waiver_approval => canh.position_number.waiver_approval_date,
-        :validation_days => canh.start_date.to_date - @criteria_date.at_beginning_of_month.to_date
-                            #canh.created_on.to_date -
-                            #canh.position_number.position.position_type.deduction_days
+        :validation_days => canh.start_date.to_date - @criteria_date.at_beginning_of_month.to_date                         
        }]
     end
     

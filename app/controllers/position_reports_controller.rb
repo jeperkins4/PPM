@@ -2,10 +2,9 @@ class PositionReportsController < ApplicationController
   layout 'administration'    
     
   def index
-    @now = Time.now
-    @criteria_date = @now.last_month
-        
+    
     if request.post?      
+      @criteria_date = Date.new(params[:date]['render(1i)'].to_i, params[:date]['render(i)'].to_i).to_time.last_month
        unless params[:id] == ""
         session[:report_selection] = params[:id][:selection]
         

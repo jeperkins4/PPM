@@ -54,8 +54,8 @@ class PositionReportsController < ApplicationController
                                                                eph.employee_id as leaving_employee',:from =>'employee_positions ep, employee_position_hists eph',
                                                               :conditions => ['ep.position_number_id = ? and ep.start_date between ? AND ? and ep.position_number_id = eph.position_number_id
                                                                and eph.end_date = (select max(end_date) from employee_position_hists where position_number_id = ?)
-                                                               and datediff(ep.start_date,(select max(end_date) from employee_position_hists where position_number_id = ?))',
-                                                              dpn.id, @criteria_date.at_beginning_of_month, @criteria_date.at_end_of_month, dpn.id,dpn.id])
+                                                               and datediff(ep.start_date,(select max(end_date) from employee_position_hists where position_number_id = ?)) > ?',
+                                                              dpn.id, @criteria_date.at_beginning_of_month, @criteria_date.at_end_of_month, dpn.id,dpn.id,dpn.position.position_type.deduction_days])
             
       @history_with_no_current += EmployeePositionHist.find(:all, :conditions =>['position_number_id = ? and position_number_id not in 
                                                             (select position_number_id from employee_positions where start_date <= ?)

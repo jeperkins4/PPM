@@ -3,8 +3,11 @@ class PositionReportsController < ApplicationController
     
   def index
     
-    if request.post?      
-      @criteria_date = Date.new(params[:date]['render(1i)'].to_i, params[:date]['render(i)'].to_i).to_time.last_month
+    if request.post?
+      session[:selectmonth] = params[:date][:month].to_i
+      session[:selectyear] = params[:date][:year].to_i
+      @criteria_date = Date.new(params[:date][:year].to_i, params[:date][:month].to_i).to_time.last_month
+
        unless params[:id] == ""
         session[:report_selection] = params[:id][:selection]
         
@@ -166,10 +169,8 @@ class PositionReportsController < ApplicationController
   
   
   def export_excel    
-    @now = Time.now
-    @criteria_date = @now.last_month
+    @criteria_date = Date.new(session[:selectyear], session[:selectmonth]).to_time.last_month
     @totaldeduction = 0
-    
     @report = session[:report]
     response.headers['CONTENT-TYPE'] = 'application/vnd.ms-excel'
     response.headers['CONTENT-DISPOSITION'] = 'attachment; filename="Incident Report -' + Time.now.to_s + '.xls"'

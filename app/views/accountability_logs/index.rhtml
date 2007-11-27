@@ -1,6 +1,6 @@
 <h2>Accountability Log</h2>
 <%= calendar %>
-<p>Category: <%= pagination_links(@category_pages, :window_size => 50) %></p>
+<p>Category: <%= pagination_links(@category_pages, {:window_size => 50, :name => 'category'}, nil, @category_titles) %></p>
 <p><%= session[:facility].facility %></p>
 <% form_tag 'accountability_logs', :enctype => 'multipart/form-data' do %>
 <%= text_field_tag :page, request.request_uri, :style => 'display:none;' %>

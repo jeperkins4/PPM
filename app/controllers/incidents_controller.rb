@@ -4,17 +4,20 @@ class IncidentsController < ApplicationController
   layout 'administration'
   # GET /incidents.xml
   def index
-    (params[:status]) ? @status = params[:status] : @status = 0
-    
-   @incident_pages, @incidents = paginate :incident, 
-                                                    :order => 'incident_date, mins',
-                                                    :per_page => 20,
-                                                    :conditions => ['investigation_closed = ? and facility_id = ?', @status, session[:facility].id]
+    if params[:status]
+      session[:status] = params[:status]
+    end
+    (session[:status]) ? @status = session[:status] : @status = 0
+    @incident_pages, @incidents = paginate :incident, 
+    :order => 'incident_date, mins',
+    :per_page => 20,
+    :conditions => ['investigation_closed = ? and facility_id = ?', @status, session[:facility].id]
     
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @incidents.to_xml }
     end
+    
   end
   
   # GET /incidents/1

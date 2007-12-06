@@ -79,10 +79,17 @@ class ReportsController < ApplicationController
     session[:report] = session[:facility].incidents.find :all, 
     :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type, @status], 
     :order => 'incident_date, mins'
+    
+    redirect_to :action => :report, :target => '_blank'
   end
   
   def build_report_accountability
     session[:report] = Context.find :all, :order => 'title'
+    redirect_to :action => :report, :target => '_blank'
+  end
+  
+  def report
+    
   end
   
 end

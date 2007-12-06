@@ -3,10 +3,12 @@ class AccountabilityLogsController < ApplicationController
   layout 'administration'
   
   def index
-    @category_titles =  Context.find(:all)
+    @category_titles =  Context.find(:all, :order => 'position')
     @category_pages, @categories = paginate :context, 
+                                            :order => 'position',
                                             :per_page => 1,
                                             :parameter => 'category'
+                                            
     if request.post?
       session[:questions] = params[:questions]
       session[:context_log] = params[:log]

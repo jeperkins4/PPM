@@ -4,12 +4,19 @@ class ContextsController < ApplicationController
   layout 'administration'
   
   def index
-     @context_pages, @contexts = paginate :contexts
-     #@contexts = Context.find(:all)
+    @context_pages, @contexts = paginate :contexts
+    @contexts_for_order = Context.find(:all, :order => 'position')
     
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @contexts.to_xml }
+    end
+  end
+  
+  def reorder_contexts
+    @order = params[params[:list_name]]
+    @order.each_with_index do |id, i|
+      Context.update(id , {:position => i+1})             
     end
   end
   

@@ -30,13 +30,15 @@
 
 <%= link_to 'New Accountability Log Category', new_context_path %>
 
-<h3>Order of Categories</h3>
+<hr>
+
+<h3>Category Order</h3>
 
 
-<ol id="list_context" class="list">
+<ol id='list_context' class="list">
 	<% @contexts_for_order.each do |context| %>
     <li id="item_<%= context.id %>" class="list_item">
-      <%= h context.title %>
+      <%= h context.title %><img src="/images/arrow_up.png" /><img src="/images/arrow_down.png" />
     </li>
 	<% end %>
 </ol>

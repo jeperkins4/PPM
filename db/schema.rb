@@ -2,18 +2,28 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 39) do
+ActiveRecord::Schema.define(:version => 42) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
     t.column "description",  :text
   end
 
+  create_table "accountability_log_details", :force => true do |t|
+    t.column "facility_id",     :integer
+    t.column "context_id",      :integer
+    t.column "detail_response", :text
+    t.column "log_year",        :integer
+    t.column "log_month",       :integer
+    t.column "created_on",      :date
+    t.column "created_by",      :string
+  end
+
   create_table "accountability_logs", :force => true do |t|
     t.column "facility_id", :integer
     t.column "context_id",  :integer
     t.column "prompt_id",   :integer
-    t.column "response",    :string
+    t.column "response",    :decimal, :precision => 55, :scale => 3
     t.column "log_year",    :integer
     t.column "log_month",   :integer
     t.column "created_on",  :date
@@ -28,6 +38,7 @@ ActiveRecord::Schema.define(:version => 39) do
   create_table "contexts", :force => true do |t|
     t.column "title",       :string
     t.column "description", :text
+    t.column "position",    :integer
   end
 
   create_table "custody_types", :force => true do |t|
@@ -63,6 +74,7 @@ ActiveRecord::Schema.define(:version => 39) do
     t.column "last_name",   :string
     t.column "emplid",      :string
     t.column "active",      :integer
+    t.column "tea_status",  :string
   end
 
   create_table "facilities", :force => true do |t|

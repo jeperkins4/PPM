@@ -18,6 +18,7 @@ class ContextsController < ApplicationController
     @order.each_with_index do |id, i|
       Context.update(id , {:position => i+1})             
     end
+    render = false
   end
   
   # GET /contexts/1

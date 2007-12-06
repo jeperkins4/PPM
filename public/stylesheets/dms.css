@@ -798,3 +798,26 @@ td {
 	text-align: left;
 	border:solid 1px #000000;
 }
+
+.list{
+	width:45%;
+	position:relative;
+}	
+	
+.list_item{
+	text-align:left;
+	position:relative;
+	width:100%;
+	padding:3px 6px 3px 6px;
+	background-color:#C1CACF;
+	border:solid 1px #ffffff;
+	margin-bottom:2px;
+	width:100%;
+	cursor:n-resize;
+}
+
+.list_item img{
+	float:right;
+	margin-top:-15px;
+	!margin-top:-17px;
+}

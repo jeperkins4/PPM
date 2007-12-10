@@ -19,13 +19,14 @@ class ReportsController < ApplicationController
         session[:begin_date] = params[:report][:begin_date]
         session[:end_date] = params[:report][:end_date]
       end
-    end
-    
-    case session[:type].downcase
-    when 'incident'   
-      build_report_incident
-    when 'accountability'   
-      build_report_accountability
+      if params[:report][:ready] == "1"
+        case session[:type].downcase
+        when 'incident'   
+          build_report_incident
+        when 'accountability'   
+          build_report_accountability
+        end
+      end
     end
   end
   

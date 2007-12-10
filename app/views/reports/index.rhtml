@@ -12,6 +12,10 @@
 	<%= render :partial => session[:type].downcase + '_sortables' %>
 	<% end -%>
 	<tr>
+		<td>Ready to build:<%= f.check_box "ready" %></td>
+		<td></td>
+	</tr>
+	<tr>
 		<td><br /><%= button_to "Build Report" %></td>
 		<td><%=	link_to(image_tag("/images/excel_large.gif", :border => 0), :action => :export_excel )%></td>
 	</tr>

@@ -1,6 +1,6 @@
-<tr><td colspan="14"><h3 align='center'><%= session[:facility].facility %> Accountatbility Log </h3></td></tr>
+<tr><td colspan="15"><h3 align='center'><%= session[:facility].facility %> Accountatbility Log </h3></td></tr>
 <% session[:report].each do |category| -%>
-	<tr><td colspan="14"><h3 align='center'><%= category.title %></h3></td></tr>
+	<tr><td colspan="15"><h3 align='center'><%= category.title %></h3></td></tr>
 	<th><b>Questions</b></th>
 	<th><b>July</b></th>
 	<th><b>Aug.</b></th>
@@ -15,6 +15,7 @@
 	<th><b>May</b></th>
 	<th><b>June</b></th>
 	<th><b>Total</b></th>
+	<th><b>Avg.</b></th>
 	<% @questions = category.prompts.find :all, :order => 'question' -%>
 		<% @july = 0 -%>
 		<% @aug = 0 -%>
@@ -30,10 +31,44 @@
 		<% @june = 0 -%>
 	<% @questions.each do |question| -%>
 	<% @sum = 0 -%>
+	<% @divider = 0 -%>
+	<% @year = 0 -%>
+	<% case Time.now.month
+        when 7
+		@divider = 1
+		when 8
+		@divider = 2
+		when 9
+		@divider = 3
+		when 10
+		@divider = 4
+		when 11
+		@divider = 5
+		when 12
+		@divider = 6
+		when 1
+		@divider = 7
+		when 2
+		@divider = 8
+		when 3
+		@divider = 9
+		when 4
+		@divider = 10
+		when 5
+		@divider = 11
+		when 6 
+		@divider = 12
+	    end 
+    -%>
 		<tr>
 		<td><%= question.question %></td>
 		<% [7,8,9,10,11,12,1,2,3,4,5,6].each do |month| -%>
-		<% @count = AccountabilityLogs.find(:first, :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id = ?', session[:facility],month,Time.now.year,question.id])  -%>
+		<% if @divider >= 7 -%> 
+		<% (month >= 7) ? @year = Time.now.year - 1 : "" -%> 
+		<% else -%> 
+		<% (month >= 7) ? @year = Time.now.year : "" -%> 
+		<% end -%> 
+		<% @count = AccountabilityLogs.find(:first, :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id = ?', session[:facility],month,@year,question.id])  -%>
 		<% (@count) ? @sum += @count.response : '' -%>
 		<td><%= (@count) ? @count.response : '0'  %></td>
 		<% if question.used_in_total == 1 -%>
@@ -68,9 +103,10 @@
 		<% end -%>
 	<% end -%>
 	<td><%= number_with_precision(@sum, 2) %></td>
+	<td><%= number_with_precision((@sum/@divider), 2) %></td>
 	</tr>
 	<% end -%>
-	<tr><td colspan="14" bgcolor="#CCCCCC">&nbsp;</td></tr>
+	<tr><td colspan="15" bgcolor="#CCCCCC">&nbsp;</td></tr>
 	<tr>
 		<td><b>Total:</b></td>
 		<td><%= @july %></td>
@@ -86,6 +122,7 @@
 		<td><%= @may%></td>
 		<td><%= @june %></td>
 		<td colspan=1 bgcolor="#CCCCCC"></td>
+		<td colspan=1 bgcolor="#CCCCCC"></td>
 	</tr>
-    <tr><td colspan="14" bgcolor="#666666">&nbsp;</td></tr>
+    <tr><td colspan="15" bgcolor="#666666">&nbsp;</td></tr>
 <% end -%>

@@ -1,0 +1,5 @@
+<% unless session[:report].nil? -%>	
+<table class="print">
+	<%= render :partial => session[:type].downcase %>
+</table>
+<% end -%>

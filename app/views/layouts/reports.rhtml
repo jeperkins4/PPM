@@ -25,7 +25,7 @@
 	</style>
 </head>
 <body>
-	<%= link_to "Back to Reports Dashboard",  "#{request.env["HTTP_REFERER"]}" %>
+	<%= link_to "Back to Reports Dashboard",  "#{request.env["HTTP_REFERER"]}" %><br /><br /><%= link_to(image_tag("/images/excel_large.gif", :border => 0), :action => :export_excel )%>
     <div id="report_container">
       <% if flash[:notice] %>
         <div class="notice"><%= flash[:notice] %></div>

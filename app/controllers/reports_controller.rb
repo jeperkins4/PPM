@@ -20,25 +20,32 @@ class ReportsController < ApplicationController
         session[:end_date] = params[:report][:end_date]
       end
       if params[:report][:ready] == "1"
+        @excel = false
         case session[:type].downcase
         when 'incident'   
-          build_report_incident
+          build_report_incident(@excel)
         when 'accountability'   
-          build_report_accountability
+          build_report_accountability(@excel)
         end
       end
     end
   end
   
   def export_excel
-    @export = 'TRUE'
+    @excel = true
+    case session[:type].downcase
+    when 'incident'   
+      build_report_incident(@excel)
+    when 'accountability'   
+      build_report_accountability(@excel)
+    end
     response.headers['CONTENT-TYPE'] = 'application/vnd.ms-excel'
     response.headers['CONTENT-TYPE'] = 'application/vnd.ms-excel'
     response.headers['CONTENT-DISPOSITION'] = 'attachment; filename="' + session[:type] + ' Report -' + Time.now.to_s + '.xls"'
     render :type => 'application/vnd.ms-excel', :layout => false
   end
   
-  def build_report_incident
+  def build_report_incident(excel)
     
     @mins = params[:report][:mins] rescue ''
     @incident_type = params[:report][:incident_type_id] rescue ''
@@ -80,13 +87,16 @@ class ReportsController < ApplicationController
     session[:report] = session[:facility].incidents.find :all, 
     :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type, @status], 
     :order => 'incident_date, mins'
-    
-    redirect_to :action => :report
+    unless excel == true
+      redirect_to :action => :report
+    end
   end
   
-  def build_report_accountability
+  def build_report_accountability(excel)
     session[:report] = Context.find :all, :order => 'position'
-    redirect_to :action => :report
+    unless excel == true
+      redirect_to :action => :report
+    end
   end
   
   def report

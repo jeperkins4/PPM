@@ -121,8 +121,9 @@
 		<td><%= @april %></td>
 		<td><%= @may%></td>
 		<td><%= @june %></td>
-		<td colspan=1 bgcolor="#CCCCCC"></td>
-		<td colspan=1 bgcolor="#CCCCCC"></td>
+		<% @category_total = (@july + @aug + @sept + @oct + @nov + @dec + @jan + @feb + @march + @april + @may + @june)%>
+		<td bgcolor="#FFCC00"><%= number_with_precision(@category_total, 2) %></td>
+	    <td bgcolor="#FFCC00"><%= number_with_precision((@category_total/@divider), 2) %></td>
 	</tr>
     <tr><td colspan="15" bgcolor="#666666">&nbsp;</td></tr>
 <% end -%>

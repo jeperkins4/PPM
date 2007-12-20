@@ -38,7 +38,6 @@
 			<td><b>Description:</b></td>
 			<td colspan=5><%= incident.description %></td>
 </tr>
-	<% if @export == 'TRUE' %>
 	<% @follow_ups = FollowUp.find(:all, :conditions => ['incident_id = ?', incident.id]) %>
 		<tr>
 			<td><b>Follow Up Date:</b></td>
@@ -53,5 +52,4 @@
 		<tr>
 			<td colspan=6 bgcolor="#999999">&nbsp;</td>
 		</tr>
-	<% end -%>
 <% end -%>

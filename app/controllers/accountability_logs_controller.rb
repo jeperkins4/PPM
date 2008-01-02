@@ -79,12 +79,22 @@ class AccountabilityLogsController < ApplicationController
   end
   
   def set_calendar
+    unless params[:month].to_i == 12 then
     if params[:month].to_i == Time.now.month - 1 or params[:month].to_i == Time.now.month then
       session[:month] = params[:month]
       redirect_to :back
     else
       flash[:notice] = "The selected month has been locked by the system because it is outside the editable range."
       redirect_to :back
+    end
+    else
+      if Time.now.month == 12 or Time.now.month == 1 then
+      session[:month] = params[:month]
+      redirect_to :back
+    else
+      flash[:notice] = "The selected month has been locked by the system because it is outside the editable range."
+      redirect_to :back
+    end
     end
   end
 end

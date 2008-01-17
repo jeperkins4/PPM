@@ -25,8 +25,8 @@
 
   <p>
     <b>Facility</b><br />
+	<%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
 	<%= session[:facility].facility %>
-    <%= f.text_field :entity, :value => session[:facility].facility, :style => 'display:none;'%>
   </p>
 
   <p>

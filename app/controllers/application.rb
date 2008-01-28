@@ -34,20 +34,19 @@ class ApplicationController < ActionController::Base
           @page_check = 0
           @page_check2 = 0
           ['facilities',
-          'users',
-          'custody_types',
-          'action_types',
-          'access_levels',
-          'user_types',
-          'login',
-          'incident_types',
-          'position_hists',
-          'position_types',
-          'employee_position_hists',
-          'incident_classes',
-          'reset_password',
-          'contexts',
-          'prompts'].each do |page_check|
+            'users',
+            'custody_types',
+            'action_types',
+            'access_levels',
+            'user_types',
+            'login',
+            'incident_types',
+            'position_hists',
+            'position_types',          
+            'incident_classes',
+            'reset_password',
+            'contexts',
+            'prompts'].each do |page_check|
             request.request_uri.split('/').each do |page|
               page.split('?').each do |page2|
                 if page2.to_s == page_check
@@ -77,7 +76,7 @@ class ApplicationController < ActionController::Base
     @page = request.request_uri.split('?')
   end
   
-   def paginate_collection(collection, options = {})
+  def paginate_collection(collection, options = {})
     default_options = {:per_page => 100, :page => 1}
     options = default_options.merge options
 

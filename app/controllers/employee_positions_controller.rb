@@ -7,14 +7,7 @@ class EmployeePositionsController < ApplicationController
   # GET /employee_positions.xml
   def index
     
-    @employee_position_all = EmployeePosition.find(:all, :select => 'ep.id as id, ep.position_number_id, ep.employee_id, ep.start_date,
-                                                 ep.end_date', :order=>'p.title',
-    :from=>'employee_positions ep, position_numbers pn, positions p, facilities f',
-    :conditions=>['ep.position_number_id = pn.id and pn.position_id = p.id and p.facility_id = f.id
-                                                 and f.id = ?', session[:facility][:id]])
-    
-    #end
-    
+    @employee_position_all = EmployeePosition.available_positions(session[:facility][:id])
     @employee_position_pages, @employee_positions = paginate_collection @employee_position_all, :page => params[:page]
     
     respond_to do |format|
@@ -90,8 +83,8 @@ class EmployeePositionsController < ApplicationController
     
     respond_to do |format|
       if params[:employee_position]['end_date(1i)'] == "" ||
-        params[:employee_position]['end_date(2i)'] == "" || 
-        params[:employee_position]['end_date(3i)'] == "" then
+          params[:employee_position]['end_date(2i)'] == "" || 
+          params[:employee_position]['end_date(3i)'] == "" then
         
         params[:employee_position]['end_date(1i)'] = ""
         params[:employee_position]['end_date(2i)'] = ""
@@ -120,10 +113,13 @@ class EmployeePositionsController < ApplicationController
           params[:employee_position][:start_date] = @start_date
           params[:employee_position][:end_date] = @end_date          
           @employee_position_history = EmployeePositionHist.new(params[:employee_position])
-          @employee_position_history.save
+          if @employee_position_history.save then
+            flash[:notice] = "You have an error on the page"
+            format.html { render :action => "edit" }
+          end 
           @employee_position.destroy
           flash[:notice] = "End Date Added - Row has been archived"
-          format.html {redirect_to employee_positions_path}
+          format.html { redirect_to :controller => 'employees', :action => 'show', :id => params[:employee_position][:employee_id] }
         else
           flash[:notice] = "End Date must be greater than the Start Date"
           format.html { render :action => "edit" }
@@ -166,14 +162,14 @@ class EmployeePositionsController < ApplicationController
   def lateral_move     
     
     @new_position_number = Position.find(:first, :select=>'p.id as id',:from=>'position_numbers pn, positions p',
-    :conditions=>['pn.id = ? and pn.position_id = p.id', params[:employee_position][:position_number_id]])    
+      :conditions=>['pn.id = ? and pn.position_id = p.id', params[:employee_position][:position_number_id]])    
     
     @old_position_number = EmployeePositionHist.find(:first, :conditions=>['employee_id = ? AND end_date = (SELECT MAX(end_date) FROM employee_position_hists where employee_id = ?)',params[:employee_position][:employee_id], params[:employee_position][:employee_id]])
     
     if @new_position_number != nil and @old_position_number != nil then
       if @new_position_number.id == @old_position_number.position_number.position_id
         flash[:notice] = "You are trying to assign " + @old_position_number.employee.first_name + 
-                       " to a position number that holds the same Position Title as the employees previous position number:" + @old_position_number.position_number.position_num + "."
+          " to a position number that holds the same Position Title as the employees previous position number:" + @old_position_number.position_number.position_num + "."
         flash[:notice] =  flash[:notice] + " This is an illegal move and is not allowed.  If you feel you have received this message in error, please contact your administrator."
         return true
       end
@@ -195,14 +191,14 @@ class EmployeePositionsController < ApplicationController
     session[:search_text] = params[:employee_position][:filter_text] rescue ''
     if session[:search_dropdown].to_s != nil and session[:search_dropdown] != "" then
       @search = 'ep.employee_id = e.id and ep.position_number_id = pn.id and pn.position_id = p.id and p.facility_id = f.id and ' +
-                 session[:search_dropdown] + " like " + '"' + session[:search_text] + "%" + '"' + ' and f.id = ?'
+        session[:search_dropdown] + " like " + '"' + session[:search_text] + "%" + '"' + ' and f.id = ?'
       
-     @employee_positions = EmployeePosition.find(:all, :select => 'ep.id as id, ep.position_number_id, ep.employee_id, ep.start_date,
+      @employee_positions = EmployeePosition.find(:all, :select => 'ep.id as id, ep.position_number_id, ep.employee_id, ep.start_date,
                                                  ep.end_date', :order=>'p.title',
-    :from=>'employees e, employee_positions ep, position_numbers pn, positions p, facilities f',
-    :conditions=>["#{@search}", session[:facility][:id]])
-    
-  #    @employee_position_pages, @employee_positions = paginate_collection @employee_position_all, :page => params[:page]
+        :from=>'employees e, employee_positions ep, position_numbers pn, positions p, facilities f',
+        :conditions=>["#{@search}", session[:facility][:id]])
+      
+      #    @employee_position_pages, @employee_positions = paginate_collection @employee_position_all, :page => params[:page]
       render :action => 'index'
     else
       redirect_to :action => 'index'

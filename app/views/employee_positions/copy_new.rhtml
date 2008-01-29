@@ -1,0 +1,51 @@
+<h1>New Employee Position Tracking</h1>
+
+<%= error_messages_for :employee_position %>
+  
+ <p>
+  <b>Your Facility</b><br />
+	  <%= session[:facility].facility rescue 'Administrator' %>
+  </p>
+
+
+<% form_tag(:action => :set_position_new) do -%>
+  <p>
+   <b>Positions</b><br />	
+   <%= select("facility","position_id", (session[:facility]) ? session[:facility].positions.find(:all, :order => :title).collect {|pn| [ pn.title, pn.id ] } : '', { :include_blank => true, :selected => (session[:position]) ? session[:position].id : ""},{:onchange => "JavaScript:submit()"})%>
+  </p>  
+<% end -%>
+
+
+
+<% form_for(:employee_position, :url => employee_positions_path) do |f| %>
+ <p>
+   <b>Position number</b><br />	
+  <%= f.select("position_number_id", (session[:position]) ? session[:position].position_numbers.find(:all,:conditions=>['id not in (?)', @assigned_numbers],:order => :position_num).collect {|pn| [ pn.position_num, pn.id ] } : '', { :include_blank => true, :selected => (session[:position_number]) ? session[:position_number].id : "" })%>
+ </p>
+	
+  <p>
+    <b>Employee</b><br />
+	<%= f.select("employee_id", (session[:facility]) ? session[:facility].employees.find(:all, :conditions =>['active = 1 and tea_status in ("certified","na") and id not in (?)',@assigned_employees], :order => :first_name).collect {|em| [ em.first_name + ' ' + em.last_name, em.id ] } : '', { :include_blank => true })-%>
+  </p>
+
+  <p>
+    <b>Start date</b><br />
+    <%= f.date_select(:start_date ,:default => Date.today)-%>
+  </p>
+
+  <p>
+    <b>End date</b><br />
+    <%= f.date_select(:end_date ,:include_blank => true)-%>
+  </p>
+
+  <p>
+    <b>Salary</b><br />
+	<%= (session[:position]) ? number_to_currency(session[:position].salary) : "0.00" %>
+  </p>
+  
+  <p>
+    <%= submit_tag "Save" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', employee_positions_path %>

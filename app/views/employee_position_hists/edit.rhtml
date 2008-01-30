@@ -4,37 +4,37 @@
 
 <% form_for(:employee_position_hist, :url => employee_position_hist_path(@employee_position_hist), :html => { :method => :put }) do |f| %>
 
-<p>
-    <b>Position Number</b><br />
-     <%= f.text_field :position_number_id %>
-  </p>
-  
   <p>
-    <b>Employee</b><br />
-     <%= f.text_field :employee_id %>
+    <b>Position number</b><br />	
+    <%= f.select("position_number_id",   session[:facility].position_numbers.find(:all, :order => 'position_num asc').collect {|pn| [ pn.position_num + "-" + pn.position.title , pn.id ] } )%>
   </p>
 
+  <p>
+    <b>Employee</b><br />
+    <%= f.select("employee_id", session[:facility].employees.find(:all, :order => 'last_name asc').collect {|em| ["#{em.last_name},#{em.first_name}", em.id ] })-%>
+  </p>
+
+  <p>
+    <b>Start date</b><br />
+    <%= f.date_select(:start_date ,:default => Date.today)-%>
+  </p>
+
+  <p>
+    <b>End date</b><br />
+    <%= f.date_select(:end_date ,:include_blank => true)-%>
+  </p>
 
   <p>
     <b>Salary</b><br />
-    <%= f.text_field :salary  %>
+    <%= f.text_field :salary %>
   </p>
 
-  <b>Start Date</b><br />
-       <%= f.date_select :start_date  %>
- <br \>
 
- <p>
-   <b>End Date</b><br />
-   <%= f.date_select :end_date %>
- </p>
- 
-
- <p>
+  <p>
     <%= submit_tag "Save" %>
   </p>
-
 <% end %>
+
 
 <%= link_to 'Show', employee_position_hist_path(@employee_position_hist) %> |
 <%= link_to 'Back', employee_position_hists_path %>

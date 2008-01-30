@@ -4,8 +4,7 @@
   <th>Employee</th>
   <tr>
     <td>  
-      <%= f.select("position_number_id", PositionNumber.find(:all, :from =>'position_numbers pn, positions p',
-                               :conditions =>['pn.position_id = p.id and p.facility_id = ?',session[:facility][:id]], :order=>'pn.position_num').collect {|pn| [ "#{pn.position_num}-#{pn.title}", pn.id ] }, :include_blank => "true" )%>
+      <%= f.select("position_number_id",   session[:facility].position_numbers.find(:all, :order => 'position_num asc').collect {|pn| [ pn.position_num + "-" + pn.position.title , pn.id ] } )%>
     </td>
     <td> 
       <%= f.select("employee_id", session[:facility].employees.find(:all, :order => 'last_name asc')    .collect {|em| ["#{em.last_name},#{em.first_name}", em.id ] },:include_blank => "true")-%>

@@ -29,8 +29,7 @@ class EmployeePositionHistsController < ApplicationController
 
   # GET /employee_position_hists/new
   def new
-    @facility_position_numbers = session[:facility].position_numbers.find(:all, :order => 'position_num asc')
-    @facility_all_employees = session[:facility].employees.find(:all, :order => 'last_name asc')
+    
   end
 
   # GET /employee_position_hists/1;edit
@@ -43,15 +42,15 @@ class EmployeePositionHistsController < ApplicationController
   def create
     
     @employee_position_hist = EmployeePositionHist.new(params[:employee_position_hist])
-    @employee_position_hist.salary = @employee_position_hist.position_number.position.salary
+    @employee_position_hist.salary = @employee_position_hist.position_number ? @employee_position_hist.position_number.position.salary : ""
     respond_to do |format|
       if @employee_position_hist.save
         flash[:notice] = 'EmployeePositionHist was successfully created.'
-        format.html { redirect_to employee_position_hist_url(@employee_position_hist) }
+        format.html { redirect_to employee_position_hists_path}
         format.xml  { head :created, :location => employee_position_hist_url(@employee_position_hist) }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @employee_position_hist.errors.to_xml }
+      else             
+        format.html{redirect_to :back}
+        flash[:notice] =  activerecord_error_list(@employee_position_hist.errors)
       end
     end
   end
@@ -64,7 +63,7 @@ class EmployeePositionHistsController < ApplicationController
     respond_to do |format|
       if @employee_position_hist.update_attributes(params[:employee_position_hist])
         flash[:notice] = 'EmployeePositionHist was successfully updated.'
-        format.html { redirect_to employee_position_hist_url(@employee_position_hist) }
+        format.html {redirect_to employee_position_hists_path }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -84,4 +83,15 @@ class EmployeePositionHistsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  private 
+ 
+  def activerecord_error_list(errors)
+    error_list = '<ul class="error_list">'
+    error_list << errors.collect do |e, m|
+      "<li>#{e.humanize unless e == "base"} #{m}</li>"
+    end.to_s << '</ul>'
+    error_list
+  end
+
 end

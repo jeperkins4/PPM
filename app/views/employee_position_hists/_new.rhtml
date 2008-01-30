@@ -1,0 +1,25 @@
+<h4>Add History</h4>
+<table>
+<th>Position number</th>
+<th>Employee</th>
+<th align="center">Start date</th>
+<th align="center">End date</th>
+<tr>
+  <td>  
+    <%= f.select("position_number_id", session[:facility].position_numbers.find(:all, :order => 'position_num asc').collect {|pn| [ pn.position_num + "-" + pn.position.title , pn.id ] }, :include_blank => "true" )%>
+  </td>
+  <td> 
+    <%= f.select("employee_id", session[:facility].employees.find(:all, :order => 'last_name asc')    .collect {|em| ["#{em.last_name},#{em.first_name}", em.id ] },:include_blank => "true")-%>
+  </td>
+  <td> 
+    <%= f.date_select(:start_date ,:default => Date.today)-%>
+  </td>
+  <td> 
+    <%= f.date_select(:end_date ,:include_blank => true)-%>
+  </td>
+</tr>
+<tr><td colspan="4"><hr></td></tr>
+<tr>
+   <td colspan="4"><%= submit_tag "Save" %></td>  
+</tr>
+</table>

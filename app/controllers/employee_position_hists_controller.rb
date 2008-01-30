@@ -29,7 +29,8 @@ class EmployeePositionHistsController < ApplicationController
 
   # GET /employee_position_hists/new
   def new
-    @employee_position_hist = EmployeePositionHist.new
+    @facility_position_numbers = session[:facility].position_numbers.find(:all, :order => 'position_num asc')
+    @facility_all_employees = session[:facility].employees.find(:all, :order => 'last_name asc')
   end
 
   # GET /employee_position_hists/1;edit
@@ -40,8 +41,9 @@ class EmployeePositionHistsController < ApplicationController
   # POST /employee_position_hists
   # POST /employee_position_hists.xml
   def create
+    
     @employee_position_hist = EmployeePositionHist.new(params[:employee_position_hist])
-
+    @employee_position_hist.salary = @employee_position_hist.position_number.position.salary
     respond_to do |format|
       if @employee_position_hist.save
         flash[:notice] = 'EmployeePositionHist was successfully created.'

@@ -3,33 +3,38 @@
 <p>Category: <%= pagination_links(@category_pages, {:window_size => 50, :name => 'category'}, nil, @category_titles) %></p>
 <p><%= session[:facility].facility %></p>
 <% form_tag 'accountability_logs', :enctype => 'multipart/form-data' do %>
-<%= text_field_tag :page, request.request_uri, :style => 'display:none;' %>
-<%= text_field_tag :month, @month, :style => 'display:none;' %>
-	<% @categories.each do |category| -%>
-		<h3><b><%= category.title %></b></h3>
-		<table>
-			<% @questions = Prompt.find(:all, :conditions =>  ['active = ? and context_id = ?', 1, category.id], :order => 'used_in_total DESC, question') -%> 
-			<% @questions.each do |question| -%>
-			<% @accountability_question_response = AccountabilityLogs.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and prompt_id = ? and facility_id = ?', Time.now.year, @month, category.id, question.id, session[:facility].id]) -%>
-				<tr>
-					<td>
-					<b><%=  question.question %>:</b>
-					<% if question.used_in_total == 1 -%>
-						<font color="#990000"><b>*</b></font>
-					<% end -%>
-					</td>
-					<td><%= text_field_tag "questions[#{question.id}]", (@accountability_question_response) ? @accountability_question_response.response : "" %></td>
-				</tr>
-			<% end -%>
-			<tr><td colspan=2><font color="#990000"><b>*</b></font><sub>Indicates that item is used in category total.</sub></td></tr>
-		</table>
-		<p style="margin-left:20px;">
-		<% @log = AccountabilityLogDetails.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and facility_id = ?', Time.now.year, @month, category.id, session[:facility].id]) -%>
-			Additional Information:<br />
-			<%= text_area_tag "log[#{category.id}]", (@log) ? @log.detail_response : "", :size => "60x8" %>
-		</p>
-		<p style="margin-left:20px;">
-			<%= submit_tag 'Record/Update' %>
-		</p>
-	<% end -%>
+  <%= text_field_tag :page, request.request_uri, :style => 'display:none;' %>
+  <%= text_field_tag :month, @month, :style => 'display:none;' %>
+           <% @categories.each do |category| -%>
+    <h3><b><%= category.title %></b></h3>
+    <table>
+      <% if @month.to_i >= 7 and Time.now.month <= 6 -%>
+        <%  @year = Time.now.year - 1 -%>
+      <% else -%>
+        <%  @year = Time.now.year -%>
+      <% end -%>
+                  <% @questions = Prompt.find(:all, :conditions =>  ['active = ? and context_id = ?', 1, category.id], :order => 'used_in_total DESC, question') -%> 
+                  <% @questions.each do |question| -%>
+                    <% @accountability_question_response = AccountabilityLogs.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and prompt_id = ? and facility_id = ?', @year, @month, category.id, question.id, session[:facility].id]) -%>
+        <tr>
+          <td>
+            <b><%=  question.question %>:</b>
+            <% if question.used_in_total == 1 -%>
+              <font color="#990000"><b>*</b></font>
+            <% end -%>
+          </td>
+          <td><%= text_field_tag "questions[#{question.id}]", (@accountability_question_response) ? @accountability_question_response.response : "" %></td>
+        </tr>
+      <% end -%>
+      <tr><td colspan=2><font color="#990000"><b>*</b></font><sub>Indicates that item is used in category total.</sub></td></tr>
+    </table>
+    <p style="margin-left:20px;">
+      <% @log = AccountabilityLogDetails.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and facility_id = ?', Time.now.year, @month, category.id, session[:facility].id]) -%>
+      Additional Information:<br />
+      <%= text_area_tag "log[#{category.id}]", (@log) ? @log.detail_response : "", :size => "60x8" %>
+    </p>
+    <p style="margin-left:20px;">
+      <%= submit_tag 'Record/Update' %>
+    </p>
+  <% end -%>
 <% end -%>

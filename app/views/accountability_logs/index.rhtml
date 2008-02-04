@@ -29,7 +29,7 @@
       <tr><td colspan=2><font color="#990000"><b>*</b></font><sub>Indicates that item is used in category total.</sub></td></tr>
     </table>
     <p style="margin-left:20px;">
-      <% @log = AccountabilityLogDetails.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and facility_id = ?', Time.now.year, @month, category.id, session[:facility].id]) -%>
+      <% @log = AccountabilityLogDetails.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and facility_id = ?', @year, @month, category.id, session[:facility].id]) -%>
       Additional Information:<br />
       <%= text_area_tag "log[#{category.id}]", (@log) ? @log.detail_response : "", :size => "60x8" %>
     </p>

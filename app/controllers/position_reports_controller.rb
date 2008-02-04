@@ -110,14 +110,14 @@ class PositionReportsController < ApplicationController
                 canh.position_number.position.position_type.deduction_days)),
           :special_position_type => canh.position_number.position_type,
           :date_waiver_approval => canh.position_number.waiver_approval_date,
-          :validation_days => (canh.start_date.to_date - @criteria_date.at_beginning_of_month.to_date)                        
+          :validation_days => (canh.start_date.to_date - @criteria_date.at_beginning_of_month.to_date)
         }]
     end
     
     @current_assigned_with_history.each do |cawh|
       @validation_days = (cawh.start_date.to_date - cawh.end_date - 
           cawh.position_number.position.position_type.deduction_days)
-      if @validation_days >= Time.days_in_month(@criteria_date.month, @criteria_date.year) then
+      if @validation_days >= Time.days_in_month(@criteria_date.month, @criteria_date.year) or @validation_days > (cawh.start_date.to_date - @criteria_date.at_beginning_of_month.to_date) then
         @validation_days = cawh.start_date.to_date - @criteria_date.at_beginning_of_month.to_date
       else 
         @validation_days = @validation_days - 1

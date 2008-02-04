@@ -123,25 +123,28 @@ class PositionReportsController < ApplicationController
         @validation_days = @validation_days - 1
       end    
       
-      @report += [{
-          :position_type=> cawh.position_number.position.position_type.position_type, 
-          :position_number => cawh.position_number.position_num,
-          :position_title => cawh.position_number.position.title,
-          :employee_vacate => cawh.leaving_employee,
-          :vacate_date => cawh.end_date,
-          :hire_date => cawh.start_date,
-          :employee_hire => cawh.filling_employee,
-          :salary => cawh.position_number.position.salary,
-          :salary120 => (cawh.position_number.position.salary * 1.2),
-          :salaryday => ((cawh.position_number.position.salary * 1.2) / 365),
-          :totaldeduc => (((cawh.position_number.position.salary * 1.2) / 365) *
-            (cawh.start_date.to_date - 
-                cawh.end_date - 
-                cawh.position_number.position.position_type.deduction_days)),
-          :special_position_type => cawh.position_number.position_type,
-          :date_waiver_approval => cawh.position_number.waiver_approval_date,
-          :validation_days => @validation_days
-        }]
+      if @validation_days > 0  then
+      
+        @report += [{
+            :position_type=> cawh.position_number.position.position_type.position_type, 
+            :position_number => cawh.position_number.position_num,
+            :position_title => cawh.position_number.position.title,
+            :employee_vacate => cawh.leaving_employee,
+            :vacate_date => cawh.end_date,
+            :hire_date => cawh.start_date,
+            :employee_hire => cawh.filling_employee,
+            :salary => cawh.position_number.position.salary,
+            :salary120 => (cawh.position_number.position.salary * 1.2),
+            :salaryday => ((cawh.position_number.position.salary * 1.2) / 365),
+            :totaldeduc => (((cawh.position_number.position.salary * 1.2) / 365) *
+              (cawh.start_date.to_date - 
+                  cawh.end_date - 
+                  cawh.position_number.position.position_type.deduction_days)),
+            :special_position_type => cawh.position_number.position_type,
+            :date_waiver_approval => cawh.position_number.waiver_approval_date,
+            :validation_days => @validation_days
+          }]
+      end
     end
     
     @history_with_no_current.each do |hwnc|

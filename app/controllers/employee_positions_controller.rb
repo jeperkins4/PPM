@@ -65,7 +65,7 @@ class EmployeePositionsController < ApplicationController
           format.xml  { head :created, :location => employee_position_url(@employee_position) }
         else
           format.html { render :action => "new" }
-          format.xml  { render :xml => @employee_position.errors.to_xml }
+          format.xml  { render :xml => @employee_position.errors.to_xml}
         end
       end
     end

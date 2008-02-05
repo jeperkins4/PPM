@@ -86,7 +86,7 @@
           <td><%= number_to_currency(dep[:salary120]) %></td>
           <td><%= number_to_currency(dep[:salaryday]) %></td>
           <td><%= dep[:salaryday] ? number_to_currency(dep[:salaryday] * dep[:validation_days]) : number_to_currency(0) %></td>
-          <% dep[:salaryday] ? @totaldeduction +=  number_to_currency(dep[:salaryday]) * dep[:validation_days] : @totaldeduction += 0 %>
+          <% dep[:salaryday] ? @totaldeduction +=  dep[:salaryday] * dep[:validation_days] : @totaldeduction += 0 %>
         </tr>
       <% end %>
       <tr><td colspan="7"></td><td><hr width="90"></td></tr>

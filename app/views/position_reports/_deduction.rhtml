@@ -1,77 +1,80 @@
 <% if session[:user_type] == 'Web Developer' %>
 
-Debug Info:
-<br \>
-
-All Deductable Position Numbers:
-<% for x in @deductable_position_numbers %>
-<%= x.position_num %>
-<% end %>
-<br \>
-Not Assigned with deductions:
-<% for x in  @not_assigned_position_numbers %>
-<%= x.position_num %>
-<% end %>
-<br \>
-History with Current Activity with deductions:
-<% for x in  @current_assigned_with_history %>
-<%= x.position_number.position_num %>
-<% end %>
-<br \>
-History Without Current Activity with deductions:
-<% for x in  @history_with_no_current %>
-<%= x.position_number.position_num %><br \>
-<% end %>
-<br \>
-Current With No History Activity with deductions:
-<% for x in @current_assigned_no_history %>
-<%= x.position_number.position_num %>
-<% end %>
-<br \>
-<% end %>
-
-<table width = "50%">
+  Debug Info:
+  <br \>
+    
+      All Deductable Position Numbers:
+      <% for x in @deductable_position_numbers %>
+          <%= x.position_num %>
+      <% end %>
+      <br \>
+      Not Assigned with deductions:
+      <% for x in  @not_assigned_position_numbers %>
+          <%= x.position_num %>
+      <% end %>
+      <br \>
+      History with Current Activity with deductions:
+      <% for x in  @current_assigned_with_history %>
+          <%= x.position_number.position_num %>
+      <% end %>
+      <br \>
+      History Without Current Activity with deductions:
+      <% for x in  @history_with_no_current %>
+          <%= x.position_number.position_num %><br \>
+      <% end %>
+      <br \>
+      Current With No History Activity with deductions:
+      <% for x in @current_assigned_no_history %>
+          <%= x.position_number.position_num %>
+      <% end %>
+      <br \>
+    <% end %>
+    
+    <table width = "50%">
 <tr><td><h2>Calculation of Vacant Position Deductions</h2></td></tr>
 <tr><td><h2><%= @criteria_date.strftime("%B %Y") %> <%=link_to(image_tag("/images/excel_large.gif", :size => "30x33", :alt=> 'Export to Excel',:border => 0), :action => :export_excel )-%></h2></td></tr>
 <tr><td>Generated For: <B><%= session[:facility].facility %></B></td></tr>
 <tr><td>NOTE: All reported rows and calculations are generated using a criteria date of <B><%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %></B>
- which is reflective of the last calendar day of the previous month.</td></tr>
- <tr><td> </td></tr>
- 
+which is reflective of the last calendar day of the previous month.</td></tr>
+<tr><td> </td></tr>
+
 </table>
 <table>	
- <tr>
-    <th>Position Type</th>
-    <th>Position Number</th>
-    <th>Position Title</th>
-    <th>Vacant</th>
-	<th>Salary</th>
-	<th>Salary + 120%</th>
-	<th>Salary / Day</th>
-	<th>Total Deduction</th>	
-  </tr>
+<tr>
+  <th>Position Type</th>
+  <th>Position Number</th>
+  <th>Position Title</th>
+  <th>Vacant</th>
+  <th>Salary</th>
+  <th>Salary + 120%</th>
+  <th>Salary / Day</th>
+  <th>Total Deduction</th>	
+</tr>
 
 <% for dep in @sort_report %>
-<% if dep[:validation_days] >= Time.days_in_month(@criteria_date.month, @criteria_date.year)%>
-	<% dep[:validation_days] = Time.days_in_month(@criteria_date.month, @criteria_date.year) %>
-<% end %>
-  <tr>
-  	<td><%= dep[:position_type] %></td>
- 	<td><%= dep[:position_number] %></td>
-	<td><%= dep[:position_title] %></td>
-	<td><%= dep[:validation_days] %></td>
-	<td><%= number_to_currency(dep[:salary]) %></td>
-    <td><%= number_to_currency(dep[:salary120]) %></td>
-	<td><%= number_to_currency(dep[:salaryday]) %></td>
-	<td><%= dep[:salaryday] ? number_to_currency(dep[:salaryday] * dep[:validation_days]) : number_to_currency(0) %></td>
-	<% dep[:salaryday] ? @totaldeduction +=  dep[:salaryday] * dep[:validation_days] : @totaldeduction += 0 %>
-</tr>
-<% end %>
-<tr><td colspan="7"></td><td><hr width="90"></td></tr>
+    <% if dep[:validation_days] >= Time.days_in_month(@criteria_date.month, @criteria_date.year)%>
+                     <% dep[:validation_days] = Time.days_in_month(@criteria_date.month, @criteria_date.year) %>
+        <% else %>
+              <% dep[:validation_days] = dep[:validation_days] %>
+  
+        <% end %>
+    <tr>
+      <td><%= dep[:position_type] %></td>
+      <td><%= dep[:position_number] %></td>
+      <td><%= dep[:position_title] %></td>
+      <td><%= dep[:validation_days] %></td>
+      <td><%= number_to_currency(dep[:salary]) %></td>
+      <td><%= number_to_currency(dep[:salary120]) %></td>
+      <td><%= number_to_currency(dep[:salaryday]) %></td>
+      <td><%= dep[:salaryday] ? number_to_currency(dep[:salaryday] * dep[:validation_days]) : number_to_currency(0) %></td>
+      <% dep[:salaryday] ? @totaldeduction +=  dep[:salaryday] * dep[:validation_days] : @totaldeduction += 0 %>
+    </tr>
+  <% end %>
+  <tr><td colspan="7"></td><td><hr width="90"></td></tr>
 
-<tr><td colspan="6"></td><td><B>TOTAL DEDUCTIONS:</td><td><%= number_to_currency(@totaldeduction) %></B></td></tr>
+  <tr><td colspan="6"></td><td><B>TOTAL DEDUCTIONS:</td><td><%= number_to_currency(@totaldeduction) %></B></td></tr>
 
-</table>
+  </table>
 
 
-<br />
+  <br />

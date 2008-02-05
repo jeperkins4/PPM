@@ -4,8 +4,6 @@
 Monthly reports are generated for the prior months activities.
 For example if October is selected, the report will be gereated for vacancies through the end of September.
 </p>
-Criteria_Date:<%= Time.now.ago(400000).to_date -%>
-
   <p>
    <%= select_month(session[:selectmonth].to_i) %>
    <%= select_year(session[:selectyear].to_i) %>

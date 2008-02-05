@@ -1,103 +1,97 @@
 <% if session[:report_selection] == "Vacancy" %>
 
-<table border=1 width='100%'>
-	<tr align='center'>
-		<td colspan=12>
-		<h3>Position Vacancy Report - <%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date %><h3>
-		</td></tr>
-<tr align='center'>
-	<td colspan=12>
-<center><h3><%= @criteria_date.strftime("%B - %Y") %> Report</h3></center>
-<center><h4>NOTE: All reported rows and calculations are generated using a criteria date of <B><%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %></B></h4>
-</td></tr>
-	<td>
+  <table border=1 width='100%'>
+    <tr align='center'>
+      <td colspan=8>
+        <h4>Position Vacancy Report</h4>
+        <h4><%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date.strftime("%B %d, %Y") %></h4>
+    </td></tr>
+    <tr align='center'>
+      <td colspan=8>
+        <center><h3><%= @criteria_date.strftime("%B - %Y") %> Report</h3>
+        <center><h4>NOTE: All reported rows and calculations are generated using a criteria date of<B>
+        <%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %></B></h4></center>
+    </td></tr>
     <th>Position Type</th>
     <th>Position Number</th>
     <th>Position Title</th>
     <th>Employee Vacating</th>
-	<th>Date Vacated</th>
-	<th>Start Date</th>
-   <th>Employee Filling</th>
-	<th>Salary</th>
-	<th>Special Position Type</th>
-	<th>Date Waiver Approval</th>
-	<th>Vacant Days for Month</th>	
-  </tr>
-  </td>
+    <th>Date Vacated</th>
+    <th>Start Date</th>
+    <th>Employee Filling</th>
+    <th>Salary</th>
+    <th>Vacant Days</th>
+    <% for dep in  @report %>
+       <% @filling_name = Employee.find_by_id(dep[:employee_hire])-%>
+       <% @exiting_name = Employee.find_by_id(dep[:employee_vacate])-%>
+
+      <tr>
+        <td><%= dep[:position_type] %></td>
+        <td><%= dep[:position_number] %></td>
+        <td><%= dep[:position_title] %></td>
+        <td><%= (@exiting_name) ? @exiting_name.first_name + " " + @exiting_name.last_name : "NEW" %></td>
+        <td><%= dep[:vacate_date] %></td>
+        <td><%= dep[:hire_date] %></td>
+        <td><%= (@filling_name) ? @filling_name.first_name + " " + @filling_name.last_name : "" %></td>
+        <td><%= number_to_currency(dep[:salary])%></td>
+        <% if dep[:validation_days] >= Time.days_in_month(@criteria_date.month, @criteria_date.year)%>
+            <td><%= Time.days_in_month(@criteria_date.month, @criteria_date.year) %></td>
+          <% else %>
+            <td><%= dep[:validation_days]%></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+
+          <% else %>
+
+    <table border=1 width='100%'>
+      <tr align='center'>
+        <td colspan=8>
+          <h3>Calculation of Vacant Position Deductions </h3>
+<h4><%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date.strftime("%B %d, %Y") %><h4>
+      </td></tr>
+      <tr align='center'>
+        <td colspan=8>
+          <center><h3><%= @criteria_date.strftime("%B - %Y") %> Report</h3></center>
+          <center><h4>NOTE: All reported rows and calculations are generated using a criteria date of <B><%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %></B></h4>
+      </td></tr>
   
-<% for dep in  @report %>
-<% @filling_name = Employee.find_by_id(dep[:employee_hire])-%>
-<% @exiting_name = Employee.find_by_id(dep[:employee_vacate])-%>
+    </table>
+    <table>	
+    <tr>
+      <th>Position Type</th>
+      <th>Position Number</th>
+      <th>Position Title</th>
+      <th>Vacant</th>
+      <th>Salary</th>
+      <th>Salary + 120%</th>
+      <th>Salary / Day</th>
+      <th>Total Deduction</th>	
+    </tr>
 
-  <tr>
-  	<td></td>
-	<td><%= dep[:position_type] %></td>
-    <td><%= dep[:position_number] %></td>
-    <td><%= dep[:position_title] %></td>
-    <td><%= (@exiting_name) ? @exiting_name.first_name + " " + @exiting_name.last_name : "NEW" %></td>
-    <td><%= dep[:vacate_date] %></td>
-    <td><%= dep[:hire_date] %></td>
-    <td><%= (@filling_name) ? @filling_name.first_name + " " + @filling_name.last_name : "" %></td>
-    <td><%= number_to_currency(dep[:salary]) %></td>
-    <td><%= dep[:special_position_type] %></td>
-    <td><%= dep[:date_waiver_approval] %></td>
-<% if dep[:validation_days] >= Time.days_in_month(@criteria_date.month, @criteria_date.year)%>
-	<td><%= Time.days_in_month(@criteria_date.month, @criteria_date.year) %></td>
-<% else %>
-	<td><%= dep[:validation_days] %></td>
-<% end %>
-  </tr>
+                 <% for dep in @report %>
+          <% if dep[:validation_days] >= Time.days_in_month(@criteria_date.month, @criteria_date.year)%>
+                               <% dep[:validation_days] = Time.days_in_month(@criteria_date.month, @criteria_date.year) %>
+                <% else %>
+                        <% dep[:validation_days] = dep[:validation_days] %>
   
-<% end %>
-</table>
+                <% end %>
+        <tr>
+          <td><%= dep[:position_type] %></td>
+          <td><%= dep[:position_number] %></td>
+          <td><%= dep[:position_title] %></td>
+          <td><%= dep[:validation_days] %></td>
+          <td><%= number_to_currency(dep[:salary]) %></td>
+          <td><%= number_to_currency(dep[:salary120]) %></td>
+          <td><%= number_to_currency(dep[:salaryday]) %></td>
+          <td><%= dep[:salaryday] ? number_to_currency(dep[:salaryday] * dep[:validation_days]) : number_to_currency(0) %></td>
+          <% dep[:salaryday] ? @totaldeduction +=  dep[:salaryday] * dep[:validation_days] : @totaldeduction += 0 %>
+        </tr>
+      <% end %>
+      <tr><td colspan="7"></td><td><hr width="90"></td></tr>
 
-<% else %>
+      <tr><td colspan="6"></td><td><B>TOTAL DEDUCTIONS:</td><td><%= number_to_currency(@totaldeduction) %></B></td></tr>
+      </table>
 
-<table border=1 width='100%'>
-	<tr align='center'>
-		<td colspan=12>
-		<h3>Calculation of Vacant Position Deductions - <%= (session[:facility]) ? session[:facility].facility : 'Administrative' %> - <%= Time.now().to_date %><h3>
-		</td></tr>
-<tr align='center'>
-	<td colspan=12>
-<center><h3><%= @criteria_date.strftime("%B - %Y") %> Report</h3></center>
-<center><h4>NOTE: All reported rows and calculations are generated using a criteria date of <B><%= @criteria_date.at_end_of_month.strftime("%B %d, %Y") %></B></h4>
-</td></tr>
- 
-</table>
-<table>	
- <tr>
-    <th>Position Type</th>
-    <th>Position Number</th>
-    <th>Position Title</th>
-    <th>Vacant</th>
-	<th>Salary</th>
-	<th>Salary + 120%</th>
-	<th>Salary / Day</th>
-	<th>Total Deduction</th>	
-  </tr>
-
-<% for dep in @report %>
-
-<% if dep[:validation_days] >= Time.days_in_month(@criteria_date.month, @criteria_date.year)%>
-	<% dep[:validation_days] = Time.days_in_month(@criteria_date.month, @criteria_date.year) %>
-<% end %>
-  <tr>
-  	<td><%= dep[:position_type] %></td>
- 	<td><%= dep[:position_number] %></td>
-	<td><%= dep[:position_title] %></td>
-	<td><%= dep[:validation_days] %></td>
-	<td><%= dep[:salary] ? number_to_currency(dep[:salary]) : number_to_currency(0) %></td>
-    <td><%= dep[:salary120] ? number_to_currency(dep[:salary120]) : number_to_currency(0) %></td>
-	<td><%= dep[:salaryday] ? number_to_currency(dep[:salaryday]) : number_to_currency(0)%></td>
-	<td><%= dep[:salaryday] ? number_to_currency(dep[:salaryday] * dep[:validation_days]) : number_to_currency(0) %></td>
-	<% dep[:salaryday] ? @totaldeduction += (dep[:salaryday] * dep[:validation_days]) : @totaldeduction += 0 %>
-</tr>
-<% end %>
-<tr><td colspan="7"></td><td><hr width="90"></td></tr>
-
-<tr><td colspan="6"></td><td><B>TOTAL DEDUCTIONS:</td><td><%= number_to_currency(@totaldeduction) %></B></td></tr>
-
-</table>
-
-<% end %>
+                    <% end %>

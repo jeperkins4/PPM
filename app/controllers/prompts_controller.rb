@@ -54,18 +54,19 @@ class PromptsController < ApplicationController
   # PUT /prompts/1
   # PUT /prompts/1.xml
   def update
-    @prompt = Prompt.find(params[:id])
-    
-    respond_to do |format|
+    @prompt = Prompt.find(params[:id])    
+    @records_update = AccountabilityLogs.find_all_by_context_id_and_prompt_id(@prompt.context_id, @prompt.id)        
+    respond_to do |format|     
       if @prompt.update_attributes(params[:prompt])
+        update_contexts(@records_update, @prompt)
         flash[:notice] = 'Prompt was successfully updated.'
         format.html { redirect_to prompt_url(@prompt) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @prompt.errors.to_xml }
+        format.xml  { render :xml => @prompt.errors.to_xml }          
       end
-    end
+    end      
   end
   
   # DELETE /prompts/1
@@ -79,4 +80,11 @@ class PromptsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def update_contexts(rows, update_object)
+    rows.each do |r|
+      r.update_attribute('context_id',update_object.context_id)      
+    end
+  end
+  
 end

@@ -108,6 +108,7 @@
 	<% end -%>
 	<tr><td colspan="15" bgcolor="#CCCCCC">&nbsp;</td></tr>
 	<tr>
+
 		<td><b>Total:</b></td>
 		<td><%= @july %></td>
 		<td><%= @aug %></td>
@@ -126,4 +127,11 @@
 	    <td bgcolor="#FFCC00"><%= number_with_precision((@category_total/@divider), 2) %></td>
 	</tr>
     <tr><td colspan="15" bgcolor="#666666">&nbsp;</td></tr>
+<% @notes = AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and facility_id = ?',category.id, session[:facility].id],:order =>'log_year asc, log_month asc')%>
+   <% if @notes.length >= 1 %>
+    <tr><td><b>NOTES:</b></td></tr>
+<% @notes.each do |note|%>
+  <tr><td><%= Date.new(note.log_year,note.log_month).strftime('%B') %></td><td><%= Date.new(note.log_year,note.log_month).strftime('%Y')%></td><td colspan="13"><%= note.detail_response%></td></tr>
+    <% end %>
+<% end %>
 <% end -%>

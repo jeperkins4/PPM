@@ -16,7 +16,7 @@ development:
   database: privateprison_production
   username: private
   password: pri$on
-  host: Sun33.state.fl.us
+  host: sun86.state.fl.us
 
 # Warning: The database defined as 'test' will be erased and
 # re-generated from your development database when you run 'rake'.

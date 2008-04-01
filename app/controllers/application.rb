@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
   before_filter :set_page
   before_filter :set_facility, :except => ''
   
+ include DebugHelper
+  
   def admin_authenticate
     if session[:user_id]
       @user = User.find_by_id(session[:user_id])

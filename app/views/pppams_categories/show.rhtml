@@ -1,0 +1,9 @@
+<span class='float-right'><%= link_to 'Show full list', :action => 'list' %></span><h1 class='inline-head'><%=h @pppams_category.name %></h1>&nbsp;<span><%= link_to image_tag("edit_icon.png", :border=>0), :action => 'edit', :id => @pppams_category.id %> | <%= link_to image_tag("delete_icon.png", :border=>0), :action => 'destroy', :id => @pppams_category.id %></span>
+<p>
+  <%=h @pppams_category.description %>
+</p>
+
+
+<br />
+
+<%= @list_output %>

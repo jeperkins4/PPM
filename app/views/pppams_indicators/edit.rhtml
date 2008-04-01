@@ -1,0 +1,9 @@
+<h1>Editing pppams_indicator</h1>
+
+<% form_tag :action => 'update', :id => @pppams_indicator do %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Save' %>
+<% end %>
+
+<%= link_to 'Back', :action => 'show', :id => @pppams_indicator %> |
+<%= link_to 'List', :controller => 'pppams_categories', :action => 'show', :id => @pppams_indicator.pppams_category_id %> 

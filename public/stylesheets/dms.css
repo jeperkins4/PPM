@@ -207,7 +207,7 @@ a img { border: 0px; }
 #toptools_back {
 	width: 100%;
 	margin-top:0px;
-	height:40px;
+	height:auto;
 	background: #E4E4C3 url(/images/footerback.gif) repeat-x bottom;
 }
 
@@ -821,3 +821,11 @@ td {
 	margin-top:-15px;
 	!margin-top:-17px;
 }
+
+.inline-head {
+	display: inline;
+}
+
+.float-right {
+	float: right;
+}	

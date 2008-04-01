@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 42) do
+ActiveRecord::Schema.define(:version => 46) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(:version => 42) do
     t.column "created_on",  :date
     t.column "created_by",  :string
   end
+
+  add_index "accountability_logs", ["facility_id", "prompt_id", "log_year", "log_month"], :name => "facility_id"
 
   create_table "action_types", :force => true do |t|
     t.column "action",      :string
@@ -67,6 +69,12 @@ ActiveRecord::Schema.define(:version => 42) do
 
   add_index "employee_positions", ["position_number_id"], :name => "index_employee_positions_on_position_number_id"
   add_index "employee_positions", ["employee_id"], :name => "index_employee_positions_on_employee_id"
+
+  create_table "employee_status_logs", :force => true do |t|
+    t.column "employee_id", :integer
+    t.column "tea_status",  :string
+    t.column "status_date", :date
+  end
 
   create_table "employees", :force => true do |t|
     t.column "facility_id", :integer
@@ -195,6 +203,26 @@ ActiveRecord::Schema.define(:version => 42) do
     t.column "salary",           :decimal, :precision => 10, :scale => 2
     t.column "description",      :text
     t.column "facility_id",      :integer
+  end
+
+  create_table "pppams_categories", :force => true do |t|
+    t.column "name",        :string
+    t.column "description", :text
+    t.column "facility_id", :integer
+    t.column "created_on",  :datetime
+    t.column "updated_on",  :datetime
+  end
+
+  create_table "pppams_indicators", :force => true do |t|
+    t.column "pppams_category_id", :integer
+    t.column "description",        :text
+    t.column "reference",          :string
+    t.column "frequency",          :integer
+    t.column "indicator_rating",   :string
+    t.column "max_score",          :integer
+    t.column "start_month",        :integer
+    t.column "created_on",         :datetime
+    t.column "updated_on",         :datetime
   end
 
   create_table "prompts", :force => true do |t|

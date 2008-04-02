@@ -25,7 +25,7 @@ test:
   adapter: mysql
   database: privateprison_test
   username: root
-  password:
+  password: mandy01
   host: localhost
 
 production:

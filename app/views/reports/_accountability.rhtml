@@ -131,7 +131,7 @@
    <% if @notes.length >= 1 %>
     <tr><td><b>NOTES:</b></td></tr>
 <% @notes.each do |note|%>
-  <tr><td><%= Date.new(note.log_year,note.log_month).strftime('%B') %></td><td><%= Date.new(note.log_year,note.log_month).strftime('%Y')%></td><td colspan="13"><%= note.detail_response%></td></tr>
+  <tr><td width><%= Date.new(note.log_year,note.log_month).strftime('%B') %></td><td><%= Date.new(note.log_year,note.log_month).strftime('%Y')%></td><td colspan="3"><%= note.detail_response%></td></tr>
     <% end %>
 <% end %>
 <% end -%>

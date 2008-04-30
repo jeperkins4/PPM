@@ -52,7 +52,7 @@ class EmployeePositionsController < ApplicationController
   
   # POST /employee_positions
   # POST /employee_positions.xml
-  def create    
+  def create
     if lateral_move then      
       redirect_to :back
     else      
@@ -160,20 +160,25 @@ class EmployeePositionsController < ApplicationController
   #  end
   #end
   
-  def lateral_move     
+  def lateral_move
+    unless session[:user_type] =='Administrator'
     
-    @new_position_number = Position.find(:first, :select=>'p.id as id',:from=>'position_numbers pn, positions p',
-      :conditions=>['pn.id = ? and pn.position_id = p.id', params[:employee_position][:position_number_id]])    
+      @new_position_number = Position.find(:first, :select=>'p.id as id',:from=>'position_numbers pn, positions p',
+        :conditions=>['pn.id = ? and pn.position_id = p.id', params[:employee_position][:position_number_id]])    
     
-    @old_position_number = EmployeePositionHist.find(:first, :conditions=>['employee_id = ? AND end_date = (SELECT MAX(end_date) FROM employee_position_hists where employee_id = ?)',params[:employee_position][:employee_id], params[:employee_position][:employee_id]])
+      @old_position_number = EmployeePositionHist.find(:first, :conditions=>['employee_id = ? AND end_date = (SELECT MAX(end_date) FROM employee_position_hists where employee_id = ?)',params[:employee_position][:employee_id], params[:employee_position][:employee_id]])
     
-    if @new_position_number != nil and @old_position_number != nil then
-      if @new_position_number.id == @old_position_number.position_number.position_id
-        flash[:notice] = "You are trying to assign " + @old_position_number.employee.first_name + 
-          " to a position number that holds the same Position Title as the employees previous position number:" + @old_position_number.position_number.position_num + "."
-        flash[:notice] =  flash[:notice] + " This is an illegal move and is not allowed.  If you feel you have received this message in error, please contact your administrator."
-        return true
+      if @new_position_number != nil and @old_position_number != nil then
+        if @new_position_number.id == @old_position_number.position_number.position_id
+          flash[:notice] = "You are trying to assign " + @old_position_number.employee.first_name + 
+            " to a position number that holds the same Position Title as the employees previous position number:" + @old_position_number.position_number.position_num + "."
+          flash[:notice] =  flash[:notice] + " This is an illegal move and is not allowed.  If you feel you have received this message in error, please contact your administrator."
+          return true
+        end
       end
+    else
+      #Allow Admins to enter lateral moves
+      return false
     end
   end
   

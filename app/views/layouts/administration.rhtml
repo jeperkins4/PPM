@@ -30,6 +30,11 @@
       <div id='main_block_content'>
         <div id='toptools' style="background-color:#E4E4C3;">
           <div id='toptools_back'>
+
+	    <a id="nav_hider" href="javascript: navslide('8px')"><span><<</span></a>
+
+
+
             <% if session[:access_level] == 'Administrator' -%>
               <div id='search'>
                 <% form_for :set_facility, :url => {:action => :index} do |f| -%>
@@ -102,9 +107,6 @@
                 <a href="/position_hists">Position History</a>
               </li>
               <li class="menu-level-1 ">
-                <a href="/pppams_categories">PPPAMS Admin</a>
-              </li>
-              <li class="menu-level-1 ">
                 <a href="/contexts">Log Categories</a>
               </li>
               <li class="menu-level-1 ">
@@ -112,7 +114,7 @@
               </li>
             </ul>
           </li>
-        <% end -%>
+        <% end -%> 
         <li class="menu-level-0 ">
           Contract Manager
         </li>           
@@ -148,6 +150,9 @@
           <li class="menu-level-1 ">
             <a href="/accountability_logs">Accountability Log</a>
           </li>
+          <li class="menu-level-1 ">
+            <a href="/pppams_indicators">PPPAMS Admin</a>
+          </li>  
         </li>
       </ul>			
       </li>
@@ -164,3 +169,11 @@
 </body>
 </html>
 <%= debug_popup %>
+	    <script>
+		if (mainmargin_preset == '8px') {
+			$('nav_hider').innerHTML = "<span>>></span>";
+			$('nav_hider').href = "javascript: navslide('200px')";
+			$('nav_block').style.borderLeft = '9px solid #c9c99a';
+		} 
+	    </script>	
+

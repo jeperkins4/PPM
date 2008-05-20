@@ -9,5 +9,5 @@ class Facility < ActiveRecord::Base
   has_many :employees
   has_many :accountability_logs
   has_many :accountability_log_details
-  has_many :pppams_categoies
+  has_many :pppams_categories
 end

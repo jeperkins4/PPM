@@ -1,6 +1,9 @@
 class PppamsIndicatorsController < ApplicationController
-  before_filter :admin_authenticate
+  before_filter :authenticate
   layout 'administration'
+  
+ require 'rubygems'
+ require 'orderedhash.rb'
   
   def index
     list
@@ -13,6 +16,10 @@ class PppamsIndicatorsController < ApplicationController
 
   def list
     @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :per_page => 10
+  end
+  
+  def _to_do 
+    render :partial => 'to_do', :locals => {:time => Time.parse(params[:time]) }
   end
 
   def show
@@ -34,10 +41,20 @@ class PppamsIndicatorsController < ApplicationController
   end
 
   def edit
+    @frequency_options=OrderedHash.new()
+    @frequency_options['1 - Annual'] =1
+    @frequency_options['2 - Semi-annual'] = 2
+    @frequency_options['4 - Quarterly'] = 4
+    @frequency_options['12 - Monthly'] = 12
     @pppams_indicator = PppamsIndicator.find(params[:id])
   end
 
   def update
+    @frequency_options=OrderedHash.new()
+    @frequency_options['1 - Annual'] =1
+    @frequency_options['2 - Semi-annual'] = 2
+    @frequency_options['4 - Quarterly'] = 4
+    @frequency_options['12 - Monthly'] = 12
     @pppams_indicator = PppamsIndicator.find(params[:id])
     if @pppams_indicator.update_attributes(params[:pppams_indicator])
       flash[:notice] = 'PppamsIndicator was successfully updated.'
@@ -52,4 +69,20 @@ class PppamsIndicatorsController < ApplicationController
     PppamsIndicator.find(params[:id]).destroy
     redirect_to :action => 'show', :controller => 'pppams_categories', :id => @thisIndicatorCat
   end
+  
+  def update_good_months
+      for this_ind in PppamsIndicator.find(:all)
+      addme = [this_ind.start_month]
+      this_ind.frequency.times { |f|
+         if f > 0
+         pushme = addme.last + f > 12 ?  addme.last + f  -12 : addme.last + f 
+         addme.push(pushme)
+         end
+      }
+      this_ind.good_months = addme.join(':') + ":"
+      this_ind.save
+    end
+  end
+  
+  
 end

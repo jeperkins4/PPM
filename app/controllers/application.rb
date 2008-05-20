@@ -4,10 +4,20 @@
 class ApplicationController < ActionController::Base
   # Pick a unique cookie name to distinguish our session data from others'
   session :session_key => '_privateprison_session_id'
+  
+  before_filter do |c|
+    User.current_user = User.find_by_id(c.session[:user_id])
+  end
+
   before_filter :set_page
   before_filter :set_facility, :except => ''
+  after_filter :clean_up_uploads, :except => ['update', 'create', 'trash_upload', 'uploadFile']
   
  include DebugHelper
+ $LOAD_PATH.unshift 'vendor/plugins/responds_to_parent/lib'
+ $LOAD_PATH.unshift 'vendor/plugins/orderedhash/lib'
+ $LOAD_PATH.unshift 'vendor/plugins/fastercsv/lib'
+
   
   def admin_authenticate
     if session[:user_id]
@@ -23,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
   
   def authenticate
-    unless User.find_by_id(session[:user_id])
+    unless @user = User.find_by_id(session[:user_id])
       flash[:notice]="Please log in."
       redirect_to(:controller => "login", :action => "index")
     end
@@ -76,6 +86,7 @@ class ApplicationController < ActionController::Base
   def set_page
     @host = request.host
     @page = request.request_uri.split('?')
+    @pppams_start_date = Time.parse("4/1/2008")
   end
   
   def paginate_collection(collection, options = {})
@@ -87,6 +98,12 @@ class ApplicationController < ActionController::Base
     last = [first + options[:per_page], collection.size].min
     slice = collection[first...last]
     return [pages, slice]
+  end
+  
+  def clean_up_uploads
+      for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]])
+        this_upload.destroy
+      end
   end
 
 end

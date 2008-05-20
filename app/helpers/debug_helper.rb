@@ -9,7 +9,7 @@ module DebugHelper
   
   def debug_popup
     
-    return false unless session[:user_id] == 21
+    return '' unless session[:user_id] == 21
 
     popup_create do |script| 
       

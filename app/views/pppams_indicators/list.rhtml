@@ -1,28 +1,28 @@
-<span class='float-right'><%= link_to 'New Indicator', :action => 'new', :controller => 'pppams_indicators', :pppams_category_id => params[:id]%></span><h1 class='inline-head'>PPPAMS Indicators</h1>
+<h2 class='inline-head'>PPPAMS Management</h2>
 
-<table>
-  <tr>
-  <th colspan=3 class='edit_col'>&nbsp;</th>
-  <% for column in PppamsIndicator.content_columns.reject {|c| c.name =~ /(_on)$/  } %>
-    <th><%= column.human_name %></th>
-  <% end %>
-  </tr>
-  
-<% for pppams_indicator in @pppams_indicators %>
-  <tr>
-  <td><%= link_to image_tag("view_icon.png", :border=>0), :controller => 'pppams_indicators', :action => 'show', :id => pppams_indicator %></td>
-  <td><%= link_to image_tag("edit_icon.png", :border=>0), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>
-  <td><%= link_to image_tag("delete_icon.png", :border=>0), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td>
-  <% for column in PppamsIndicator.content_columns.reject {|c| c.name =~ /(_on)$/  } %>
-    <td><%=h pppams_indicator.send(column.name) %></td>
-  <% end %>
-  </tr>
+<div id="current_pppams">
+
+<% start_time = Time.now.months_ago(6) %>
+
+
+<div id="navigation">
+<ul>
+<% for i in 0...12 %>
+<li <%= "class='selected'" if i == 6 %>>
+<%= link_to_remote( "<span>#{start_time.strftime('%b')}</span>", :update => "nav_results", :url =>{ :action => :_to_do, :time => start_time.strftime('%m-%d-%Y') }) %>
+</li>
+<% start_time = start_time.months_since(1) %>
 <% end %>
-</table>
+</ul> 
+</div>
 
-<%= link_to 'Previous page', { :page => @pppams_indicator_pages.current.previous } if @pppams_indicator_pages.current.previous %>
-<%= link_to 'Next page', { :page => @pppams_indicator_pages.current.next } if @pppams_indicator_pages.current.next %> 
+<div id='nav_results'>
 
-<br />
+<%= render :partial => 'to_do', :locals => {:time => Time.now } %>
+
+</div>
+
+</div>
+
 
 

@@ -1,21 +1,12 @@
 <%= error_messages_for 'pppams_indicator' %>
 
 <!--[form:pppams_indicator]-->
-<p><label for="pppams_indicator_description">Description</label><br/>
-<%= text_area 'pppams_indicator', 'description'  %></p>
-
-<p><label for="pppams_indicator_reference">Reference</label><br/>
-<%= text_field 'pppams_indicator', 'reference'  %></p>
+<p><label for="pppams_indicator_question">Question</label><br/>
+<%= text_area 'pppams_indicator', 'question'  %></p>
 
 <p><label for="pppams_indicator_frequency">Annual frequency</label><br/>
-<%= select( "pppams_indicator", "frequency", [1,2,3,4,6,12]) %>
+<%= select( "pppams_indicator", "frequency", @frequency_options ) %>
 </p>
-
-<p><label for="pppams_indicator_indicator_rating">Indicator rating</label><br/>
-<%= text_field 'pppams_indicator', 'indicator_rating'  %></p>
-
-<p><label for="pppams_indicator_max_score">Max score</label><br/>
-<%= text_field 'pppams_indicator', 'max_score'  %></p>
 
 <p><label for="pppams_indicator_start_month">Start month</label><br/>
 <%= select_month(Date.today, :add_month_numbers => true, :field_name => 'start_month', :prefix => 'pppams_indicator')%>
@@ -24,5 +15,4 @@
 
 <%= hidden_field 'pppams_indicator', 'pppams_category_id' %>
 
-
-
+<%= collection_select_multiple_pppams_references :pppams_indicator, :pppams_references, {}, {:size => 30} %>

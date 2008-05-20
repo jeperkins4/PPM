@@ -1,5 +1,5 @@
 class PppamsCategoriesController < ApplicationController
-  before_filter :admin_authenticate
+  before_filter :authenticate
   layout 'administration'
   
   def index
@@ -12,9 +12,8 @@ class PppamsCategoriesController < ApplicationController
          :redirect_to => { :action => :list }
          
 
-
   def list
-    @pppams_category_pages, @pppams_categories = paginate :pppams_categories, :conditions => ["facility_id = ?", session[:facility].id], :per_page => 10
+    @pppams_category_pages, @pppams_categories = paginate :pppams_categories, :conditions => ["facility_id = ?", session[:facility].id], :per_page => 15
   end
 
   def show
@@ -56,5 +55,10 @@ class PppamsCategoriesController < ApplicationController
   def destroy
     PppamsCategory.find(params[:id]).destroy
     redirect_to :action => 'list'
+  end
+  
+  def export_as_csv
+    @my_export = PppamsAsCsv.new
+    @my_export.export_all
   end
 end

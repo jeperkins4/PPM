@@ -1,12 +1,13 @@
 /* LAYOUT */
 
 
-
 .wrapper {
 	width: 100%;
 	overflow: hidden;
 	background: #f2f2dc;
 	position: relative;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 #main_block .wrapper {
@@ -216,6 +217,7 @@ a img { border: 0px; }
 	color:#B6B67C;
 	border:none;
 	text-align:center;
+	margin-right: 236px;
 }
 
 #toptools_back2 {
@@ -244,7 +246,8 @@ div#search
 	font-size: 80%;
 	padding: .25em;
 	width: 235px;
-	float: right;
+	position: absolute;
+	right: 0px;
 	padding-top: .5em;
 
 }
@@ -826,6 +829,142 @@ td {
 	display: inline;
 }
 
+#pppams_review_edit textarea {
+	width: 348px;
+}
+
+#pppams_review_edit #right_col {
+	float: right;
+}
+p.no-top {
+	margin-top: 0px;
+}
+
 .float-right {
 	float: right;
 }	
+
+#files_list_wrap {
+	width: 300px;
+	position: relative;
+}
+
+#score_box p {
+	margin-top: 0px;
+}
+
+.hidden_file {
+	width: 0px;
+	border: 0px; 
+}
+
+#upload_list {
+	background: #fff;
+	width: 240px;
+	height: 100px;
+}
+
+#file_upload_select {
+	position: absolute;
+	left: 282px;
+}
+
+
+#trash {
+	width: 50px;
+	height: 50px;
+}
+
+#files_list_wrap #trash {
+	position: absolute;
+	top: 18px;
+	left: 240px;
+}
+
+#nav_hider {
+	background: #c9c99a;
+	position: absolute:
+	display: block;
+	text-decoration: none;
+	width: 16px;
+	height: 1.6em;
+	text-align: center;
+}
+
+#navigation ul, #navigation ul li {
+     list-style: none;
+     margin: 0;
+     padding: 0;
+ }
+
+#navigation ul {
+     text-align: center; 
+ }
+
+#navigation ul li {
+     display: inline;
+     margin-right: .25em;
+ }
+
+#navigation ul li.selected a {
+	border-bottom: 5px solid red;
+}
+
+#navigation ul li.last {
+     margin-right: 0;
+ }
+
+#navigation li a {
+     padding: 0px 1em;
+ }
+
+
+#navigation ul li a {
+     background: url(/images/tab-right.gif) no-repeat 100% 0;
+     color: #06C;
+     padding: 0px 0px;
+     text-decoration: none;
+ }
+
+
+#navigation ul li a span {
+     background: url(/images/tab-left.gif) no-repeat;
+     padding: 0px .65em;
+ }
+
+#navigation ul li a:hover span {
+     color: #69C;
+     text-decoration: underline;
+ }
+
+/*\*//*/
+ #navigation ul li a {
+     display: inline-block;
+     white-space: nowrap;
+     width: 1px;
+ }
+ /**/
+
+/*\*/
+ * html #navigation ul li a {
+     padding: 0;
+ }
+ /**/
+
+#nav_results {
+	border: 1px solid #ccc;
+	padding: 10px;
+}
+
+#current_pppams {
+	margin-top: 15px;
+}
+
+p.cat_heading {
+	font-weight: bold;
+	margin-bottom: 1em;
+}
+
+#score_box {
+	width: 360px;
+}

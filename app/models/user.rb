@@ -9,6 +9,8 @@ belongs_to :facility
   validates_uniqueness_of :name
   
   attr_accessor :password_confirmation
+  cattr_accessor :current_user
+
   validates_confirmation_of :password
   
   def validate
@@ -40,6 +42,11 @@ belongs_to :facility
     if User.count.zero?
       raise "Can't delete last user"
     end
+  end
+  
+  def is_admin?
+    return true if self.user_type.access_level_id == 1
+    return false
   end
   
   private

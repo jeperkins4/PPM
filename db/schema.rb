@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 46) do
+ActiveRecord::Schema.define(:version => 57) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -215,14 +215,64 @@ ActiveRecord::Schema.define(:version => 46) do
 
   create_table "pppams_indicators", :force => true do |t|
     t.column "pppams_category_id", :integer
-    t.column "description",        :text
-    t.column "reference",          :string
+    t.column "question",           :text
     t.column "frequency",          :integer
-    t.column "indicator_rating",   :string
-    t.column "max_score",          :integer
     t.column "start_month",        :integer
     t.column "created_on",         :datetime
     t.column "updated_on",         :datetime
+    t.column "good_months",        :string
+  end
+
+  create_table "pppams_indicators_copy", :force => true do |t|
+    t.column "pppams_category_id", :integer
+    t.column "question",           :text
+    t.column "reference",          :string
+    t.column "frequency",          :integer
+    t.column "start_month",        :integer
+    t.column "created_on",         :datetime
+    t.column "updated_on",         :datetime
+  end
+
+  create_table "pppams_indicators_pppams_references", :id => false, :force => true do |t|
+    t.column "pppams_indicator_id", :integer, :null => false
+    t.column "pppams_reference_id", :integer, :null => false
+  end
+
+  create_table "pppams_indicators_temp", :force => true do |t|
+    t.column "pppams_category_id", :integer
+    t.column "description",        :text
+    t.column "reference",          :string
+    t.column "frequency",          :integer
+    t.column "start_month",        :integer
+    t.column "created_on",         :datetime
+    t.column "updated_on",         :datetime
+  end
+
+  create_table "pppams_references", :force => true do |t|
+    t.column "name",       :string
+    t.column "url",        :string
+    t.column "created_on", :datetime
+    t.column "updated_on", :datetime
+  end
+
+  create_table "pppams_reviews", :force => true do |t|
+    t.column "pppams_indicator_id", :integer
+    t.column "doc_count",           :integer
+    t.column "score",               :integer
+    t.column "observation_ref",     :text
+    t.column "documentation_ref",   :text
+    t.column "interview_ref",       :text
+    t.column "evidence",            :text
+    t.column "created_on",          :datetime
+    t.column "updated_on",          :datetime
+    t.column "status",              :string
+    t.column "notes",               :text
+    t.column "created_by",          :integer
+    t.column "edited_by",           :integer
+  end
+
+  create_table "pppams_temp", :id => false, :force => true do |t|
+    t.column "reference", :string
   end
 
   create_table "prompts", :force => true do |t|
@@ -241,6 +291,16 @@ ActiveRecord::Schema.define(:version => 46) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "uploads", :force => true do |t|
+    t.column "pppams_review_id", :integer
+    t.column "size",             :integer
+    t.column "file_type",        :string
+    t.column "name",             :string
+    t.column "created_on",       :datetime
+    t.column "updated_on",       :datetime
+    t.column "created_by",       :integer
+  end
 
   create_table "user_types", :force => true do |t|
     t.column "user_type",       :string

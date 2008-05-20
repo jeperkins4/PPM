@@ -1,0 +1,8 @@
+<% for column in PppamsReference.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @pppams_reference.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to 'Edit', :action => 'edit', :id => @pppams_reference %> |
+<%= link_to 'Back', :action => 'list' %>

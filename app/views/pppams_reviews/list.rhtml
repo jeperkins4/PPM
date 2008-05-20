@@ -1,0 +1,28 @@
+<h1 class='inline-head'>PPPAMS Reviews</h1>
+
+<table>
+  <tr>
+  <th colspan= <%= @user.is_admin? ? 3 : 1 %> class='edit_col'>&nbsp;</th>
+  <% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on)$/  } %>
+    <th><%= column.human_name %></th>
+  <% end %>
+
+  </tr>
+  
+<% for pppams_review in @pppams_reviews %>
+  <tr>
+  <td><%= link_to image_tag("view_icon.png", :border=>0), :controller => 'pppams_reviews', :action => 'show', :id => pppams_review %></td>
+  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0), :controller => 'pppams_reviews', :action => 'edit', :id => pppams_review %></td>
+  <td><%= link_to image_tag("delete_icon.png", :border=>0), { :controller => 'pppams_reviews', :action => 'destroy', :id => pppams_review }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
+  <% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on)$/  } %>
+    <td><%=h pppams_review.send(column.name) %></td>
+  <% end %>
+
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Previous page', { :page => @pppams_review_pages.current.previous } if @pppams_review_pages.current.previous %>
+<%= link_to 'Next page', { :page => @pppams_review_pages.current.next } if @pppams_review_pages.current.next %> 
+
+<br />

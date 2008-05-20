@@ -1,0 +1,25 @@
+<h1>Editing PPPAM REVIEW</h1>
+
+<p><%= @pppams_review.pppams_indicator.question %></p>
+
+<p><label>Created on: </label><%= @pppams_review.created_on.strftime('%m-%d-%Y') %> by Test Manager </p>
+
+<div id='pppams_review_edit'>
+
+<div id='file_upload_select'>
+<%= start_form_tag ({:action => 'uploadFile', :controller => 'uploads'}), :multipart => true, :target => 'RSIFrame', :name => 'uploadform', :id => 'uploadform' %>
+<p class='no-top'><%= file_field 'upload', 'datafile', :class => 'hidden_file', :onchange => "javascript: forms.uploadform.submit()" %></p>
+<%= end_form_tag %> 
+</div>
+
+<% form_tag :action => 'update', :id => @pppams_review do %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Save' %>
+<% end %>
+
+<iframe id="RSIFrame" name="RSIFrame" style="width:0px; height:0px; border: 0px" src="blank.html"></iframe> 
+
+<%= link_to 'Show', :action => 'show', :id => @pppams_review %> |
+<%= link_to 'Back', :action => 'list' %>
+
+</div>

@@ -1,0 +1,73 @@
+<%= error_messages_for 'pppams_review' %>
+
+<script> 
+function fill_trash() {
+$('trash').src = "/images/trashfull.jpg";
+} 
+
+function empty_trash() {
+$('trash').src = "/images/trash.jpg";
+} 
+</script>
+
+
+<!--[form:pppams_review]-->
+
+<div id = 'right_col'>
+<fieldset>
+<legend>Status</legend>
+<label for="pppams_review_status_null">Submitted</label><%= radio_button("pppams_review", "status", nil) %><br/> 
+<label for="pppams_review_status_null">Review</label><%= radio_button("pppams_review", "status", "Review") %><br/> 
+<label for="pppams_review_status_null">Accepted</label><%= radio_button("pppams_review", "status", "Accepted") %><br/> 
+</fieldset>
+
+<p><label for="pppams_review_notes">Notes</label><br/>
+<%= text_area 'pppams_review', 'notes', {:rows => 15}  %></p>
+
+</div>
+
+<div id='score_box'>
+
+<div class='float-right' id='files_list_wrap'>
+<label for="pppams_review_uploads">Supporting Files</label><br/>
+
+<div id="upload_list">
+<% for this_upload in @pppams_review.uploads %>
+<%= render :partial => "uploads/upload", :locals => {:upload => this_upload} %>
+<% end %>
+<% for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]]) %>
+<%= render :partial => "uploads/upload", :locals => {:upload => this_upload} %>
+<% end %>
+</div>
+<%= image_tag "trash.jpg", :id=>'trash'%>
+</div>
+
+
+<p><label for="pppams_review_score">Score</label><br/>
+<%= select( "pppams_review", "score", ['',0,4,5,6,7,8,9,10] , {}, {:onchange => "javascript: myval = this.options[this.selectedIndex].value; if (myval ==7 || myval == 8) {new Effect.Fade('pppams_review_evidence_wrap')} else {new Effect.Appear('pppams_review_evidence_wrap')}; "})%></p>
+
+</div>
+
+<p><label for="pppams_review_observation_ref">Observation ref</label><br/>
+<%= text_area 'pppams_review', 'observation_ref', {:rows => 5}  %></p>
+
+<p><label for="pppams_review_documentation_ref">Documentation ref</label><br/>
+<%= text_area 'pppams_review', 'documentation_ref', {:rows => 5}    %></p>
+
+<p><label for="pppams_review_interview_ref">Interview ref</label><br/>
+<%= text_area 'pppams_review', 'interview_ref', {:rows => 5}    %></p>
+
+<div id='pppams_review_evidence_wrap'>
+
+
+
+<%= drop_receiving_element('trash', :accept => 'dragable_file', :with => "'upload=' + (element.id.split('_').last())", :url => {:action=>:trash_upload}, :before => "Element.hide(element)", :loading => "fill_trash()", :complete => "empty_trash()")%>
+
+
+<label for="pppams_review_evidence">Evidence</label><br/>
+<%= text_area 'pppams_review', 'evidence'  %>
+</div>
+
+<%= hidden_field 'pppams_review', 'pppams_indicator_id' %>
+<!--[eoform:pppams_review]-->
+

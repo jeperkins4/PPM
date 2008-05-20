@@ -1,0 +1,34 @@
+
+
+<% currents = PppamsIndicator.find_current(time.month, session[:facility]) %>
+
+<p>Live indicators this month: <%= currents.length %></p>
+
+<table>
+  <tr>
+  <th colspan= <%= @user.is_admin? ? 4 : 2 %> class='edit_col'>&nbsp;</th>
+  <th>Question</th>
+  <th>Status</th>
+  <th>References</th>
+  </tr>
+<% id_store = 0 %>  
+<% for pppams_indicator in currents %>
+  <% if id_store != pppams_indicator.pppams_category_id %>
+  <tr><td colspan= <%= @user.is_admin? ? 7 : 5 %>><p class='cat_heading'><%=h pppams_indicator.pppams_category.name %></p></td></tr>
+  <% end %>
+  <tr>
+  <td><%= link_to image_tag("view_icon.png", :border=>0), :controller => 'pppams_indicators', :action => 'show', :id => pppams_indicator %></td>
+  <td><%= link_to image_tag("review_icon.png", :border=>0), :controller => 'pppams_reviews', :action => 'new', :pppams_indicator_id => pppams_indicator %></td>
+  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>
+  <td><%= link_to image_tag("delete_icon.png", :border=>0), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
+
+    <td><%=h pppams_indicator.question %></td>
+    <td><%=h pppams_indicator.status %></td>
+
+  <td><% for this_ref in pppams_indicator.pppams_references %><%=h this_ref.html %><br/><% end %></td>
+  </tr>
+  <% id_store = pppams_indicator.pppams_category_id %>
+<% end %>
+</table>
+
+

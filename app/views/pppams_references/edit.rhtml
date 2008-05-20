@@ -1,0 +1,10 @@
+<h1>Editing pppams_reference</h1>
+
+<% form_tag :action => 'update', :id => @pppams_reference do %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Edit' %>
+<% end %>
+
+
+<%= link_to 'Show', :action => 'show', :id => @pppams_reference %> |
+<%= link_to 'Back', :action => 'list' %>

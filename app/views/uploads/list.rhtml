@@ -1,0 +1,27 @@
+<h1>Listing uploads</h1>
+
+<table>
+  <tr>
+  <% for column in Upload.content_columns %>
+    <th><%= column.human_name %></th>
+  <% end %>
+  </tr>
+  
+<% for upload in @uploads %>
+  <tr>
+  <% for column in Upload.content_columns %>
+    <td><%=h upload.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to 'Show', :action => 'show', :id => upload %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => upload %></td>
+    <td><%= link_to 'Destroy', { :action => 'destroy', :id => upload }, :confirm => 'Are you sure?', :method => :post %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Previous page', { :page => @upload_pages.current.previous } if @upload_pages.current.previous %>
+<%= link_to 'Next page', { :page => @upload_pages.current.next } if @upload_pages.current.next %> 
+
+<br />
+
+<%= link_to 'New upload', :action => 'new' %>

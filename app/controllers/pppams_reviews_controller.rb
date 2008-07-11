@@ -1,8 +1,13 @@
 class PppamsReviewsController < ApplicationController
-  before_filter :authenticate
+  before_filter :authenticate, :set_status_ar
 
   layout 'administration'
 
+  def set_status_ar
+    @status_access = {'Web Developer' => ['', 'Review','Accepted'], 'Administrator' => ['', 'Review','Accepted'], 'God' => ['', 'Review','Accepted','Locked'], 'Contract Manager' => [''] }
+    $cur_user_type =  User.current_user.user_type.user_type
+    @status_ar = @status_access[$cur_user_type]
+  end
   
   def index
     list
@@ -24,6 +29,7 @@ class PppamsReviewsController < ApplicationController
   def new
     @pppams_review = PppamsReview.new(:pppams_indicator_id => params[:pppams_indicator_id])
     @pppams_indicator = PppamsIndicator.find(params[:pppams_indicator_id])
+    @new = true
   end
 
   def create
@@ -35,14 +41,18 @@ class PppamsReviewsController < ApplicationController
         this_upload.save
       end
       flash[:notice] = 'PppamsReview was successfully created.'
-      redirect_to :action => 'list'
+      redirect_to :controller => 'pppams_indicators'
     else
-      render :action => 'new'
+      @pppams_indicator = @pppams_review.pppams_indicator
+      @new = true
+      render :action => 'new', :id => @pppams_review.pppams_indicator_id
     end
   end
 
   def edit
     @pppams_review = PppamsReview.find(params[:id])
+    @pppams_indicator = @pppams_review.pppams_indicator
+    @new = false
   end
 
   def update
@@ -54,7 +64,7 @@ class PppamsReviewsController < ApplicationController
         this_upload.save
       end
       flash[:notice] = 'PppamsReview was successfully updated.'
-      redirect_to :action => 'show', :id => @pppams_review
+      redirect_to :controller => 'pppams_indicators'
     else
       render :action => 'edit'
     end
@@ -71,7 +81,5 @@ class PppamsReviewsController < ApplicationController
       page.replace_html "uploaded_file_#{upload_id}", ""
     end
   end
-  
-
 
 end

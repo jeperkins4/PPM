@@ -28,6 +28,15 @@
 
 <br />
 
+<% if @pppams_categories.size == 0 %>
+   <% form_for :choose_facility, :url => {:action => :copy_categories} do |f| %>
+      <label class='accessibility' for='facility_facility_id'>Copy and add all categories and indicators from:</label>
+      <%= f.select(:facility_id, Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => false } ) %>
+      <%= f.text_field :return_page, :value => @page,  :style => 'display:none;' %>
+      <%= submit_tag 'Copy' %>
+   <% end %>
+<% end %>
+
 
 <% else %>
 

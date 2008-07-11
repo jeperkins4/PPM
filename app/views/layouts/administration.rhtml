@@ -14,6 +14,8 @@
   <meta name="description" content="The administrative arm of the State of Florida government" />
   <meta name="MSSmartTagsPreventParsing" content="TRUE" />
   <%= javascript_include_tag :defaults %>
+  <%= calendar_date_select_includes "blue" %>
+
   <link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/dms.css" />
 </head>
 <body>
@@ -112,6 +114,15 @@
               <li class="menu-level-1 ">
                 <a href="/prompts">Log Questions</a>
               </li>
+              <li class="menu-level-1 ">
+                <a href="/pppams_reports">PPPAMS Reports</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/pppams_categories">PPPAMS Admin</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/pppams_notifications">PPPAMS Notification Settings</a>
+              </li>  
             </ul>
           </li>
         <% end -%> 
@@ -151,7 +162,7 @@
             <a href="/accountability_logs">Accountability Log</a>
           </li>
           <li class="menu-level-1 ">
-            <a href="/pppams_indicators">PPPAMS Admin</a>
+            <a href="/pppams_indicators">PPPAMS Home</a>
           </li>  
         </li>
       </ul>			
@@ -168,7 +179,9 @@
 </div><!-- mainborder -->
 </body>
 </html>
-<%= debug_popup %>
+
+
+
 	    <script>
 		if (mainmargin_preset == '8px') {
 			$('nav_hider').innerHTML = "<span>>></span>";
@@ -176,4 +189,5 @@
 			$('nav_block').style.borderLeft = '9px solid #c9c99a';
 		} 
 	    </script>	
+
 

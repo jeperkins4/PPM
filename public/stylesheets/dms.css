@@ -231,6 +231,7 @@ ul#tabs
 	padding: 1em;
 	margin: 0px;
 	font-size: 90%;
+	margin-right: 235px;
 }
 
 
@@ -248,6 +249,7 @@ div#search
 	width: 235px;
 	position: absolute;
 	right: 0px;
+	top: 0px;
 	padding-top: .5em;
 
 }
@@ -765,14 +767,15 @@ tr{
 th {
 	margin-right:10px;
 	text-align: left;
-	padding:0 10px;
+	padding:3px 10px;
 	background-color:#CDCDA5;
 }
 
 td {
-	padding:0 10px;
+	padding:3px 10px;
 	text-align: left;
 	border-bottom:solid 1px #CDCDA5;
+	border-right: 1px solid #e0e0bf;
 }
 
 .print table {
@@ -829,12 +832,17 @@ td {
 	display: inline;
 }
 
+#pppams_review_edit {
+	position: relative;
+}
+
 #pppams_review_edit textarea {
 	width: 348px;
 }
 
 #pppams_review_edit #right_col {
 	float: right;
+	margin-top: 130px;
 }
 p.no-top {
 	margin-top: 0px;
@@ -866,9 +874,13 @@ p.no-top {
 
 #file_upload_select {
 	position: absolute;
-	left: 282px;
+	left: 350px;
+	top: 1.5em;
 }
 
+#file_upload_select .no-top {
+	cursor: pointer;
+}
 
 #trash {
 	width: 50px;
@@ -906,6 +918,10 @@ p.no-top {
      margin-right: .25em;
  }
 
+#current_pppams #navigation ul li {
+	margin-right: 0px;
+}
+
 #navigation ul li.selected a {
 	border-bottom: 5px solid red;
 }
@@ -924,12 +940,14 @@ p.no-top {
      color: #06C;
      padding: 0px 0px;
      text-decoration: none;
+     font-size: 120%;
  }
 
 
 #navigation ul li a span {
      background: url(/images/tab-left.gif) no-repeat;
-     padding: 0px .65em;
+     padding: 0px .45em;
+     font
  }
 
 #navigation ul li a:hover span {
@@ -967,4 +985,46 @@ p.cat_heading {
 
 #score_box {
 	width: 360px;
+}
+
+.calendar_date_select td, .calendar_date_select th {
+	margin: 0px;
+	padding: 0px;
+}
+
+.filter_float {
+	width: 45%;
+	float: left;
+	margin-right: 5%;
+}
+
+.filter_float_container {
+	clear: both;
+}
+
+#upload_datafile {
+	width: 150px;
+}
+
+#uploadform input {
+	height: 20px;
+	width: 0px;
+}
+
+fieldset li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+fieldset ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.right_buttons {
+	position: absolute;
+	right: 0px;
+	top: -45px;
 }

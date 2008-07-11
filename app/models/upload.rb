@@ -13,10 +13,13 @@ class Upload < ActiveRecord::Base
     if self.upload_data
       self.delete_file if self.name
       name =  self.upload_data['datafile'].original_filename
+      nameparts = name.split(".")
+      name = nameparts[0] + "-" + Time.now.strftime("%d%m%y") + "-" + self.created_by.to_s
+      name += "." + nameparts[1] unless nameparts.size == 1
       self.name= name
       self.size= self.upload_data['datafile'].size
       self.file_type= self.upload_data['datafile'].content_type.strip
-      directory = "public/data"
+      directory = RAILS_ROOT + "/public/data"
       # create the file path
       path = File.join(directory, name)
       # write the file

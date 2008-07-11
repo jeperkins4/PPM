@@ -1,3 +1,5 @@
+<h1>PPPams Indicator ID: <%= @pppams_indicator.id %></h1>
+
 <% for column in PppamsIndicator.content_columns %>
 <p>
   <b><%= column.human_name %>:</b> <%=h @pppams_indicator.send(column.name) %>

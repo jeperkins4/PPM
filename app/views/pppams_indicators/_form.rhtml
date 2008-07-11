@@ -9,7 +9,7 @@
 </p>
 
 <p><label for="pppams_indicator_start_month">Start month</label><br/>
-<%= select_month(Date.today, :add_month_numbers => true, :field_name => 'start_month', :prefix => 'pppams_indicator')%>
+<%= select_month(@pppams_indicator.start_month.nil? ? Date.today : @pppams_indicator.start_month, :add_month_numbers => true, :field_name => 'start_month', :prefix => 'pppams_indicator')%>
 
 </p>
 

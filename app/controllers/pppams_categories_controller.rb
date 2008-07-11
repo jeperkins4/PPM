@@ -13,14 +13,40 @@ class PppamsCategoriesController < ApplicationController
          
 
   def list
-    @pppams_category_pages, @pppams_categories = paginate :pppams_categories, :conditions => ["facility_id = ?", session[:facility].id], :per_page => 15
+    @pppams_category_pages, @pppams_categories = paginate :pppams_categories, :conditions => ["facility_id = ?", session[:facility].id], :per_page => 100
+  end
+
+  def copy_categories
+    if params[:choose_facility][:facility_id] != ""
+      cat_count = ind_count = 0
+      f_id = params[:choose_facility][:facility_id]
+      new_f_id = session[:facility].id
+      Facility.find(f_id).pppams_categories.each do |this_cat|
+	 new_cat = this_cat.clone
+	 new_cat.facility_id = new_f_id
+        if new_cat.save
+          cat_count.next 
+          new_cat_id = new_cat.id
+          this_cat.pppams_indicators.each do |this_ind|
+            new_ind = this_ind.clone
+	     new_ind.pppams_category_id = new_cat_id
+            ind_count.next if new_ind.save
+          end
+        end
+      end
+      flash[:notice] = "Copying complete. #{cat_count} categories and #{ind_count} indicators processed"
+    else
+      flash[:notice] = 'An error occured during copying. Please try again!'
+    end
+
+    redirect_to(:action => 'index')
   end
 
   def show
-    @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :conditions => ["pppams_category_id = ?", params[:id]], :per_page => 10
-    @list_output = render_to_string(:template => 'pppams_indicators/list', :layout => false)
-    @list_output = @list_output.gsub(/h1/, "h2")
     @pppams_category = PppamsCategory.find(params[:id])
+    @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :conditions => ["pppams_category_id = ?", params[:id]], :per_page => 10
+    @list_output = render_to_string(:template => 'pppams_indicators/pure_list', :layout => false)
+    @list_output = @list_output.gsub(/h1/, "h2")
   end
 
   def new

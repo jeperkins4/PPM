@@ -15,7 +15,11 @@ class PppamsIndicatorsController < ApplicationController
          :redirect_to => { :action => :list }
 
   def list
-    @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :per_page => 10
+    @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :per_page => 100
+  end
+
+  def pure_list
+    @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :per_page => 100
   end
   
   def _to_do 
@@ -56,6 +60,14 @@ class PppamsIndicatorsController < ApplicationController
     @frequency_options['4 - Quarterly'] = 4
     @frequency_options['12 - Monthly'] = 12
     @pppams_indicator = PppamsIndicator.find(params[:id])
+    addme = [params[:pppams_indicator][:start_month].to_i]
+    params[:pppams_indicator][:frequency].to_i.times { |f|
+        if f > 0
+            pushme = addme.last + f > 12 ?  addme.last + f  -12 : addme.last + f 
+            addme.push(pushme)
+        end
+    }
+    params[:pppams_indicator][:good_months] = ":" + addme.join(':') + ":"
     if @pppams_indicator.update_attributes(params[:pppams_indicator])
       flash[:notice] = 'PppamsIndicator was successfully updated.'
       redirect_to :action => 'show', :id => @pppams_indicator
@@ -70,16 +82,20 @@ class PppamsIndicatorsController < ApplicationController
     redirect_to :action => 'show', :controller => 'pppams_categories', :id => @thisIndicatorCat
   end
   
-  def update_good_months
+  def update_all_good_months
       for this_ind in PppamsIndicator.find(:all)
       addme = [this_ind.start_month]
-      this_ind.frequency.times { |f|
+      fre = this_ind.frequency
+      if fre > 0 
+      addval = 12/fre
+      fre.times { |f|
          if f > 0
-         pushme = addme.last + f > 12 ?  addme.last + f  -12 : addme.last + f 
+         pushme = addme.last + addval > 12 ?  addme.last + addval  -12 : addme.last + addval 
          addme.push(pushme)
          end
       }
-      this_ind.good_months = addme.join(':') + ":"
+      end
+      this_ind.good_months = ":" + addme.join(':') + ":"
       this_ind.save
     end
   end

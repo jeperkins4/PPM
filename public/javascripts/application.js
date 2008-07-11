@@ -1,5 +1,20 @@
-// Place your application-specific JavaScript functions and classes here
+	// Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
+
+function updateMonthTab(num) {
+	for (i=1;i<13;i++) {
+	    tab=$('month_tab_' + i);
+	    if (tab.className == 'selected') tab.className = '';
+	    if (num == i) tab.className = 'selected';
+	}
+}
+
+function swapselect(div) {
+	inputs = div.parentNode.parentNode.getElementsByTagName("INPUT");
+	for (i=0;i<inputs.length;i++) {
+	    inputs[i].checked = inputs[i].checked ? false : true;
+	}
+}
 
 function navslide(x) {
   if (x == '8px') {
@@ -45,3 +60,7 @@ var mainmargin_preset
 
 
 if (mainmargin_preset = readCookie("mainmargin")) document.write("<style>#main_block #main_block_content {margin-left:" + mainmargin_preset + "}</style>");
+
+
+
+

@@ -10,4 +10,6 @@ class Facility < ActiveRecord::Base
   has_many :accountability_logs
   has_many :accountability_log_details
   has_many :pppams_categories
+  has_many :notification_receivers
+  has_many :notification_reports
 end

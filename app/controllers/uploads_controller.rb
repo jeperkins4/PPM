@@ -1,8 +1,8 @@
 class UploadsController < ApplicationController
   before_filter :authenticate
   layout 'administration'
-  
-  require 'vendor/plugins/responds_to_parent/init.rb'
+  require RAILS_ROOT + '/vendor/plugins/responds_to_parent/init.rb'
+  require 'net/http'
   
   def index
     list
@@ -63,5 +63,10 @@ class UploadsController < ApplicationController
         page.insert_html :bottom, 'upload_list', :partial => 'upload'
       end
     end
+  end
+
+  def downloadFile
+    @download = Upload.find(params[:id])
+    send_file(RAILS_ROOT + "/public/data/" + @download.name, :filename => @download.name)
   end
 end

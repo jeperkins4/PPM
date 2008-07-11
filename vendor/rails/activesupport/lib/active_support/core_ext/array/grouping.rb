@@ -31,6 +31,15 @@ module ActiveSupport #:nodoc:
           grouped_collection unless block_given?
         end
 
+
+        def sum
+          inject( nil ) { |sum,x| sum ? sum+x : x }
+        end
+        def mean
+          sum.to_f / size
+        end
+
+
         # Divide the array into one or more subarrays based on a delimiting +value+
         # or the result of an optional block.
         #

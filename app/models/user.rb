@@ -2,8 +2,11 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   
-belongs_to :user_type
-belongs_to :facility
+  belongs_to :user_type
+  belongs_to :facility
+  has_many :notifications, :foreign_key => "created_by"
+  has_many :notification_receivers
+  has_many :notification_reports
   
   validates_presence_of  :name
   validates_uniqueness_of :name

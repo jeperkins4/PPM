@@ -2,14 +2,14 @@
 
 <div id="current_pppams">
 
-<% start_time = Time.now.months_ago(6) %>
+<% start_time = Time.now.beginning_of_year %>
 
 
 <div id="navigation">
 <ul>
-<% for i in 0...12 %>
-<li <%= "class='selected'" if i == 6 %>>
-<%= link_to_remote( "<span>#{start_time.strftime('%b')}</span>", :update => "nav_results", :url =>{ :action => :_to_do, :time => start_time.strftime('%m-%d-%Y') }) %>
+<% for i in 1...13 %>
+<li id = "month_tab_<%= i %>" <%= "class='selected'" if i == Time.now.month %>>
+<a href="#" onclick="new Ajax.Updater('nav_results', '/pppams_indicators/_to_do?time=' + '<%= '01-' + i.to_s + '-' %>' + forms.year_selector[0].options[forms.year_selector[0].selectedIndex].value, {asynchronous:true, evalScripts:true, onComplete:function(request){updateMonthTab(<%= i %>)}}); return false;"><span><%= start_time.strftime('%b') %></span></a>
 </li>
 <% start_time = start_time.months_since(1) %>
 <% end %>

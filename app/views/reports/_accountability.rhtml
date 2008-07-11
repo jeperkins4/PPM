@@ -33,7 +33,7 @@
 	<% @sum = 0 -%>
 	<% @divider = 0 -%>
 	<% @year = 0 -%>
-	<% case Time.now.month - 1 
+	<% case Time.now.month
         when 7
 		@divider = 1
 		when 8
@@ -66,7 +66,7 @@
 		<% if @divider >= 7 -%> 
 		<% (month >= 7) ? @year = Time.now.year - 1 : @year = Time.now.year -%> 
 		<% else -%> 
-		<% (month >= 7) ? @year = Time.now.year : @year = Time.now.year + 1 -%> 
+		<% (month >= 7) ? @year = Time.now.year : @year = Time.now.year -%> 
 		<% end -%> 
 		<% @count = AccountabilityLogs.find(:first, :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id = ?', session[:facility],month,@year,question.id])  -%>
 		<% (@count) ? @sum += @count.response : '' -%>
@@ -97,7 +97,7 @@
 				when 5
 				(@count) ? @may += @count.response : ''
 				when 6 
-				(@count) ? @june += @count.response : ''
+				(@count) ? @jun += @count.response : ''
 			 end 
 			-%>
 		<% end -%>
@@ -127,13 +127,11 @@
 	    <td bgcolor="#FFCC00"><%= number_with_precision((@category_total/@divider), 2) %></td>
 	</tr>
     <tr><td colspan="15" bgcolor="#666666">&nbsp;</td></tr>
-<% @notes = AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and facility_id = ? and ((log_year = ? and 
-                                                                log_month >= 7) or (log_year = ? and log_month < 7))',
-                                                                category.id, session[:facility].id, @year - 1, @year],:order =>'log_year asc, log_month asc')%>
+<% @notes = AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and facility_id = ?',category.id, session[:facility].id],:order =>'log_year asc, log_month asc')%>
    <% if @notes.length >= 1 %>
     <tr><td><b>NOTES:</b></td></tr>
 <% @notes.each do |note|%>
-  <tr><td width><%= Date.new(note.log_year,note.log_month).strftime('%B') %></td><td><%= Date.new(note.log_year,note.log_month).strftime('%Y')%></td><td colspan="3"><%= note.detail_response%></td></tr>
+  <tr><td><%= Date.new(note.log_year,note.log_month).strftime('%B') %></td><td><%= Date.new(note.log_year,note.log_month).strftime('%Y')%></td><td colspan="13"><%= note.detail_response%></td></tr>
     <% end %>
 <% end %>
 <% end -%>

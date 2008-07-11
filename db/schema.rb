@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 57) do
+ActiveRecord::Schema.define(:version => 65) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -86,16 +86,17 @@ ActiveRecord::Schema.define(:version => 57) do
   end
 
   create_table "facilities", :force => true do |t|
-    t.column "facility",         :string
-    t.column "shortname",        :string
-    t.column "address1",         :string
-    t.column "address2",         :string
-    t.column "city",             :string
-    t.column "state",            :string
-    t.column "zip",              :string
-    t.column "phone",            :string
-    t.column "warden",           :string
-    t.column "contract_monitor", :string
+    t.column "facility",          :string
+    t.column "shortname",         :string
+    t.column "address1",          :string
+    t.column "address2",          :string
+    t.column "city",              :string
+    t.column "state",             :string
+    t.column "zip",               :string
+    t.column "phone",             :string
+    t.column "warden",            :string
+    t.column "contract_monitor",  :string
+    t.column "pppams_started_on", :datetime
   end
 
   create_table "facility_custodies", :force => true do |t|
@@ -173,6 +174,41 @@ ActiveRecord::Schema.define(:version => 57) do
     t.column "facility_id", :integer
   end
 
+  create_table "notification_receivers", :force => true do |t|
+    t.column "user_id",     :integer
+    t.column "facility_id", :integer
+    t.column "status",      :string
+    t.column "created_at",  :datetime
+    t.column "updated_at",  :datetime
+  end
+
+  add_index "notification_receivers", ["user_id", "status"], :name => "index_notification_receivers_on_user_id_and_status"
+  add_index "notification_receivers", ["facility_id", "status"], :name => "index_notification_receivers_on_facility_id_and_status"
+
+  create_table "notification_reports", :force => true do |t|
+    t.column "user_id",     :integer
+    t.column "facility_id", :integer
+    t.column "eom_offset",  :integer
+    t.column "created_at",  :datetime
+    t.column "updated_at",  :datetime
+  end
+
+  add_index "notification_reports", ["user_id"], :name => "index_notification_reports_on_user_id"
+  add_index "notification_reports", ["facility_id", "eom_offset"], :name => "index_notification_reports_on_facility_id_and_eom_offset"
+
+  create_table "notifications", :force => true do |t|
+    t.column "to_email",   :string
+    t.column "from_email", :string
+    t.column "subject",    :string
+    t.column "body",       :text
+    t.column "status",     :string
+    t.column "created_by", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "notifications", ["status"], :name => "index_notifications_on_status"
+
   create_table "position_hists", :force => true do |t|
     t.column "position_id", :integer
     t.column "salary",      :decimal, :precision => 10, :scale => 2
@@ -206,21 +242,32 @@ ActiveRecord::Schema.define(:version => 57) do
   end
 
   create_table "pppams_categories", :force => true do |t|
-    t.column "name",        :string
-    t.column "description", :text
-    t.column "facility_id", :integer
-    t.column "created_on",  :datetime
-    t.column "updated_on",  :datetime
+    t.column "name",                        :string
+    t.column "description",                 :text
+    t.column "facility_id",                 :integer
+    t.column "created_on",                  :datetime
+    t.column "updated_on",                  :datetime
+    t.column "pppams_category_base_ref_id", :integer
+  end
+
+  create_table "pppams_category_base_refs", :force => true do |t|
+    t.column "name", :string
+  end
+
+  create_table "pppams_indicator_base_refs", :force => true do |t|
+    t.column "question",                    :text
+    t.column "pppams_category_base_ref_id", :integer
   end
 
   create_table "pppams_indicators", :force => true do |t|
-    t.column "pppams_category_id", :integer
-    t.column "question",           :text
-    t.column "frequency",          :integer
-    t.column "start_month",        :integer
-    t.column "created_on",         :datetime
-    t.column "updated_on",         :datetime
-    t.column "good_months",        :string
+    t.column "pppams_category_id",           :integer
+    t.column "question",                     :text
+    t.column "frequency",                    :integer
+    t.column "start_month",                  :integer
+    t.column "created_on",                   :datetime
+    t.column "updated_on",                   :datetime
+    t.column "good_months",                  :string
+    t.column "pppams_indicator_base_ref_id", :integer
   end
 
   create_table "pppams_indicators_copy", :force => true do |t|
@@ -239,13 +286,14 @@ ActiveRecord::Schema.define(:version => 57) do
   end
 
   create_table "pppams_indicators_temp", :force => true do |t|
-    t.column "pppams_category_id", :integer
-    t.column "description",        :text
-    t.column "reference",          :string
-    t.column "frequency",          :integer
-    t.column "start_month",        :integer
-    t.column "created_on",         :datetime
-    t.column "updated_on",         :datetime
+    t.column "pppams_category_id",           :integer
+    t.column "question",                     :text
+    t.column "frequency",                    :integer
+    t.column "start_month",                  :integer
+    t.column "created_on",                   :datetime
+    t.column "updated_on",                   :datetime
+    t.column "good_months",                  :string
+    t.column "pppams_indicator_base_ref_id", :integer
   end
 
   create_table "pppams_references", :force => true do |t|
@@ -253,6 +301,21 @@ ActiveRecord::Schema.define(:version => 57) do
     t.column "url",        :string
     t.column "created_on", :datetime
     t.column "updated_on", :datetime
+  end
+
+  create_table "pppams_report_filters", :force => true do |t|
+    t.column "name",             :string
+    t.column "start_date",       :datetime
+    t.column "end_date",         :datetime
+    t.column "report_type",      :string
+    t.column "facility_filter",  :text
+    t.column "status_filter",    :text
+    t.column "category_filter",  :text
+    t.column "indicator_filter", :text
+    t.column "created_on",       :datetime
+    t.column "updated_on",       :datetime
+    t.column "created_by",       :integer
+    t.column "updated_by",       :integer
   end
 
   create_table "pppams_reviews", :force => true do |t|
@@ -268,7 +331,7 @@ ActiveRecord::Schema.define(:version => 57) do
     t.column "status",              :string
     t.column "notes",               :text
     t.column "created_by",          :integer
-    t.column "edited_by",           :integer
+    t.column "updated_by",          :integer
   end
 
   create_table "pppams_temp", :id => false, :force => true do |t|

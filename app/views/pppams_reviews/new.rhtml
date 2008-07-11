@@ -2,17 +2,25 @@
 
 <p><strong>Question: </strong><%=h @pppams_indicator.question %></p>
 
+
+<%= error_messages_for 'pppams_review', {:class => "notice"} %>
+
+
+<div id='pppams_review_edit'>
+
 <% form_tag :action => 'create' do %>
   <%= render :partial => 'form' %>
   <%= submit_tag "Create" %>
 <% end %>
 
-<iframe id="RSIFrame" name="RSIFrame" style="width:0px; height:0px; border: 0px" src="blank.html"></iframe> 
-
 <div id='file_upload_select'>
-<%= start_form_tag ({:action => 'uploadFile', :controller => 'uploads'}), :multipart => true, :target => 'RSIFrame' %>
-<p><label for="upload_file">Add</label> : <%= file_field 'upload', 'datafile' %> <%= image_submit_tag( "icon_upload.gif", :border=>0) %></p>
+<%= start_form_tag ({:action => 'uploadFile', :controller => 'uploads'}), :multipart => true, :target => 'RSIFrame', :name => 'uploadform', :id => 'uploadform' %>
+<p class='no-top'><%= file_field 'upload', 'datafile', :class => 'hidden_file', :onchange => "javascript: forms.uploadform.submit()" %></p>
 <%= end_form_tag %> 
 </div>
 
+<iframe id="RSIFrame" name="RSIFrame" style="width:0px; height:0px; border: 0px" src="/blank.html"></iframe> 
+
 <%= link_to 'Back', :action => 'list' %>
+
+</div>

@@ -17,8 +17,9 @@ class ApplicationController < ActionController::Base
  $LOAD_PATH.unshift 'vendor/plugins/responds_to_parent/lib'
  $LOAD_PATH.unshift 'vendor/plugins/orderedhash/lib'
  $LOAD_PATH.unshift 'vendor/plugins/fastercsv/lib'
-
-  
+ $LOAD_PATH.unshift 'vendor/plugins/calendar_date_select/lib'
+ $LOAD_PATH.unshift 'vendor/plugins/multiple_select/lib'
+ 
   def admin_authenticate
     if session[:user_id]
       @user = User.find_by_id(session[:user_id])
@@ -54,11 +55,12 @@ class ApplicationController < ActionController::Base
             'login',
             'incident_types',
             'position_hists',
-            'position_types',          
+            'position_types',
             'incident_classes',
             'reset_password',
             'contexts',
-            'prompts'].each do |page_check|
+            'prompts',
+            'pppams_notifications'].each do |page_check|
             request.request_uri.split('/').each do |page|
               page.split('?').each do |page2|
                 if page2.to_s == page_check
@@ -86,7 +88,6 @@ class ApplicationController < ActionController::Base
   def set_page
     @host = request.host
     @page = request.request_uri.split('?')
-    @pppams_start_date = Time.parse("4/1/2008")
   end
   
   def paginate_collection(collection, options = {})

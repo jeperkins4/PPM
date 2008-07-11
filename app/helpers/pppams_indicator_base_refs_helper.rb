@@ -1,0 +1,2 @@
+module PppamsIndicatorBaseRefsHelper
+end

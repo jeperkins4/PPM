@@ -1,0 +1,34 @@
+Array
+(
+    [name] => pre_publish
+    [parameters] => Array
+        (
+            [object_id] => 5032
+            [version] => 1
+        )
+
+    [loop_data] =>
+    [module_name] => content
+    [operation_name] => publish
+    [main_memento] => eZOperationMemento Object
+        (
+            [PersistentDataDirty] =>
+            [ID] => 857
+            [Main] => 1
+            [MementoKey] => a9c9702a4111fe4889662919ee51a628
+            [MainKey] => a9c9702a4111fe4889662919ee51a628
+            [MementoData] => a:3:{s:11:"module_name";s:7:"content";s:14:"operation_name";s:7:"publish";s:8:"loop_run";a:3:{s:19:"set-version-pending";i:1;s:17:"update-section-id";i:1;s:11:"pre_publish";i:0;}}
+        )
+
+    [skip_trigger] => 1
+    [memento_key] => a9c9702a4111fe4889662919ee51a628
+)
+Array
+(
+    [object_id] => 5032
+    [version] => 1
+)
+Array
+(
+    [status] => 1
+)

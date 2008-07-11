@@ -1,0 +1,23 @@
+<h2>PPPAMS Indicator Reporting</h2>
+
+<script LANGUAGE="JavaScript">
+var existing_filters = "'<%= @doneFilters.join('\',\'') %>'"
+</script>
+
+<p><legend>Load selections from saved filter: </legend><%= select("pppams_report_filter", "name", PppamsReportFilter.find(:all).collect {|p| [ p.name, p.id ] }, {:include_blank => true}, {:onchange => "new Ajax.Updater('report_filter_body', '/pppams_reports/_form/' + this.options[this.selectedIndex].value, {asynchronous:true, evalScripts:true}); return false;"}) %></p>
+
+<% form_tag( {:action => 'filter'}, {:name => "report_filter" } ) do %>
+
+<div class = 'right_buttons'>
+<%= submit_tag "View Report" %>
+<INPUT TYPE = "button" VALUE = "Store Filter" onclick = "answer = prompt('What would you like to call this filter?',''); if (answer) { forms['report_filter'].elements['pppams_report_filter[name]'].value = answer; forms['report_filter'].submit();}"/>
+</div>
+
+<div id = "report_filter_body">
+<%= render :partial => 'form' %>
+</div>
+
+<%= submit_tag "View Report" %>
+<INPUT TYPE = "button" VALUE = "Store Filter" onclick = "answer = prompt('What would you like to call this filter?',''); if (answer) { forms['report_filter'].elements['pppams_report_filter[name]'].value = answer; forms['report_filter'].submit();}"/>
+
+<% end %>

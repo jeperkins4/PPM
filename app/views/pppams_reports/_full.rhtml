@@ -1,0 +1,37 @@
+<% show_from = @from_date.empty? ? Time.now.beginning_of_month.strftime('%m/%d/%Y') : @from_date.strftime('%m/%d/%Y') %>
+<% show_to = @to_date.empty? ? Time.now.end_of_month.strftime('%m/%d/%Y') :  @to_date.strftime('%m/%d/%Y')  %>
+<span class='float-right'><%= "#{show_from} - #{show_to}" %></span>
+<h1>Full Data <%= @filter_name ? "- #{@filter_name}" : ""%></h1>
+
+<% fac_id_store = 0 %>  
+<% id_store = 0 %>
+<% for this_review in @pppamsReviews %>
+<% if fac_id_store != this_review.pppams_indicator.pppams_category.facility_id %>
+<% if fac_id_store != 0 %></table><% end %>
+  <br/><h2><%=h this_review.pppams_indicator.pppams_category.facility.facility %></h2>
+  <table>
+  <tr>
+  <th>Indicator</th>
+  <% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by)$/  } %>
+    <th><%= column.human_name %></th>
+  <% end %>
+  </tr>
+<% end %>
+  <% if id_store != this_review.pppams_indicator.pppams_category_id %>
+  <tr><td colspan = 8><p class='cat_heading'><%=h this_review.pppams_indicator.pppams_category.name %></p></td></tr>
+  <% end %>
+  <tr>
+  <td><%=h this_review.pppams_indicator.question%></td>
+  <% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by)$/  } %>
+    <% if column.name == 'status' %>
+        <td><%=h this_review.send(column.name) == "" ? "Submitted" :  this_review.send(column.name) %></td>
+    <% else %>
+        <td><%=h this_review.send(column.name) %></td>
+    <% end %>
+  <% end %>
+  </tr>
+  <% id_store = this_review.pppams_indicator.pppams_category_id %>
+  <% fac_id_store = this_review.pppams_indicator.pppams_category.facility_id %>
+<% end %>
+</table>
+ 

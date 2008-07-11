@@ -1,0 +1,2 @@
+module PppamsCategoryBaseRefsHelper
+end

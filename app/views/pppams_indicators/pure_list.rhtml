@@ -1,0 +1,22 @@
+<table>
+  <tr>
+  <% if @user.is_admin? %> <th colspan= 2 class='edit_col'>&nbsp;</th><% end %>
+  <th>Question</th>
+  <th>References</th>
+  </tr>
+<% id_store = 0 %>  
+<% for pppams_indicator in @pppams_indicators %>
+  <% if id_store != pppams_indicator.pppams_category_id %>
+  <tr><td colspan= <%= @user.is_admin? ? 6 : 4 %>><p class='cat_heading'><%=h pppams_indicator.pppams_category.name %></p></td></tr>
+  <% end %>
+  <tr>
+  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>
+  <td><%= link_to image_tag("delete_icon.png", :border=>0), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
+    <td><%=h pppams_indicator.question %></td>
+
+
+  <td><% for this_ref in pppams_indicator.pppams_references %><%=h this_ref.html %><br/><% end %></td>
+  </tr>
+  <% id_store = pppams_indicator.pppams_category_id %>
+<% end %>
+</table>

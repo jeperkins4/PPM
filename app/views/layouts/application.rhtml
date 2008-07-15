@@ -15,6 +15,16 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/dms.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/newclasses.css" />
     <link rel="stylesheet" type="text/css" media="print" href="/stylesheets/print.css" />
+
+<script language="javascript" type="text/javascript">
+function limitText(limitField, limitCount, limitNum) {
+	if (limitField.value.length > limitNum) {
+		limitField.value = limitField.value.substring(0, limitNum);
+	} else {
+		limitCount.value = limitNum - limitField.value.length;
+	}
+}
+</script>
 </head>
 <body>
 <div id='mainborder'>
@@ -54,7 +64,7 @@
             <div class='wrapper'>
                 <div id='main_sub_block'>
                     <div id="contentnonotes">
-                        <div id="content-design">
+                        <div id="content-design">                      
                           <% if flash[:notice] %>
                             <div class="notice"><%= flash[:notice] %></div>
                           <% end -%>
@@ -98,7 +108,7 @@
         		  <a  href='http://dms.myflorida.com/business_operations/specialized_services/bureau_of_private_prison_monitoring/gadsden_correctional_facility'>Gadsden Correctional Facility</a>
 	            </li>
                 <li class="menu-level-1 ">
-        		  <a  href='http://dms.myflorida.com/business_operations/specialized_services/bureau_of_private_prison_monitoring/south_bay_correctional_facility'>Graceville Correctional Facility</a>
+        		  <a  href='http://dms.myflorida.com/business_operations/specialized_services/bureau_of_private_prison_monitoring/graceville_correctional_facility'>Graceville Correctional Facility</a>
                 </li>
                 <li class="menu-level-1 ">
                   <a  href='http://dms.myflorida.com/business_operations/specialized_services/bureau_of_private_prison_monitoring/lake_city_youthful_offender_facility'>Lake City Youthful Offender Facility</a>

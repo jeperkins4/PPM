@@ -10,6 +10,14 @@ class PppamsReview < ActiveRecord::Base
     belongs_to :updated_by, :class_name => "User", :foreign_key => "updated_by"
 
     after_save :generate_status_notifications
+    
+    def self.earliest
+      PppamsReview.find(:all).length ? PppamsReview.find(:first, :order =>  "created_on ASC").created_on.year : Time.now.year
+    end
+
+    def self.latest
+	    PppamsReview.find(:all).length ? PppamsReview.find(:first, :order =>  "created_on DESC").created_on.year : Time.now.year
+    end
 
     def generate_status_notifications
       NotificationReceiver.generate_status_notifications(self)

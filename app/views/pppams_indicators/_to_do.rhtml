@@ -3,7 +3,7 @@
 <% currents = PppamsIndicator.find_current(time, session[:facility]) %>
 
 <form name='year_selector'>
-<p>Live indicators this month (<%= time.strftime('%b') %> <%= select_year(Date.today, :field_name => 'selectedyear', :start_year => PppamsReview.find(:first, :order => "created_on ASC").created_on.year, :end_year => PppamsReview.find(:first, :order =>  "created_on DESC").created_on.year ) %>): <%= currents.length %></p>
+<p>Live indicators this month (<%= time.strftime('%b') %> <%= select_year(Date.today, :field_name => 'selectedyear', :start_year => PppamsReview.earliest, :end_year => PppamsReview.latest ) %>): <%= currents.length %></p>
 </form>
 
 <table>
@@ -41,5 +41,6 @@
   <% id_store = pppams_indicator.pppams_category_id %>
 <% end %>
 </table>
+
 
 

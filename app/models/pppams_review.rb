@@ -12,11 +12,11 @@ class PppamsReview < ActiveRecord::Base
     after_save :generate_status_notifications
     
     def self.earliest
-      PppamsReview.find(:all).nil? ? Time.now.year : PppamsReview.find(:first, :order =>  "created_on ASC").created_on.year 
+      PppamsReview.find(:all).nil? ? PppamsReview.find(:first, :order =>  "created_on ASC").created_on.year : Time.now.year
     end
 
     def self.latest
-	    PppamsReview.find(:all).nil? ? Time.now.year : PppamsReview.find(:first, :order =>  "created_on DESC").created_on.year
+      PppamsReview.find(:all).nil? ? PppamsReview.find(:first, :order =>  "created_on DESC").created_on.year : Time.now.year
     end
 
     def generate_status_notifications

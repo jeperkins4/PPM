@@ -12,9 +12,9 @@
   
 <% for pppams_category in @pppams_categories %>
   <tr>
-  <td><%= link_to image_tag("view_icon.png", :border=>0), :action => 'show', :id => pppams_category %></td>
-  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0), :action => 'edit', :id => pppams_category %></td>
-  <td><%= link_to image_tag("delete_icon.png", :border=>0), { :action => 'destroy', :id => pppams_category }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
+  <td><%= link_to image_tag("view_icon.png", :border=>0, :title=>"View all indicators in this category for this facility"), :action => 'show', :id => pppams_category %></td>
+  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0, :title=>"Edit this category for this facility"), :action => 'edit', :id => pppams_category %></td>
+  <td><%= link_to image_tag("delete_icon.png", :border=>0, :title=>"Delete this category for this facility"), { :action => 'destroy', :id => pppams_category }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
   <% for column in PppamsCategory.content_columns.reject {|c| c.name =~ /(_on)$/  } %>
         <td><%=h pppams_category.send(column.name)%></td>
   <% end %>

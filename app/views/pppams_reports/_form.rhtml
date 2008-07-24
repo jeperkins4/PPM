@@ -12,36 +12,44 @@
 
 <div class='filter_float'>
 <fieldset>
-<legend>Facility Filter <img src="/images/swapselect.gif" onclick="swapselect(this);" class="fauxlink"/></legend>
+<legend>Facility Filter <img src="/images/swapselect.gif" title ="Toggle selections"  onclick="swapselect(this);" class="fauxlink"/></legend>
 <%= multiple_select("pppams_report_filter","facility_filter", @facilities.collect {|p| [ p.facility, p.id.to_s] } ) %>
 </fieldset>
 </div>
 
 <div class='filter_float'>
 <fieldset>
-<legend>Status Filter <img src="/images/swapselect.gif" onclick="swapselect(this);" class="fauxlink"/></legend>
+<legend>Status Filter <img src="/images/swapselect.gif" title ="Toggle selections"  onclick="swapselect(this);" class="fauxlink"/></legend>
 <%= multiple_select("pppams_report_filter","status_filter", ['Submitted','Review','Accepted','Locked'] ) %>
 </fieldset>
 </div>
 
 <div class='filter_float_container'>
 <fieldset>
-<legend>Indicator Category Filter <img src="/images/swapselect.gif" onclick="swapselect(this);" class="fauxlink"/></legend>
+<legend>Indicator Category Filter <img src="/images/swapselect.gif" title ="Toggle selections"  onclick="swapselect(this);" class="fauxlink"/></legend>
 <%= multiple_select("pppams_report_filter","category_filter", @Cats.collect {|p| [ p.name, p.id.to_s] } ) %>
 </fieldset>
 </div>
 
-<div class='filter_float_container'>
+<div id='indicator_list' class='filter_float_container'>
 <fieldset>
-<legend>Indicator Filter <img src="/images/swapselect.gif" onclick="swapselect(this);" class="fauxlink"/></legend>
-
+<legend>Indicator Filter <img src="/images/swapselect.gif" title ="Toggle selections"  onclick="swapselect(this);" class="fauxlink"/></legend>
+<p>Click to reveal full indicator text.</p>
 <% @Cats.each_index do |  key  | %>
 <div class='group_box'>
-<p class='cat_heading'><%=h @Cats[key].name %> <img src="/images/swapselect.gif" onclick="swapselect(this);" class="fauxlink"/></p>
-<%= multiple_select("pppams_report_filter","indicator_filter", @Cats[key].pppams_indicator_base_refs.collect {|p| [ p.short_question, p.id.to_s] } ) %>
+<p class='cat_heading'><%=h @Cats[key].name %> <img src="/images/swapselect.gif" title ="Toggle selections"  onclick="swapselect(this);" class="fauxlink"/></p>
+<%= multiple_select("pppams_report_filter","indicator_filter", @Cats[key].pppams_indicator_base_refs.collect {|p| [ p.question, p.id.to_s ] } ) %>
 </div>
 <% end %>
 </fieldset>
 </div>
+
+<script type="text/javascript">
+lis = document.getElementById('indicator_list').getElementsByTagName('li');
+for (i=0;i<lis.length;i++) {
+	lis[i].onclick = function(){this.className='lihover';}
+	lis[i].onmouseout = function(){this.className='';}
+}
+</script>
 
 <%= hidden_field 'pppams_report_filter', 'name'  %></p>

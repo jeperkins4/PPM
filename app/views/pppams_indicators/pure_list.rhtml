@@ -10,8 +10,8 @@
   <tr><td colspan= <%= @user.is_admin? ? 6 : 4 %>><p class='cat_heading'><%=h pppams_indicator.pppams_category.name %></p></td></tr>
   <% end %>
   <tr>
-  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>
-  <td><%= link_to image_tag("delete_icon.png", :border=>0), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
+  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0, :title=>"Edit the way this indicator appears for this facility"), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>
+  <td><%= link_to image_tag("delete_icon.png", :border=>0, :title=>"Delete this indicator for this facility"), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
     <td><%=h pppams_indicator.question %></td>
 
 

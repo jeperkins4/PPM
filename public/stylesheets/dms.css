@@ -1028,3 +1028,34 @@ fieldset ul {
 	right: 0px;
 	top: -45px;
 }
+
+#pppams_review_edit, #report_filter_body {
+	width: 715px;
+}
+
+#report_filter_body #indicator_list li {
+	width: 100%;
+	clear: both;
+}
+
+#report_filter_body #indicator_list input {
+	float: left;
+}
+
+#report_filter_body #indicator_list li label {
+	display: block;
+	float: left;
+	width: 640px;
+	padding-right: 20px;
+	height: 1.3em;
+	overflow: hidden;
+}
+
+#report_filter_body #indicator_list li.lihover label {
+	display: block;
+	float: left;
+	width: 640px;
+	padding-right: 20px;
+	height: auto;
+	overflow: auto;
+}

@@ -10,7 +10,7 @@ class PppamsReview < ActiveRecord::Base
     belongs_to :updated_by, :class_name => "User", :foreign_key => "updated_by"
 
     after_save :generate_status_notifications
-    
+
     def self.earliest
       PppamsReview.find(:all).nil? ? PppamsReview.find(:first, :order =>  "created_on ASC").created_on.year : Time.now.year
     end
@@ -52,6 +52,20 @@ class PppamsReview < ActiveRecord::Base
       else
         "(Unknown)"
       end
+    end
+
+    def can_edit? 
+       this_user_type = User.current_user.user_type
+	access_level = this_user_type.access_level.id
+       if !["", "Submitted", "Review"].index(self.status).nil? or this_user_type.user_type == "SuperAdministrator" 
+	    return true
+	    break
+       end 
+       if access_level == 1 and self.status != "Locked"
+	    return true
+	    break
+       end
+       return false
     end
 
 end

@@ -24,14 +24,14 @@
   <td></td>
   <% else %>
   <% if current_review.nil? %>
-  <td><%= link_to image_tag("review_icon.png", :border=>0), :controller => 'pppams_reviews', :action => 'new', :pppams_indicator_id => pppams_indicator %></td>
+  <td><%= link_to image_tag("review_icon.png", :border=>0, :title => "Create a new review for this indicator"), :controller => 'pppams_reviews', :action => 'new', :pppams_indicator_id => pppams_indicator %></td>
   <% else %>
-  <td><%= link_to image_tag("review_icon.png", :border=>0), :controller => 'pppams_reviews', :action => 'edit', :id => current_review %></td>
+  <td><%if current_review.can_edit? %><%= link_to image_tag("edit_review_icon.png", :border=>0, :title => "Edit the review for this indicator"), :controller => 'pppams_reviews', :action => 'edit', :id => current_review %><% end %></td>
   <% end %>
   <% end %>
 
-  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>
-  <td><%= link_to image_tag("delete_icon.png", :border=>0), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
+  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0, :title => "Edit the way this indicator appears for this facility"), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>
+  <td><%= link_to image_tag("delete_icon.png", :border=>0, :title => "Remove this indicator for this facility"), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
 
     <td><%=h pppams_indicator.question %></td>
     <td><%=h current_review.nil? ? "Live" : current_review.status_text %></td>
@@ -41,6 +41,5 @@
   <% id_store = pppams_indicator.pppams_category_id %>
 <% end %>
 </table>
-
 
 

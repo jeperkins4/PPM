@@ -1,4 +1,7 @@
-<span class='float-right'><%= link_to 'Back to full category list', :action => 'list' %></span><h1 class='inline-head'><%=h @pppams_category.name %></h1>&nbsp;<% if @user.is_admin? %><span><%= link_to image_tag("edit_icon.png", :border=>0), :action => 'edit', :id => @pppams_category.id %> | <%= link_to image_tag("delete_icon.png", :border=>0), :action => 'destroy', :id => @pppams_category.id %></span><% end %>
+<span class='float-right'><%= link_to 'Back to full category list', :action => 'list' %><br/>
+<%= link_to 'New Indicator', :controller => 'pppams_indicators', :action => 'new', :pppams_category_id => @pppams_category.id %></span>
+
+<h1 class='inline-head'><%=h @pppams_category.name %></h1>&nbsp;<% if @user.is_admin? %><span><%= link_to image_tag("edit_icon.png", :border=>0, :title => 'Edit this category for this facility'), :action => 'edit', :id => @pppams_category.id %> | <%= link_to image_tag("delete_icon.png", :border=>0, :title => 'Delete this category for this facility'), :action => 'destroy', :id => @pppams_category.id %></span><% end %>
 <p>
   <%=h @pppams_category.description %>
 </p>

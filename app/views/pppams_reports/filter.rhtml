@@ -10,7 +10,7 @@ var existing_filters = "'<%= @doneFilters.join('\',\'') %>'"
 
 <div class = 'right_buttons'>
 <%= submit_tag "View Report" %>
-<INPUT TYPE = "button" VALUE = "Store Filter" onclick = "answer = prompt('What would you like to call this filter?',''); if (answer) { forms['report_filter'].elements['pppams_report_filter[name]'].value = answer; forms['report_filter'].submit();}"/>
+<INPUT TYPE = "button" VALUE = "Save Filter" onclick = "answer = prompt('What would you like to call this filter?',''); if (answer) { forms['report_filter'].elements['pppams_report_filter[name]'].value = answer; forms['report_filter'].submit();}"/>
 </div>
 
 <div id = "report_filter_body">
@@ -18,6 +18,6 @@ var existing_filters = "'<%= @doneFilters.join('\',\'') %>'"
 </div>
 
 <%= submit_tag "View Report" %>
-<INPUT TYPE = "button" VALUE = "Store Filter" onclick = "answer = prompt('What would you like to call this filter?',''); if (answer) { forms['report_filter'].elements['pppams_report_filter[name]'].value = answer; forms['report_filter'].submit();}"/>
+<INPUT TYPE = "button" VALUE = "Save Filter" onclick = "answer = prompt('What would you like to call this filter?',''); if (answer) { forms['report_filter'].elements['pppams_report_filter[name]'].value = answer; forms['report_filter'].submit();}"/>
 
 <% end %>

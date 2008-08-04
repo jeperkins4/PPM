@@ -18,7 +18,7 @@ class PppamsIndicator < ActiveRecord::Base
 
   def current_review(this_month)  
     lowerlimit = this_month.beginning_of_month
-    upperlimit = this_month.end_of_month
+    upperlimit = DateTime.parse(this_month.month.to_s + "/" + this_month.end_of_month.day.to_s + "/" + this_month.year.to_s + " 23:59:59")
     review = PppamsReview.find(:first, :conditions => ["created_on >= ? AND created_on <= ? and pppams_indicator_id = ?", lowerlimit, upperlimit, self.id])
   end
 

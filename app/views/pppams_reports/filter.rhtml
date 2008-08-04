@@ -3,8 +3,11 @@
 <script LANGUAGE="JavaScript">
 var existing_filters = "'<%= @doneFilters.join('\',\'') %>'"
 </script>
-
+<% if PppamsReportFilter.find(:all).length > 0 %>
 <p><legend>Load selections from saved filter: </legend><%= select("pppams_report_filter", "name", PppamsReportFilter.find(:all).collect {|p| [ p.name, p.id ] }, {:include_blank => true}, {:onchange => "new Ajax.Updater('report_filter_body', '/pppams_reports/_form/' + this.options[this.selectedIndex].value, {asynchronous:true, evalScripts:true}); return false;"}) %></p>
+<% else %>
+<p>Once you have selected the options you need to create the report you want,<br/>you can save your selections as a filter by pressing the 'Save Filter' button.</p>
+<% end %>
 
 <% form_tag( {:action => 'filter'}, {:name => "report_filter" } ) do %>
 

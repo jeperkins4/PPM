@@ -1,8 +1,9 @@
 
 
 <% currents = PppamsIndicator.find_current(time, session[:facility]) %>
+<% session[:working_date] = time %>
 
-<form name='year_selector'>
+<form name='year_selector' id='year_selector'>
 <p>Live indicators this month (<%= time.strftime('%b') %> <%= select_year(Date.today, :field_name => 'selectedyear', :start_year => PppamsReview.earliest, :end_year => PppamsReview.latest ) %>): <%= currents.length %></p>
 </form>
 
@@ -24,7 +25,7 @@
   <td></td>
   <% else %>
   <% if current_review.nil? %>
-  <td><%= link_to image_tag("review_icon.png", :border=>0, :title => "Create a new review for this indicator"), :controller => 'pppams_reviews', :action => 'new', :pppams_indicator_id => pppams_indicator %></td>
+  <td><%= link_to image_tag("review_icon.png", :border=>0, :title => "Create a new review for this indicator"), :controller => 'pppams_reviews', :action => 'new', :pppams_indicator_id => pppams_indicator, :create_time => time  %></td>
   <% else %>
   <td><%if current_review.can_edit? %><%= link_to image_tag("edit_review_icon.png", :border=>0, :title => "Edit the review for this indicator"), :controller => 'pppams_reviews', :action => 'edit', :id => current_review %><% end %></td>
   <% end %>

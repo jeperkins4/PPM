@@ -33,6 +33,10 @@ class PppamsReviewsController < ApplicationController
   end
 
   def create
+    working_date = session[:working_date]
+    if working_date.month != Time.now.month or  working_date.year != Time.now.year 
+	params[:pppams_review][:created_on] = DateTime.parse(working_date.month.to_s + "/" + working_date.end_of_month.day.to_s + "/" + working_date.year.to_s + " 23:59:59")
+    end
     @pppams_review = PppamsReview.new(params[:pppams_review])
     if @pppams_review.save
       for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]])
@@ -77,7 +81,7 @@ class PppamsReviewsController < ApplicationController
 
   def destroy
     PppamsReview.find(params[:id]).destroy
-    redirect_to :action => 'list'
+    redirect_to :controller => 'pppams_indicators'
   end
   
   def trash_upload

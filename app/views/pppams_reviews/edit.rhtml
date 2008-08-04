@@ -2,7 +2,7 @@
 
 <p><strong>Question: </strong><%=h @pppams_indicator.question %></p>
 
-<p><label>Created on: </label><%= @pppams_review.created_on.strftime('%m-%d-%Y') %> by Test Manager </p>
+<p><label>Created on: </label><%= @pppams_review.created_on.strftime('%m-%d-%Y') %> by Test Manager &nbsp;&nbsp;&nbsp;<%= link_to "Delete", { :action => 'destroy', :id => @pppams_review }, :confirm => 'Are you sure?', :method => :post %></p> 
 
 
 <%= error_messages_for 'pppams_review' %>

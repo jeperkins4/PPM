@@ -32,10 +32,12 @@ class PppamsReportFilter < ActiveRecord::Base
     end
 
     def self.good_reviews(from_date, to_date, status_filter, good_ids)
-       status_filter = ['Submitted','Review','Accepted','Locked',''] if status_filter.empty?
        from_date = Time.now.beginning_of_month.strftime("%Y-%m-%d") if from_date.empty?
        to_date = Time.now.end_of_month.strftime("%Y-%m-%d") if to_date.empty?
-       ouput = PppamsReview.find(:all, :select => "pppams_reviews.*", :joins => ",pppams_indicators, pppams_categories", :order => "facility_id, pppams_category_id, pppams_indicator_id", :conditions =>["pppams_reviews.pppams_indicator_id = pppams_indicators.id AND pppams_indicators.pppams_category_id = pppams_categories.id AND pppams_indicator_id in (#{good_ids.join(',')}) and status in ('#{status_filter.join("','")}') and pppams_reviews.created_on <= '#{to_date}' and pppams_reviews.created_on >= '#{from_date}'"])
+       from_datetime = DateTime.parse(from_date).strftime("%Y-%m-%d")
+       to_datetime = DateTime.parse(to_date).strftime("%Y-%m-%d")
+       status_filter = ['Submitted','Review','Accepted','Locked',''] if status_filter.empty?
+       ouput = PppamsReview.find(:all, :select => "pppams_reviews.*", :joins => ",pppams_indicators, pppams_categories", :order => "facility_id, pppams_category_id, pppams_indicator_id", :conditions =>["pppams_reviews.pppams_indicator_id = pppams_indicators.id AND pppams_indicators.pppams_category_id = pppams_categories.id AND pppams_indicator_id in (#{good_ids.join(',')}) and status in ('#{status_filter.join("','")}') and pppams_reviews.created_on <= '#{to_datetime}' and pppams_reviews.created_on >= '#{from_datetime}'"])
     end
 
 end

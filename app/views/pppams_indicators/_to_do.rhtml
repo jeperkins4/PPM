@@ -1,6 +1,8 @@
 
 
 <% currents = PppamsIndicator.find_current(time, session[:facility]) %>
+
+
 <% session[:working_date] = time %>
 
 <form name='year_selector' id='year_selector'>
@@ -20,7 +22,7 @@
   <% if id_store != pppams_indicator.pppams_category_id %>
   <tr><td colspan= <%= @user.is_admin? ? 6 : 4 %>><p class='cat_heading'><%=h pppams_indicator.pppams_category.name %></p></td></tr>
   <% end %>
-  <tr>
+  <tr <% if current_review.nil? and time.beginning_of_month < Time.now.beginning_of_month %>class='warning_row' <% end %>>
   <% if time >= Time.now.next_month.beginning_of_month %>
   <td></td>
   <% else %>

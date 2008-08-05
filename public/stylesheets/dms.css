@@ -943,11 +943,19 @@ p.no-top {
      font-size: 120%;
  }
 
+#navigation UL LI A.tab_warn {
+     background-image: url(/images/tab-right-warn.gif);
+}
+
 
 #navigation ul li a span {
      background: url(/images/tab-left.gif) no-repeat;
      padding: 0px .45em;
      font
+ }
+
+#navigation ul li a.tab_warn span {
+     background-image: url(/images/tab-left-warn.gif);
  }
 
 #navigation ul li a:hover span {
@@ -1058,4 +1066,12 @@ fieldset ul {
 	padding-right: 20px;
 	height: auto;
 	overflow: auto;
+}
+
+tr.warning_row {
+	background-color: pink;
+}
+
+#report_container tr {
+	vertical-align: top;
 }

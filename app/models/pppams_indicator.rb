@@ -7,6 +7,10 @@ class PppamsIndicator < ActiveRecord::Base
   validates_presence_of [:question,:pppams_category_id,:frequency,:start_month, :good_months]
       
   def self.find_current(this_date, this_facility)   
+    if this_facility.pppams_started_on.nil? 
+       return []
+       break
+    end
     good_ids = "(#{this_facility.pppams_category_ids.join(',')})" 
     find_me = "%:" + this_date.month.to_s + ":%"
     if this_facility.pppams_category_ids.size > 0 and this_date >= this_facility.pppams_started_on

@@ -66,7 +66,7 @@
 		<% if @divider >= 7 -%> 
 		<% (month >= 7) ? @year = Time.now.year - 1 : @year = Time.now.year -%> 
 		<% else -%> 
-		<% (month >= 7) ? @year = Time.now.year : @year = Time.now.year -%> 
+		<% (month >= 7) ? @year = Time.now.year : @year = Time.now.year + 1-%> 
 		<% end -%> 
 		<% @count = AccountabilityLogs.find(:first, :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id = ?', session[:facility],month,@year,question.id])  -%>
 		<% (@count) ? @sum += @count.response : '' -%>

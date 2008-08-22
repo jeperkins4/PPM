@@ -38,7 +38,8 @@
 
 
 
-            <% if session[:access_level] == 'Administrator' -%>
+            <% unless @hide_search_div %>
+              <% if session[:access_level] == 'Administrator' -%>
               <div id='search'>
                 <% form_for :set_facility, :url => {:action => :index} do |f| -%>
                   <label class='accessibility' for='facility_facility_id'>Select A Facility to Manage</label>
@@ -51,6 +52,7 @@
                 <label class='accessibility'>Managing:</label>
                 <%= session[:facility].facility %>
               </div>
+            <% end -%>
             <% end -%>
             <h1>Bureau of Private Prison Monitoring</h1>
           </div>			

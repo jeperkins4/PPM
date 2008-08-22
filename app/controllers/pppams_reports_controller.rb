@@ -14,7 +14,6 @@ class PppamsReportsController < ApplicationController
   
   def filter
     if params.has_key?('commit')
-      session[:dbcustom] = params[:pppams_report_filter][:report_type].class
       type = params[:pppams_report_filter][:report_type].nil? ? "full" : params[:pppams_report_filter][:report_type].split('.')[0]
       filter = params[:pppams_report_filter]
       base_filter = [filter[:facility_filter], filter[:category_filter], filter[:indicator_filter]]

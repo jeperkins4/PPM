@@ -4,7 +4,7 @@ class PppamsReviewsController < ApplicationController
   layout 'administration'
 
   def set_status_ar
-    @status_access = {'Web Developer' => ['', 'Review','Accepted'], 'Administrator' => ['', 'Review','Accepted'], 'God' => ['', 'Review','Accepted','Locked'], 'Contract Manager' => [''] }
+    @status_access = {'Web Developer' => ['', 'Review','Accepted'], 'Administrator' => ['', 'Review','Accepted'], 'SuperAdministrator' => ['', 'Review','Accepted','Locked'], 'Contract Manager' => [''] }
     $cur_user_type =  User.current_user.user_type.user_type
     @status_ar = @status_access[$cur_user_type]
   end

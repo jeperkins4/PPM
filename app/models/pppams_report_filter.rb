@@ -15,8 +15,7 @@ class PppamsReportFilter < ActiveRecord::Base
 	cc = 0
 	group_level = 3
 	base_filter.each do |x| 
-           x.uniq!
-           rubbish = x.pop
+           x = x.uniq_numerics
 	    if x.empty? 
 		x = all_ids[cc] 
 		group_level = cc if group_level == 3
@@ -24,19 +23,27 @@ class PppamsReportFilter < ActiveRecord::Base
            new_filter << x
            cc = cc + 1
        end
-	from_cats = PppamsCategoryBaseRef.find(new_filter[1]).collect{|c| c.pppams_indicator_base_ref_ids}.flatten!
-       all_inds = from_cats << new_filter[2].collect{|i| i.to_i}
+       if new_filter[1] == all_ids[1] && new_filter[2] == all_ids[2]
+         ind_string = new_filter[2].collect{|i| i.to_i}.flatten.uniq.join(",")
+       elsif new_filter[1] == all_ids[1] && new_filter[2] != all_ids[2]
+         ind_string = new_filter[2].collect{|i| i.to_i}.flatten.uniq.join(",")
+       elsif new_filter[1] != all_ids[1] && new_filter[2] == all_ids[2]
+         ind_string = PppamsCategoryBaseRef.find(new_filter[1]).collect{|c| c.pppams_indicator_base_ref_ids}.flatten.uniq.join(",")
+       else
+         from_cats = PppamsCategoryBaseRef.find(new_filter[1]).collect{|c| c.pppams_indicator_base_ref_ids}.flatten!
+         all_inds = from_cats << new_filter[2].collect{|i| i.to_i}
+         ind_string = all_inds.flatten.uniq.join(",")
+       end
 	fac_string = new_filter[0].collect{|i| i.to_i}.join(",")
-	ind_string = all_inds.flatten.uniq.join(",")
        ouput = [PppamsIndicator.find(:all, :include => :pppams_category, :conditions =>["pppams_indicator_base_ref_id in (#{ind_string}) and facility_id in (#{fac_string})"]).collect{|i| i.id}, group_level]
     end
 
     def self.good_reviews(from_date, to_date, status_filter, good_ids)
-       from_date = Time.now.beginning_of_month.strftime("%Y-%m-%d") if from_date.empty?
-       to_date = Time.now.end_of_month.strftime("%Y-%m-%d") if to_date.empty?
+       from_date = Time.now.beginning_of_month.strftime("%Y-%m-%d") if from_date.nil?
+       to_date = Time.now.end_of_month.strftime("%Y-%m-%d 23:59:59") if to_date.nil?
        from_datetime = DateTime.parse(from_date).strftime("%Y-%m-%d")
-       to_datetime = DateTime.parse(to_date).strftime("%Y-%m-%d")
-       status_filter = ['Submitted','Review','Accepted','Locked',''] if status_filter.empty?
+       to_datetime = DateTime.parse(to_date).strftime("%Y-%m-%d 23:59:59")
+       status_filter = ['Submitted','Review','Accepted','Locked',''] if status_filter.empty_filter?
        ouput = PppamsReview.find(:all, :select => "pppams_reviews.*", :joins => ",pppams_indicators, pppams_categories", :order => "facility_id, pppams_category_id, pppams_indicator_id", :conditions =>["pppams_reviews.pppams_indicator_id = pppams_indicators.id AND pppams_indicators.pppams_category_id = pppams_categories.id AND pppams_indicator_id in (#{good_ids.join(',')}) and status in ('#{status_filter.join("','")}') and pppams_reviews.created_on <= '#{to_datetime}' and pppams_reviews.created_on >= '#{from_datetime}'"])
     end
 

@@ -1,0 +1,55 @@
+<% currents = PppamsIndicator.find_current(time, session[:facility]) %>
+
+<% id_store = 0 %> 
+
+<% session[:working_date] = time %>
+
+<form name='year_selector' id='year_selector'>
+<p>Live indicators this month (<%= time.strftime('%b') %> <%= select_year(Date.today, :field_name => 'selectedyear', :start_year => PppamsReview.earliest, :end_year => PppamsReview.latest ) %>): <%= currents.length %></p>
+</form>
+<form name='review_table' id='review_table' action='/pppams_indicators/bulk_update' method='post' target='RSIFrame'>
+
+<span class='bulk_status_changer'>With selected, change status to: <%= select_tag ('pppams_review_new_status', options_for_select( ['Review','Accepted','Locked'] ) ) %>
+<input type='submit' value='Go'/><br/>
+with note: <textarea id='pppams_review_bulk_note' name='pppams_review_bulk_note'></textarea></span>
+<table>
+<tr>
+<th></th>
+<th></th>
+<th>Indicator</th>
+<% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by)$/  } %>
+<th><%= column.human_name %></th>
+<% end %>
+</tr>
+<% for pppams_indicator in currents %>
+  <% current_review = pppams_indicator.current_review(time) %>
+  <% if id_store != pppams_indicator.pppams_category_id %>
+  <tr><td colspan = 10><p class='cat_heading'><%=h pppams_indicator.pppams_category.name %></p></td></tr>
+  <% end %>
+  <tr>
+  <% if current_review.nil? %>
+  <td></td>
+  <td><%= link_to image_tag("review_icon.png", :border=>0, :title => "Create a new review for this indicator"), :controller => 'pppams_reviews', :action => 'new', :pppams_indicator_id => pppams_indicator, :create_time => time  %></td>
+  <% else %>
+  <td><%= check_box_tag("pppams_review_selector[]", value = current_review.id) %></td>
+  <td><%if current_review.can_edit? %><%= link_to image_tag("edit_review_icon.png", :border=>0, :title => "Edit the review for this indicator"), :controller => 'pppams_reviews', :action => 'edit', :id => current_review %><% end %></td>
+  <% end %>
+  <td><%=h pppams_indicator.question%></td>
+  <% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by)$/  } %>
+    <% if current_review.nil? %> 
+        <td> - </td>
+        <% next %>
+    <% end %>
+    <% if column.name == 'status' %>
+        <td><%=h current_review.send(column.name) == "" ? "Submitted" :  current_review.send(column.name) %></td>
+    <% else %>
+        <td><%=h current_review.send(column.name) %></td>
+    <% end %>
+  <% end %>
+  </tr>
+  <% id_store = pppams_indicator.pppams_category_id %>
+<% end %>
+</table>
+</form> 
+
+<iframe id="RSIFrame" name="RSIFrame" style="width:0px; height:0px; border: 0px" src="/blank.html" onload = "if (this.contentWindow.document.body.innerHTML == 1) new Ajax.Updater(parent.document.getElementById('nav_results'), '/pppams_indicators/_editable_to_do?time=01-<%= session[:working_date].month %>-<%= session[:working_date].year %>', {asynchronous:true, evalScripts:true, onLoading:function(){$('nav_results').innerHTML = '<p style=\'text-align: center\'>Loading...</p>';}});"></iframe> 

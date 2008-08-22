@@ -1,4 +1,16 @@
+<% if session[:indicator_list_mode] == 'list'%>
+<div class='float-right'><%= link_to 'Review Data', :action => 'editable_list' %></div>
+<% current_action = 'to_do' %>
 <h2 class='inline-head'>PPPAMS Management</h2>
+
+<h3>Indicator Data</h3>
+<% else %>
+<div class='float-right'><%= link_to 'Indicator Data', :action => 'list' %></div>
+<% current_action = 'editable_to_do' %>
+<h2 class='inline-head'>PPPAMS Management</h2>
+
+<h3>Review Data</h3>
+<% end %>
 
 <div id="current_pppams">
 
@@ -14,7 +26,7 @@
 <% todos = loopTime < Time.now.beginning_of_month ? PppamsIndicator.find_current_todo(loopTime,session[:facility]) : 0%>
 
 <li id = "month_tab_<%= i %>" <%= "class='selected'" if i == myTime.month %>>
-<a <%= "class='tab_warn' " if todos > 0 %>href="#" onclick="new Ajax.Updater('nav_results', '/pppams_indicators/_to_do?time=' + '<%= '01-' + i.to_s + '-' %>' + $('year_selector')[0].options[$('year_selector')[0].selectedIndex].value, {asynchronous:true, evalScripts:true, onLoading:function(){$('nav_results').innerHTML = '<p style=\'text-align: center\'>Loading...</p>';}, onComplete:function(request){updateMonthTab(<%= i %>)}}); return false;"><span><%= start_time.strftime('%b') %></span></a>
+<a <%= "class='tab_warn' " if todos > 0 %>href="#" onclick="new Ajax.Updater('nav_results', '/pppams_indicators/_<%= current_action %>?time=' + '<%= '01-' + i.to_s + '-' %>' + $('year_selector')[0].options[$('year_selector')[0].selectedIndex].value, {asynchronous:true, evalScripts:true, onLoading:function(){$('nav_results').innerHTML = '<p style=\'text-align: center\'>Loading...</p>';}, onComplete:function(request){updateMonthTab(<%= i %>)}}); return false;"><span><%= start_time.strftime('%b') %></span></a>
 </li>
 <% start_time = start_time.months_since(1) %>
 <% end %>
@@ -23,7 +35,8 @@
 
 <div id='nav_results'>
 
-<%= render :partial => 'to_do', :locals => {:time =>  myTime} %>
+<%= render :partial => current_action, :locals => {:time =>  myTime} %>
+
 
 </div>
  

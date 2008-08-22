@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base
  $LOAD_PATH.unshift 'vendor/plugins/fastercsv/lib'
  $LOAD_PATH.unshift 'vendor/plugins/calendar_date_select/lib'
  $LOAD_PATH.unshift 'vendor/plugins/multiple_select/lib'
+
+ require 'custom_array_funcs'
  
   def admin_authenticate
     if session[:user_id]

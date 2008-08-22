@@ -16,14 +16,35 @@ class PppamsIndicatorsController < ApplicationController
 
   def list
     @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :per_page => 100
+    session[:indicator_list_mode] = 'list'
   end
 
   def pure_list
     @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :per_page => 100
   end
+
+  def editable_list
+    @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :per_page => 100
+    session[:indicator_list_mode] = 'editable_list'
+    render :action => 'list'
+  end
   
   def _to_do 
     render :partial => 'to_do', :locals => {:time => Time.parse(params[:time]) }
+  end
+
+  def _editable_to_do 
+    render :partial => 'editable_to_do', :locals => {:time => Time.parse(params[:time]) }
+  end
+
+  def bulk_update
+    params[:pppams_review_selector].each { |id|
+      @pppams_review = PppamsReview.find(id)
+      @pppams_review.status = params[:pppams_review_new_status]
+      @pppams_review.notes = @pppams_review.notes.nil? ? params[:pppams_review_bulk_note] : @pppams_review.notes + "\r\n" + params[:pppams_review_bulk_note]
+      @pppams_review.save
+    }
+    render :text => "1"
   end
 
   def show

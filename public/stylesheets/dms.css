@@ -1075,3 +1075,13 @@ tr.warning_row {
 #report_container tr {
 	vertical-align: top;
 }
+
+.bulk_status_changer {
+	float: right;
+	margin-top: -3.2em;
+}
+
+#pppams_review_bulk_note {
+    width:  236px;
+    margin-top: 8px;
+}

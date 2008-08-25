@@ -16,7 +16,6 @@ class ApplicationController < ActionController::Base
   #This code will automatically start loading when the new module is uploaded to production
   # and will continue to function in development where the files currently exist
   if File.exist?("#{RAILS_ROOT}/lib/custom_array_funcs.rb") then
-    puts "true"
     after_filter :clean_up_uploads, :except => ['update', 'create', 'trash_upload', 'uploadFile']  
     include DebugHelper    
     $LOAD_PATH.unshift 'vendor/plugins/responds_to_parent/lib'

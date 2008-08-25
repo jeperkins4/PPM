@@ -10,18 +10,23 @@ class ApplicationController < ActionController::Base
   end
 
   before_filter :set_page
-  before_filter :set_facility, :except => ''
-  after_filter :clean_up_uploads, :except => ['update', 'create', 'trash_upload', 'uploadFile']
+  before_filter :set_facility, :except => ''  
   
- include DebugHelper
- $LOAD_PATH.unshift 'vendor/plugins/responds_to_parent/lib'
- $LOAD_PATH.unshift 'vendor/plugins/orderedhash/lib'
- $LOAD_PATH.unshift 'vendor/plugins/fastercsv/lib'
- $LOAD_PATH.unshift 'vendor/plugins/calendar_date_select/lib'
- $LOAD_PATH.unshift 'vendor/plugins/multiple_select/lib'
-
- require 'custom_array_funcs'
- 
+  #AJR Added switch statement to proceed with updates to production while PPPAMS module is still being tested.
+  #This code will automatically start loading when the new module is uploaded to production
+  # and will continue to function in development where the files currently exist
+  if File.exist?("#{RAILS_ROOT}/lib/custom_array_funcs.rb") then
+    puts "true"
+    after_filter :clean_up_uploads, :except => ['update', 'create', 'trash_upload', 'uploadFile']  
+    include DebugHelper    
+    $LOAD_PATH.unshift 'vendor/plugins/responds_to_parent/lib'
+    $LOAD_PATH.unshift 'vendor/plugins/orderedhash/lib'
+    $LOAD_PATH.unshift 'vendor/plugins/fastercsv/lib'
+    $LOAD_PATH.unshift 'vendor/plugins/calendar_date_select/lib'
+    $LOAD_PATH.unshift 'vendor/plugins/multiple_select/lib'
+    require 'custom_array_funcs'
+  end
+    
   def admin_authenticate
     if session[:user_id]
       @user = User.find_by_id(session[:user_id])
@@ -104,9 +109,24 @@ class ApplicationController < ActionController::Base
   end
   
   def clean_up_uploads
-      for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]])
-        this_upload.destroy
-      end
+    for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]])
+      this_upload.destroy
+    end
   end
+  
+  def accountability_report
+    if params[:menu] == 'Yes' then
+      render :update do |page|
+        page.replace_html "daterange", :partial => '/reports/date_range'
+      end
+    else
+      render :update do |page|
+        page.replace_html "daterange", :text => ""
+      end
+    end
+  end
+  
+
+
 
 end

@@ -12,7 +12,7 @@
 	
 	<tr>
 	    <td width='15%'>Status:</td>
-		<td><%= select :report, :status, ["Open","Closed","All"], {:selected => (session[:status]) ? session[:status] : ''}, {:onchange => "JavaScript:submit()"} %></td>
+		<td><%= select :report, :status, ["Open","Closed","All"], {:selected => (session[:status]) ? session[:status] : ''} %></td>
     </tr>
 	<tr>
 		<td>MINS Number:</td>

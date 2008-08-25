@@ -1,0 +1,1 @@
+Date Range: <%= date_select :report, :acct_begin_date, :order=> [:month, :year],:discard_day => true,:seleceted => (session[:acct_begin_date]) ? session[:acct_begin_date] : '' %> and <%= date_select :report, :acct_end_date, :order=> [:month, :year],:discard_day => true, :seleceted => (session[:acct_end_date]) ? session[:acct_end_date] : ''  %>

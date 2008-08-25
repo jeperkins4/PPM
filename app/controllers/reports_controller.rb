@@ -9,24 +9,33 @@ class ReportsController < ApplicationController
     session[:status] = 'Open'
     session[:begin_date] = ''
     session[:end_date] = ''
+    session[:acct_begin_date] = nil
+    session[:acct_end_date] = nil
+    
     if request.post?
-     (params[:report][:report_type]) ? session[:type] = params[:report][:report_type] : session[:type] = 'Choose Type'
-     (params[:report][:use_date]) ? session[:use_date] = params[:report][:use_date] : session[:use_date] = 'No'
-     (params[:report][:status]) ? session[:status] = params[:report][:status] : session[:status] = 'Open'
-      if session[:use_date] == 'Yes'
+      (params[:report][:report_type]) ? session[:type] = params[:report][:report_type] : session[:type] = 'Choose Type'
+      (params[:report][:use_date]) ? session[:use_date] = params[:report][:use_date] : session[:use_date] = 'No'
+      (params[:report][:status]) ? session[:status] = params[:report][:status] : session[:status] = 'Open'
+      if session[:use_date] == 'Yes'        
         params[:report][:begin_date] = Date.new(params[:report].delete('begin_date(1i)').to_i, params[:report].delete('begin_date(2i)').to_i, (params[:report].delete('begin_date(3i)')||1).to_i) if params[:report]['begin_date(3i)']
         params[:report][:end_date] = Date.new(params[:report].delete('end_date(1i)').to_i, params[:report].delete('end_date(2i)').to_i, (params[:report].delete('end_date(3i)')||1).to_i) if params[:report]['end_date(3i)'] 
         session[:begin_date] = params[:report][:begin_date]
         session[:end_date] = params[:report][:end_date]
+        session[:acct_begin_date] = Date.new(params[:report].delete('acct_begin_date(1i)').to_i, params[:report].delete('acct_begin_date(2i)').to_i) if params[:report]['acct_begin_date(1i)'] 
+        session[:acct_end_date] = Date.new(params[:report].delete('acct_end_date(1i)').to_i, params[:report].delete('acct_end_date(2i)').to_i) if params[:report]['acct_end_date(1i)']                  
+      
       end
       if params[:report][:ready] == "1"
         @excel = false
         case session[:type].downcase
         when 'incident'   
           build_report_incident(@excel)
-        when 'accountability'   
-          build_report_accountability(@excel)
-        end
+        when 'accountability'
+          if  session[:acct_begin_date] then
+            session[:acct_begin_date] > session[:acct_end_date] ? (flash[:notice] = "Date Range is Invalid"; render :action => 'index' and return) : ""
+          end          
+          build_report_accountability(@excel)          
+        end      
       end
     end
   end
@@ -85,8 +94,8 @@ class ReportsController < ApplicationController
     end
     
     session[:report] = session[:facility].incidents.find :all, 
-    :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type, @status], 
-    :order => 'incident_date, mins'
+      :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type, @status], 
+      :order => 'incident_date, mins'
     unless excel == true
       redirect_to :action => :report
     end

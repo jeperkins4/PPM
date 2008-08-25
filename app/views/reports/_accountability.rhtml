@@ -15,7 +15,8 @@
   <% @me.uniq! %>
   <%  @divider = @me.size %>
 
-
+  <tr><td colspan="15"><h3 align='center'><%= session[:facility].facility %> Accountatbility Log </h3></td></tr>
+  
   <% session[:report].each do |category| -%>
       <% @column_total = 0 %>
       <tr><td colspan="<%=@divider + 3%>"><h3 align='center'><%= category.title %></h3></td></tr>
@@ -82,9 +83,7 @@
       </tr>
       <tr><td colspan="<%=@divider + 3 %>" bgcolor="#666666">&nbsp;</td></tr>    
   
-      <% if @notes.size > 0 %>
-  </table>
-  <table class="print" border="1">
+      <% if @notes.size > 0 %>  
         <tr><td><b>NOTES:</b></td></tr>
         <% @notes.each do |note|%>
           <tr><td><%= Date.new(note.log_year,note.log_month).strftime('%B') %></td><td><%= Date.new(note.log_year,note.log_month).strftime('%Y')%></td><td colspan="<%=@divider + 3%>"><%= note.detail_response%></td></tr>
@@ -239,9 +238,7 @@
     <% end %>
 
     <% if @notes.size > 0 %>
-  </table>
-  <table class="print" border="1">
-      <tr><td><b>NOTES:</b></td></tr>
+       <tr><td><b>NOTES:</b></td></tr>
       <% @notes.each do |note|%>
         <tr><td><%= Date.new(note.log_year,note.log_month).strftime('%B') %></td><td><%= Date.new(note.log_year,note.log_month).strftime('%Y')%></td><td colspan="4"><%= note.detail_response%></td></tr>
       <% end %>

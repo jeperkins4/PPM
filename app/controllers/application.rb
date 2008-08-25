@@ -5,9 +5,7 @@ class ApplicationController < ActionController::Base
   # Pick a unique cookie name to distinguish our session data from others'
   session :session_key => '_privateprison_session_id'
   
-  before_filter do |c|
-    User.current_user = User.find_by_id(c.session[:user_id])
-  end
+ 
 
   before_filter :set_page
   before_filter :set_facility, :except => ''  
@@ -16,6 +14,9 @@ class ApplicationController < ActionController::Base
   #This code will automatically start loading when the new module is uploaded to production
   # and will continue to function in development where the files currently exist
   if File.exist?("#{RAILS_ROOT}/lib/custom_array_funcs.rb") then
+    before_filter do |c|
+      User.current_user = User.find_by_id(c.session[:user_id])
+    end
     after_filter :clean_up_uploads, :except => ['update', 'create', 'trash_upload', 'uploadFile']  
     include DebugHelper    
     $LOAD_PATH.unshift 'vendor/plugins/responds_to_parent/lib'

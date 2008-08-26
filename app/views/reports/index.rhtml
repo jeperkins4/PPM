@@ -1,6 +1,7 @@
 <h2>Report Dashboard</h2>
 
-<% form_for(:report, :action => :index, :method => 'post' ) do |f| %>
+
+<% remote_form_for(:report, :action => :index, :method => 'post' ) do |f| %>
 <table>
 	<tr>
 		<td width='15%'>Report Type:</td>
@@ -16,7 +17,10 @@
 		<td></td>
 	</tr>
 	<tr>
-		<td colspan="2"><br /><%= submit_tag "Build Report",:disable_with => "Please wait..." %></td>
+		<td colspan="2"><br /><%= submit_tag "Build Report",:disable_with => "Please wait...", :onclick => "submit(); document.getElementById('spinner').innerHTML=\"<img src='images/spinner.gif'/>\";" %><div id = 'spinner'></div></td>
+                
 	</tr>
+        
 </table>
+
 <% end -%>

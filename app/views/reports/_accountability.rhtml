@@ -15,7 +15,7 @@
   <% @me.uniq! %>
   <%  @divider = @me.size %>
 
-  <tr><td colspan="15"><h3 align='center'><%= session[:facility].facility %> Accountatbility Log </h3></td></tr>
+  <tr><td colspan="<%=@divider + 3%>"><h3 align='center'><%= session[:facility].facility %> Accountatbility Log </h3></td></tr>
   
   <% session[:report].each do |category| -%>
       <% @column_total = 0 %>
@@ -83,13 +83,15 @@
       </tr>
       <tr><td colspan="<%=@divider + 3 %>" bgcolor="#666666">&nbsp;</td></tr>    
   
-      <% if @notes.size > 0 %>  
-        <tr><td><b>NOTES:</b></td></tr>
-        <% @notes.each do |note|%>
-          <tr><td><%= Date.new(note.log_year,note.log_month).strftime('%B') %></td><td><%= Date.new(note.log_year,note.log_month).strftime('%Y')%></td><td colspan="<%=@divider + 3%>"><%= note.detail_response%></td></tr>
-        <% end %>
+       <% if @notes.size > 0 %>
+       <tr><td><b>NOTES:</b></td></tr>
+      <% @notes.each do |note|%>
+        <tr><td  bgcolor="#FFCC00"><b><%= Date.new(note.log_year,note.log_month).strftime('%B %Y')%></b></td></tr>
+        <tr><td colspan="1"><%= note.detail_response%></td></tr>
       <% end %>
-      <tr><td colspan="<%=@divider + 3 %>" bgcolor="#666666">&nbsp;</td></tr>
+    <tr><td colspan="<%=@divider + 3 %>" bgcolor="#666666">&nbsp;</td></tr>
+    <% end %>
+    
     
   <% end %>
   <!--THIS SECTION IS USED WHEN NO DATE PARAMETERS ARE SENT -->
@@ -225,7 +227,7 @@
       <td bgcolor="#FFCC00"><%= number_with_precision(@category_total, 2) %></td>
       <td bgcolor="#FFCC00"><%= number_with_precision((@category_total/@divider), 2) %></td>
     </tr>
-    <tr><td colspan="<%=@divider + 3 %>" bgcolor="#666666">&nbsp;</td></tr>
+    <tr><td colspan="15" bgcolor="#666666">&nbsp;</td></tr>
 
     <% @notes = [] %>
     <% [7,8,9,10,11,12,1,2,3,4,5,6].each do |month| -%>
@@ -240,9 +242,10 @@
     <% if @notes.size > 0 %>
        <tr><td><b>NOTES:</b></td></tr>
       <% @notes.each do |note|%>
-        <tr><td><%= Date.new(note.log_year,note.log_month).strftime('%B') %></td><td><%= Date.new(note.log_year,note.log_month).strftime('%Y')%></td><td colspan="4"><%= note.detail_response%></td></tr>
+        <tr><td  bgcolor="#FFCC00"><b><%= Date.new(note.log_year,note.log_month).strftime('%B %Y')%></b></td></tr>
+        <tr><td colspan="1"><%= note.detail_response%></td></tr>
       <% end %>
-<tr><td colspan="<%=@divider + 3 %>" bgcolor="#666666">&nbsp;</td></tr>
+<tr><td colspan="15" bgcolor="#666666">&nbsp;</td></tr>
     <% end %>
     
   <% end -%>

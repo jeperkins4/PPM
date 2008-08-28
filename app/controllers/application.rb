@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   #AJR Added switch statement to proceed with updates to production while PPPAMS module is still being tested.
   #This code will automatically start loading when the new module is uploaded to production
   # and will continue to function in development where the files currently exist
-  if File.exist?("#{RAILS_ROOT}/lib/custom_array_funcs.rb") then
+  if File.exist?("#{RAILS_ROOT}/lib/custom_funcs.rb") then
     before_filter do |c|
       User.current_user = User.find_by_id(c.session[:user_id])
     end
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
     $LOAD_PATH.unshift 'vendor/plugins/fastercsv/lib'
     $LOAD_PATH.unshift 'vendor/plugins/calendar_date_select/lib'
     $LOAD_PATH.unshift 'vendor/plugins/multiple_select/lib'
-    require 'custom_array_funcs'
+    require 'custom_funcs'
   end
     
   def admin_authenticate

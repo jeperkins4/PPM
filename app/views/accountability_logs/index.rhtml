@@ -1,21 +1,33 @@
 <h2>Accountability Log</h2>
+<%  form_for(:accountability_logs, :url =>{:action => 'set_admin_fy'}, :method => 'post') do |f| %>
+  Accountability Fiscal Year: <%= f.select :fiscal_year, 
+    AccountabilityLogs.find(:all, :select => 'distinct log_year', :conditions =>['log_year >= 2008']).collect{|year| ["#{year.log_year - 1} - #{year.log_year}", year.log_year - 1]} ,
+    {:selected => session[:admin_year] ? session[:admin_year] : Time.now.year},
+    {:onchange => "submit();"}%>
+<% end %>
+
+ADMIN YEAR = <%= session[:admin_year] ? session[:admin_year].to_s : "no year" %>
+
 <%= calendar %>
 <p>Category: <%= pagination_links(@category_pages, {:window_size => 50, :name => 'category'}, nil, @category_titles) %></p>
 <p><%= session[:facility].facility %></p>
 <% form_tag 'accountability_logs', :enctype => 'multipart/form-data' do %>
+
   <%= text_field_tag :page, request.request_uri, :style => 'display:none;' %>
   <%= text_field_tag :month, @month, :style => 'display:none;' %>
-           <% @categories.each do |category| -%>
+  <% @categories.each do |category| -%>
     <h3><b><%= category.title %></b></h3>
-    <table>
-      <% if @month.to_i >= 7 and Time.now.month <= 6 -%>
-        <%  @year = Time.now.year - 1 -%>
+    <table>  
+    
+      <% if @month.to_i >= 7 then %>
+        <%  @year = @fiscal_year -%>
       <% else -%>
-        <%  @year = Time.now.year -%>
+        <%  @year = @fiscal_year + 1 -%>
       <% end -%>
-                  <% @questions = Prompt.find(:all, :conditions =>  ['active = ? and context_id = ?', 1, category.id], :order => 'used_in_total DESC, question') -%> 
-                  <% @questions.each do |question| -%>
-                    <% @accountability_question_response = AccountabilityLogs.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and prompt_id = ? and facility_id = ?', @year, @month, category.id, question.id, session[:facility].id]) -%>
+  
+      <% @questions = Prompt.find(:all, :conditions =>  ['active = ? and context_id = ?', 1, category.id], :order => 'used_in_total DESC, question') -%> 
+      <% @questions.each do |question| -%>
+        <% @accountability_question_response = AccountabilityLogs.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and prompt_id = ? and facility_id = ?', @year, @month, category.id, question.id, session[:facility].id]) -%>
         <tr>
           <td>
             <b><%=  question.question %>:</b>
@@ -31,8 +43,9 @@
     <p style="margin-left:20px;">
       <% @log = AccountabilityLogDetails.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and facility_id = ?', @year, @month, category.id, session[:facility].id]) -%>
       Additional Information:<br />
-      <%= text_area_tag "log[#{category.id}]", (@log) ? @log.detail_response : "", :size => "60x8" %>
+      <%= text_area_tag "log[#{category.id}]", (@log) ? @log.detail_response : "", :max_chars => 1023, :size => "60x8" %>
     </p>
+    Record Year = <%=  @year.to_s %>
     <p style="margin-left:20px;">
       <%= submit_tag 'Record/Update' %>
     </p>

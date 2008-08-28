@@ -17,14 +17,16 @@ class PppamsReportsController < ApplicationController
       type = params[:pppams_report_filter][:report_type].nil? ? "full" : params[:pppams_report_filter][:report_type].split('.')[0]
       filter = params[:pppams_report_filter]
       base_filter = [filter[:facility_filter], filter[:category_filter], filter[:indicator_filter]]
-      good_ids = PppamsReportFilter.good_indicator_ids(base_filter)
+      good_ids_ar = PppamsReportFilter.good_indicator_ids(base_filter)
+      @pppamsIndicators = good_ids_ar[0]
+      good_ids = @pppamsIndicators.collect{|i| i.id}
       status_filter = filter[:status_filter]
       @to_date = filter[:end_date] 
       @from_date = filter[:start_date]
-      @pppamsReviews = PppamsReportFilter.good_reviews(@from_date, @to_date, status_filter, good_ids[0])
+      @pppamsReviews = PppamsReportFilter.good_reviews(@from_date, @to_date, status_filter, good_ids)
 
       @filter_name = filter['name']
-      @group_level = good_ids[1]
+      @group_level = good_ids_ar[1]
       render :partial => type, :layout => 'pppams_reports'
     else
       @doneFilters = PppamsReportFilter.find(:all).collect {|p| [ p.name] }

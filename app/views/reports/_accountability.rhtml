@@ -1,6 +1,4 @@
 <% unless session[:acct_begin_date].nil? %>
-
-
   <%  @begin_month = session[:acct_begin_date].month %>
   <%  @begin_year = session[:acct_begin_date].year %>
   <%  @end_month = session[:acct_end_date].month %>
@@ -16,83 +14,87 @@
   <%  @divider = @me.size %>
 
   <tr><td colspan="<%=@divider + 3%>"><h3 align='center'><%= session[:facility].facility %> Accountatbility Log </h3></td></tr>
-  
+
   <% session[:report].each do |category| -%>
-      <% @column_total = 0 %>
-      <tr><td colspan="<%=@divider + 3%>"><h3 align='center'><%= category.title %></h3></td></tr>
-      <th><b>Questions</b></th>
-  
-      <% @me.each do |month| %>
-        <th><b><%= Date::MONTHNAMES[month.first] %> </b></th>
-      <% end %>
-      <th><b>Total</b></th>    
-      <th><b>Avg.</b></th>    
-  
-      <% @questions = category.prompts.find :all, :order => 'question' -%>
-      <% @filter_questions = category.prompts.find :all, :conditions => ['used_in_total = 1'] -%>
-      <% @july = 0 -%>
-      <% @aug = 0 -%>
-      <% @sept = 0 -%>
-      <% @oct = 0 -%>
-      <% @nov = 0 -%>
-      <% @dec = 0 -%>
-      <% @jan = 0 -%>
-      <% @feb = 0 -%>
-      <% @march = 0 -%>
-      <% @april = 0 -%>
-      <% @may = 0 -%>
-      <% @june = 0 -%>
-  
-      <% @questions.each do |question| -%>
-  
-        <% @sum = 0 -%>
-        <% @row_sum = 0 -%>
-        <% @notes = [] -%>
-        <% @column_sum = [] -%>
+    <% @column_total = 0 %>
+    <tr><td colspan="<%=@divider + 3%>"><h3 align='center'><%= category.title %></h3></td></tr>
+    <th><b>Questions</b></th>
+
+    <% @me.each do |month| %>
+      <th><b><%= Date::MONTHNAMES[month.first] %> </b></th>
+    <% end %>
+    <th><b>Total</b></th>    
+    <th><b>Avg.</b></th>    
+
+    <% @questions = category.prompts.find :all, :order => 'question' -%>
+    <% @filter_questions = category.prompts.find :all, :conditions => ['used_in_total = 1'] -%>
+    <% @july = 0 -%>
+    <% @aug = 0 -%>
+    <% @sept = 0 -%>
+    <% @oct = 0 -%>
+    <% @nov = 0 -%>
+    <% @dec = 0 -%>
+    <% @jan = 0 -%>
+    <% @feb = 0 -%>
+    <% @march = 0 -%>
+    <% @april = 0 -%>
+    <% @may = 0 -%>
+    <% @june = 0 -%>
+
+    <% @questions.each do |question| -%>
+
+      <% @sum = 0 -%>
+      <% @row_sum = 0 -%>
+      <% @notes = [] -%>
+      <% @column_sum = [] -%>
                 
               
                       
-        <tr><td><%= question.question %></td>
-    
-          <%  @me.each do |date|  %>
-            <%  @count = AccountabilityLogs.find(:first, 
-              :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id = ?', 
-                session[:facility],date.first,date.last,question.id]).response rescue 0%>
-            <td><%=  number_with_precision(@count,2) %></td>
-            <% @row_sum += @count %>
-            <% @column_sum << AccountabilityLogs.sum('response',
-              :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id in (?) ', session[:facility].id, date.first, date.last, @filter_questions]) %>
-            <% @notes += AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and facility_id = ? and log_month = ? and log_year = ?',category.id,session[:facility].id, date.first, date.last]) %>
-          <% end %>
-                                            
-          <td><%= number_with_precision(@row_sum,2) %></td>          
-          <td><%= number_with_precision((@row_sum / @divider),2) %></td>          
-        </tr>
-        <% if question.used_in_total == 1 %>
-          <% @column_total += @row_sum %>
-        <% end %>
-      <% end %>
-      <tr><td colspan="<%=@divider + 3%> " bgcolor="#CCCCCC">&nbsp;</td></tr>
-      <tr>
-        <td><b>Total:</b></td>
-        <% @column_sum.each do |sum| %>
-          <td><%=  number_with_precision(sum.to_i, 2) %></td>
-        <% end %>
-        <td bgcolor="#FFCC00"><%=  number_with_precision(@column_total, 2) %></td>
-        <td bgcolor="#FFCC00"><%=  number_with_precision((@column_total/@divider), 2) %></td>
-      </tr>
-      <tr><td colspan="<%=@divider + 3 %>" bgcolor="#666666">&nbsp;</td></tr>    
+      <tr><td><%= question.question %></td>
   
-       <% if @notes.size > 0 %>
-       <tr><td><b>NOTES:</b></td></tr>
+        <%  @me.each do |date|  %>
+          <%  @count = AccountabilityLogs.find(:first, 
+            :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id = ?', 
+              session[:facility],date.first,date.last,question.id]).response rescue 0%>
+          <td><%=  number_with_precision(@count,2) %></td>
+          <% @row_sum += @count %>
+          <% @column_sum << AccountabilityLogs.sum('response',
+            :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id in (?) ', session[:facility].id, date.first, date.last, @filter_questions]) %>
+          <% @notes += AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and facility_id = ? and log_month = ? and log_year = ?',category.id,session[:facility].id, date.first, date.last]) %>
+        <% end %>
+                                              
+        <td><%= number_with_precision(@row_sum,2) %></td>          
+        <td><%= number_with_precision((@row_sum / @divider),2) %></td>          
+      </tr>
+      <% if question.used_in_total == 1 %>
+        <% @column_total += @row_sum %>
+      <% end %>
+    <% end %>
+    <tr><td colspan="<%=@divider + 3%> " bgcolor="#CCCCCC">&nbsp;</td></tr>
+    <tr>
+      <td><b>Total:</b></td>
+      <% @column_sum.each do |sum| %>
+        <td><%=  number_with_precision(sum.to_i, 2) %></td>
+      <% end %>
+      <td bgcolor="#FFCC00"><%=  number_with_precision(@column_total, 2) %></td>
+      <td bgcolor="#FFCC00"><%=  number_with_precision((@column_total/@divider), 2) %></td>
+    </tr>
+    <tr><td colspan="<%=@divider + 3 %>" bgcolor="#666666">&nbsp;</td></tr>    
+
+    <% if @notes.size > 0 %>
+      <tr><td><b>NOTES:</b></td></tr>
       <% @notes.each do |note|%>
         <tr><td  bgcolor="#FFCC00"><b><%= Date.new(note.log_year,note.log_month).strftime('%B %Y')%></b></td></tr>
-        <tr><td colspan="1"><%= note.detail_response%></td></tr>
+        <% if excel == 1 %>
+          <tr><td colspan="1"><%= note.detail_response%></td></tr>
+        <% else %>
+          <tr><td colspan="<%= @divider %>"><%= note.detail_response%></td></tr>
+        <% end %>
       <% end %>
-    <tr><td colspan="<%=@divider + 3 %>" bgcolor="#666666">&nbsp;</td></tr>
+      <tr><td colspan="<%=@divider + 3 %>" bgcolor="#666666">&nbsp;</td></tr>
     <% end %>
-    
-    
+
+
   <% end %>
   <!--THIS SECTION IS USED WHEN NO DATE PARAMETERS ARE SENT -->
 
@@ -240,14 +242,14 @@
     <% end %>
 
     <% if @notes.size > 0 %>
-       <tr><td><b>NOTES:</b></td></tr>
+      <tr><td><b>NOTES:</b></td></tr>
       <% @notes.each do |note|%>
         <tr><td  bgcolor="#FFCC00"><b><%= Date.new(note.log_year,note.log_month).strftime('%B %Y')%></b></td></tr>
         <tr><td colspan="1"><%= note.detail_response%></td></tr>
       <% end %>
-<tr><td colspan="15" bgcolor="#666666">&nbsp;</td></tr>
+      <tr><td colspan="15" bgcolor="#666666">&nbsp;</td></tr>
     <% end %>
-    
+
   <% end -%>
 
 <% end %>

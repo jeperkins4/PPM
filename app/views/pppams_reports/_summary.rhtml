@@ -9,7 +9,7 @@
 <% agg_store = [] %>
 <% show_now = false %>
 <% last_object_store = nil %>
-<% for this_indicator in PppamsIndicator.find(:all, :include => :pppams_category, :order => "facility_id, pppams_category_id, pppams_indicators.id")%>
+<% for this_indicator in @pppamsIndicators %>
 <% if fac_id_store != this_indicator.pppams_category.facility_id && @group_level > 0 && (@group_level != 1 || fac_id_store != 0) %>
 <% if fac_id_store != 0 && @group_level > 1 %>
 </table>
@@ -34,11 +34,11 @@
 <% if show_now %>
 <tr>
 <% if @group_level == 1 %>
-<td><%=h last_object_store.pppams_category.facility.facility %></td><td><%= agg_store.mean %></td>
+<td><%=h last_object_store.pppams_category.facility.facility %></td><td><%= agg_store.mean.round_to(2) %></td>
 <% elsif @group_level == 2 %>
-<td><%=h last_object_store.pppams_category.name %></td><td><%= agg_store.mean %></td>
+<td><%=h last_object_store.pppams_category.name %></td><td><%= agg_store.mean.round_to(2) %></td>
 <% elsif @group_level == 3 %>
-<td><%=h last_object_store.question %></td><td><%= agg_store.mean %></td>
+<td><%=h last_object_store.question %></td><td><%= agg_store.mean.round_to(2) %></td>
 <% end %>
 </tr>
 <% show_now = false %>
@@ -64,11 +64,11 @@
 <% if @group_level == 0 %>
 <td><%= agg_store.mean %></td>
 <% elsif @group_level == 1 %>
-<td><%=h last_object_store.pppams_category.facility.facility %></td><td><%= agg_store.mean %></td>
+<td><%=h last_object_store.pppams_category.facility.facility %></td><td><%= agg_store.mean.round_to(2) %></td>
 <% elsif @group_level == 2 %>
-<td><%=h last_object_store.pppams_category.name %></td><td><%= agg_store.mean %></td>
+<td><%=h last_object_store.pppams_category.name %></td><td><%= agg_store.mean.round_to(2) %></td>
 <% elsif @group_level == 3 %>
-<td><%=h last_object_store.question %></td><td><%= agg_store.mean %></td>
+<td><%=h last_object_store.question %></td><td><%= agg_store.mean.round_to(2) %></td>
 <% end %>
 </tr>
 </table>

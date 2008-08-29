@@ -2,28 +2,42 @@ class AccountabilityLogsController < ApplicationController
   before_filter :authenticate
   layout 'administration'
   
-  def index
+  def index    
     @category_titles =  Context.find(:all, :order => 'position')
     @category_pages, @categories = paginate :context, 
       :order => 'position',
       :per_page => 1,
-      :parameter => 'category'
-                                            
+      :parameter => 'category'    
+  
+    
     if request.post?
       session[:questions] = params[:questions]
-      session[:context_log] = params[:log]
+      session[:context_log] = params[:log]    
       redirect_to :action => :collect
+    else      
+      if Time.now.month >=7 then
+        session[:admin_year] ? "" : session[:admin_year] = Time.now.year
+      else
+        session[:admin_year] ? "" : session[:admin_year] = Time.now.year - 1
+      end
+      
     end
+   
+  end                                            
+    
+  def set_admin_fy
+    session[:admin_year] = params[:accountability_logs][:fiscal_year].to_i
+    redirect_to :action => 'index'
   end
   
   def collect
     @questions = session[:questions]
     @log = session[:context_log]
     (session[:month]) ? @month = session[:month] : @month = Time.now.month
-    if @month.to_i >= 7 and Time.now.month <= 6
-      @year = Time.now.year - 1
+    if @month.to_i >= 7
+      @year =  session[:admin_year]
     else
-      @year = Time.now.year
+      @year =  session[:admin_year] + 1
     end
     @log.each_pair do | context_id, log_detail|
       @context_id = context_id
@@ -83,22 +97,23 @@ class AccountabilityLogsController < ApplicationController
   end
   
   def set_calendar
-#    unless params[:month].to_i == 12 then
-#      if params[:month].to_i == Time.now.month - 2 or params[:month].to_i == Time.now.month then
-        session[:month] = params[:month]
-        redirect_to :back
-#      else
-#        flash[:notice] = "The selected month has been locked by the system because it is outside the editable range."
-#        redirect_to :back
-#      end
-#    else
-#      if Time.now.month == 12 or Time.now.month == 1 then
-#        session[:month] = params[:month]
-#        redirect_to :back
-#      else
-#        flash[:notice] = "The selected month has been locked by the system because it is outside the editable range."
-#        redirect_to :back
-#      end
-#    end
+    #    unless params[:month].to_i == 12 then
+    #      if params[:month].to_i == Time.now.month - 2 or params[:month].to_i == Time.now.month then
+    session[:month] = params[:month]
+    redirect_to :back
+    #      else
+    #        flash[:notice] = "The selected month has been locked by the system because it is outside the editable range."
+    #        redirect_to :back
+    #      end
+    #    else
+    #      if Time.now.month == 12 or Time.now.month == 1 then
+    #        session[:month] = params[:month]
+    #        redirect_to :back
+    #      else
+    #        flash[:notice] = "The selected month has been locked by the system because it is outside the editable range."
+    #        redirect_to :back
+    #      end
+    #    end
   end
+ 
 end

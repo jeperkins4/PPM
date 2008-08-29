@@ -62,7 +62,7 @@
             :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id in (?) ', session[:facility].id, date.first, date.last, @filter_questions]) %>
           <% @notes += AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and facility_id = ? and log_month = ? and log_year = ?',category.id,session[:facility].id, date.first, date.last]) %>
         <% end %>
-                                              
+                                                
         <td><%= number_with_precision(@row_sum,2) %></td>          
         <td><%= number_with_precision((@row_sum / @divider),2) %></td>          
       </tr>
@@ -245,7 +245,11 @@
       <tr><td><b>NOTES:</b></td></tr>
       <% @notes.each do |note|%>
         <tr><td  bgcolor="#FFCC00"><b><%= Date.new(note.log_year,note.log_month).strftime('%B %Y')%></b></td></tr>
-        <tr><td colspan="1"><%= note.detail_response%></td></tr>
+        <% if excel == 1 %>
+          <tr><td colspan="1"><%= note.detail_response%></td></tr>
+        <% else %>
+          <tr><td colspan="12"><%= note.detail_response%></td></tr>
+        <% end %>
       <% end %>
       <tr><td colspan="15" bgcolor="#666666">&nbsp;</td></tr>
     <% end %>

@@ -1,4 +1,6 @@
 <h2>Accountability Log</h2>
+
+<% if ["Web Developer","Administrator"].include?(User.find(session[:user_id]).user_type.user_type) %>
 <%  form_for(:accountability_logs, :url =>{:action => 'set_admin_fy'}, :method => 'post') do |f| %>
   Accountability Fiscal Year: <%= f.select :fiscal_year, 
     AccountabilityLogs.find(:all, :select => 'distinct log_year', :conditions =>['log_year >= 2008']).collect{|year| ["#{year.log_year - 1} - #{year.log_year}", year.log_year - 1]} ,
@@ -6,8 +8,9 @@
     {:onchange => "submit();"}%>
 <% end %>
 
-ADMIN YEAR = <%= session[:admin_year] ? session[:admin_year].to_s : "no year" %>
 
+ADMIN YEAR = <%= session[:admin_year] ? session[:admin_year].to_s : "no year" %>
+<% end %>
 <%= calendar %>
 <p>Category: <%= pagination_links(@category_pages, {:window_size => 50, :name => 'category'}, nil, @category_titles) %></p>
 <p><%= session[:facility].facility %></p>
@@ -20,9 +23,9 @@ ADMIN YEAR = <%= session[:admin_year] ? session[:admin_year].to_s : "no year" %>
     <table>  
     
       <% if @month.to_i >= 7 then %>
-        <%  @year = @fiscal_year -%>
+        <%  @year = session[:admin_year] -%>
       <% else -%>
-        <%  @year = @fiscal_year + 1 -%>
+        <%  @year = session[:admin_year] + 1 -%>
       <% end -%>
   
       <% @questions = Prompt.find(:all, :conditions =>  ['active = ? and context_id = ?', 1, category.id], :order => 'used_in_total DESC, question') -%> 

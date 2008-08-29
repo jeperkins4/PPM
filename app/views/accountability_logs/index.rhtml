@@ -1,16 +1,19 @@
 <h2>Accountability Log</h2>
-
+<br />
 <% if ["Web Developer","Administrator"].include?(User.find(session[:user_id]).user_type.user_type) %>
-<%  form_for(:accountability_logs, :url =>{:action => 'set_admin_fy'}, :method => 'post') do |f| %>
-  Accountability Fiscal Year: <%= f.select :fiscal_year, 
-    AccountabilityLogs.find(:all, :select => 'distinct log_year', :conditions =>['log_year >= 2008']).collect{|year| ["#{year.log_year - 1} - #{year.log_year}", year.log_year - 1]} ,
-    {:selected => session[:admin_year] ? session[:admin_year] : Time.now.year},
-    {:onchange => "submit();"}%>
+
+  <%  form_for(:accountability_logs, :url =>{:action => 'set_admin_fy'}, :method => 'post') do |f| %>
+    Please select the Fiscal Year you would like to manage: <%= f.select :fiscal_year, 
+      AccountabilityLogs.find(:all, :select => 'distinct log_year').collect{|year| ["#{year.log_year} - #{year.log_year + 1}", year.log_year]} ,
+      {:selected => session[:admin_year] ? session[:admin_year] : Time.now.year},
+      {:onchange => "submit();"}%>
+  <% end %>
 <% end %>
 
+<div style="color:white; width:325px; background-color:#3366FF; font-weight:bold;"><em>
+    You are currrently in the <%= session[:admin_year] ? "#{session[:admin_year].to_s} to #{session[:admin_year] + 1} Fiscal Year": "no year" %>
+</em></div>      
 
-ADMIN YEAR = <%= session[:admin_year] ? session[:admin_year].to_s : "no year" %>
-<% end %>
 <%= calendar %>
 <p>Category: <%= pagination_links(@category_pages, {:window_size => 50, :name => 'category'}, nil, @category_titles) %></p>
 <p><%= session[:facility].facility %></p>
@@ -21,7 +24,7 @@ ADMIN YEAR = <%= session[:admin_year] ? session[:admin_year].to_s : "no year" %>
   <% @categories.each do |category| -%>
     <h3><b><%= category.title %></b></h3>
     <table>  
-    
+  
       <% if @month.to_i >= 7 then %>
         <%  @year = session[:admin_year] -%>
       <% else -%>
@@ -47,10 +50,10 @@ ADMIN YEAR = <%= session[:admin_year] ? session[:admin_year].to_s : "no year" %>
       <% @log = AccountabilityLogDetails.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and facility_id = ?', @year, @month, category.id, session[:facility].id]) -%>
       Additional Information:<br />
       <%= text_area_tag "log[#{category.id}]", (@log) ? @log.detail_response : "", :max_chars => 1023, :size => "60x8" %>
-    </p>
-    Record Year = <%=  @year.to_s %>
+    </p>    
     <p style="margin-left:20px;">
-      <%= submit_tag 'Record/Update' %>
+      <div id='spinner'></div>
+      <%= submit_tag 'Record/Update',:disable_with => "Please wait...", :onclick => "submit(); document.getElementById('spinner').innerHTML=\"<img src='images/spinner.gif'/>\";" %>
     </p>
   <% end -%>
 <% end -%>

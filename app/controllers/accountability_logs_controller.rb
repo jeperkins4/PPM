@@ -7,15 +7,14 @@ class AccountabilityLogsController < ApplicationController
     @category_pages, @categories = paginate :context, 
       :order => 'position',
       :per_page => 1,
-      :parameter => 'category'    
-  
+      :parameter => 'category'      
     
     if request.post?
       session[:questions] = params[:questions]
       session[:context_log] = params[:log]    
       redirect_to :action => :collect
     else      
-      if Time.now.month >=7 then
+      if Time.now.month >= 7 then
         session[:admin_year] ? "" : session[:admin_year] = Time.now.year
       else
         session[:admin_year] ? "" : session[:admin_year] = Time.now.year - 1

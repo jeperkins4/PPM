@@ -6,8 +6,9 @@
 
 <fieldset>
 <legend>Report Type</legend>
-<%= radio_button("pppams_report_filter", "report_type", "summary.rhtml") %><label for="pppams_report_type_summary">Summary</label><br/> 
-<%= radio_button("pppams_report_filter", "report_type", "full.rhtml") %><label for="pppams_report_type_full">Full</label><br/> 
+<%= radio_button("pppams_report_filter", "report_type", "summary.rhtml") %><label for="pppams_report_type_summary">Summary (Average Scores)</label><br/> 
+<%= radio_button("pppams_report_filter", "report_type", "summary_perc.rhtml") %><label for="pppams_report_type_summary">Summary (Percentage)</label><br/> 
+<%= radio_button("pppams_report_filter", "report_type", "full.rhtml") %><label for="pppams_report_type_full">Full</label><br/>
 </fieldset>
 
 <div class='filter_float'>

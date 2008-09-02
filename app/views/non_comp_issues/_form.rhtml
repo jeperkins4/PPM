@@ -1,0 +1,64 @@
+ <table width='80%'>
+   <tr>
+ 		<td colspan=3>
+ 	         <p>
+			<b>Facility: </b><br />
+				<%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
+				<%= session[:facility].facility %>
+		  </p>
+
+ 		</td>
+ 	</tr>
+  <tr>
+  	<td>  <p>
+    <b>Discovery Date: </b><br />
+    <%= f.date_select :discovery_date %>
+  </p></td>
+  		<td>  <p>
+    <b>Notification Date: </b><br />
+    <%= f.date_select :notification_date, { :include_blank => true } %>
+  </p></td>
+  		<td>  <p>
+    <b>CAP Due Date: </b><br />
+    <%= f.date_select :cap_due_date, { :include_blank => true } %>
+  </p></td>
+  </tr>
+  <tr>
+  		<td>  <p>
+    <b>Cap Review Date: </b><br />
+    <%= f.date_select :cap_review_date, { :include_blank => true } %>
+  </p></td>
+  		<td>  <p>
+    <b>CAP Forwarded Date: </b><br />
+    <%= f.date_select :cap_forwarded_date, { :include_blank => true } %>
+  </p></td>
+  		<td>  <p>
+    <b>Resolution Date: </b><br />
+    <%= f.date_select :resolved_date, { :include_blank => true } %>
+  </p></td>
+  </tr>
+
+  <tr>
+  	<td colspan=3><p>
+    <b>Details: </b><br />
+    <%= f.text_area :details, :cols => 80, :rows => 10 %>
+  </p></td>
+  </tr>
+  <tr>
+  	<td colspan=3><p>
+    <b>Requirement / Refs: </b><br />
+    <%= f.text_area :requirement, :cols => 80, :rows => 10 %>
+  </p></td>
+  </tr>
+  <tr>
+  	<td colspan=3><p>
+    <b>Notes: </b><br />
+    <%= f.text_area :notes, :cols => 80, :rows => 10 %>
+  </p></td>
+  </tr>
+  <tr><td colspan=3> 
+    <%= submit_tag "Save" %>
+  </p></td>
+  </tr>
+  </table><br />
+ 

@@ -44,7 +44,11 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :incidents do |incidents|
      incidents.resources :follow_ups
-   end
+  end
+
+  map.resources :non_comp_issues do |non_comp_issues|
+     non_comp_issues.resources :follow_ups
+  end
   
   map.start '', :controller => 'login', :action => 'index'
   map.reporting 'reports', :controller => 'reports', :action => 'index'

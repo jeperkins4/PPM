@@ -1,0 +1,9 @@
+<h2>New Non-Compliance Issue</h2>
+
+<%= error_messages_for :non_comp_issue %>
+
+<% form_for(:non_comp_issue, :url => non_comp_issues_path) do |f| %>
+ <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Back', non_comp_issues_path %>

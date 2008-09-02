@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 65) do
+ActiveRecord::Schema.define(:version => 66) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -174,6 +174,24 @@ ActiveRecord::Schema.define(:version => 65) do
     t.column "facility_id", :integer
   end
 
+  create_table "non_comp_issues", :force => true do |t|
+    t.column "facility_id",        :integer
+    t.column "nci_status",         :integer
+    t.column "details",            :text
+    t.column "requirement",        :text
+    t.column "discovery_date",     :date
+    t.column "notification_date",  :date
+    t.column "cap_due_date",       :date
+    t.column "cap_review_date",    :date
+    t.column "cap_forwarded_date", :date
+    t.column "resolved_date",      :date
+    t.column "created_on",         :date
+    t.column "updated_on",         :date
+    t.column "created_by",         :integer
+    t.column "updated_by",         :integer
+    t.column "notes",              :text
+  end
+
   create_table "notification_receivers", :force => true do |t|
     t.column "user_id",     :integer
     t.column "facility_id", :integer
@@ -285,6 +303,11 @@ ActiveRecord::Schema.define(:version => 65) do
     t.column "pppams_reference_id", :integer, :null => false
   end
 
+  create_table "pppams_indicators_pppams_references_back", :id => false, :force => true do |t|
+    t.column "pppams_indicator_id", :integer, :null => false
+    t.column "pppams_reference_id", :integer, :null => false
+  end
+
   create_table "pppams_indicators_temp", :force => true do |t|
     t.column "pppams_category_id",           :integer
     t.column "question",                     :text
@@ -319,6 +342,22 @@ ActiveRecord::Schema.define(:version => 65) do
   end
 
   create_table "pppams_reviews", :force => true do |t|
+    t.column "pppams_indicator_id", :integer
+    t.column "doc_count",           :integer
+    t.column "score",               :integer
+    t.column "observation_ref",     :text
+    t.column "documentation_ref",   :text
+    t.column "interview_ref",       :text
+    t.column "evidence",            :text
+    t.column "created_on",          :datetime
+    t.column "updated_on",          :datetime
+    t.column "status",              :string
+    t.column "notes",               :text
+    t.column "created_by",          :integer
+    t.column "updated_by",          :integer
+  end
+
+  create_table "pppams_reviews_back", :force => true do |t|
     t.column "pppams_indicator_id", :integer
     t.column "doc_count",           :integer
     t.column "score",               :integer

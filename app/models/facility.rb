@@ -12,4 +12,5 @@ class Facility < ActiveRecord::Base
   has_many :pppams_categories
   has_many :notification_receivers
   has_many :notification_reports
+  has_many :non_comp_issues
 end

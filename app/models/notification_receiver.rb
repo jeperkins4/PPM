@@ -44,7 +44,7 @@ class NotificationReceiver < ActiveRecord::Base
         "Facility||#{review.pppams_indicator.pppams_category.facility.facility}",
         "Indicator Category||#{review.pppams_indicator.pppams_category.name}",
         "Indicator Question||#{review.pppams_indicator.question}",
-        "Link||http://[PPPAMS_URL]/pppams_reviews/#{review.id}"
+        "Link||http://#{request.env['HTTP_HOST']}/pppams_reviews/#{review.id}"
       ].join("\n\n").gsub(/\|\|/,":\n  ")
 
       keys = {

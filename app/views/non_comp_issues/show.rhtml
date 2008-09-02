@@ -1,0 +1,46 @@
+<p>
+  <b>Discovery Date:</b>
+  <%=h @non_comp_issue.discovery_date %>
+</p>
+
+<p>
+  <b>Notification Date:</b>
+  <%=h @non_comp_issue.notification_date %>
+</p>
+
+<p>
+  <b>CAP Due Date:</b>
+  <%=h @non_comp_issue.cap_due_date %>
+</p>
+
+<p>
+  <b>CAP Forwarded Date:</b>
+  <%=h @non_comp_issue.cap_forwarded_date %>
+</p>
+
+<p>
+  <b>Cap Review Date:</b>
+  <%=h @non_comp_issue.cap_review_date %>
+</p>
+
+<p>
+  <b>Resolution Date:</b>
+  <%=h @non_comp_issue.resolved_date %>
+</p>
+
+<p>
+  <b>Details:</b>
+  <%=h @non_comp_issue.details %>
+</p>
+
+<p>
+  <b>Requirement / Ref:</b>
+  <%=h @non_comp_issue.requirement %>
+</p>
+
+<p>
+  <b>Notes:</b>
+  <%=h @non_comp_issue.notes %>
+</p>
+<%= link_to 'Edit', edit_non_comp_issue_path(@non_comp_issue) %> |
+<%= link_to 'Back', :action => '' %>

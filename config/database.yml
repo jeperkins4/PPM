@@ -11,13 +11,12 @@
 #
 # And be sure to use new-style password hashing:
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
-
 development:
   adapter: mysql
-  database: privateprison_production
-  username: private
-  password: pri$on
-  host: Sun33.state.fl.us
+  database: privateprison_development
+  username: root
+  password: tcaccess95
+  host: localhost
 
 # Warning: The database defined as 'test' will be erased and
 # re-generated from your development database when you run 'rake'.
@@ -26,12 +25,12 @@ test:
   adapter: mysql
   database: privateprison_test
   username: root
-  password:
+  password: tcaccess95
   host: localhost
 
 production:
   adapter: mysql
   database: privateprison_production
-  username: private
-  password: pri$on
-  host: sun33.state.fl.us
+  username: root
+  password: tcaccess95
+  host: localhost

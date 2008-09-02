@@ -29,6 +29,11 @@ class Float
     (self * 10**x).round.to_f / 10**x
   end
 
+  def perc_round_to(x)
+    return "na" if self.infinite? || self.nan? || self.nil? || self == 0
+    (((self * 10**x).round.to_f / 10**x) * 10).to_s + "%" 
+  end
+
   def ceil_to(x)
     return "na" if self.infinite? || self.nan? || self.nil? || self == 0
     (self * 10**x).ceil.to_f / 10**x

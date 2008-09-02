@@ -12,6 +12,7 @@
 <table>
   <tr>
   <th colspan= <%= @user.is_admin? ? 3 : 1 %> class='edit_col'>&nbsp;</th>
+  <th>ID</th>
   <th>Question</th>
   <th>Status</th>
   <th>References</th>
@@ -20,7 +21,7 @@
 <% for pppams_indicator in currents %>
   <% current_review = pppams_indicator.current_review(time) %>
   <% if id_store != pppams_indicator.pppams_category_id %>
-  <tr><td colspan= <%= @user.is_admin? ? 6 : 4 %>><p class='cat_heading'><%=h pppams_indicator.pppams_category.name %></p></td></tr>
+  <tr><td colspan= <%= @user.is_admin? ? 7 : 5 %>><p class='cat_heading'><%=h pppams_indicator.pppams_category.name %></p></td></tr>
   <% end %>
   <tr <% if current_review.nil? and time.beginning_of_month < Time.now.beginning_of_month %>class='warning_row' <% end %>>
   <% if time >= Time.now.next_month.beginning_of_month %>
@@ -35,7 +36,7 @@
 
   <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0, :title => "Edit the way this indicator appears for this facility"), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>
   <td><%= link_to image_tag("delete_icon.png", :border=>0, :title => "Remove this indicator for this facility"), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
-
+    <td><%=h pppams_indicator.id %></td>
     <td><%=h pppams_indicator.question %></td>
     <td><%=h current_review.nil? ? "Live" : current_review.status_text %></td>
 

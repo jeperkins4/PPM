@@ -7,11 +7,14 @@
 <% id_store = 0 %>
 <% ind_id_store = 0 %>
 <% agg_store = [] %>
+<% av_store = [] %>
 <% show_now = false %>
 <% last_object_store = nil %>
 <% for this_indicator in @pppamsIndicators %>
 <% if fac_id_store != this_indicator.pppams_category.facility_id && @group_level > 0 && (@group_level != 1 || fac_id_store != 0) %>
 <% if fac_id_store != 0 && @group_level > 1 %>
+<tr class='darker'><td>Group Average: </td><td><%= av_store.mean.perc_round_to(2) %></td></tr>
+<% av_store = [] %>
 </table>
 <% elsif fac_id_store != 0 && @group_level == 1 %>
 <% show_now = true %>
@@ -33,12 +36,13 @@
 <% end %>
 <% if show_now %>
 <tr>
+<% av_store << agg_store.mean if agg_store.mean > 0 %>
 <% if @group_level == 1 %>
-<td><%=h last_object_store.pppams_category.facility.facility %></td><td><%= "#{agg_store.mean.round_to(2) * 10}%" %></td>
+<td><%=h last_object_store.pppams_category.facility.facility %></td><td><%= "#{agg_store.mean.perc_round_to(2) }" %></td>
 <% elsif @group_level == 2 %>
-<td><%=h last_object_store.pppams_category.name %></td><td><%= "#{agg_store.mean.round_to(2) * 10}%" %></td>
+<td><%=h last_object_store.pppams_category.name %></td><td><%= "#{agg_store.mean.perc_round_to(2) }" %></td>
 <% elsif @group_level == 3 %>
-<td><%=h last_object_store.question %></td><td><%= "#{agg_store.mean.round_to(2) * 10}%" %></td>
+<td><%=h last_object_store.question %></td><td><%= "#{agg_store.mean.perc_round_to(2) }" %></td>
 <% end %>
 </tr>
 <% show_now = false %>
@@ -61,14 +65,16 @@
 </tr>
 <% end %>
 <tr>
+<% av_store << agg_store.mean if agg_store.mean > 0 %>
 <% if @group_level == 0 %>
 <td><%= agg_store.mean %></td>
 <% elsif @group_level == 1 %>
-<td><%=h last_object_store.pppams_category.facility.facility %></td><td><%= "#{agg_store.mean.round_to(2) * 10}%" %></td>
+<td><%=h last_object_store.pppams_category.facility.facility %></td><td><%= "#{agg_store.mean.perc_round_to(2) }" %></td>
 <% elsif @group_level == 2 %>
-<td><%=h last_object_store.pppams_category.name %></td><td><%= "#{agg_store.mean.round_to(2) * 10}%" %></td>
+<td><%=h last_object_store.pppams_category.name %></td><td><%= "#{agg_store.mean.perc_round_to(2) }" %></td>
 <% elsif @group_level == 3 %>
-<td><%=h last_object_store.question %></td><td><%= "#{agg_store.mean.round_to(2) * 10}%" %></td>
+<td><%=h last_object_store.question %></td><td><%= "#{agg_store.mean.perc_round_to(2) }" %></td>
 <% end %>
 </tr>
+<tr class='darker'><td>Group Average: </td><td><%= av_store.mean.perc_round_to(2) %></td></tr>
 </table>

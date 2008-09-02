@@ -767,6 +767,14 @@ table {
     border:solid 2px #CDCDA5;
 }
 
+#current_pppams table {
+    margin-left: 5px;
+}
+
+#current_pppams table th, #current_pppams table td {
+    padding:3px 5px;
+}
+
 tr{
     background: #E4E4C3;
 }
@@ -1091,4 +1099,8 @@ tr.warning_row {
 #pppams_review_bulk_note {
     width:  236px;
     margin-top: 8px;
+}
+
+.darker {
+    background: #CDCD00;
 }

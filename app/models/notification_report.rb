@@ -45,15 +45,13 @@ class NotificationReport < ActiveRecord::Base
     facilities.each do |facility|
 
       receivers = NotificationReport.notification_users(facility, date)
-      indicators_all = PppamsIndicator.find_current(date, facility)
-      all = indicators_all.size
-      indicators_work = indicators_all.map {|x| x.pppams_reviews}.flatten.uniq
-      done = indicators_work.size
-
+      to_do_ar = PppamsIndicator.find_current_todo(date, facility)
       days_in_month = Time.days_in_month(date.month, date.year)
       days_remaining = days_in_month - date.day
       days_remaining_s = "#{days_remaining} #{days_remaining == 1 ? 'day' : 'days'} remaining"
-      to_do = indicators_all.size - indicators_work.size
+      to_do = to_do_ar[1] - to_do_ar[0]
+      done = to_do_ar[0]
+      all = to_do_ar[1]
 
       body = [
         "Report Date||#{date.strftime("%B %d, %Y")} (#{days_remaining_s} in #{date.strftime("%B")})", 

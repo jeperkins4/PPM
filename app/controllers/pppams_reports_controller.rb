@@ -1,6 +1,6 @@
 class PppamsReportsController < ApplicationController
   skip_before_filter :set_facility
-  before_filter :admin_authenticate
+  before_filter :authenticate
 
   layout 'administration'
   require RAILS_ROOT + '/vendor/plugins/calendar_date_select/init.rb'

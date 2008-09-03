@@ -2,6 +2,8 @@ class NotificationReceiver < ActiveRecord::Base
 
   belongs_to :facility
   belongs_to :user
+  
+  cattr_accessor :request_env
 
   validates_presence_of :user_id, :facility_id, :status
   validates_inclusion_of :status, :in => %w(Submitted Review Accepted), :message => "Invalid Status"
@@ -44,7 +46,7 @@ class NotificationReceiver < ActiveRecord::Base
         "Facility||#{review.pppams_indicator.pppams_category.facility.facility}",
         "Indicator Category||#{review.pppams_indicator.pppams_category.name}",
         "Indicator Question||#{review.pppams_indicator.question}",
-        "Link||http://#{request.env['HTTP_HOST']}/pppams_reviews/#{review.id}"
+        "Link||http://#{NotificationReceiver.request_env['HTTP_HOST']}/pppams_reviews/#{review.id}"
       ].join("\n\n").gsub(/\|\|/,":\n  ")
 
       keys = {

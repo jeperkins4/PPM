@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   if File.exist?("#{RAILS_ROOT}/lib/custom_funcs.rb") then
     before_filter do |c|
       User.current_user = User.find_by_id(c.session[:user_id])
+      NotificationReceiver.request_env = c.request.env
     end
     after_filter :clean_up_uploads, :except => ['update', 'create', 'trash_upload', 'uploadFile']  
     include DebugHelper    

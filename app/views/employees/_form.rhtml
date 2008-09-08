@@ -14,14 +14,28 @@
     <%= f.text_field :last_name %>
   </p>
   
-  <b>Employee Status</b><br />
-  
-   <p> 
-    <%= radio_button "employee", "tea_status", "facility", :checked => true %> TEA Facility &nbsp;&nbsp
-	<%= radio_button "employee", "tea_status", "academy" %>TEA Academy &nbsp;&nbsp
-    <%= radio_button "employee", "tea_status", "certified" %> Certified &nbsp;&nbsp
-	<%= radio_button "employee", "tea_status", "na" %>N/A
-   </p>
+ 
+ <table>
+   	<th>EMPLOYEE STATUS</th>
+  <tr><td>
+    <%= radio_button "employee", "tea_status", "facility", :checked => true %> TEA Facility
+  </td></tr>
+  <tr><td>
+    <%= radio_button "employee", "tea_status", "registered" %> TEA Registered Academy
+</td></tr>
+  <tr><td>
+	<%= radio_button "employee", "tea_status", "academy" %> TEA Academy
+	 </td></tr>
+  <tr><td>
+    <%= radio_button "employee", "tea_status", "pending" %> TEA Pending Certification
+	 </td></tr>
+  <tr><td>
+    <%= radio_button "employee", "tea_status", "certified" %> Certified
+	 </td></tr>
+  <tr><td>
+	<%= radio_button "employee", "tea_status", "na" %> N/A
+	 </td></tr>
+</table>
 
   <p>
     <b>Active</b><br />

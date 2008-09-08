@@ -52,9 +52,26 @@ class EmployeePositionsController < ApplicationController
   
   # POST /employee_positions
   # POST /employee_positions.xml
-  def create    
-    if lateral_move then      
-      redirect_to :back
+  def create
+    if lateral_move then
+      unless session[:user_type] =='Administrator'      
+        redirect_to :back
+      else
+        @employee_position = EmployeePosition.new(params[:employee_position])
+      
+        respond_to do |format|        
+          if @employee_position.save
+            flash[:notice] = "This is a information notice for Administrators:  You are assigning this employee to a position of the same type as their previous
+                            position number: #{session[:old_pos]}.  If you did not want to perform this action please delete this record from the system using the delete link below."
+                            
+            format.html { redirect_to employee_position_url(@employee_position) }
+            format.xml  { head :created, :location => employee_position_url(@employee_position) }
+          else
+            format.html { render :action => "new" }
+            format.xml  { render :xml => @employee_position.errors.to_xml}
+          end
+        end
+      end
     else      
       @employee_position = EmployeePosition.new(params[:employee_position])
       
@@ -160,8 +177,8 @@ class EmployeePositionsController < ApplicationController
   #  end
   #end
   
-  def lateral_move     
-    
+  def lateral_move
+        
     @new_position_number = Position.find(:first, :select=>'p.id as id',:from=>'position_numbers pn, positions p',
       :conditions=>['pn.id = ? and pn.position_id = p.id', params[:employee_position][:position_number_id]])    
     
@@ -172,9 +189,11 @@ class EmployeePositionsController < ApplicationController
         flash[:notice] = "You are trying to assign " + @old_position_number.employee.first_name + 
           " to a position number that holds the same Position Title as the employees previous position number:" + @old_position_number.position_number.position_num + "."
         flash[:notice] =  flash[:notice] + " This is an illegal move and is not allowed.  If you feel you have received this message in error, please contact your administrator."
+        session[:old_pos] = @old_position_number.position_number.position_num
         return true
       end
     end
+    
   end
   
   

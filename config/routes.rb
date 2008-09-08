@@ -46,13 +46,23 @@ ActionController::Routing::Routes.draw do |map|
      incidents.resources :follow_ups
   end
 
+  map.destroy_non_comp_follow_up 'non_comp_issues/:non_comp_issue_id/non_comp_follow_ups/:id/;destroy', :controller => 'non_comp_follow_ups', :action => 'destroy'
+
+  map.destroy_complaint_follow_up 'complaints/:complaint_id/complaint_follow_ups/:id/;destroy', :controller => 'complaint_follow_ups', :action => 'destroy'
+
   map.resources :non_comp_issues do |non_comp_issues|
-     non_comp_issues.resources :follow_ups
+     non_comp_issues.resources :non_comp_follow_ups
   end
-  
+
+  map.resources :complaints do |complaints|
+     complaints.resources :complaint_follow_ups
+  end
+
   map.start '', :controller => 'login', :action => 'index'
   map.reporting 'reports', :controller => 'reports', :action => 'index'
   map.position_reporting 'position_reports', :controller => 'position_reports', :action => 'index'
   map.reset 'reset_password', :controller => 'users', :action => 'reset_password'
   map.connect ':controller/:action/:id'
+
+
 end

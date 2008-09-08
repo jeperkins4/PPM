@@ -45,3 +45,16 @@ class Float
   end
 end
 
+
+class Junk
+
+  def id
+    -1
+  end
+
+  def method_missing(meth,*args)
+    (meth.to_s =~ /_id$/).nil? ? self : -1
+  end
+
+end
+

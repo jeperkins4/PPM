@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 66) do
+ActiveRecord::Schema.define(:version => 70) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -35,6 +35,38 @@ ActiveRecord::Schema.define(:version => 66) do
   create_table "action_types", :force => true do |t|
     t.column "action",      :string
     t.column "description", :text
+  end
+
+  create_table "complaint_follow_ups", :force => true do |t|
+    t.column "follow_up",    :text
+    t.column "complaint_id", :integer
+    t.column "created_on",   :date
+    t.column "updated_on",   :date
+    t.column "created_by",   :date
+    t.column "updated_by",   :date
+  end
+
+  create_table "complaints", :force => true do |t|
+    t.column "complaint_number",      :string
+    t.column "complaint_status",     :integer
+    t.column "user_id",              :integer
+    t.column "facility_id",          :integer
+    t.column "complaint_type",       :string
+    t.column "complaint_date",       :date
+    t.column "received_date",        :date
+    t.column "complainer_contact",   :text
+    t.column "inmate_details",       :text
+    t.column "description",          :text
+    t.column "MRS_assigned_date",    :date
+    t.column "CM_assigned_date",     :date
+    t.column "CM_response_due_date", :date
+    t.column "CM_response_date",     :date
+    t.column "response_sent_date",   :date
+    t.column "resolved_date",        :date
+    t.column "created_on",           :date
+    t.column "updated_on",           :date
+    t.column "created_by",           :integer
+    t.column "updated_by",           :integer
   end
 
   create_table "contexts", :force => true do |t|
@@ -174,22 +206,30 @@ ActiveRecord::Schema.define(:version => 66) do
     t.column "facility_id", :integer
   end
 
+  create_table "non_comp_follow_ups", :force => true do |t|
+    t.column "follow_up",         :text
+    t.column "non_comp_issue_id", :integer
+    t.column "created_on",        :date
+    t.column "updated_on",        :date
+    t.column "created_by",        :date
+    t.column "updated_by",        :date
+  end
+
   create_table "non_comp_issues", :force => true do |t|
-    t.column "facility_id",        :integer
-    t.column "nci_status",         :integer
-    t.column "details",            :text
-    t.column "requirement",        :text
-    t.column "discovery_date",     :date
-    t.column "notification_date",  :date
-    t.column "cap_due_date",       :date
-    t.column "cap_review_date",    :date
-    t.column "cap_forwarded_date", :date
-    t.column "resolved_date",      :date
-    t.column "created_on",         :date
-    t.column "updated_on",         :date
-    t.column "created_by",         :integer
-    t.column "updated_by",         :integer
-    t.column "notes",              :text
+    t.column "facility_id",       :integer
+    t.column "nci_status",        :integer
+    t.column "details",           :text
+    t.column "requirement",       :text
+    t.column "discovery_date",    :date
+    t.column "notification_date", :date
+    t.column "cap_due_date",      :date
+    t.column "cap_review_date",   :date
+    t.column "resolved_date",     :date
+    t.column "created_on",        :date
+    t.column "updated_on",        :date
+    t.column "created_by",        :integer
+    t.column "updated_by",        :integer
+    t.column "notes",             :text
   end
 
   create_table "notification_receivers", :force => true do |t|

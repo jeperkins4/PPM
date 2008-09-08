@@ -1,7 +1,7 @@
 class AddEditorLogFields < ActiveRecord::Migration
   def self.up
     add_column :pppams_reviews, :created_by, :integer
-    add_column :pppams_reviews, :updated, :integer
+    add_column :pppams_reviews, :updated_by, :integer
   end
 
   def self.down

@@ -13,12 +13,13 @@ class PppamsReportFilter < ActiveRecord::Base
 	all_ids << PppamsCategoryBaseRef.find(:all).collect{|x| x.id}
 	all_ids << PppamsIndicatorBaseRef.find(:all).collect{|x| x.id}
 	cc = 0
-	group_level = 3
+	group_level = 0
 	base_filter.each do |x| 
            x = x.uniq_numerics
-	    if x.empty? 
+	    if x.length == 0 
 		x = all_ids[cc] 
-		group_level = cc if group_level == 3
+           else 
+		group_level = cc + 1 
 	    end
            new_filter << x
            cc = cc + 1

@@ -1,5 +1,6 @@
 class NonCompIssue < ActiveRecord::Base
     belongs_to :facility
+    has_many :non_comp_follow_ups
 
     validates_presence_of :discovery_date
     validates_presence_of :facility_id
@@ -15,12 +16,10 @@ class NonCompIssue < ActiveRecord::Base
         self.nci_status =  1
       elsif self.cap_review_date.nil?
         self.nci_status =  2
-      elsif self.cap_forwarded_date.nil?
-        self.nci_status =  3
       elsif self.resolved_date.nil?
-        self.nci_status =  4
+        self.nci_status =  3
       else 
-        self.nci_status =  5
+        self.nci_status =  4
       end
       self.update_without_callbacks
     end

@@ -1,0 +1,13 @@
+<p>
+  <b>Complaint Follow up:</b>
+  <%=h @complaint_follow_up.follow_up %>
+</p>
+
+<p>
+  <b>Follow up date:</b>
+  <%=h @complaint_follow_up.created_on %>
+</p>
+
+
+<%= link_to 'Edit', edit_complaint_follow_up_path(@complaint) %> |
+<%= link_to 'Back', complaint_path(@complaint) %>

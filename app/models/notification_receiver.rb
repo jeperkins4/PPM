@@ -2,7 +2,7 @@ class NotificationReceiver < ActiveRecord::Base
 
   belongs_to :facility
   belongs_to :user
-  
+
   cattr_accessor :request_env
 
   validates_presence_of :user_id, :facility_id, :status

@@ -746,13 +746,13 @@ li.faq_question div.faq_answer {font-weight: normal; font-size: 90%;}
     display: inline;
 }
 
-/* Flash Notice Style */
+/* Flash Notice Style */ 
 
 div.notice {
     display:block;
     background-color:#ffffff;
-    color:#890C08;
-    border:solid 1px #890C08;
+    color:#79BE3D;
+    border:solid 1px #79BE3D;
     width:400px;
     padding:5px 0 5px 0;
     text-align:center;
@@ -1049,7 +1049,12 @@ fieldset ul {
 .right_buttons {
     position: absolute;
     right: 0px;
-    top: -45px;
+    top: -80px;
+    text-align: right;
+}
+
+.right_buttons_spacer {
+    margin-top: 10px;
 }
 
 #pppams_review_edit, #report_filter_body {
@@ -1103,4 +1108,16 @@ tr.warning_row {
 
 .darker {
     background: #CDCD00;
+}
+
+#delete_filter_button {
+    display: none;
+}
+
+.scroll_box {
+    width: 100%;
+    height: auto;
+    overflow-x: scroll;
+    overflow-y: auto;
+    margin: 0 auto;
 }

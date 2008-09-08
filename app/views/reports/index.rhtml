@@ -6,11 +6,11 @@
 	<tr>
 		<td width='15%'>Report Type:</td>
 		<td>
-			<%= f.select :report_type, ["Choose Type","Incident","Accountability"], {:selected => (session[:type]) ? session[:type] : ''}, {:onchange => "JavaScript:submit()"} %>
+			<%= f.select :report_type, ["Choose Type","Incident","Non Comp Issue","Complaint","Accountability"], {:selected => (session[:type]) ? session[:type] : ''}, {:onchange => "JavaScript:submit()"} %>
 		</td>
 	</tr>
 	<% unless session[:type] == "Choose Type" -%>
-	<%= render :partial => session[:type].downcase + '_sortables' %>
+	<%= render :partial => session[:type].gsub(" ", "_").downcase + '_sortables' %>
 	<% end -%>
 	<tr>
 		<td>Ready to build:<%= f.check_box "ready" %></td>

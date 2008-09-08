@@ -40,3 +40,4 @@ class PppamsIndicator < ActiveRecord::Base
   end
 
 end
+ 

@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :notifications, :foreign_key => "created_by"
   has_many :notification_receivers
   has_many :notification_reports
+  has_many :complaints
   
   validates_presence_of  :name
   validates_uniqueness_of :name
@@ -57,6 +58,10 @@ class User < ActiveRecord::Base
   def self.encrypted_password(password, salt)
     string_to_hash = password + "wibble" + salt # 'wibble' makes it harder to guess
     Digest::SHA1.hexdigest(string_to_hash)
+  end
+
+  def full_name 
+    "#{self.firstname} #{self.lastname}"
   end
   
   def create_new_salt

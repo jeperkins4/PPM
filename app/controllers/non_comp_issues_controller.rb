@@ -5,11 +5,14 @@ class NonCompIssuesController < ApplicationController
   layout 'administration'
   # GET /non_comp_issues.xml
   def index
-    if params[:nci_status]
+    if !params[:nci_status].nil?
       session[:nci_status] = params[:nci_status]
     end
-    @nci_status = session[:nci_status] ? session[:nci_status] :  "0"
-    @status_ar_st = (@nci_status.to_i == 5) ? "5" : (0..@nci_status.to_i).to_a
+    @nci_status = session[:nci_status].nil? ?  "3" : session[:nci_status]
+
+
+    @status_ar_st = (@nci_status.to_i == 4) ? "4" : (0..@nci_status.to_i).to_a
+
     @non_comp_issue_pages, @non_comp_issues = paginate :non_comp_issue, 
     :order => 'discovery_date',
     :per_page => 20,
@@ -26,6 +29,7 @@ class NonCompIssuesController < ApplicationController
   # GET /non_comp_issues/1.xml
   def show
     @non_comp_issue = NonCompIssue.find(params[:id])
+    @non_comp_follow_ups = @non_comp_issue.non_comp_follow_ups.find(:all)
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @non_comp_issue.to_xml }

@@ -23,13 +23,16 @@ class ReportsController < ApplicationController
         session[:end_date] = params[:report][:end_date]
         session[:acct_begin_date] = Date.new(params[:report].delete('acct_begin_date(1i)').to_i, params[:report].delete('acct_begin_date(2i)').to_i) if params[:report]['acct_begin_date(1i)'] 
         session[:acct_end_date] = Date.new(params[:report].delete('acct_end_date(1i)').to_i, params[:report].delete('acct_end_date(2i)').to_i) if params[:report]['acct_end_date(1i)']                  
-      
       end
       if params[:report][:ready] == "1"
         @excel = false
-        case session[:type].downcase
+        case session[:type].gsub(" ", "_").downcase
         when 'incident'   
           build_report_incident(@excel)
+        when 'non_comp_issue'   
+          build_report_non_comp_issue(@excel)
+        when 'complaint'   
+          build_report_complaint(@excel)
         when 'accountability'
           if  session[:acct_begin_date] then
             session[:acct_begin_date] > session[:acct_end_date] ? (flash[:notice] = "Date Range is Invalid"; render :action => 'index' and return) : ""
@@ -42,9 +45,13 @@ class ReportsController < ApplicationController
   
   def export_excel
     @excel = true
-    case session[:type].downcase
+    case session[:type].gsub(" ", "_").downcase
     when 'incident'   
       build_report_incident(@excel)
+    when 'non_comp_issue'   
+      build_report_non_comp_issue(@excel)
+    when 'complaint'   
+      build_report_complaint(@excel)
     when 'accountability'   
       build_report_accountability(@excel)
     end
@@ -100,11 +107,93 @@ class ReportsController < ApplicationController
       redirect_to :action => :report
     end
   end
+
+  def build_report_non_comp_issue(excel)
+    
+    @id = params[:report][:id] rescue ''
+    @search_string = ""
+    
+    if session[:use_date] == 'Yes'
+      @search_string += "created_on >= ? and created_on <= ? "
+      @begin = session[:begin_date]
+      @end = session[:end_date]
+    else
+      @search_string += "created_on <> ? and created_on <> ? "
+      @begin = ''
+      @end = ''
+    end
+    
+    unless @id == '' or @id == nil
+      @search_string += " and ID = ? "
+    else
+      @search_string += " and ID <> ? "
+    end 
+    
+    case session[:status]
+    when 'Open'
+      @search_string += " and nci_status <= ? "
+      @status = 3
+    when 'Closed'
+      @search_string += " and nci_status = ? "
+      @status = 4
+    when 'All'
+      @search_string += " and nci_status <> ? "
+      @status = 42 #All_HACKITY_HACK
+    end
+    
+    session[:report] = session[:facility].non_comp_issues.find :all, 
+      :conditions => ["" + @search_string + "", @begin, @end, @id, @status], 
+      :order => 'created_on, id'
+    unless excel == true
+      redirect_to :action => :report
+    end
+  end
+
+  def build_report_complaint(excel)
+    
+    @id = params[:report][:id] rescue ''
+    @search_string = ""
+    
+    if session[:use_date] == 'Yes'
+      @search_string += "complaint_date >= ? and complaint_date <= ? "
+      @begin = session[:begin_date]
+      @end = session[:end_date]
+    else
+      @search_string += "complaint_date <> ? and complaint_date <> ? "
+      @begin = ''
+      @end = ''
+    end
+    
+    unless @id == '' or @id == nil
+      @search_string += " and complaint_number = ? "
+    else
+      @search_string += " and complaint_number <> ? "
+    end 
+    
+    case session[:status]
+    when 'Open'
+      @search_string += " and complaint_status <= ? "
+      @status = 4
+    when 'Closed'
+      @search_string += " and complaint_status = ? "
+      @status = 5
+    when 'All'
+      @search_string += " and complaint_status <> ? "
+      @status = 42 #All_HACKITY_HACK
+    end
+    
+    session[:report] = session[:facility].complaints.find :all, 
+      :conditions => ["" + @search_string + "", @begin, @end, @id, @status], 
+      :order => 'complaint_date, id'
+    unless excel == true
+      redirect_to :action => :report
+    end
+  end
   
   def build_report_accountability(excel)
     session[:report] = Context.find :all, :order => 'position'
     unless excel == true
-      redirect_to :action => :report
+      redirect_to :action => :report 
     end
   end
   

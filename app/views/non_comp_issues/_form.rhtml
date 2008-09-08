@@ -15,7 +15,7 @@
     <%= f.date_select :discovery_date %>
   </p></td>
   		<td>  <p>
-    <b>Notification Date: </b><br />
+    <b>Facility Notified On: </b><br />
     <%= f.date_select :notification_date, { :include_blank => true } %>
   </p></td>
   		<td>  <p>
@@ -25,14 +25,10 @@
   </tr>
   <tr>
   		<td>  <p>
-    <b>Cap Review Date: </b><br />
+    <b>CAP Review Date: </b><br />
     <%= f.date_select :cap_review_date, { :include_blank => true } %>
   </p></td>
-  		<td>  <p>
-    <b>CAP Forwarded Date: </b><br />
-    <%= f.date_select :cap_forwarded_date, { :include_blank => true } %>
-  </p></td>
-  		<td>  <p>
+  		<td colspan=2>  <p>
     <b>Resolution Date: </b><br />
     <%= f.date_select :resolved_date, { :include_blank => true } %>
   </p></td>
@@ -40,7 +36,7 @@
 
   <tr>
   	<td colspan=3><p>
-    <b>Details: </b><br />
+    <b>Findings Of Non Compliance: </b><br />
     <%= f.text_area :details, :cols => 80, :rows => 10 %>
   </p></td>
   </tr>

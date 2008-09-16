@@ -9,6 +9,7 @@ class PppamsReview < ActiveRecord::Base
     belongs_to :created_by, :class_name => "User", :foreign_key => "created_by"
     belongs_to :updated_by, :class_name => "User", :foreign_key => "updated_by"
 
+    before_save :update_submit_count
     after_save :generate_status_notifications
 
     def self.earliest
@@ -67,5 +68,35 @@ class PppamsReview < ActiveRecord::Base
        end
        return false
     end
-
+    
+    def update_submit_count
+      # Note: 'status_changed?' method requires ActiveRecord::Dirty from Rails 2.x
+      # if the status has been changed and is being set to 'Submitted'
+      if self.status_changed? and self.status_text == 'Submitted'
+        if self.new_record?
+          # set submit_count to zero if this is a new record
+          self.submit_count = 0
+        else
+          # if nil, assume record has been submitted once. otherwise, increment the submit count
+          self.submit_count = self.submit_count.nil? ? 1 : self.submit_count + 1
+        end
+      end
+    end
+    
+    def submitted_count
+      submit_count.nil? ? 0 : submit_count
+    end
+  
+    def status_display_text
+      if self.status == '' or self.status == 'Submitted'
+        case self.submitted_count
+          when 0 then 'Submitted'
+          when 1 then 'Resubmitted'
+          else "Resubmitted (#{self.submit_count} times)"
+        end
+      else 
+        self.status
+      end
+    end
+    
 end

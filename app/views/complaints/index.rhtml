@@ -2,13 +2,13 @@
 
 <h2>Complaints</h2>
 
-<% if @complaint_status.to_i == 5 -%>
+<% if @complaint_status.to_i == 3 -%>
     <p>
-    <%= link_to "Open", :action => 'index', :complaint_status => 4 %> | <b>Closed</b>
+    <%= link_to "Open", :action => 'index', :complaint_status => 2 %> | <b>Closed</b>
     </p>
 <% else -%>
     <p>
-    <b>Open</b> | <%= link_to "Closed", :action => 'index', :complaint_status => 5 %>
+    <b>Open</b> | <%= link_to "Closed", :action => 'index', :complaint_status => 3 %>
     </p>
 <% end -%>	
 	
@@ -18,7 +18,7 @@ Page: <%= pagination_links(@complaint_pages)%>
 </p>
 <% end -%>
 
-	<% if @complaint_status.to_i < 5 -%>
+	<% if @complaint_status.to_i < 3 -%>
 <p>
 	<table>
 		<th>Scale:</th>
@@ -44,8 +44,8 @@ Page: <%= pagination_links(@complaint_pages)%>
   </tr>
   
 <% for complaint in @complaints -%>
-  <% unless @complaint_status.to_i == 5 -%>
-  	<% @date_diff = Time.now.to_date - complaint.complaint_date.to_date -%>
+  <% unless @complaint_status.to_i == 3 -%>
+  	<% @date_diff = Time.now.to_date - complaint.received_date.to_date -%>
 	 <% if @date_diff.to_i < 30 -%>
 	   <% @bg_color = '#00FF00' -%>
 	 <% end -%>
@@ -65,7 +65,8 @@ Page: <%= pagination_links(@complaint_pages)%>
         <td><%=h complaint.send(column.name)%></td>
   <% end %>
   <td><%= link_to 'Show', complaint_path(complaint) %>
-  <%= link_to 'Edit', edit_complaint_path(complaint) %></td>
+  <%= link_to 'Edit', edit_complaint_path(complaint) %>
+  <%= link_to 'Delete', destroy_complaint_path(complaint), :confirm => 'Are you sure?' %></td>
   </tr>
 <% end %>
 </table>

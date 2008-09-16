@@ -5,15 +5,13 @@ class ComplaintsController < ApplicationController
   layout 'administration'
   # GET /complaints.xml
   def index
-    if !params[:complaint_status].nil?
-      session[:complaint_status] = params[:complaint_status]
-    end
-    @complaint_status = session[:complaint_status].nil? ?  "4" : session[:complaint_status]
+    session[:complaint_status] = params[:complaint_status] unless params[:complaint_status].nil?
+    @complaint_status = session[:complaint_status].nil? ?  "2" : session[:complaint_status]
 
-    @status_ar_st = (@complaint_status.to_i == 5) ? "5" : (0..@complaint_status.to_i).to_a
+    @status_ar_st = (@complaint_status.to_i == 3) ? "3" : (0..@complaint_status.to_i).to_a
 
     @complaint_pages, @complaints = paginate :complaint, 
-    :order => 'complaint_date',
+    :order => 'received_date',
     :per_page => 20,
     :conditions => ['complaint_status in (?) and facility_id = ?', @status_ar_st, session[:facility].id ]
     
@@ -48,27 +46,16 @@ class ComplaintsController < ApplicationController
   # POST /complaints.xml
   def create
 
-    if params[:complaint][:MRS_assigned_date].nil?
-      params[:complaint][:complaint_status] =  0
-    elsif params[:complaint][:CM_assigned_date].nil?
-      params[:complaint][:complaint_status] =  1
-    elsif params[:complaint][:CM_response_due_date].nil?
-      params[:complaint][:complaint_status] =  2
-    elsif params[:complaint][:CM_response_date].nil?
-      params[:complaint][:complaint_status] =  3
-    elsif params[:complaint][:response_sent_date].nil?
-      params[:complaint][:complaint_status] =  4
-    else 
-      params[:complaint][:complaint_status] =  5
-    end
-
     params[:complaint][:facility_id] = session[:facility].id
 
     @complaint = Complaint.new(params[:complaint])
 
     respond_to do |format|
       if @complaint.save
-        @complaint.complaint_number = Time.now.month.to_s + '/' + Time.now.year.to_s + '-' + session[:facility].shortname + '-' + @complaint.id.to_s
+        year_start = DateTime.parse("1/1/#{Time.now.year}").strftime("%Y-%m-%d 00:00:00")
+        first_this_year = Complaint.find(:first, :order => :created_on, :conditions => ["created_on > '#{year_start}' and facility_id = '#{@complaint.facility_id}'"])
+        mynum = (@complaint.id - first_this_year.id) + 1
+        @complaint.complaint_number = Time.now.month.to_s + '/' + Time.now.year.to_s + '-' + session[:facility].shortname + '-' + mynum.to_s
         @complaint.save
         flash[:notice] = 'Complaint was successfully created.'
         format.html { redirect_to complaint_url(@complaint) }
@@ -87,20 +74,6 @@ class ComplaintsController < ApplicationController
       @complaint = Complaint.find(params[:id])
     else
       @complaint = session[:facility].complaints.find(params[:id])
-    end
-
-    if params[:complaint][:MRS_assigned_date].nil?
-      params[:complaint][:complaint_status] =  0
-    elsif params[:complaint][:CM_assigned_date].nil?
-      params[:complaint][:complaint_status] =  1
-    elsif params[:complaint][:CM_response_due_date].nil?
-      params[:complaint][:complaint_status] =  2
-    elsif params[:complaint][:CM_response_date].nil?
-      params[:complaint][:complaint_status] =  3
-    elsif params[:complaint][:response_sent_date].nil?
-      params[:complaint][:complaint_status] =  4
-    else 
-      params[:complaint][:complaint_status] =  5
     end
 
     respond_to do |format|

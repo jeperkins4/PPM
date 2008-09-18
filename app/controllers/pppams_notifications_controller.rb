@@ -15,7 +15,7 @@ class PppamsNotificationsController < ApplicationController
 
   def update_notifications
     Facility.find(:all).each do |facility|
-      %w(Submitted Review Accepted).each do |status|
+      %w(Submitted Review Accepted Locked).each do |status|
         if params["facility_#{facility.id}_#{status}"] == "1"
           NotificationReceiver.add_receiver(User.current_user, facility, status)
         else

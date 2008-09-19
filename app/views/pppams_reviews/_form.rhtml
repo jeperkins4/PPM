@@ -14,7 +14,12 @@ $('trash').src = "/images/trash.jpg";
 <div id = 'right_col' class="<%= @new ? "hidden" : "" %>">
 <fieldset>
 <legend>Status</legend>
-<%= radio_button("pppams_review", "status", "", :disabled => @status_ar.index("").nil?) %><label for="pppams_review_status_null">Submitted</label><br/> 
+<%= radio_button("pppams_review", "status", "", :disabled => @status_ar.index("").nil?) -%>
+<% if @pppams_review.submitted_count >= 1 -%>
+<label for="pppams_review_status_null">Resubmitted (<%= pluralize(@pppams_review.submit_count, "time") %>)</label><br/>
+<% else -%>
+<label for="pppams_review_status_null">Submitted</label><br/>
+<% end -%>
 <%= radio_button("pppams_review", "status", "Review", :disabled => @status_ar.index("Review").nil?) %><label for="pppams_review_status_review">Review</label><br/> 
 <%= radio_button("pppams_review", "status", "Accepted", :disabled => @status_ar.index("Accepted").nil?) %><label for="pppams_review_status_accepted">Accepted</label><br/> 
 <%= radio_button("pppams_review", "status", "Locked", :disabled => @status_ar.index("Locked").nil?) %><label for="pppams_review_status_accepted">Locked</label><br/> 

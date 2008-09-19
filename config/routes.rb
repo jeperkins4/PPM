@@ -50,6 +50,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.destroy_complaint_follow_up 'complaints/:complaint_id/complaint_follow_ups/:id/;destroy', :controller => 'complaint_follow_ups', :action => 'destroy'
 
+  map.destroy_complaint 'complaints/:id/destroy', :controller => 'complaints', :action => 'destroy'
+
+  map.destroy_non_comp_issue 'non_comp_issues/:id/destroy', :controller => 'non_comp_issues', :action => 'destroy'
+
   map.resources :non_comp_issues do |non_comp_issues|
      non_comp_issues.resources :non_comp_follow_ups
   end
@@ -57,6 +61,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :complaints do |complaints|
      complaints.resources :complaint_follow_ups
   end
+
+
 
   map.start '', :controller => 'login', :action => 'index'
   map.reporting 'reports', :controller => 'reports', :action => 'index'

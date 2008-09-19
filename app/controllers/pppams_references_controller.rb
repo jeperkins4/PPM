@@ -27,7 +27,7 @@ class PppamsReferencesController < ApplicationController
     @pppams_reference = PppamsReference.new(params[:pppams_reference])
     if @pppams_reference.save
       flash[:notice] = 'PppamsReference was successfully created.'
-      redirect_to :action => 'list'
+      redirect_to :action => 'list', :pppams_category_id => params[:pppams_category_id]
     else
       render :action => 'new'
     end
@@ -41,7 +41,7 @@ class PppamsReferencesController < ApplicationController
     @pppams_reference = PppamsReference.find(params[:id])
     if @pppams_reference.update_attributes(params[:pppams_reference])
       flash[:notice] = 'PppamsReference was successfully updated.'
-      redirect_to :action => 'show', :id => @pppams_reference
+      redirect_to :action => 'show', :id => @pppams_reference, :pppams_category_id => params[:pppams_category_id]
     else
       render :action => 'edit'
     end
@@ -49,6 +49,6 @@ class PppamsReferencesController < ApplicationController
 
   def destroy
     PppamsReference.find(params[:id]).destroy
-    redirect_to :action => 'list'
+    redirect_to :action => 'list', :pppams_category_id => params[:pppams_category_id]
   end
 end

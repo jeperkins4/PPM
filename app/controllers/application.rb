@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :set_page
   before_filter :set_facility, :except => ''  
+
   
   #AJR Added switch statement to proceed with updates to production while PPPAMS module is still being tested.
   #This code will automatically start loading when the new module is uploaded to production
@@ -47,6 +48,10 @@ class ApplicationController < ActionController::Base
   end
   
   def set_facility
+    if params[:controller] != 'reports' && session[:facility].type.to_s == 'Junk'
+        session[:facility] = '' 
+        params[:set_facility] = {:facility_id => ''} if params[:set_facility].nil?
+    end
     if session[:access_level] == 'Administrator'
       unless params[:set_facility] 
         unless session[:facility]
@@ -75,12 +80,17 @@ class ApplicationController < ActionController::Base
               end 
             end
           end
+
           if @page_check == 0
             render :text => "Please select a facility from the drop down above to continue.", :layout => true
           end
         end
       else
-        if params[:set_facility][:facility_id] != ""
+
+        if params[:set_facility][:facility_id] == "-1"
+          session[:facility] = Junk.new
+          redirect_to(:controller => request.request_uri.split('/'), :action => 'index')
+        elsif params[:set_facility][:facility_id] != ""
           session[:facility] = Facility.find(params[:set_facility][:facility_id])
           redirect_to(:controller => request.request_uri.split('/'), :action => 'index')
         else

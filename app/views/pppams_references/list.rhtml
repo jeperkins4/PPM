@@ -1,9 +1,14 @@
 <h1 class='inline-head'>PPPAMS References</h1>
 
+<p>
+<%= link_to 'Back', :action => 'show', :controller => 'pppams_categories', :id => params[:pppams_category_id] %> | 
+<%= link_to 'New Reference', :action => 'new', :controller => 'pppams_references', :pppams_category_id => params[:pppams_category_id] %>
+</p>
+
 <table>
   <tr>
   <th colspan= <%= @user.is_admin? ? 3 : 1 %> class='edit_col'>&nbsp;</th>
-  <% for column in PppamsIndicator.content_columns.reject {|c| c.name =~ /(_on)$/  } %>
+  <% for column in PppamsReference.content_columns.reject {|c| c.name =~ /(_on)$/  } %>
     <th><%= column.human_name %></th>
   <% end %>
 
@@ -11,10 +16,9 @@
   
 <% for pppams_reference in @pppams_references %>
   <tr>
-  <td><%= link_to image_tag("view_icon.png", :border=>0), :controller => 'pppams_references', :action => 'show', :id => pppams_reference %></td>
-  <td><%= link_to image_tag("review_icon.png", :border=>0), :controller => 'pppams_reviews', :action => 'new', :pppams_reference_id => pppams_reference %></td>
-  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0), :controller => 'pppams_references', :action => 'edit', :id => pppams_reference %></td>
-  <td><%= link_to image_tag("delete_icon.png", :border=>0), { :controller => 'pppams_references', :action => 'destroy', :id => pppams_reference }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
+  <td><%= link_to image_tag("view_icon.png", :border=>0), :controller => 'pppams_references', :action => 'show', :id => pppams_reference, :pppams_category_id => params[:pppams_category_id] %></td>
+  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0), :controller => 'pppams_references', :action => 'edit', :id => pppams_reference, :pppams_category_id => params[:pppams_category_id] %></td>
+  <td><%= link_to image_tag("delete_icon.png", :border=>0), { :controller => 'pppams_references', :action => 'destroy', :id => pppams_reference, :pppams_category_id => params[:pppams_category_id] }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
   <% for column in PppamsReference.content_columns.reject {|c| c.name =~ /(_on)$/  } %>
     <td><%=h pppams_reference.send(column.name) %></td>
   <% end %>

@@ -11,7 +11,7 @@
 
 <span class='bulk_status_changer'>With selected, change status to: <%= select_tag ('pppams_review_new_status', options_for_select( User.current_user.is_admin? ? ['Review','Accepted','Locked']  : ['Submitted'] ) ) %>
 <input type='submit' value='Go'/><br/>
-with note: <textarea id='pppams_review_bulk_note' name='pppams_review_bulk_note'></textarea></span>
+with note: <textarea onfocus = "var currentTime = new Date();var datestamp = currentTime.getMonth() + 1 + '/' + currentTime.getDate() + '/' + currentTime.getFullYear();if (this.value.indexOf(datestamp) != 0 ) this.value = datestamp + ' (<%= @user.firstname[0,1] %> <%= @user.lastname %>) ' + this.value;" id='pppams_review_bulk_note' name='pppams_review_bulk_note'></textarea></span>
 <table>
 <tr>
 <th></th>

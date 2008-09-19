@@ -1,9 +1,5 @@
 class Array
 
-        def empty_filter?
-          self.uniq.length == 1 and self[0] == ""
-        end
-
         def uniq_numerics
           out = []
           self.uniq.each { |x|
@@ -50,6 +46,14 @@ class Junk
 
   def id
     -1
+  end
+ 
+  def created_on
+    nil
+  end
+
+  def facility
+    "All Facilities"
   end
 
   def method_missing(meth,*args)

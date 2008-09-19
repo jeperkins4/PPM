@@ -12,7 +12,7 @@
     <tr>
       <td><%=h facility.facility %></td>
       <td>
-        <% %w(Submitted Review Accepted).each do |status|
+        <% %w(Submitted Review Accepted Locked).each do |status|
            checked = NotificationReceiver.receives_notifications?(User.current_user, facility, status) %>
           <% if checked %>
           <input type="checkbox" name="facility_<%= facility.id %>_<%= status %>" value="1" checked="checked"/>

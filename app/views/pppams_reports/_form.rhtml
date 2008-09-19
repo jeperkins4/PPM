@@ -2,6 +2,8 @@
 <legend>Date Range</legend>
 <%= calendar_date_select :pppams_report_filter, :start_date %>
 <%= calendar_date_select :pppams_report_filter, :end_date %>
+<%= link_to('This month', '#', :onclick => "javascript: $('pppams_report_filter_start_date').value='" + Time.now.strftime('%B') + " 1, " + Time.now.strftime('%Y') +"'; $('pppams_report_filter_end_date').value='" + Time.now.strftime('%B') + " " + Time.now.end_of_month.strftime('%d') + ", " + Time.now.strftime('%Y') +"'; return false;")%> 
+<%= link_to('This year', '#', :onclick => "javascript: $('pppams_report_filter_start_date').value='January 1, " + Time.now.strftime('%Y') +"'; $('pppams_report_filter_end_date').value='December 31, " + Time.now.strftime('%Y') +"'; return false;")%>
 </fieldset>
 
 <fieldset>
@@ -9,12 +11,20 @@
 <%= radio_button("pppams_report_filter", "report_type", "summary.rhtml") %><label for="pppams_report_type_summary">Summary (Average Scores)</label><br/> 
 <%= radio_button("pppams_report_filter", "report_type", "summary_perc.rhtml") %><label for="pppams_report_type_summary">Summary (Percentage)</label><br/> 
 <%= radio_button("pppams_report_filter", "report_type", "full.rhtml") %><label for="pppams_report_type_full">Full</label><br/>
+<%= radio_button("pppams_report_filter", "report_type", "signature.rhtml") %><label for="pppams_report_type_signature">Signature Page</label><br/>
 </fieldset>
 
 <div class='filter_float'>
 <fieldset>
 <legend>Facility Filter <img src="/images/swapselect.gif" title ="Toggle selections"  onclick="swapselect(this);" class="fauxlink"/></legend>
 <%= multiple_select("pppams_report_filter","facility_filter", @facilities.collect {|p| [ p.facility, p.id.to_s] } ) %>
+</fieldset>
+</div>
+
+<div class='filter_float'>
+<fieldset>
+<legend>Score Filter <img src="/images/swapselect.gif" title ="Toggle selections"  onclick="swapselect(this);" class="fauxlink"/></legend>
+<%= multiple_select("pppams_report_filter","score_filter", [0,4,5,6,7,8,9,10] ) %>
 </fieldset>
 </div>
 

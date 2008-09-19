@@ -59,3 +59,11 @@ end
 # Mime::Type.register "application/x-mobile", :mobile
 
 # Include your application configuration below
+
+# http://blog.sidu.in/2008/05/get-dirty-objects-in-rails.html
+# require "#{File.dirname(__FILE__)}/active_record/dirty"
+require "active_record/dirty"
+
+ActiveRecord::Base.class_eval do
+  include ActiveRecord::Dirty
+end

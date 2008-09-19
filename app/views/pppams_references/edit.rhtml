@@ -1,4 +1,4 @@
-<h1>Editing pppams_reference</h1>
+<h1>Editing PPPAMS Reference</h1>
 
 <% form_tag :action => 'update', :id => @pppams_reference do %>
   <%= render :partial => 'form' %>
@@ -6,5 +6,5 @@
 <% end %>
 
 
-<%= link_to 'Show', :action => 'show', :id => @pppams_reference %> |
-<%= link_to 'Back', :action => 'list' %>
+<%= link_to 'Show', :action => 'show', :id => @pppams_reference, :pppams_category_id => params[:pppams_category_id] %> |
+<%= link_to 'Back', :action => 'list', :pppams_category_id => params[:pppams_category_id] %>

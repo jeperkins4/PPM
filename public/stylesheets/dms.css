@@ -1121,3 +1121,12 @@ tr.warning_row {
     overflow-y: auto;
     margin: 0 auto;
 }
+
+
+#report_container table {
+    min-width: 50%
+}
+
+#nav_results table {
+    clear: left;
+}

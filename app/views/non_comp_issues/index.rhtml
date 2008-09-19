@@ -1,4 +1,4 @@
-<h2>Non Compliance Issues</h2>
+<h2>Non-compliance Issues</h2>
 
 <% if @nci_status.to_i == 4 -%>
     <p>
@@ -34,8 +34,8 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
 	<% end -%>	
 <table>
   <tr>
-    <th>ID</th>
-    <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_status|_on|_by)$/  } %>
+    <th>Number</th>
+    <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_number|_status|_on|_by)$/  } %>
       <th><%= column.human_name %></th>
     <% end %>
     <th></th>
@@ -58,12 +58,13 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
      <% end -%>
   <% end -%>
   <tr>
-  <td bgcolor="<%= @bg_color rescue ''%>"><%=h non_comp_issue.id %></td>
-  <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_status|_on|_by)$/  } %>
+  <td bgcolor="<%= @bg_color rescue ''%>"><%=h non_comp_issue.issue_number %></td>
+  <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_number|_status|_on|_by)$/  } %>
         <td><%=h non_comp_issue.send(column.name)%></td>
   <% end %>
   <td><%= link_to 'Show', non_comp_issue_path(non_comp_issue) %>
-  <%= link_to 'Edit', edit_non_comp_issue_path(non_comp_issue) %></td>
+  <%= link_to 'Edit', edit_non_comp_issue_path(non_comp_issue) %>
+  <%= link_to 'Delete', destroy_non_comp_issue_path(non_comp_issue), :confirm => 'Are you sure?' %></td>
   </tr>
 <% end %>
 </table>

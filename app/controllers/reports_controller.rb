@@ -1,8 +1,9 @@
 class ReportsController < ApplicationController
+
   before_filter :authenticate 
-  layout 'administration'
-  
-  def index
+  layout 'administration_with_all'
+
+  def index 
     session[:report] = nil
     session[:type] = 'Choose Type'
     session[:use_date] = 'No'
@@ -11,11 +12,12 @@ class ReportsController < ApplicationController
     session[:end_date] = ''
     session[:acct_begin_date] = nil
     session[:acct_end_date] = nil
-    
+
     if request.post?
-      (params[:report][:report_type]) ? session[:type] = params[:report][:report_type] : session[:type] = 'Choose Type'
-      (params[:report][:use_date]) ? session[:use_date] = params[:report][:use_date] : session[:use_date] = 'No'
-      (params[:report][:status]) ? session[:status] = params[:report][:status] : session[:status] = 'Open'
+      session[:type] = (!params[:report].nil? && params[:report][:report_type]) ? params[:report][:report_type] : 'Choose Type'
+      session[:use_date] = (!params[:report].nil? && params[:report][:use_date])? params[:report][:use_date] : 'No'
+      session[:status] = (!params[:report].nil? && params[:report][:status])? params[:report][:status] : 'Open'
+
       if session[:use_date] == 'Yes'        
         params[:report][:begin_date] = Date.new(params[:report].delete('begin_date(1i)').to_i, params[:report].delete('begin_date(2i)').to_i, (params[:report].delete('begin_date(3i)')||1).to_i) if params[:report]['begin_date(3i)']
         params[:report][:end_date] = Date.new(params[:report].delete('end_date(1i)').to_i, params[:report].delete('end_date(2i)').to_i, (params[:report].delete('end_date(3i)')||1).to_i) if params[:report]['end_date(3i)'] 
@@ -24,7 +26,7 @@ class ReportsController < ApplicationController
         session[:acct_begin_date] = Date.new(params[:report].delete('acct_begin_date(1i)').to_i, params[:report].delete('acct_begin_date(2i)').to_i) if params[:report]['acct_begin_date(1i)'] 
         session[:acct_end_date] = Date.new(params[:report].delete('acct_end_date(1i)').to_i, params[:report].delete('acct_end_date(2i)').to_i) if params[:report]['acct_end_date(1i)']                  
       end
-      if params[:report][:ready] == "1"
+      if !params[:report].nil? && params[:report][:ready] == "1"
         @excel = false
         case session[:type].gsub(" ", "_").downcase
         when 'incident'   
@@ -62,11 +64,11 @@ class ReportsController < ApplicationController
   end
   
   def build_report_incident(excel)
-    
+
     @mins = params[:report][:mins] rescue ''
     @incident_type = params[:report][:incident_type_id] rescue ''
     @search_string = ""
-    
+
     if session[:use_date] == 'Yes'
       @search_string += "incident_date >= ? and incident_date <= ? "
       @begin = session[:begin_date]
@@ -76,7 +78,7 @@ class ReportsController < ApplicationController
       @begin = ''
       @end = ''
     end
-    
+
     unless @mins == '' or @mins == nil
       @search_string += " and mins = ? "
     else
@@ -99,14 +101,20 @@ class ReportsController < ApplicationController
       @search_string += " and investigation_closed <> ? "
       @status = 42 #All_HACKITY_HACK
     end
-    
-    session[:report] = session[:facility].incidents.find :all, 
+    if session[:facility].type.to_s == 'Junk'
+    session[:report] = Incident.find :all,
+      :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type, @status], 
+      :order => 'facility_id, incident_date, mins'
+    else
+    session[:report] = session[:facility].incidents.find :all,
       :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type, @status], 
       :order => 'incident_date, mins'
+    end
     unless excel == true
       redirect_to :action => :report
     end
   end
+
 
   def build_report_non_comp_issue(excel)
     
@@ -123,10 +131,11 @@ class ReportsController < ApplicationController
       @end = ''
     end
     
-    unless @id == '' or @id == nil
-      @search_string += " and ID = ? "
+    unless @id == '' or @id.nil?
+      @search_string += " and issue_number = ? "
     else
-      @search_string += " and ID <> ? "
+      @id = ''
+      @search_string += " and issue_number <> ? "
     end 
     
     case session[:status]
@@ -140,10 +149,15 @@ class ReportsController < ApplicationController
       @search_string += " and nci_status <> ? "
       @status = 42 #All_HACKITY_HACK
     end
-    
+    if session[:facility].type.to_s == 'Junk'
+    session[:report] = NonCompIssue.find :all,
+      :conditions => ["" + @search_string + "", @begin, @end, @id, @status], 
+      :order => 'facility_id, created_on, id'
+    else
     session[:report] = session[:facility].non_comp_issues.find :all, 
       :conditions => ["" + @search_string + "", @begin, @end, @id, @status], 
       :order => 'created_on, id'
+    end
     unless excel == true
       redirect_to :action => :report
     end
@@ -155,39 +169,46 @@ class ReportsController < ApplicationController
     @search_string = ""
     
     if session[:use_date] == 'Yes'
-      @search_string += "complaint_date >= ? and complaint_date <= ? "
+      @search_string += "received_date >= ? and received_date <= ? "
       @begin = session[:begin_date]
       @end = session[:end_date]
     else
-      @search_string += "complaint_date <> ? and complaint_date <> ? "
+      @search_string += "received_date <> ? and received_date <> ? "
       @begin = ''
       @end = ''
     end
     
-    unless @id == '' or @id == nil
+    unless @id == '' or @id.nil?
       @search_string += " and complaint_number = ? "
     else
+      @id = ''
       @search_string += " and complaint_number <> ? "
     end 
     
     case session[:status]
     when 'Open'
       @search_string += " and complaint_status <= ? "
-      @status = 4
+      @status = 2
     when 'Closed'
       @search_string += " and complaint_status = ? "
-      @status = 5
+      @status = 3
     when 'All'
       @search_string += " and complaint_status <> ? "
       @status = 42 #All_HACKITY_HACK
     end
-    
+    if session[:facility].type.to_s == 'Junk'
+    session[:report] = Complaint.find :all,
+      :conditions => ["" + @search_string + "", @begin, @end, @id, @status], 
+      :order => 'facility_id, received_date, id'
+    else
     session[:report] = session[:facility].complaints.find :all, 
       :conditions => ["" + @search_string + "", @begin, @end, @id, @status], 
-      :order => 'complaint_date, id'
+      :order => 'received_date, id'
+    end
     unless excel == true
       redirect_to :action => :report
     end
+
   end
   
   def build_report_accountability(excel)

@@ -1,14 +1,19 @@
-<tr >
-<td colspan=6><h3 align='center'><%= session[:facility].facility %> Complaint Report<h3></td>
-</tr>
-	<th><b>Complaint Number</b></th>
-	<th><b>Complaint Type</b></th>
-	<th><b>Complaint Date</b></th>
-	<th><b>Received Date</b></th>
-	<th><b>Receiver</b></th>
-	<th></th>
+<% fac_store = '' %>
+
+<h3 align='center'><%= session[:facility].facility %> Complaint Report<h3>
+
 <% session[:report].each do |complaint| -%>
-<% @date_diff = Time.now.to_date - complaint.complaint_date.to_date -%>
+<% if fac_store != complaint.facility.facility %>
+<%if fac_store != ''%></table><% end %>
+  <h4><%= complaint.facility.facility %></h4>
+  <table class='print'>
+  <tr><th><b>Complaint Number</b></th>
+  <th><b>Receiver</b></th>
+  <th><b>Inmate's Name:</b></th>
+  <th><b>Inmate's DC Number:</b></th></tr>
+  <% fac_store = complaint.facility.facility %>
+<% end %>
+<% @date_diff = Time.now.to_date - complaint.received_date.to_date -%>
 	 <% if @date_diff.to_i < 30 -%>
 	   <% @bg_color = '#00FF00' -%>
 	 <% end -%>
@@ -21,64 +26,59 @@
      <% if @date_diff.to_i >= 90 -%>
 	   <% @bg_color = '#FF3300' -%>	
      <% end -%>
-<tr>
 
-<% if complaint.complaint_status == 5 -%>
+<tr>
+<% if complaint.complaint_status == 3 -%>
 <td><a href='complaint/<%= complaint.id %>'><%= complaint.complaint_number%> : Closed</a></td>
 <% else -%>
 <td bgcolor="<%= @bg_color rescue '' %>"><a href='complaint/<%= complaint.id %>'><%= complaint.complaint_number%></a></td>
 <% end -%>
 
-<td><%= complaint.complaint_type %></td>
-<td><%= complaint.complaint_date %></td>
-<td><%= complaint.received_date %></td>
-<td><%= complaint.user.full_name %></td>
-<td></td>
+<td><%= complaint.receiver %></td>
+<td><%= complaint.inmate_details %></td>
+<td><%= complaint.inmate_id %></td>
 </tr>
 
 <tr>
-
-	<th><b>Date Assigned to MRS</b></th>
-	<th><b>Date Assigned to CM</b></th>
-	<th><b>Date Response Due from CM</b></th>
-	<th><b>Date Response Received from CM</b></th>
+	<th><b>Received Date</b></th>
+	<th><b>Date Response Due</b></th>
 	<th><b>Date Response Sent to Complainant</b></th>
 	<th><b>Date Closed</b></th>
 
+
 </tr><tr>
-<td><%= complaint.MRS_assigned_date %></td>
-<td><%= complaint.CM_assigned_date%></td>
+
+<td><%= complaint.received_date %></td>
 <td><%= complaint.CM_response_due_date %></td>
 <td><%= complaint.CM_response_date %></td>
-<td><%= complaint.response_sent_date %></td>
 <td><%= complaint.resolved_date %></td>
-</tr>
-			<td><b>Description:</b></td>
-			<td colspan=2><%= complaint.description %></td>
+
+
+</tr><tr>
 
 			<td><b>Complainant's Name & Contact Information:</b></td>
-			<td colspan=2><%= complaint.complainer_contact %></td>
+			<td colspan =3><%= complaint.complainer_contact %></td>
+
+</tr><tr>
+
+			<td><b>Description:</b></td>
+			<td colspan =3><%= complaint.description %></td>
 </tr>
 
-</tr>
-			<td><b>Inmate's Name and DC Number:</b></td>
-			<td colspan=2><%= complaint.inmate_details %></td>
 
-			<td><b></b></td>
-			<td colspan=2></td>
-</tr>
 	<% @follow_ups = ComplaintFollowUp.find(:all, :conditions => ['complaint_id = ?', complaint.id]) %>
 		<tr>
 			<td><b>Follow Up Date:</b></td>
-			<td colspan=5><b>Follow Up:</b></td>
+			<td colspan=3><b>Follow Up:</b></td>
 		</tr>
 		<% @follow_ups.each do |follow_up| -%>
 		<tr>
 			<td><b><%= follow_up.created_on %></b></td>
-			<td colspan=5><%= follow_up.follow_up %></td>
+			<td colspan=3><%= follow_up.follow_up %></td>
 		</tr>
 		<% end -%>
 		<tr>
-			<td colspan=6 bgcolor="#999999">&nbsp;</td>
+			<td colspan=4 bgcolor="#999999">&nbsp;</td>
 		</tr>
 <% end -%>
+</table>

@@ -14,17 +14,34 @@ class PppamsReportsController < ApplicationController
   
   def filter
     if params.has_key?('commit')
-      type = params[:pppams_report_filter][:report_type].nil? ? "full" : params[:pppams_report_filter][:report_type].split('.')[0]
-      filter = params[:pppams_report_filter]
-      base_filter = [filter[:facility_filter], filter[:category_filter], filter[:indicator_filter]]
+      @filter = params[:pppams_report_filter]
+      if @filter[:report_type] == 'signature.rhtml'
+        if @filter[:facility_filter] == [""] || @filter[:facility_filter].split(",").length > 1
+           flash[:warning] = 'This report can only be run with a single facility selected.'
+           @doneFilters = PppamsReportFilter.find(:all).collect {|p| [ p.name] }
+           @facilities =  Facility.find(:all) 
+           @Cats = PppamsCategoryBaseRef.find(:all, :order => :name)
+           return
+        end
+        @filter[:score_filter] = @filter[:status_filter] = @filter[:indicator_filter] = [""]
+        @filter[:end_date] = Time.parse(@filter[:start_date]).end_of_month.to_s
+        @filter[:category_filter] = PppamsCategory.find(:all, :conditions => ["facility_id in (#{@filter[:facility_filter]})"])
+      end
+      type = @filter[:report_type].nil? ? "full" : @filter[:report_type].split('.')[0]
+
+      base_filter = [@filter[:facility_filter], @filter[:category_filter], @filter[:indicator_filter]]
       good_ids_ar = PppamsReportFilter.good_indicator_ids(base_filter)
       @pppamsIndicators = good_ids_ar[0] << Junk.new
-      good_ids = @pppamsIndicators.collect{|i| i.id}
-      status_filter = filter[:status_filter]
-      @to_date = filter[:end_date] 
-      @from_date = filter[:start_date]
-      @show_from = filter[:start_date].empty? ? Time.now.beginning_of_month : Time.parse(filter[:start_date]) 
-      @show_to = filter[:end_date] .empty? ? Time.now.end_of_month :  Time.parse(filter[:end_date] )  
+      @good_ids = @pppamsIndicators.collect{|i| i.id}
+      status_filter = []
+      @filter[:status_filter].uniq.each { |x|
+        status_filter << x if x != "" and x != "Submitted"
+        status_filter << "" if x == "Submitted"
+      }
+      @to_date = @filter[:end_date] 
+      @from_date = @filter[:start_date]
+      @show_from = @filter[:start_date].empty? ? Time.now.beginning_of_month : Time.parse(@filter[:start_date]) 
+      @show_to = @filter[:end_date] .empty? ? Time.now.end_of_month :  Time.parse(@filter[:end_date] )  
       months_dif = (@show_to.month + 12 * @show_to.year) - (@show_from.month + 12 * @show_from.year)
       start_with  = @show_from.month
       @show_span = []
@@ -34,8 +51,10 @@ class PppamsReportsController < ApplicationController
         start_with = 1 if start_with > 12
       end
       @show_span.uniq!
-      @pppamsReviews = PppamsReportFilter.good_reviews(@from_date, @to_date, status_filter, good_ids)
-      @filter_name = filter['name']
+      @pppamsReviews = PppamsReportFilter.good_reviews(@from_date, @to_date, status_filter, @filter[:score_filter], @good_ids)
+      @pppamsReviews_clean = @pppamsReviews[1]
+      @pppamsReviews = @pppamsReviews[0]
+      @filter_name = @filter['name']
       @group_level = good_ids_ar[1]
       render :partial => type, :layout => 'pppams_reports'
     else

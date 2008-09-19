@@ -4,6 +4,6 @@ class AddFacilityPppamsStartDate < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :facilities, :pppams_started_on, :datetime
+    remove_column :facilities, :pppams_started_on
   end
 end

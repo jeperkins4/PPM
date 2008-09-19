@@ -1,50 +1,26 @@
  <table width='80%'>
    <tr>
-  	<td>  <p>
-    <b>Type of Complaint: </b><br />
-    <%= f.text_field :complaint_type %>
-  </p></td>
-  		<td>  <p>
-    <b>Complaint Date: </b><br />
-    <%= f.date_select :complaint_date, { :include_blank => true } %>
-  </p></td>
   		<td>  <p>
     <b>Date Received: </b><br />
-    <%= f.date_select :received_date, { :include_blank => true } %>
+    <%= f.date_select :received_date  %>
   </p></td>
-  </tr>
 
-
-   <tr>
-  	<td colspan=3>  <p>
+  		<td colspan=2>  <p>
     <b>Received by: </b><br />
-    <%= f.collection_select(:user_id, User.find(:all, :order => 'lastname'), :id, :full_name, {:prompt => false}) %>
+    <%= f.text_field :receiver %>
    </p></td>
    </tr>
 
-
    <tr>
-  	<td>  <p>
-    <b>Date Assigned to MRS: </b><br />
-    <%= f.date_select :MRS_assigned_date, { :include_blank => true } %>
-  </p></td>
+
   		<td>  <p>
-    <b>Date Assigned to CM: </b><br />
-    <%= f.date_select :CM_assigned_date, { :include_blank => true } %>
-  </p></td>
-  		<td>  <p>
-    <b>Date Response Due from CM: </b><br />
+    <b>Response Due By: </b><br />
     <%= f.date_select :CM_response_due_date, { :include_blank => true } %>
   </p></td>
-  </tr>
-  <tr>
+
   		<td>  <p>
-    <b>Date Response Received from CM: </b><br />
+    <b>Date Response Sent: </b><br />
     <%= f.date_select :CM_response_date, { :include_blank => true } %>
-  </p></td>
-  		<td>  <p>
-    <b>Date Response Sent to Complainant: </b><br />
-    <%= f.date_select :response_sent_date, { :include_blank => true } %>
   </p></td>
 
   		<td>  <p>
@@ -54,22 +30,27 @@
   </tr>
 
   <tr>
+
+  	<td><p>
+    <b>Complainant's Name & Contact Information</b><br />
+    <%= f.text_area :complainer_contact, :cols => 24, :rows => 10 %>
+  </p></td>
+
+  	<td><p>
+    <b>Inmate's Name<br /></b><br />
+    <%= f.text_area :inmate_details, :cols => 24, :rows => 10 %>
+  </p></td>
+
+  	<td><p>
+    <b>Inmate's DC Number<br /></b><br />
+    <%= f.text_field :inmate_id %>
+  </p></td>
+  </tr>
+
+  <tr>
   	<td colspan=3><p>
     <b>Description of Complaint: </b><br />
     <%= f.text_area :description, :cols => 80, :rows => 10 %>
-  </p></td>
-  </tr>
-  <tr>
-  	<td colspan=3><p>
-    <b>Complainant's Name & Contact Information</b><br />
-    <%= f.text_area :complainer_contact, :cols => 80, :rows => 10 %>
-  </p></td>
-  </tr>
-  <tr>
-  <tr>
-  	<td colspan=3><p>
-    <b>Inmate's Name and DC Number</b><br />
-    <%= f.text_area :inmate_details, :cols => 80, :rows => 10 %>
   </p></td>
   </tr>
 

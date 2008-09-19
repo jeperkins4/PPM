@@ -11,6 +11,7 @@
   <br/><h2><%=h this_review.pppams_indicator.pppams_category.facility.facility %></h2>
   <table>
   <tr>
+  <th>Date</th>
   <th>Indicator</th>
   <% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by)$/  } %>
     <th><%= column.human_name %></th>
@@ -18,9 +19,10 @@
   </tr>
 <% end %>
   <% if id_store != this_review.pppams_indicator.pppams_category_id %>
-  <tr><td colspan = 8><p class='cat_heading'><%=h this_review.pppams_indicator.pppams_category.name %></p></td></tr>
+  <tr><td colspan = 9><p class='cat_heading'><%=h this_review.pppams_indicator.pppams_category.name %></p></td></tr>
   <% end %>
   <tr>
+  <td><%=h this_review.created_on.strftime('%m/%d/%y') unless this_review.created_on.nil? %></td>
   <td><%=h this_review.pppams_indicator.question%></td>
   <% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by)$/  } %>
     <% if column.name == 'status' %>

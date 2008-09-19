@@ -15,6 +15,6 @@
 		<td><%= select :report, :status, ["Open","Closed","All"], {:selected => (session[:status]) ? session[:status] : ''} %></td>
     </tr>
 	<tr>
-		<td>ID Number:</td>
-		<td> <%= text_field :report, :id %></td>
+		<td>Issue Number:</td>
+		<td> <%= text_field :report, :number %></td>
 	</tr>

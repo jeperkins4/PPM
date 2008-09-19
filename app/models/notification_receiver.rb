@@ -6,7 +6,7 @@ class NotificationReceiver < ActiveRecord::Base
   cattr_accessor :request_env
 
   validates_presence_of :user_id, :facility_id, :status
-  validates_inclusion_of :status, :in => %w(Submitted Review Accepted), :message => "Invalid Status"
+  validates_inclusion_of :status, :in => %w(Submitted Review Accepted Locked), :message => "Invalid Status"
 
   def self.notification_users(facility, status)
     NotificationReceiver.find(:all, :conditions => {:facility_id => facility.id, :status => status}).map {|x| x.user}.uniq

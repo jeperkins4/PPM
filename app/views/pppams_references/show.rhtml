@@ -4,5 +4,5 @@
 </p>
 <% end %>
 
-<%= link_to 'Edit', :action => 'edit', :id => @pppams_reference %> |
-<%= link_to 'Back', :action => 'list' %>
+<%= link_to 'Edit', :action => 'edit', :id => @pppams_reference, :pppams_category_id => params[:pppams_category_id]  %> |
+<%= link_to 'Back', :action => 'list', :pppams_category_id => params[:pppams_category_id] %>

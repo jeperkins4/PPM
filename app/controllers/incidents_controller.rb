@@ -4,10 +4,12 @@ class IncidentsController < ApplicationController
   layout 'administration'
   # GET /incidents.xml
   def index
+
     if params[:status]
       session[:status] = params[:status]
     end
     (session[:status]) ? @status = session[:status] : @status = 0
+
     @incident_pages, @incidents = paginate :incident, 
     :order => 'incident_date, mins',
     :per_page => 20,

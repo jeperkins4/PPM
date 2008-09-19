@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 70) do
+ActiveRecord::Schema.define(:version => 74) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -47,21 +47,17 @@ ActiveRecord::Schema.define(:version => 70) do
   end
 
   create_table "complaints", :force => true do |t|
-    t.column "complaint_number",      :string
+    t.column "complaint_number",     :string
     t.column "complaint_status",     :integer
-    t.column "user_id",              :integer
-    t.column "facility_id",          :integer
-    t.column "complaint_type",       :string
-    t.column "complaint_date",       :date
+    t.column "receiver",             :string
     t.column "received_date",        :date
+    t.column "facility_id",          :integer
     t.column "complainer_contact",   :text
     t.column "inmate_details",       :text
+    t.column "inmate_id",            :text
     t.column "description",          :text
-    t.column "MRS_assigned_date",    :date
-    t.column "CM_assigned_date",     :date
     t.column "CM_response_due_date", :date
     t.column "CM_response_date",     :date
-    t.column "response_sent_date",   :date
     t.column "resolved_date",        :date
     t.column "created_on",           :date
     t.column "updated_on",           :date
@@ -230,6 +226,7 @@ ActiveRecord::Schema.define(:version => 70) do
     t.column "created_by",        :integer
     t.column "updated_by",        :integer
     t.column "notes",             :text
+    t.column "issue_number",      :string
   end
 
   create_table "notification_receivers", :force => true do |t|
@@ -379,6 +376,7 @@ ActiveRecord::Schema.define(:version => 70) do
     t.column "updated_on",       :datetime
     t.column "created_by",       :integer
     t.column "updated_by",       :integer
+    t.column "score_filter",     :text
   end
 
   create_table "pppams_reviews", :force => true do |t|
@@ -395,6 +393,7 @@ ActiveRecord::Schema.define(:version => 70) do
     t.column "notes",               :text
     t.column "created_by",          :integer
     t.column "updated_by",          :integer
+    t.column "submit_count",        :integer
   end
 
   create_table "pppams_reviews_back", :force => true do |t|
@@ -451,14 +450,16 @@ ActiveRecord::Schema.define(:version => 70) do
   end
 
   create_table "users", :force => true do |t|
-    t.column "firstname",       :string
-    t.column "lastname",        :string
-    t.column "name",            :string
-    t.column "email",           :string
-    t.column "hashed_password", :string
-    t.column "salt",            :string
-    t.column "user_type_id",    :integer
-    t.column "facility_id",     :integer
+    t.column "firstname",          :string
+    t.column "lastname",           :string
+    t.column "name",               :string
+    t.column "email",              :string
+    t.column "hashed_password",    :string
+    t.column "salt",               :string
+    t.column "user_type_id",       :integer
+    t.column "facility_id",        :integer
+    t.column "notify_method",      :string
+    t.column "notify_digest_time", :string
   end
 
 end

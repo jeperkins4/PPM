@@ -1,13 +1,20 @@
-<tr >
-<td colspan=7><h3 align='center'><%= session[:facility].facility %> Non Comp Issue Report<h3></td>
-</tr>
-	<th><b>ID</b></th>
+<% fac_store = '' %>
+<h3 align='center'><%= session[:facility].facility %> Non-compliance Issue Report<h3>
+
+
+<% session[:report].each do |non_comp_issue| -%>
+<% if fac_store != non_comp_issue.facility.facility %>
+<%if fac_store != ''%></table><% end %>
+  <h4><%= non_comp_issue.facility.facility %></h4>
+  <table class='print'>
+	<tr><th><b>Number</b></th>
 	<th><b>Discovery Date</b></th>
 	<th><b>Notification Date</b></th>
 	<th><b>CAP Due Date</b></th>
 	<th><b>CAP Reviewed Date</b></th>
-	<th><b>Resolved Date</b></th>
-<% session[:report].each do |non_comp_issue| -%>
+	<th><b>Resolved Date</b></th></tr>
+  <% fac_store = non_comp_issue.facility.facility %>
+<% end %>
 <% @date_diff = Time.now.to_date - non_comp_issue.discovery_date.to_date -%>
 	 <% if @date_diff.to_i < 30 -%>
 	   <% @bg_color = '#00FF00' -%>
@@ -24,9 +31,9 @@
 <tr>
 
 <% if non_comp_issue.nci_status == 4 -%>
-<td><a href='non_comp_issue/<%= non_comp_issue.id %>'><%= non_comp_issue.id%> : Closed</a></td>
+<td><a href='non_comp_issue/<%= non_comp_issue.id %>'><%= non_comp_issue.issue_number %> : Closed</a></td>
 <% else -%>
-<td bgcolor="<%= @bg_color rescue '' %>"><a href='non_comp_issue/<%= non_comp_issue.id %>'><%= non_comp_issue.id%></a></td>
+<td bgcolor="<%= @bg_color rescue '' %>"><a href='non_comp_issue/<%= non_comp_issue.id %>'><%= non_comp_issue.issue_number%></a></td>
 <% end -%>
 <td><%= non_comp_issue.discovery_date %></td>
 <td><%= non_comp_issue.notification_date %></td>
@@ -36,10 +43,10 @@
 
 <tr>
 			<td><b>Details:</b></td>
-			<td colspan=3><%= non_comp_issue.details %></td>
-
+			<td colspan=5><%= non_comp_issue.details %></td>
+</tr><tr>
 			<td><b>Requirement / Refs:</b></td>
-			<td colspan=2><%= non_comp_issue.requirement %></td>
+			<td colspan=5><%= non_comp_issue.requirement %></td>
 </tr>
 	<% @follow_ups = NonCompFollowUp.find(:all, :conditions => ['non_comp_issue_id = ?', non_comp_issue.id]) %>
 		<tr>

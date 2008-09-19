@@ -7,10 +7,6 @@
 <p><label for="pppams_reference_url">Url</label><br/>
 <%= text_field 'pppams_reference', 'url'  %></p>
 
-<p><label for="pppams_reference_created_on">Created on</label><br/>
-<%= datetime_select 'pppams_reference', 'created_on'  %></p>
+<input id = 'pppams_category_id' name = 'pppams_category_id' type='hidden' value='<%= params[:pppams_category_id] %>'>
 
-<p><label for="pppams_reference_updated_on">Updated on</label><br/>
-<%= datetime_select 'pppams_reference', 'updated_on'  %></p>
-<!--[eoform:pppams_reference]-->
 

@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Bureau of Private Prison Monitoring / Specialized Services / Business Operations / Department of Management Services - DMS</title>
+  <link rel="Skip Nav" href="#startcontent" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-language" content="en-US" />
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  
+  <meta name="author" content="Department of Management Services" />
+  <meta name="copyright" content="Department of Management Services" />
+  <meta name="description" content="The administrative arm of the State of Florida government" />
+  <meta name="MSSmartTagsPreventParsing" content="TRUE" />
+  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag "overlib" %>
+  <%= calendar_date_select_includes "blue" %>
+  
+  <link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/dms.css" />
+</head>
+<body>
+<div id='mainborder'>
+  <div id='accessibility'>
+    <a href="#content">Skip to Main Content</a>. Please <a href='mailto:accessible@dms.state.fl.us'>Contact Us</a> if there is anything we can do to improve the Accessibility of this page.
+  </div><!-- accessability -->
+
+  <div id='header'>
+    <a href='http://myflorida.com'><img src='/images/myfloridalogoL.gif' alt='MyFlorida.com Logo - visit MyFlorida.com' /></a>
+  </div><!-- header -->
+  <div class='wrapper'>
+    <div id='main_block'>
+      <div id='main_block_content'>
+        <div id='toptools' style="background-color:#E4E4C3;">
+          <div id='toptools_back'>
+            
+            <a id="nav_hider" href="javascript: navslide('8px')"><span><<</span></a>
+            
+            
+            
+            <% unless @hide_search_div %>
+              <% if session[:access_level] == 'Administrator' -%>
+                <div id='search'>
+                  <% form_for :set_facility, :url => {:action => :index} do |f| -%>
+                    <label class='accessibility' for='facility_facility_id'>Select A Facility to Manage</label>
+                    <%= f.select(:facility_id, Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }.insert(0, ['All', -1]) , { :include_blank => true, :selected => (session[:facility]) ? session[:facility].id : '' },{:onchange => "JavaScript:submit()"}) -%>
+                    <%= f.text_field :return_page, :value => @page,  :style => 'display:none;' %>
+                  <% end -%>
+                </div>
+              <% else -%> 
+                <div id='search'>
+                  <label class='accessibility'>Managing:</label>
+                  <%= session[:facility].facility %>
+                </div>
+              <% end -%>
+          <% end -%>
+            
+              <h1><img align="ABSMIDDLE" src= "/images/palm_left.jpg" width="40" height="75"/>
+              PPALMS
+              <img align="ABSMIDDLE" src= "/images/palm_right.jpg" width="40" height="75"/></h1>
+              <h3>Private Prison Accountability Log & Management System</h3>
+            
+          </div>			
+        </div>
+        <div class='wrapper'>
+          <div id='main_sub_block'>
+            <div id="contentnonotes">
+              <div id="content-design">
+                
+                <% if flash[:notice] %>
+                  <div class="notice"><%= flash[:notice] %></div>
+                <% end -%>
+                <%= @content_for_layout -%>
+              </div><!-- content_design -->
+            </div><!-- content -->
+          </div><!-- main_sub_block -->
+        </div><!-- wrapper -->
+      </div><!-- main_block_content -->
+    </div><!-- main_block -->
+    
+    <div id='nav_block'>  		   			   		   			   
+      <p><%= session[:user] rescue 'N/A' %> - <%= session[:user_type] %></p>
+      <p><a href="/reset_password">Change Password</a> | <a href="/login/logout">Logout</a></p>
+      <ul id='navi'>
+        <% if session[:access_level] == 'Administrator' -%>
+          <li class="menu-level-0 ">
+            Administrative
+          </li>
+          <li class="menu-level-0 ">
+            <ul>
+              <li class="menu-level-1 firstup ">
+                <a href="/facilities">Facilities</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/users">User Management</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/custody_types">Custody Types</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/incident_types">Incident Types</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/position_types">Position Types</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/incident_classes">Incident Classes</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/action_types">Actions Taken</a>
+              </li>
+            
+              <li class="menu-level-1 ">
+                <a href="/employee_position_hists">Employee Position History</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/position_hists">Position History</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/contexts">Log Categories</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/prompts">Log Questions</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/pppams_categories">PPPAMS Admin</a>
+              </li>
+              <li class="menu-level-1 ">
+                <a href="/pppams_notifications">PPPAMS Notification Settings</a>
+              </li>  
+            </ul>
+          </li>
+        <% end -%> 
+        <li class="menu-level-0 ">
+          Contract Manager
+        </li>           
+        <li class="menu-level-0 ">
+          <ul>
+          <li class="menu-level-1 firstup ">
+            <a href="/reports">Inmate Reports</a>
+          </li>
+          <li class="menu-level-1 ">
+            <a href="/position_reports">Position Reports</a>
+          </li>
+          <li class="menu-level-1  ">
+            <a href="/incidents">Incident Tracking</a>
+          </li>
+          <li class="menu-level-1  ">
+            <a href="/non_comp_issues">Nonp-compliance Issue Tracking</a>
+          </li>
+          <li class="menu-level-1  ">
+            <a href="/complaints">Complaint Tracking</a>
+          </li>
+          <li class="menu-level-1 ">
+            <a href="/investigators">Investigators</a>
+          </li>
+          <li class="menu-level-1 ">
+            <a href="/positions">Positions</a>
+          </li>
+          <li class="menu-level-1 ">
+            <a href="/position_numbers">Position Numbers</a>
+          </li>
+          <li class="menu-level-1 ">
+            <a href="/employees">Employees</a>
+          </li>
+          <li class="menu-level-1 ">
+            <a href="/employee_positions">Employee/Position Tracking</a>
+          </li>		
+          <li class="menu-level-1 ">
+            <a href="/employee_position_hists">Employee Position History</a>
+          </li>
+          <li class="menu-level-1 ">
+            <a href="/accountability_logs">Accountability Log</a>
+          </li>
+          <li class="menu-level-1 ">
+            <a href="/pppams_indicators">PPPAMS Home</a>
+          </li>  
+          <li class="menu-level-1 ">
+            <a href="/pppams_reports">PPPAMS Reports</a>
+          </li>
+        </li>
+      </ul>			
+      </li>
+      </ul>
+      </ul>
+    </div><!-- navblock -->
+  </div><!-- wrapper -->
+  <div id='footer'>
+    <p>
+      <a href='http://dms.myflorida.com/support/terms_and_conditions'>Terms and Conditions</a> | <a href='mailto:helpdesk@myflorida.com'>Help Desk</a> | <a href='http://www.myflorida.com/myflorida/privacy.html'>Privacy Statement</a> | <a href='http://www.myflorida.com/myflorida/accessibility.html'> Accessibility</a> | Copyright &#169;2007 Department of Management Services - State of Florida
+    </p>
+  </div><!-- footer -->
+</div><!-- mainborder -->
+<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
+</body>
+</html>
+
+
+
+<script>
+    if (mainmargin_preset == '8px') {
+        $('nav_hider').innerHTML = "<span>>></span>";
+        $('nav_hider').href = "javascript: navslide('200px')";
+        $('nav_block').style.borderLeft = '9px solid #c9c99a';
+    } 
+</script>	
+
+

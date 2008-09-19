@@ -4,23 +4,13 @@
 </p>
 
 <p>
-  <b>Complaint Date:</b>
-  <%=h @complaint.complaint_date %>
-</p>
-
-<p>
   <b>Date Received:</b>
   <%=h @complaint.received_date %>
 </p>
 
 <p>
-  <b>Type of Complaint:</b>
-  <%=h @complaint.complaint_type %>
-</p>
-
-<p>
   <b>Staff Receiving Complaint:</b>
-  <%=h @complaint.user.firstname + ' ' +  @complaint.user.lastname %>
+  <%=h @complaint.receiver %>
 </p>
 
 <p>
@@ -28,30 +18,14 @@
   <%=h @complaint.created_on %>
 </p>
 
-
 <p>
-  <b>Date Assigned to MRS:</b>
-  <%=h @complaint.MRS_assigned_date %>
-</p>
-
-<p>
-  <b>Date Assigned to CM:</b>
-  <%=h @complaint.CM_assigned_date %>
-</p>
-
-<p>
-  <b>Date Response Due from CM:</b>
+  <b>Due Date:</b>
   <%=h @complaint.CM_response_due_date %>
 </p>
 
 <p>
-  <b>Date Response Received from CM:</b>
+  <b>Date Response Sent:</b>
   <%=h @complaint.CM_response_date %>
-</p>
-
-<p>
-  <b>Date Response Sent to Complainant:</b>
-  <%=h @complaint.response_sent_date %>
 </p>
 
 <p>
@@ -60,18 +34,23 @@
 </p>
 
 <p>
-  <b>Description of Complaint:</b>
-  <%=h @complaint.description %>
-</p>
-
-<p>
   <b>Complainant's Name & Contact Information:</b>
   <%=h @complaint.complainer_contact %>
 </p>
 
 <p>
-  <b>Inmate's Name and DC Number:</b>
+  <b>Inmate's Name:</b>
   <%=h @complaint.inmate_details %>
+</p>
+
+<p>
+  <b>Inmate's DC Number:</b>
+  <%=h @complaint.inmate_id %>
+</p>
+
+<p>
+  <b>Description of Complaint:</b>
+  <%=h @complaint.description %>
 </p>
 
 

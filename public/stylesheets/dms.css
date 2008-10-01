@@ -758,6 +758,18 @@ div.notice {
     text-align:center;
 }
 
+/* Flash Warning Style */ 
+
+div.warning {
+    display:block;
+    background-color:#ffffff;
+    color:red;
+    border:solid 1px red;
+    width:400px;
+    padding:5px 0 5px 0;
+    text-align:center;
+}
+
 /* Table Styles */
 
 table {
@@ -1129,4 +1141,16 @@ tr.warning_row {
 
 #nav_results table {
     clear: left;
+}
+
+table.blank_container {
+	margin: 0px;
+	background: none;
+	border: none;
+	height: auto;
+}
+
+tr.blank, td.blank {
+	background: none;
+	border: none;
 }

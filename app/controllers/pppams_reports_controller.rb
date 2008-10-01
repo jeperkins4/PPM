@@ -20,12 +20,12 @@ class PppamsReportsController < ApplicationController
            flash[:warning] = 'This report can only be run with a single facility selected.'
            @doneFilters = PppamsReportFilter.find(:all).collect {|p| [ p.name] }
            @facilities =  Facility.find(:all) 
-           @Cats = PppamsCategoryBaseRef.find(:all, :order => :name)
+           @Cats = PppamsCategoryBaseRef.find(:all, :order => :name).
            return
         end
         @filter[:score_filter] = @filter[:status_filter] = @filter[:indicator_filter] = [""]
         @filter[:end_date] = Time.parse(@filter[:start_date]).end_of_month.to_s
-        @filter[:category_filter] = PppamsCategory.find(:all, :conditions => ["facility_id in (#{@filter[:facility_filter]})"])
+        @filter[:category_filter] = PppamsCategory.find(:all, :conditions => ["facility_id in (#{@filter[:facility_filter]})"]).collect {|p| [ p.id] }
       end
       type = @filter[:report_type].nil? ? "full" : @filter[:report_type].split('.')[0]
 

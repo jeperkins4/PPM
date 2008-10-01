@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 74) do
+ActiveRecord::Schema.define(:version => 75) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -306,6 +306,11 @@ ActiveRecord::Schema.define(:version => 74) do
   end
 
   create_table "pppams_category_base_refs", :force => true do |t|
+    t.column "name",                     :string
+    t.column "pppams_category_group_id", :integer
+  end
+
+  create_table "pppams_category_groups", :force => true do |t|
     t.column "name", :string
   end
 

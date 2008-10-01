@@ -33,5 +33,15 @@ module PppamsReportsHelper
     output += "</tr>"
     output
   end
+  
+  
+  def output_summary_sig(last_object_store, agg_store, missing_flag)
+    output = "<tr "
+    output += "class='warning_row'" if missing_flag
+    output += ">"
+    output += "<td>#{last_object_store.pppams_category.name}</td><td>#{agg_store.length * 10}</td><td>#{agg_store.length == 0  ? 0 : agg_store.sum}</td><td>#{agg_store.mean.perc_round_to(2)}</td>"
+    output += "</tr>"
+    output
+  end
 
 end

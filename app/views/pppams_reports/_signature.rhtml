@@ -1,76 +1,84 @@
-<span class='float-right'><%= "#{@show_from.strftime('%m/%d/%Y')} - #{@show_to.strftime('%m/%d/%Y')}" %></span>
-<h1>Summary Data <%= @filter_name == '' ? "" : "- #{@filter_name}" %></h1>
+<table class='blank_container'>
 
-<p>This report shows average percentage scores for the following category / indicator ids:<br/>
-<%= @filter[:category_filter].uniq_numerics.length == 0 ? 'All categories<br/>' : "Category ids: #{@filter[:category_filter].uniq_numerics.join(',')}<br/>" %>
-<%= @filter[:indicator_filter].uniq_numerics.length == 0 ? 'All indicators<br/>' : "Indicator ids: #{@filter[:indicator_filter].uniq_numerics.join(',')}<br/>" %>
-</p>
-<p>For the following facilities:<br/>
-<% if @filter[:facility_filter].uniq_numerics.length == 0 %>
-  All facilities<br/>
-<% else %>
-  <% @filter[:facility_filter].uniq_numerics.collect do |x| %>
-    <%=h Facility.find(x).facility %><br/>
-  <% end %>
-<% end %>
-</p>
-<p>Using the following criteria:<br/>
-Score: 
-<% if @filter[:score_filter].uniq_numerics.length == 0 %>
-  All scores<br/>
-<% else %>
-  <%= @filter[:score_filter].uniq_numerics.join(',') %><br/>
-<% end %>
-Status: 
-<% if @filter[:status_filter].uniq_numerics.length == 0 %>
-  All statuses<br/>
-<% else %>
-  <%= @filter[:status_filter].uniq_numerics.join(',') %><br/>
-<% end %>
-</p>
+<span class='float-right'><%= "#{@show_from.strftime('%m/%d/%Y')} - #{@show_to.strftime('%m/%d/%Y')}" %></span>
+<h1>PRIVATE PRISON PROGRAM ACCOUNTABILITY PERFORMANCE RATING PROFILE</h1>
+
+<% this_fac = @pppamsIndicators[0].pppams_category.facility %>
 
 
 <% good_ids = @pppamsReviews.collect{|x| x.id} %>
 <% good_ids_clean = @pppamsReviews_clean.collect{|x| x.id} %>
 <% fac_id_store = 0 %>   
 <% id_store = 0 %>
+<% group_id_store = 0 %>
 <% ind_id_store = 0 %>
 <% agg_store = [] %>
 <% av_store = [] %>
 <% last_object_store = [] %>
+<% group_tots = {} %>
 <% missing_flag = false %>
+
+<tr class='blank'><td class='blank' colspan=2>
+<h2>&nbsp;</h2>
+</td></tr>
+
+<tr class='blank'><td class='blank'>
+<table class='blank_container'> 
+<tr class='blank'><td class='blank'>Contract Provider</td><td class='blank'></td></tr>
+<tr class='blank'><td class='blank'>Facility Name</td><td class='blank'><%=h this_fac.facility %></td></tr>
+<tr class='blank'><td class='blank'>Number Of Beds</td><td class='blank'></td></tr>
+<tr class='blank'><td class='blank'>County</td><td class='blank'></td></tr>
+</table>
+</td>
+
+<td class='blank'>
+<table class='blank_container'> 
+<tr class='blank'><td class='blank'>Contract Manager</td><td class='blank'></td></tr>
+<tr class='blank'><td class='blank'>Printed Name And Signature</td><td class='blank'></td></tr>
+<tr class='blank'><td class='blank'>Warden Or Designee - Printed</td><td class='blank'></td></tr>
+<tr class='blank'><td class='blank'>Name And Signature</td><td class='blank'></td></tr>
+</table>
+</td></tr>
+
+<tr class='blank'><td class='blank' colspan=2>
+<h2>&nbsp;</h2>
+</td></tr>
+<tr><td colspan=2>
+<h2 style='text-align:center;'>Program Performance By Indicator</h2>
+</td></tr>
+
+<tr class='blank'><td  class='blank'>
+<table>
 
 <% for this_indicator in @pppamsIndicators %>
 
+  <% my_group_id = this_indicator.pppams_category.pppams_category_base_ref.pppams_category_group_id %>
+
   <% if this_indicator.id == -1 || (fac_id_store != 0 && fac_id_store != this_indicator.pppams_category.facility_id && @group_level == 1) || (id_store != 0 && id_store != this_indicator.pppams_category_id && @group_level == 2 ) || ( ind_id_store != 0 && ind_id_store != this_indicator.id && @group_level == 3) %>
-    <% av_store << agg_store.mean if agg_store.mean > 0 %>
-    <%= output_summary_perc(last_object_store, agg_store, missing_flag) %>
+    <% av_store << agg_store if agg_store.mean > 0 %>
+    <%= output_summary_sig(last_object_store, agg_store, missing_flag) %>
     <% agg_store = [] %>
     <% missing_flag = false %>
   <% end %>
 
-  <% if fac_id_store != 0 && fac_id_store != this_indicator.pppams_category.facility_id && @group_level >= 1 %>
-    <% if @group_level >= 2 %>
-      <tr class='darker'><td>Group Average: </td><td><%= av_store.mean.perc_round_to(2) %></td></tr>
+  <% if group_id_store != my_group_id && group_id_store !=0 %>
+      <tr class='darker'><td>Total: </td><td><%= av_store.flatten.length * 10 %></td><td><%= av_store.flatten.sum %></td><td><%= av_store.flatten.mean.perc_round_to(2) %></td></tr>
+      <% group_tots = group_tots.merge({group_id_store => av_store}) %>
       <% av_store = [] %>
-    <% end %>
-  </table>
   <% end %>
 
-  <% if fac_id_store != this_indicator.pppams_category.facility_id && this_indicator.pppams_category.facility_id != -1 && @group_level >= 2 %>
-  <br/><h2><%=h this_indicator.pppams_category.facility.facility %></h2>
+  <% if group_id_store != my_group_id && my_group_id == 4 %>
+	</table></td>
+    <td class='blank'>
+	<table>
   <% end %>
 
-  <% if (fac_id_store != this_indicator.pppams_category.facility_id && fac_id_store == 0 ) || (fac_id_store != this_indicator.pppams_category.facility_id && this_indicator.pppams_category.facility_id != -1 && @group_level >= 1) %>
-  <table>
+  <% if group_id_store != my_group_id && my_group_id != -1 %>
+  <% if group_id_store != 0 && my_group_id !=4 %><tr><td class='blank' colspan=4>&nbsp;</td></tr><% end %>
   <tr>
-  <th><%=h ['Average Score - All Facilities', 'Facility', 'Category', 'Indicator'][@group_level] %></th>
-  <% if @group_level != 0 %><th>Average Score</th><% end %>
+  <th><%=h this_indicator.pppams_category.pppams_category_base_ref.pppams_category_group.name %></th>
+  <th>Max Score</th><th>Rating</th><th>%</th>
   </tr>
-  <% end %>
-
-  <% if this_indicator.pppams_category_id != -1 && id_store != this_indicator.pppams_category_id && @group_level > 2 %>
-    <tr><td colspan = 8><p class='cat_heading'><%=h this_indicator.pppams_category.name %></p></td></tr>
   <% end %>
 
   <% start_len = adjust_me = 0 %>
@@ -87,6 +95,71 @@ Status:
   <% fac_id_store = this_indicator.pppams_category.facility_id %>
   <% ind_id_store = this_indicator.id %>
   <% last_object_store = this_indicator %>
+  <% group_id_store = my_group_id %>
 <% end %>
 
+</td></tr>
+</table>
+
+<% all_cats = PppamsCategoryGroup.find(:all) %>
+
+</td></tr>
+
+<tr class='blank'><td class='blank' colspan=2>
+<h2>&nbsp;</h2>
+</td></tr>
+<tr><td colspan=2>
+<h2 style='text-align:center;'>Program Performance By Standard</h2>
+</td></tr>
+
+<tr class='blank'><td colspan=2 class='blank'>
+	
+	<table class='blank'>
+		<tr class='blank'>
+		<th>Standard</th>
+		<th>Program Score</th>
+		<th>Max Score</th>
+		<th>Rating</th>
+		<th>Failed</th>
+		<th>Minimal</th>
+		<th>Acceptable</th>
+		<th>Commendable</th>
+		<th>Exceptional</th>
+		<th>Overall Program Performance</th>
+		</tr>
+		<tr class='blank'>
+		<td colspan = 4></td>
+		<th>0-59%</th>
+		<th>60-69%</th>
+		<th>70-79%</th>
+		<th>80-89%</th>
+		<th>90-100%</th>
+		<th valign='middle' style='text-align:center;' rowspan = <%=  all_cats.length + 2 %>><%= group_tots.values.flatten.mean.perc_round_to(2) %></th>
+		</tr>
+		<% for this_cat_group in all_cats %>
+			<tr class='blank'>
+			<td><%=h this_cat_group.name %></td>
+			<td><%= group_tots[this_cat_group.id].flatten.sum %></td>
+			<td><%= group_tots[this_cat_group.id].flatten.length * 10 %></td>
+			<td><%= group_tots[this_cat_group.id].flatten.mean.perc_round_to(2) %></td>
+			<td></td><td></td><td></td><td></td><td></td>
+		</tr>
+		<% end %>
+		<tr class='blank'>
+		<td>Overall Score</td>
+		<td><%= group_tots.values.flatten.sum %></td>
+		<td><%= group_tots.values.flatten.length * 10 %></td>
+		<td><%= group_tots.values.flatten.mean.perc_round_to(2) %></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		</tr>
+		<tr class='blank'><td colspan=11 class='blank'></td></tr>
+		<tr class='blank'><td colspan=11 class='blank'></td></tr>
+		<tr class='blank'><td colspan=11>Scoring Legend:                     Performance Indicators: 0=Non-Performance, 4-5 =Partial, 6-7-8=Satisfactory, 9-10=Superior</td></tr>
+	</table>
+	
+</td></tr>
 </table>

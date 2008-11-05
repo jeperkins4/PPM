@@ -1154,3 +1154,38 @@ tr.blank, td.blank {
 	background: none;
 	border: none;
 }
+
+#report_container table {
+	height: auto;
+}
+
+table.full-report, table.summary-report {
+	background-color: transparent;
+	border-width: 0px;
+}
+
+table.summary-report h1 {
+	border-width: 0px;
+}
+
+table.summary-report table {
+	margin: auto auto;
+	width: 100%;
+}
+
+tr.full-report, tr.summary-report {
+	background-color: transparent;
+}
+
+tr.full-report td, tr.summary-report td {
+	border-width: 0px;
+}
+
+th.facility {
+	width: 80%;
+}
+
+th.average-score {
+	width: 20%;
+}
+

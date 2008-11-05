@@ -2,7 +2,7 @@ class NonCompFollowUpsController < ApplicationController
 
 before_filter :authenticate 
 before_filter :find_non_comp_issue
-layout 'administration'
+layout 'administration_with_all'
 
   def index
     @non_comp_follow_ups = @non_comp_issue.non_comp_follow_ups.find(:all)

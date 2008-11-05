@@ -2,18 +2,18 @@ class NonCompIssuesController < ApplicationController
 
   before_filter :authenticate
   
-  layout 'administration'
+  layout 'administration_with_all'
   # GET /non_comp_issues.xml
   def index
     session[:nci_status] = params[:nci_status] unless params[:nci_status].nil?
     @nci_status = session[:nci_status].nil? ?  "3" : session[:nci_status]
-
     @status_ar_st = (@nci_status.to_i == 4) ? "4" : (0..@nci_status.to_i).to_a
-
+    
+    condition_ar = session[:facility].type.to_s == 'Junk' ? ['nci_status in (?)', @status_ar_st] : ['nci_status in (?) and facility_id = ?', @status_ar_st, session[:facility].id]
     @non_comp_issue_pages, @non_comp_issues = paginate :non_comp_issue, 
-    :order => 'discovery_date',
+    :order => 'facility_id, discovery_date',
     :per_page => 20,
-    :conditions => ['nci_status in (?) and facility_id = ?', @status_ar_st, session[:facility].id]
+    :conditions => condition_ar
     
     respond_to do |format|
       format.html # index.rhtml
@@ -35,6 +35,7 @@ class NonCompIssuesController < ApplicationController
   
   # GET /non_comp_issues/new
   def new
+    redirect_to :action => :index if session[:facility].type.to_s == 'Junk'
     @non_comp_issue = NonCompIssue.new
   end
   

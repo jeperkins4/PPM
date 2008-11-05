@@ -6,7 +6,7 @@
 	<tr>
 		<td width='15%'>Report Type:</td>
 		<td>
-			<%= f.select :report_type, ["Choose Type","Incident","Non Comp Issue","Complaint","Accountability"], {:selected => (session[:type]) ? session[:type] : ''}, {:onchange => "JavaScript:submit()"} %>
+			<%= f.select :report_type, ["Choose Type","Incident","Non Comp Issue","Pppams Issue","Accountability"], {:selected => (session[:type]) ? session[:type] : ''}, {:onchange => "JavaScript:submit()"} %>
 		</td>
 	</tr>
 	<% unless session[:type] == "Choose Type" -%>

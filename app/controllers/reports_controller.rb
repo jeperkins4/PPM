@@ -8,6 +8,7 @@ class ReportsController < ApplicationController
     session[:type] = 'Choose Type'
     session[:use_date] = 'No'
     session[:status] = 'Open'
+    session[:category] = PppamsIssue.categories[0]
     session[:begin_date] = ''
     session[:end_date] = ''
     session[:acct_begin_date] = nil
@@ -17,6 +18,7 @@ class ReportsController < ApplicationController
       session[:type] = (!params[:report].nil? && params[:report][:report_type]) ? params[:report][:report_type] : 'Choose Type'
       session[:use_date] = (!params[:report].nil? && params[:report][:use_date])? params[:report][:use_date] : 'No'
       session[:status] = (!params[:report].nil? && params[:report][:status])? params[:report][:status] : 'Open'
+      session[:category] = (!params[:report].nil? && params[:report][:category])? params[:report][:category] : PppamsIssue.categories[0]
 
       if session[:use_date] == 'Yes'        
         params[:report][:begin_date] = Date.new(params[:report].delete('begin_date(1i)').to_i, params[:report].delete('begin_date(2i)').to_i, (params[:report].delete('begin_date(3i)')||1).to_i) if params[:report]['begin_date(3i)']
@@ -33,8 +35,8 @@ class ReportsController < ApplicationController
           build_report_incident(@excel)
         when 'non_comp_issue'   
           build_report_non_comp_issue(@excel)
-        when 'complaint'   
-          build_report_complaint(@excel)
+        when 'pppams_issue'   
+          build_report_pppams_issue(@excel)
         when 'accountability'
           if  session[:acct_begin_date] then
             session[:acct_begin_date] > session[:acct_end_date] ? (flash[:notice] = "Date Range is Invalid"; render :action => 'index' and return) : ""
@@ -52,8 +54,8 @@ class ReportsController < ApplicationController
       build_report_incident(@excel)
     when 'non_comp_issue'   
       build_report_non_comp_issue(@excel)
-    when 'complaint'   
-      build_report_complaint(@excel)
+    when 'pppams_issue'   
+      build_report_pppams_issue(@excel)
     when 'accountability'   
       build_report_accountability(@excel)
     end
@@ -163,7 +165,7 @@ class ReportsController < ApplicationController
     end
   end
 
-  def build_report_complaint(excel)
+  def build_report_pppams_issue(excel)
     
     @id = params[:report][:id] rescue ''
     @search_string = ""
@@ -179,30 +181,31 @@ class ReportsController < ApplicationController
     end
     
     unless @id == '' or @id.nil?
-      @search_string += " and complaint_number = ? "
+      @search_string += " and pppams_issue_number = ? "
     else
       @id = ''
-      @search_string += " and complaint_number <> ? "
+      @search_string += " and pppams_issue_number <> ? "
     end 
     
     case session[:status]
     when 'Open'
-      @search_string += " and complaint_status <= ? "
+      @search_string += " and pppams_issue_status <= ? "
       @status = 2
     when 'Closed'
-      @search_string += " and complaint_status = ? "
+      @search_string += " and pppams_issue_status = ? "
       @status = 3
     when 'All'
-      @search_string += " and complaint_status <> ? "
+      @search_string += " and pppams_issue_status <> ? "
       @status = 42 #All_HACKITY_HACK
     end
+    @search_string += " and category = ? "
     if session[:facility].type.to_s == 'Junk'
-    session[:report] = Complaint.find :all,
+    session[:report] = PppamsIssue.find :all,
       :conditions => ["" + @search_string + "", @begin, @end, @id, @status], 
       :order => 'facility_id, received_date, id'
     else
-    session[:report] = session[:facility].complaints.find :all, 
-      :conditions => ["" + @search_string + "", @begin, @end, @id, @status], 
+    session[:report] = session[:facility].pppams_issues.find :all, 
+      :conditions => ["" + @search_string + "", @begin, @end, @id, @status, session[:category] ], 
       :order => 'received_date, id'
     end
     unless excel == true

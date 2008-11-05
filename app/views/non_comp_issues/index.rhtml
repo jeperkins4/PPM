@@ -18,6 +18,8 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
 
 	<% if @nci_status.to_i < 4 -%>
 <p>
+	
+	
 	<table>
 		<th>Scale:</th>
 		<th></th>
@@ -32,16 +34,33 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
 	</table>
 </p>
 	<% end -%>	
+	
+<%if session[:facility].type.to_s == 'Junk' && !@non_comp_issues.nil?%>
+<h3><%= @non_comp_issues[0].facility.facility %></h3>
+<%end%>
+	
 <table>
   <tr>
+    <th>Days Open</th>
+    <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_status|_on|_by)$/  } %>
+      <th><%= column.human_name %></th>
+    <% end %>
+    <th></th>
+  </tr>
+<%fac_store = 0%>
+<% for non_comp_issue in @non_comp_issues -%>
+<% if fac_store != non_comp_issue.facility.id && fac_store != 0%>
+	</table>
+	<h3><%= non_comp_issue.facility.facility %></h3>
+	<table>
+	<tr>
     <th>Number</th>
     <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_number|_status|_on|_by)$/  } %>
       <th><%= column.human_name %></th>
     <% end %>
     <th></th>
   </tr>
-  
-<% for non_comp_issue in @non_comp_issues -%>
+<%end%>
   <% unless @nci_status.to_i == 4 -%>
   	<% @date_diff = Time.now.to_date - non_comp_issue.discovery_date.to_date -%>
 	 <% if @date_diff.to_i < 30 -%>
@@ -58,16 +77,20 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
      <% end -%>
   <% end -%>
   <tr>
-  <td bgcolor="<%= @bg_color rescue ''%>"><%=h non_comp_issue.issue_number %></td>
-  <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_number|_status|_on|_by)$/  } %>
+  <td bgcolor="<%= @bg_color rescue ''%>"><%=h @date_diff %></td>
+  <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_status|_on|_by)$/  } %>
         <td><%=h non_comp_issue.send(column.name)%></td>
   <% end %>
   <td><%= link_to 'Show', non_comp_issue_path(non_comp_issue) %>
   <%= link_to 'Edit', edit_non_comp_issue_path(non_comp_issue) %>
   <%= link_to 'Delete', destroy_non_comp_issue_path(non_comp_issue), :confirm => 'Are you sure?' %></td>
   </tr>
+<%fac_store = non_comp_issue.facility.id%>
 <% end %>
 </table>
 <br />
-
+<%if session[:facility].type.to_s == 'Junk'%>
+<p>Please select a facility from the drop-down menu to add a new issue.</p>
+<%else%>
 <%= link_to 'New Non Compliance Issue', :action => 'new' %>
+<%end%>

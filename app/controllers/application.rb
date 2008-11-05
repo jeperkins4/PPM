@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
   end
   
   def set_facility
-    if params[:controller] != 'reports' && session[:facility].type.to_s == 'Junk'
+    if ['reports', 'non_comp_issues', 'pppams_issues'].index(params[:controller]).nil? && session[:facility].type.to_s == 'Junk'
         session[:facility] = '' 
         params[:set_facility] = {:facility_id => ''} if params[:set_facility].nil?
     end
@@ -86,7 +86,6 @@ class ApplicationController < ActionController::Base
           end
         end
       else
-
         if params[:set_facility][:facility_id] == "-1"
           session[:facility] = Junk.new
           redirect_to(:controller => request.request_uri.split('/'), :action => 'index')

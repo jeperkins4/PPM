@@ -6,7 +6,8 @@
 <% session[:working_date] = time %>
 
 <form name='year_selector' id='year_selector'>
-<p>Live indicators this month (<%= time.strftime('%b') %> <%= select_year(Date.today, :field_name => 'selectedyear', :start_year => PppamsReview.earliest, :end_year => PppamsReview.latest + 1 ) %>): <%= currents.length %></p>
+<p>Live indicators this month (<%= time.strftime('%b') %> <%= select_year(session[:working_date].nil? ? Date.today : session[:working_date].year, {:field_name => 'selectedyear', :start_year => PppamsReview.earliest, :end_year => PppamsReview.latest + 1} ) %>): <%= currents.length %></p>
+<input type='hidden' value = '<%= session[:working_date].month %>' id='current_month_store' name='current_month_store'>
 </form>
 
 <table>
@@ -47,3 +48,6 @@
 </table>
 
 
+<script>
+$('year_selector')[0].onchange=function(){new Ajax.Updater('nav_results', '/pppams_indicators/_to_do?time=' + '01-' + $("current_month_store").value + '-' + this.options[this.selectedIndex].value, {asynchronous:true, evalScripts:true, onLoading:function(){$('nav_results').innerHTML = '<p style=\'text-align: center\'>Loading...</p>';}}); return false;};
+</script>

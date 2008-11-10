@@ -49,9 +49,9 @@ class NotificationReport < ActiveRecord::Base
       days_in_month = Time.days_in_month(date.month, date.year)
       days_remaining = days_in_month - date.day
       days_remaining_s = "#{days_remaining} #{days_remaining == 1 ? 'day' : 'days'} remaining"
-      to_do = to_do_ar[1] - to_do_ar[0]
       done = to_do_ar[0]
       all = to_do_ar[1]
+      to_do = all - done
 
       body = [
         "Report Date||#{date.strftime("%B %d, %Y")} (#{days_remaining_s} in #{date.strftime("%B")})", 
@@ -59,7 +59,7 @@ class NotificationReport < ActiveRecord::Base
         "Reviews Started for #{date.strftime("%B")}||#{done}",
         "Total Reviews for #{date.strftime("%B")}||#{all}",
         "Reviews Not Started for #{date.strftime("%B")}||#{to_do} (#{((to_do*100.0)/all).round rescue 0.0}%)",
-        "Link||http://[PPPAMS_URL]/pppams_reviews/"
+        "Link||http://#{NotificationReceiver.request_env['SERVER_NAME']}/pppams_reviews/"
       ].join("\n\n").gsub(/\|\|/,":\n  ")
 
       receivers.each do |receiver|

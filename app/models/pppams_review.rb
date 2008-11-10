@@ -57,7 +57,7 @@ class PppamsReview < ActiveRecord::Base
 
     def can_edit? 
        this_user_type = User.current_user.user_type
-	access_level = this_user_type.access_level.id
+	     access_level = this_user_type.access_level.id
        if !["", "Submitted", "Review"].index(self.status).nil? or this_user_type.user_type == "SuperAdministrator" 
 	    return true
 	    break

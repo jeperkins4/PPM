@@ -6,8 +6,15 @@ class NonCompIssue < ActiveRecord::Base
     validates_presence_of :facility_id
     validates_presence_of :details
     validates_presence_of :requirement
+    validates_presence_of :notification_date, :if => :is_resolved?
+    validates_presence_of :cap_due_date, :if => :is_resolved?
+    validates_presence_of :cap_review_date, :if => :is_resolved?
 
     after_save :set_nci_status
+    
+    def is_resolved?
+      !resolved_date.nil?
+    end
 
     def set_nci_status
       if self.notification_date.nil?

@@ -13,8 +13,17 @@ class PppamsReportsController < ApplicationController
   end
   
   def filter
-    if params.has_key?('commit')
-      @filter = params[:pppams_report_filter]
+    @last_post_to_xls = params[:last_post_to_xls]
+    if @last_post_to_xls == "1" or params.has_key?('commit')
+      use_params = params
+      if @last_post_to_xls == "1"
+        use_params = session[:last_post]
+      else
+        session[:last_post] = params
+      end
+
+      @filter = use_params[:pppams_report_filter]
+
       if @filter[:report_type] == 'signature.rhtml'
         if @filter[:facility_filter] == [""] || @filter[:facility_filter].split(",").length > 1
            flash[:warning] = 'This report can only be run with a single facility selected.'
@@ -56,7 +65,13 @@ class PppamsReportsController < ApplicationController
       @pppamsReviews = @pppamsReviews[0]
       @filter_name = @filter['name']
       @group_level = good_ids_ar[1]
-      render :partial => type, :layout => 'pppams_reports'
+      if @last_post_to_xls == "1"        
+        response.headers['CONTENT-TYPE'] = 'application/vnd.ms-excel'
+        response.headers['CONTENT-DISPOSITION'] = 'attachment; filename="' + type.capitalize + ' Report -' + Time.now.to_s + '.xls"'
+        render :partial => type , :type => 'application/vnd.ms-excel', :layout => false
+      else
+        render :partial => type, :layout => 'pppams_reports'
+      end
     else
       @doneFilters = PppamsReportFilter.find(:all).collect {|p| [ p.name] }
       if params.has_key?('pppams_report_filter') && !params[:pppams_report_filter][:name].empty? 

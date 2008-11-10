@@ -35,21 +35,28 @@ class PppamsReviewsController < ApplicationController
   def create
     working_date = session[:working_date]
     if working_date.month != Time.now.month or  working_date.year != Time.now.year 
-	params[:pppams_review][:created_on] = DateTime.parse(working_date.month.to_s + "/" + working_date.end_of_month.day.to_s + "/" + working_date.year.to_s + " 23:59:59")
+      params[:pppams_review][:created_on] = DateTime.parse(working_date.month.to_s + "/" + working_date.end_of_month.day.to_s + "/" + working_date.year.to_s + " 23:59:59")
+      params[:pppams_review][:real_creation_date] = Time.now
     end
-    @pppams_review = PppamsReview.new(params[:pppams_review])
-    if @pppams_review.save
-      for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]])
-        this_upload.pppams_review_id= @pppams_review.id
-        this_upload.created_by= nil
-        this_upload.save
-      end
-      flash[:notice] = 'PppamsReview was successfully created.'
+    done = PppamsReview.find(:all, :conditions => ["created_on >= ? and created_on <= ? and pppams_indicator_id = ?", working_date.beginning_of_month, DateTime.parse(working_date.month.to_s + "/" + working_date.end_of_month.day.to_s + "/" + working_date.year.to_s + " 23:59:59"), params[:pppams_review][:pppams_indicator_id]])
+    if done.length > 0
+      flash[:notice] = 'A review already exists for this indicator this month! Please edit the current indicator rather than create a new one.'
       redirect_to :controller => 'pppams_indicators'
     else
-      @pppams_indicator = @pppams_review.pppams_indicator
-      @new = true
-      render :action => 'new', :id => @pppams_review.pppams_indicator_id
+      @pppams_review = PppamsReview.new(params[:pppams_review])
+      if @pppams_review.save
+        for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]])
+          this_upload.pppams_review_id= @pppams_review.id
+          this_upload.created_by= nil
+          this_upload.save
+        end
+        flash[:notice] = 'PppamsReview was successfully created.'
+        redirect_to :controller => 'pppams_indicators'
+      else
+        @pppams_indicator = @pppams_review.pppams_indicator
+        @new = true
+        render :action => 'new', :id => @pppams_review.pppams_indicator_id
+      end
     end
   end
 

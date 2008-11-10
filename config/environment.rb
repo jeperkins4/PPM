@@ -64,6 +64,7 @@ end
 # require "#{File.dirname(__FILE__)}/active_record/dirty"
 require "active_record/dirty"
 
+
 ActiveRecord::Base.class_eval do
   include ActiveRecord::Dirty
 end

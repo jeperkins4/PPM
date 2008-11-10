@@ -1,13 +1,6 @@
-<table class='blank_container'>
-
-  <tr>
-    <td colspan="2">
-
 <span class='float-right'><%= "#{@show_from.strftime('%m/%d/%Y')} - #{@show_to.strftime('%m/%d/%Y')}" %></span>
 <h1>PRIVATE PRISON PROGRAM ACCOUNTABILITY PERFORMANCE RATING PROFILE</h1>
 
-    </td>
-  </tr>
 
 <% this_fac = @pppamsIndicators[0].pppams_category.facility %>
 
@@ -24,36 +17,24 @@
 <% group_tots = {} %>
 <% missing_flag = false %>
 
-<tr class='blank'><td class='blank' colspan=2>
-<h2>&nbsp;</h2>
-</td></tr>
 
-<tr class='blank'><td class='blank'>
-<table class='blank_container'> 
-<tr class='blank'><td class='blank'>Contract Provider</td><td class='blank'></td></tr>
-<tr class='blank'><td class='blank'>Facility Name</td><td class='blank'><%=h this_fac.facility %></td></tr>
-<tr class='blank'><td class='blank'>Number Of Beds</td><td class='blank'></td></tr>
-<tr class='blank'><td class='blank'>County</td><td class='blank'></td></tr>
+<table id='sig_table'> 
+<tr><td>Contract Provider</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>Contract Manager</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td>Facility Name</td><td><%=h this_fac.facility %></td>
+<td>Printed Name And Signature</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td>Number Of Beds</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>Warden Or Designee - Printed</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td>County</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>Name And Signature</td><td class='blank'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
 </table>
-</td>
 
-<td class='blank'>
-<table class='blank_container'> 
-<tr class='blank'><td class='blank'>Contract Manager</td><td class='blank'></td></tr>
-<tr class='blank'><td class='blank'>Printed Name And Signature</td><td class='blank'></td></tr>
-<tr class='blank'><td class='blank'>Warden Or Designee - Printed</td><td class='blank'></td></tr>
-<tr class='blank'><td class='blank'>Name And Signature</td><td class='blank'></td></tr>
-</table>
-</td></tr>
-
-<tr class='blank'><td class='blank' colspan=2>
-<h2>&nbsp;</h2>
-</td></tr>
-<tr><td colspan=2>
 <h2 style='text-align:center;'>Program Performance By Indicator</h2>
-</td></tr>
 
-<tr class='blank'><td  class='blank'>
+<table class='clear_back blank_container'>
+	
+<tr class='blank'><td class='blank'>
+	
 <table>
 
 <% for this_indicator in @pppamsIndicators %>
@@ -74,13 +55,13 @@
   <% end %>
 
   <% if group_id_store != my_group_id && my_group_id == 4 %>
-	</table></td>
+	</table></td><td class='blank' style='width: 40px;'></td>
     <td class='blank'>
 	<table>
   <% end %>
 
   <% if group_id_store != my_group_id && my_group_id != -1 %>
-  <% if group_id_store != 0 && my_group_id !=4 %><tr><td class='blank' colspan=4>&nbsp;</td></tr><% end %>
+  <% if group_id_store != 0 && my_group_id !=4 %><tr><td class='blank' colspan=4></td></tr><% end %>
   <tr>
   <th><%=h this_indicator.pppams_category.pppams_category_base_ref.pppams_category_group.name %></th>
   <th>Max Score</th><th>Rating</th><th>%</th>
@@ -106,19 +87,14 @@
 
 </td></tr>
 </table>
+</td></tr>
+</table>
 
 <% all_cats = PppamsCategoryGroup.find(:all) %>
 
-</td></tr>
 
-<tr class='blank'><td class='blank' colspan=2>
-<h2>&nbsp;</h2>
-</td></tr>
-<tr><td colspan=2>
 <h2 style='text-align:center;'>Program Performance By Standard</h2>
-</td></tr>
 
-<tr class='blank'><td colspan=2 class='blank'>
 	
 	<table class='blank'>
 		<tr class='blank'>
@@ -164,8 +140,6 @@
 		</tr>
 		<tr class='blank'><td colspan=11 class='blank'></td></tr>
 		<tr class='blank'><td colspan=11 class='blank'></td></tr>
-		<tr class='blank'><td colspan=11>Scoring Legend:                     Performance Indicators: 0=Non-Performance, 4-5 =Partial, 6-7-8=Satisfactory, 9-10=Superior</td></tr>
+		<tr class='blank'><td colspan=11>Scoring Legend:                     Performance Indicators: 0=Non-Performance, 4-6=Partial, 7-8=Satisfactory, 9-10=Superior</td></tr>
 	</table>
 	
-</td></tr>
-</table>

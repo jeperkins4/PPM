@@ -8,10 +8,14 @@ class Notification < ActiveRecord::Base
   validates_presence_of :to_email, :from_email, :subject, :body, :status, :created_by
   validates_format_of :to_email, :with => RegexEmail
   validates_format_of :from_email, :with => RegexEmail
-  validates_inclusion_of :status, :in => %w(Pending Sent Error), :message => "Invalid Status"
+  validates_inclusion_of :status, :in => %w(Pending Sent Error Digest Merged), :message => "Invalid Status"
 
   def self.pending_notifications
     Notification.find(:all, :conditions => {:status => 'Pending'}, :order => 'updated_at')
+  end
+
+  def self.pending_digest_notifications
+    Notification.find(:all, :conditions => {:status => 'Digest'}, :order => 'updated_at')
   end
 
   def self.purge_notifications(status, days_old)

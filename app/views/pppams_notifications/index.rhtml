@@ -4,6 +4,21 @@
 
 <form name="pppams_notifications" method="post" action="/pppams_notifications/update_notifications">
   <table>
+  <tr>
+    <th>Send Status Change Reports ...</th>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <%= radio_button('user', 'notify_method', 'single', :selected => @user.notify_method == 'single') %>
+      <label for="user[notify_method]">As they happen</label><br/>
+      <%= radio_button('user', 'notify_method', 'digest', :selected => @user.notify_method == 'digest') %>
+      <label for="user[notify_method]">Once daily, at: <select name="user[notify_digest_time]">
+        <%= options_for_select(NotificationReceiver.notification_times, @user.notify_digest_time) %>
+      </select></label>
+    </td>
+  </tr>
+  </table>
+  <table>
     <tr>
       <th>Facility</th>
       <th>Report Status:</th>

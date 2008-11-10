@@ -28,6 +28,9 @@ namespace :pppams do
 
     desc "Send Pending Review Notifications emails"
     task :deliver => :environment do
+      puts "Preparing Digest Notifications ..."
+      NotificationReceiver.prepare_digest_notifications
+      
       pending = Notification.pending_notifications
       puts "Sending #{pending.size} #{pending.size == 1 ? 'Notification' : 'Notifications'} ..."
       pending.each do |notification|

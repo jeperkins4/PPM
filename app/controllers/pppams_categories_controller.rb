@@ -22,17 +22,17 @@ class PppamsCategoriesController < ApplicationController
       f_id = params[:choose_facility][:facility_id]
       new_f_id = session[:facility].id
       Facility.find(f_id).pppams_categories.each do |this_cat|
-	 new_cat = this_cat.clone
-	 new_cat.facility_id = new_f_id
-        if new_cat.save
+        new_cat = this_cat.clone
+        new_cat.facility_id = new_f_id
+          if new_cat.save
           cat_count.next 
           new_cat_id = new_cat.id
-          this_cat.pppams_indicators.each do |this_ind|
+            this_cat.pppams_indicators.each do |this_ind|
             new_ind = this_ind.clone
-	     new_ind.pppams_category_id = new_cat_id
+            new_ind.pppams_category_id = new_cat_id
             ind_count.next if new_ind.save
+            end
           end
-        end
       end
       flash[:notice] = "Copying complete. #{cat_count} categories and #{ind_count} indicators processed"
     else
@@ -54,13 +54,38 @@ class PppamsCategoriesController < ApplicationController
   end
 
   def create
-    @pppams_category = PppamsCategory.new(params[:pppams_category])
-    @pppams_category.facility_id = session[:facility].id
-    if @pppams_category.save
-      flash[:notice] = 'PppamsCategory was successfully created.'
-      redirect_to :action => 'list'
+    if params.include?(:is_global)
+      base = PppamsCategoryBaseRef.new
+      base.name = params[:pppams_category][:name]
+      base.pppams_category_group_id = params[:pppams_category_base_ref][:pppams_category_group_id]
+      base.save
+      fail_ar = []
+      for this_f in Facility.find(:all)
+        newcat = PppamsCategory.new(params[:pppams_category])
+        newcat.facility_id = this_f.id
+        newcat.pppams_category_base_ref_id = base.id
+        fail_ar << newcat.facility.facility unless newcat.save
+      end
+      if fail_ar.length > 0
+        flash[:notice] = 'PppamsCategory creation failed for the following facilities: ' + fail_ar.join(', ')
+        render :action => 'new'
+      else
+        flash[:notice] = 'PppamsCategories were successfully created.'
+        redirect_to :action => 'list'
+      end
     else
-      render :action => 'new'
+      base = PppamsCategoryBaseRef.new
+      base.name = params[:pppams_category][:name]
+      base.pppams_category_group_id = params[:pppams_category_base_ref][:pppams_category_group_id]
+      base.save
+      @pppams_category = PppamsCategory.new(params[:pppams_category])
+      @pppams_category.facility_id = session[:facility].id
+      if @pppams_category.save
+        flash[:notice] = 'PppamsCategory was successfully created.'
+        redirect_to :action => 'list'
+      else
+        render :action => 'new'
+      end
     end
   end
 

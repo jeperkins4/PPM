@@ -56,12 +56,39 @@ class PppamsIndicatorsController < ApplicationController
   end
 
   def create
-    @pppams_indicator = PppamsIndicator.new(params[:pppams_indicator])
-    if @pppams_indicator.save
-      flash[:notice] = 'PppamsIndicator was successfully created.'
-      redirect_to :controller => 'pppams_categories', :action => 'show', :id => @pppams_indicator.pppams_category_id
+    if params.include?(:is_global)
+      base = PppamsIndicatorBaseRef.new
+      base.question = params[:pppams_indicator][:question]
+      base.pppams_category_base_ref_id = PppamsCategory.find(params[:pppams_indicator][:pppams_category_id]).pppams_category_base_ref_id
+      base.save
+      fail_ar = []
+      for this_cat in PppamsCategoryBaseRef.find(base.pppams_category_base_ref_id).pppams_categories
+        newind = PppamsIndicator.new(params[:pppams_indicator])
+        newind.pppams_category_id = this_cat.id
+        newind.pppams_indicator_base_ref_id = base.id
+        newind.set_good_months
+        fail_ar << newind.pppams_category.facility.facility unless newind.save
+      end
+      if fail_ar.length > 0
+        flash[:notice] = 'PppamsIndicator creation failed for the following facilities: ' + fail_ar.join(', ')
+        render :action => 'new'
+      else
+        flash[:notice] = 'PppamsIndicators were successfully created.'
+        redirect_to :controller => 'pppams_categories', :action => 'show', :id => params[:pppams_indicator][:pppams_category_id]
+      end
     else
-      render :action => 'new'
+      base = PppamsIndicatorBaseRef.new
+      base.question = params[:pppams_indicator][:question]
+      base.pppams_category_base_ref_id = PppamsCategory.find(params[:pppams_indicator][:pppams_category_id]).pppams_category_base_ref_id
+      base.save
+      @pppams_indicator = PppamsIndicator.new(params[:pppams_indicator])
+      @pppams_indicator.set_good_months
+      if @pppams_indicator.save
+        flash[:notice] = 'PppamsIndicator was successfully created.'
+        redirect_to :controller => 'pppams_categories', :action => 'show', :id => @pppams_indicator.pppams_category_id
+      else
+        render :action => 'new'
+      end
     end
   end
 

@@ -47,20 +47,27 @@ class NonCompIssuesController < ApplicationController
   # POST /non_comp_issues
   # POST /non_comp_issues.xml
   def create
-    @non_comp_issue = NonCompIssue.new(params[:non_comp_issue])
-    respond_to do |format|
-      if @non_comp_issue.save
-        year_start = DateTime.parse("1/1/#{Time.now.year}").strftime("%Y-%m-%d 00:00:00")
-        first_this_year = NonCompIssue.find(:first, :order => :created_on, :conditions => ["created_on > '#{year_start}' and facility_id = '#{@non_comp_issue.facility_id}'"])
-        mynum = (@non_comp_issue.id - first_this_year.id) + 1
-        @non_comp_issue.issue_number = Time.now.month.to_s + '/' + Time.now.year.to_s + '-' + session[:facility].shortname + '-' + mynum.to_s
-        @non_comp_issue.save
-        flash[:notice] = 'NonCompIssue was successfully created.'
-        format.html { redirect_to non_comp_issue_url(@non_comp_issue) }
-        format.xml  { head :created, :location => non_comp_issue_url(@non_comp_issue) }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @non_comp_issue.errors.to_xml }
+    if session[:facility].shortname.nil?
+      flash[:notice] = 'Issue could not be saved - this facility does not have a short name!'
+      render :action => 'new'
+    else
+      @non_comp_issue = NonCompIssue.new(params[:non_comp_issue])
+      respond_to do |format|
+        if @non_comp_issue.save
+          year_start = DateTime.parse("1/1/#{Time.now.year}").strftime("%Y-%m-%d 00:00:00")
+          first_this_year = NonCompIssue.find(:first, :order => :created_on, :conditions => ["created_on > '#{year_start}' and facility_id = '#{@non_comp_issue.facility_id}'"])
+          mynum = (@non_comp_issue.id - first_this_year.id) + 1
+
+          @non_comp_issue.issue_number = Time.now.month.to_s + '/' + Time.now.year.to_s + '-' + session[:facility].shortname + '-' + mynum.to_s
+
+          @non_comp_issue.save
+          flash[:notice] = 'NonCompIssue was successfully created.'
+          format.html { redirect_to non_comp_issue_url(@non_comp_issue) }
+          format.xml  { head :created, :location => non_comp_issue_url(@non_comp_issue) }
+        else
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @non_comp_issue.errors.to_xml }
+        end
       end
     end
   end

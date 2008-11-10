@@ -34,16 +34,16 @@ Page: <%= pagination_links(@pppams_issue_pages)%>
 	</table>
 </p>
 	<% end -%>	
-	
-<%if session[:facility].type.to_s == 'Junk' && !@pppams_issues.nil? %>
-<h3><%= @pppams_issues[0].facility.facility %></h3>
-<%end%>
 
-<table>
+<%headings = {'CM_response_due_date' => 'Response Due By', 'CM_response_date' => 'Date Response Sent'}%>
+<table class='indextable'>
+<%if session[:facility].type.to_s == 'Junk' && !@pppams_issues.nil? %>
+<tr class='blankrow'><td colspan=11><h3><%= @pppams_issues[0].facility.facility %></h3></td></tr>
+<%end%>
   <tr>
     <th>Days Open</th>
     <% for column in PppamsIssue.content_columns.reject {|c| c.name =~ /(_status|_on|_by)$/ } %>
-      <th><%= column.human_name %></th>
+      <th><%= headings.include?(column.name) ? headings[column.name] : column.human_name %></th>
     <% end %>
     <th></th>
   </tr>
@@ -51,13 +51,11 @@ Page: <%= pagination_links(@pppams_issue_pages)%>
 
 <% for pppams_issue in @pppams_issues -%>
   <% if fac_store != pppams_issue.facility.id && fac_store != 0%>
-	</table>
-	<h3><%= pppams_issue.facility.facility %></h3>
-	<table>
+    <tr class='blankrow'><td colspan=11><h3><%= pppams_issue.facility.facility %></h3></td></tr>
 	<tr>
-    <th>Number</th>
+    <th>Days Open</th>
     <% for column in PppamsIssue.content_columns.reject {|c| c.name =~ /(_status|_on|_by)$/ } %>
-      <th><%= column.human_name %></th>
+      <th><%= headings.include?(column.name) ? headings[column.name] : column.human_name %></th>
     <% end %>
     <th></th>
     </tr>

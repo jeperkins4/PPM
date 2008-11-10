@@ -1,8 +1,16 @@
 <%= error_messages_for 'pppams_category' %>
 
+<p><label for="pppams_category_is_global">Global category?</label><br/>
+<input type='checkbox' name = 'is_global'></p>
+
 <!--[form:pppams_category]-->
+
 <p><label for="pppams_category_name">Name</label><br/>
 <%= text_field 'pppams_category', 'name'  %></p>
+
+<p><label for="pppams_category_group_id">Category group</label><br/>
+<%= select( "pppams_category_base_ref", "pppams_category_group_id", PppamsCategoryGroup.find(:all).collect {|p| [ p.name, p.id.to_s] } , {})%></p>
+
 
 <p><label for="pppams_category_description">Description</label><br/>
 <%= text_area 'pppams_category', 'description'  %></p>

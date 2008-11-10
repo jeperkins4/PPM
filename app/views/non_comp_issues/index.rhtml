@@ -1,3 +1,5 @@
+<div class='scroll_box'>
+
 <h2>Non-compliance Issues</h2>
 
 <% if @nci_status.to_i == 4 -%>
@@ -35,11 +37,14 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
 </p>
 	<% end -%>	
 	
+
+	
+<table class='indextable'>
+	
 <%if session[:facility].type.to_s == 'Junk' && !@non_comp_issues.nil?%>
-<h3><%= @non_comp_issues[0].facility.facility %></h3>
+<tr class='blankrow'><td colspan=11><h3><%= @non_comp_issues[0].facility.facility %></h3></td></tr>
 <%end%>
 	
-<table>
   <tr>
     <th>Days Open</th>
     <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_status|_on|_by)$/  } %>
@@ -50,12 +55,10 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
 <%fac_store = 0%>
 <% for non_comp_issue in @non_comp_issues -%>
 <% if fac_store != non_comp_issue.facility.id && fac_store != 0%>
-	</table>
-	<h3><%= non_comp_issue.facility.facility %></h3>
-	<table>
+	<tr class='blankrow'><td colspan=11><h3><%= non_comp_issue.facility.facility %></h3></td></tr>
 	<tr>
-    <th>Number</th>
-    <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_number|_status|_on|_by)$/  } %>
+    <th>Days Open</th>
+    <% for column in NonCompIssue.content_columns.reject {|c| c.name =~ /(_status|_on|_by)$/  } %>
       <th><%= column.human_name %></th>
     <% end %>
     <th></th>
@@ -94,3 +97,5 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
 <%else%>
 <%= link_to 'New Non Compliance Issue', :action => 'new' %>
 <%end%>
+
+</div>

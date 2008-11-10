@@ -1,29 +1,18 @@
 <% show_from = @from_date.empty? ? Time.now.beginning_of_month.strftime('%m/%d/%Y') : DateTime.parse(@from_date).strftime('%m/%d/%Y') %>
 <% show_to = @to_date.empty? ? Time.now.end_of_month.strftime('%m/%d/%Y') :  DateTime.parse(@to_date).strftime('%m/%d/%Y')  %>
 
-<table class="full-report" cellpadding="0" cellspacing="0">
-  <tr class="full-report">
-    <td>
 <span class='float-right'><%= "#{show_from} - #{show_to}" %></span>
 <h1>Full Data <%= @filter_name ? "- #{@filter_name}" : ""%></h1>
-    </td>
-  </tr>
+
 
 <% fac_id_store = 0 %>  
 <% id_store = 0 %>
+<table>
 <% for this_review in @pppamsReviews %>
+
+
 <% if fac_id_store != this_review.pppams_indicator.pppams_category.facility_id %>
-<% if fac_id_store != 0 %></table><% end %>
-
-  <tr class="full-report">
-    <td>
-  <h2><%=h this_review.pppams_indicator.pppams_category.facility.facility %></h2>
-    </td>
-  </tr>
-  <tr class="full-report">
-    <td>
-
-  <table>
+  <tr class='blank'><td colspan=9><h2><%=h this_review.pppams_indicator.pppams_category.facility.facility %></h2></td></tr>
   <tr>
   <th>Date</th>
   <th>Indicator</th>
@@ -32,6 +21,7 @@
   <% end %>
   </tr>
 <% end %>
+
   <% if id_store != this_review.pppams_indicator.pppams_category_id %>
   <tr><td colspan = 9><p class='cat_heading'><%=h this_review.pppams_indicator.pppams_category.name %></p></td></tr>
   <% end %>
@@ -49,9 +39,9 @@
   <% id_store = this_review.pppams_indicator.pppams_category_id %>
   <% fac_id_store = this_review.pppams_indicator.pppams_category.facility_id %>
 <% end %>
+
+
 </table>
 
-    </td>
-  </tr>
-</table>
+
  

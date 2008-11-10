@@ -47,6 +47,9 @@
 </tr><tr>
 			<td><b>Requirement / Refs:</b></td>
 			<td colspan=5><%= non_comp_issue.requirement %></td>
+</tr><tr>
+			<td><b>Notes:</b></td>
+			<td colspan=5><%= non_comp_issue.notes %></td>
 </tr>
 	<% @follow_ups = NonCompFollowUp.find(:all, :conditions => ['non_comp_issue_id = ?', non_comp_issue.id]) %>
 		<tr>

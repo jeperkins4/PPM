@@ -20,9 +20,9 @@ namespace :pppams do
     end
 
     desc "Generate Pending Review Notifications"
-    task :generate => :environment do
+    task :generate => :environment do 
       puts "Generating Pending Review Notifications for #{Time.now.strftime("%B %d, %Y")} ..."
-      count = NotificationReport.generate_pending_review_notifications
+      count = NotificationReport.generate_pending_review_notifications(Time.now, ENV['SERVER_NAME'])
       puts "#{count} Pending Review #{count == 1 ? 'Notifications' : 'Notifications'} generated."
     end
 

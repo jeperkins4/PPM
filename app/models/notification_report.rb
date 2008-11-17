@@ -39,7 +39,7 @@ class NotificationReport < ActiveRecord::Base
   end
 
   
-  def self.generate_pending_review_notifications(date = Time.now)
+  def self.generate_pending_review_notifications(date = Time.now, server_name = NotificationReceiver.request_env['SERVER_NAME'])
     notification_count = 0
     facilities = Facility.find(:all)
     facilities.each do |facility|
@@ -59,7 +59,7 @@ class NotificationReport < ActiveRecord::Base
         "Reviews Started for #{date.strftime("%B")}||#{done}",
         "Total Reviews for #{date.strftime("%B")}||#{all}",
         "Reviews Not Started for #{date.strftime("%B")}||#{to_do} (#{((to_do*100.0)/all).round rescue 0.0}%)",
-        "Link||http://#{NotificationReceiver.request_env['SERVER_NAME']}/pppams_reviews/"
+        "Link||http://#{server_name}/pppams_reviews/"
       ].join("\n\n").gsub(/\|\|/,":\n  ")
 
       receivers.each do |receiver|

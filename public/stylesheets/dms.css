@@ -859,6 +859,10 @@ td {
     display: inline;
 }
 
+#review_table {
+	width: 100%;
+}
+
 #pppams_review_edit {
     position: relative;
 }

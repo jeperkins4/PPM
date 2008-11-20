@@ -21,7 +21,7 @@ with note: <textarea onfocus = "var currentTime = new Date();var datestamp = cur
 <th></th>
 <th>ID</th>
 <th>Indicator</th>
-<% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by)$/  } %>
+<% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by|real_creation_date)$/  } %>
 <th><%= column.human_name %></th>
 <% end %>
 </tr>
@@ -40,7 +40,7 @@ with note: <textarea onfocus = "var currentTime = new Date();var datestamp = cur
   <% end %>
   <td><%=h pppams_indicator.id%></td>
   <td><%=h pppams_indicator.question%></td>
-  <% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by)$/  } %>
+  <% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by|real_creation_date)$/  } %>
     <% if current_review.nil? %> 
         <td> - </td>
         <% next %>

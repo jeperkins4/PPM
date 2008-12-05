@@ -30,7 +30,7 @@ with note: <textarea onfocus = "var currentTime = new Date();var datestamp = cur
   <% if id_store != pppams_indicator.pppams_category_id %>
   <tr><td colspan = 11><p class='cat_heading'><%=h pppams_indicator.pppams_category.name %></p></td></tr>
   <% end %>
-  <tr>
+  <tr <% if (current_review.nil? or current_review.status != 'Locked') and time.beginning_of_month < Time.now.beginning_of_month %>class='warning_row' <% end %>>
   <% if current_review.nil? %>
   <td></td>
   <td><%= link_to image_tag("review_icon.png", :border=>0, :title => "Create a new review for this indicator"), :controller => 'pppams_reviews', :action => 'new', :pppams_indicator_id => pppams_indicator, :create_time => time  %></td>

@@ -57,25 +57,27 @@
     
           <%  @me.each do |date|  %>
 
-            <% if session[:facility].type.to_s == 'Junk' %>
-              <%  @count = AccountabilityLogs.find(:first, 
-              :conditions => ['log_month = ? and log_year = ? and prompt_id = ?', 
-                date.first,date.last,question.id]).response rescue 0%>
-            <td><%=  number_with_precision(@count,2) %></td>
-            <% @row_sum += @count %>
-              <% @column_sum << AccountabilityLogs.sum('response',
-              :conditions => ['log_month = ? and log_year = ? and prompt_id in (?) ', date.first, date.last, @filter_questions]) %>
-              <% @notes += AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and log_month = ? and log_year = ?',category.id, date.first, date.last]) %>
-            <% else %>
-              <%  @count = AccountabilityLogs.find(:first, 
-              :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id = ?', 
-                session[:facility],date.first,date.last,question.id]).response rescue 0%>
-            <td><%=  number_with_precision(@count,2) %></td>
-            <% @row_sum += @count %>
-              <% @column_sum << AccountabilityLogs.sum('response',
-              :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id in (?) ', session[:facility].id, date.first, date.last, @filter_questions]) %>
-              <% @notes += AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and facility_id = ? and log_month = ? and log_year = ?',category.id,session[:facility].id, date.first, date.last]) %>
-            <% end %>
+
+
+          <% if session[:facility].type.to_s == 'Junk' %>
+            <%  @count = AccountabilityLogs.find(:first, 
+            :conditions => ['log_month = ? and log_year = ? and prompt_id = ?', 
+              date.first,date.last,question.id]).response rescue 0%>
+          <td><%=  number_with_precision(@count,2)  %></td>
+          <% @row_sum += @count %>
+            <% @column_sum << AccountabilityLogs.sum('response',
+            :conditions => ['log_month = ? and log_year = ? and prompt_id in (?) ', date.first, date.last, @filter_questions]) %>
+            <% @notes += AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and log_month = ? and log_year = ?',category.id, date.first, date.last]) %>
+          <% else %>
+            <%  @count = AccountabilityLogs.find(:first, 
+            :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id = ?', 
+              session[:facility],date.first,date.last,question.id]).response rescue 0%>
+          <td><%=  number_with_precision(@count,2)  %></td>
+          <% @row_sum += @count %>
+            <% @column_sum << AccountabilityLogs.sum('response',
+            :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id in (?) ', session[:facility].id, date.first, date.last, @filter_questions]) %>
+            <% @notes += AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and facility_id = ? and log_month = ? and log_year = ?',category.id,session[:facility].id, date.first, date.last]) %>
+          <% end %>
 
           <% end %>
                                             

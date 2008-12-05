@@ -13,7 +13,7 @@ class PppamsCategoriesController < ApplicationController
          
 
   def list
-    @pppams_category_pages, @pppams_categories = paginate :pppams_categories, :conditions => ["facility_id = ?", session[:facility].id], :per_page => 100
+    @pppams_categories = PppamsCategory.find(:all, :conditions => ["facility_id = ?", session[:facility].id])
   end
 
   def copy_categories
@@ -44,7 +44,7 @@ class PppamsCategoriesController < ApplicationController
 
   def show
     @pppams_category = PppamsCategory.find(params[:id])
-    @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :conditions => ["pppams_category_id = ?", params[:id]], :per_page => 10
+    @pppams_indicators = PppamsIndicator.find(:all, :conditions => ["pppams_category_id = ?", params[:id]])
     @list_output = render_to_string(:template => 'pppams_indicators/pure_list', :layout => false)
     @list_output = @list_output.gsub(/h1/, "h2")
   end
@@ -104,6 +104,10 @@ class PppamsCategoriesController < ApplicationController
   end
 
   def destroy
+    category = PppamsCategory.find(params[:id])
+    baseref = category.pppams_category_base_ref
+    othercats - baseref.pppams_categories
+    baseref.destroy if othercats.length <= 1
     PppamsCategory.find(params[:id]).destroy
     redirect_to :action => 'list'
   end

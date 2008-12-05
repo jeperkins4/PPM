@@ -35,7 +35,7 @@ class PppamsIndicator < ActiveRecord::Base
     id_range = "(" + currents.collect {|x| x.id.to_s}.join(",") + ")"
     lowerlimit = this_month.beginning_of_month
     upperlimit = DateTime.parse(this_month.month.to_s + "/" + this_month.end_of_month.day.to_s + "/" + this_month.year.to_s + " 23:59:59")
-    reviews = PppamsReview.find(:all, :conditions => ["created_on >= ? AND created_on <= ? and pppams_indicator_id in #{id_range}", lowerlimit, upperlimit])
+    reviews = PppamsReview.find(:all, :conditions => ["created_on >= ? AND created_on <= ? and status = 'Locked' and pppams_indicator_id in #{id_range}", lowerlimit, upperlimit])
     return [reviews.length,currents.length] 
   end
   

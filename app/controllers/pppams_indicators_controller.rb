@@ -124,8 +124,12 @@ class PppamsIndicatorsController < ApplicationController
   end
 
   def destroy
-    @thisIndicatorCat = PppamsIndicator.find(params[:id]).pppams_category_id
-    PppamsIndicator.find(params[:id]).destroy
+    indicator = PppamsIndicator.find(params[:id])
+    baseref = indicator.pppams_indicator_base_ref
+    otherinds = baseref.pppams_indicators
+    baseref.destroy if otherinds.length <= 1
+    @thisIndicatorCat = indicator.pppams_category_id
+    indicator.destroy
     redirect_to :action => 'show', :controller => 'pppams_categories', :id => @thisIndicatorCat
   end
   

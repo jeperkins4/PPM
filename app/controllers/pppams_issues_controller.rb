@@ -52,21 +52,28 @@ class PppamsIssuesController < ApplicationController
     params[:pppams_issue][:facility_id] = session[:facility].id
 
     @pppams_issue = PppamsIssue.new(params[:pppams_issue])
+    
+    if session[:facility].shortname.nil?
+        flash[:notice] = 'Data could not be saved! This facility does not have a short name in the database. Please contact a system administrator.'
+        redirect_to "/pppams_issues" 
+    else
 
-    respond_to do |format|
-      if @pppams_issue.save
-        year_start = DateTime.parse("1/1/#{Time.now.year}").strftime("%Y-%m-%d 00:00:00")
-        first_this_year = PppamsIssue.find(:first, :order => :created_on, :conditions => ["created_on > '#{year_start}' and facility_id = '#{@pppams_issue.facility_id}'"])
-        mynum = (@pppams_issue.id - first_this_year.id) + 1
-        @pppams_issue.pppams_issue_number = Time.now.month.to_s + '/' + Time.now.year.to_s + '-' + session[:facility].shortname + '-' + mynum.to_s
-        @pppams_issue.save
-        flash[:notice] = 'PppamsIssue was successfully created.'
-        format.html { redirect_to pppams_issue_url(@pppams_issue) }
-        format.xml  { head :created, :location => pppams_issue_url(@pppams_issue) }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @pppams_issue.errors.to_xml }
+      respond_to do |format|
+        if @pppams_issue.save
+          year_start = DateTime.parse("1/1/#{Time.now.year}").strftime("%Y-%m-%d 00:00:00")
+          first_this_year = PppamsIssue.find(:first, :order => :created_on, :conditions => ["created_on > '#{year_start}' and facility_id = '#{@pppams_issue.facility_id}'"])
+          mynum = (@pppams_issue.id - first_this_year.id) + 1
+          @pppams_issue.pppams_issue_number = Time.now.month.to_s + '/' + Time.now.year.to_s + '-' + session[:facility].shortname + '-' + mynum.to_s
+          @pppams_issue.save
+          flash[:notice] = 'PppamsIssue was successfully created.'
+          format.html { redirect_to pppams_issue_url(@pppams_issue) }
+          format.xml  { head :created, :location => pppams_issue_url(@pppams_issue) }
+        else
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @pppams_issue.errors.to_xml }
+        end
       end
+    
     end
   end
   

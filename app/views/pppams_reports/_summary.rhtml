@@ -58,7 +58,7 @@ Status:
   <% end %>
 
   <% if fac_id_store != this_indicator.pppams_category.facility_id && this_indicator.pppams_category.facility_id != -1 && @group_level >= 2 %>
-  <br/><h2><%=h this_indicator.pppams_category.facility.facility %></h2>
+  <tr class='blankrow'><td colspan=2><h2><%=h this_indicator.pppams_category.facility.facility %></h2></td></tr>
   <% end %>
 
   <% if (fac_id_store != this_indicator.pppams_category.facility_id && fac_id_store == 0 ) || (fac_id_store != this_indicator.pppams_category.facility_id && this_indicator.pppams_category.facility_id != -1 && @group_level >= 1) %>

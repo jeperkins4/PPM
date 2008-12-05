@@ -34,7 +34,7 @@ class PppamsReportsController < ApplicationController
         end
         @filter[:score_filter] = @filter[:status_filter] = @filter[:indicator_filter] = [""]
         @filter[:end_date] = Time.parse(@filter[:start_date]).end_of_month.to_s
-        @filter[:category_filter] = PppamsCategory.find(:all, :conditions => ["facility_id in (#{@filter[:facility_filter]})"]).collect {|p| [ p.id] }
+        @filter[:category_filter] = PppamsCategory.find(:all, :conditions => ["facility_id in (#{@filter[:facility_filter]})"]).collect {|p| [ p.pppams_category_base_ref_id] }
       end
       type = @filter[:report_type].nil? ? "full" : @filter[:report_type].split('.')[0]
 

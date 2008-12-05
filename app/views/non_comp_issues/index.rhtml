@@ -42,6 +42,7 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
 <table class='indextable'>
 	
 <%if session[:facility].type.to_s == 'Junk' && !@non_comp_issues.nil?%>
+<% session[:dbtest] = @non_comp_issues[0]%>
 <tr class='blankrow'><td colspan=11><h3><%= @non_comp_issues[0].facility.facility %></h3></td></tr>
 <%end%>
 	

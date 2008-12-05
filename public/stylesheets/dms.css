@@ -1,5 +1,8 @@
 /* LAYOUT */
 
+#review_table {
+	width: 100%;
+}
 
 .wrapper {
     width: 100%;
@@ -859,10 +862,6 @@ td {
     display: inline;
 }
 
-#review_table {
-	width: 100%;
-}
-
 #pppams_review_edit {
     position: relative;
 }
@@ -1133,7 +1132,7 @@ tr.warning_row {
 .scroll_box {
     width: 100%;
     height: auto;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: auto;
     margin: 0 auto;
 }
@@ -1194,7 +1193,7 @@ th.average-score {
 }
 
 table.indextable {
-	width: 100%;
+	width: 98%;
 }
 
 tr.blankrow, tr.blankrow td {

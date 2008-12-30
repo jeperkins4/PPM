@@ -10,7 +10,7 @@ class PppamsIssuesController < ApplicationController
 
     @status_ar_st = (@pppams_issue_status.to_i == 3) ? "3" : (0..@pppams_issue_status.to_i).to_a
     
-    condition_ar = session[:facility].type.to_s == 'Junk' ? ['pppams_issue_status in (?)', @status_ar_st ]: ['pppams_issue_status in (?) and facility_id = ?', @status_ar_st, session[:facility].id ]
+    condition_ar = session[:facility].class.to_s == 'Junk' ? ['pppams_issue_status in (?)', @status_ar_st ]: ['pppams_issue_status in (?) and facility_id = ?', @status_ar_st, session[:facility].id ]
 
     @pppams_issue_pages, @pppams_issues = paginate :pppams_issue, 
     :order => "facility_id, received_date",
@@ -36,7 +36,7 @@ class PppamsIssuesController < ApplicationController
   
   # GET /pppams_issues/new
   def new
-    redirect_to :action => :index if session[:facility].type.to_s == 'Junk'
+    redirect_to :action => :index if session[:facility].class.to_s == 'Junk'
     @pppams_issue = PppamsIssue.new
   end
   

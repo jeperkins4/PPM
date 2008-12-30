@@ -59,7 +59,7 @@
 
 
 
-          <% if session[:facility].type.to_s == 'Junk' %>
+          <% if session[:facility].class.to_s == 'Junk' %>
             <%  @count = AccountabilityLogs.find(:first, 
             :conditions => ['log_month = ? and log_year = ? and prompt_id = ?', 
               date.first,date.last,question.id]).response rescue 0%>
@@ -185,7 +185,7 @@
           <% else -%> 
             <% (month >= 7) ? @year = @time_now.year : @year = @time_now.year + 1-%> 
           <% end -%> 
-          <% if session[:facility].type.to_s == 'Junk' %>
+          <% if session[:facility].class.to_s == 'Junk' %>
             <% @count = AccountabilityLogs.find(:first, :conditions => ['log_month = ? and log_year = ? and prompt_id = ?',month,@year,question.id])  -%>
           <% else %> 
             <% @count = AccountabilityLogs.find(:first, :conditions => ['facility_id = ? and log_month = ? and log_year = ? and prompt_id = ?', session[:facility],month,@year,question.id])  -%>
@@ -256,7 +256,7 @@
       <% else -%> 
         <% (month >= 7) ? @year = @time_now.year : @year = @time_now.year + 1-%> 
       <% end -%>
-      <% if session[:facility].type.to_s == 'Junk' %>
+      <% if session[:facility].class.to_s == 'Junk' %>
         <% @notes += AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and log_month = ? and log_year = ?',category.id,month, @year]) %>
       <% else %>
         <% @notes += AccountabilityLogDetails.find(:all, :conditions => ['context_id = ? and facility_id = ? and log_month = ? and log_year = ?',category.id,session[:facility].id,month, @year]) %>

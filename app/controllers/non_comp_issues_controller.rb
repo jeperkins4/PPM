@@ -9,7 +9,7 @@ class NonCompIssuesController < ApplicationController
     @nci_status = session[:nci_status].nil? ?  "3" : session[:nci_status]
     @status_ar_st = (@nci_status.to_i == 4) ? "4" : (0..@nci_status.to_i).to_a
     
-    condition_ar = session[:facility].type.to_s == 'Junk' ? ['nci_status in (?)', @status_ar_st] : ['nci_status in (?) and facility_id = ?', @status_ar_st, session[:facility].id]
+    condition_ar = session[:facility].class.to_s == 'Junk' ? ['nci_status in (?)', @status_ar_st] : ['nci_status in (?) and facility_id = ?', @status_ar_st, session[:facility].id]
     @non_comp_issue_pages, @non_comp_issues = paginate :non_comp_issue, 
     :order => 'facility_id, discovery_date',
     :per_page => 20,
@@ -35,7 +35,7 @@ class NonCompIssuesController < ApplicationController
   
   # GET /non_comp_issues/new
   def new
-    redirect_to :action => :index if session[:facility].type.to_s == 'Junk'
+    redirect_to :action => :index if session[:facility].class.to_s == 'Junk'
     @non_comp_issue = NonCompIssue.new
   end
   

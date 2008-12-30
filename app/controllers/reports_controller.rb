@@ -103,7 +103,7 @@ class ReportsController < ApplicationController
       @search_string += " and investigation_closed <> ? "
       @status = 42 #All_HACKITY_HACK
     end
-    if session[:facility].type.to_s == 'Junk'
+    if session[:facility].class.to_s == 'Junk'
     session[:report] = Incident.find :all,
       :conditions => ["" + @search_string + "", @begin, @end, @mins, @incident_type, @status], 
       :order => 'facility_id, incident_date, mins'
@@ -151,7 +151,7 @@ class ReportsController < ApplicationController
       @search_string += " and nci_status <> ? "
       @status = 42 #All_HACKITY_HACK
     end
-    if session[:facility].type.to_s == 'Junk'
+    if session[:facility].class.to_s == 'Junk'
     session[:report] = NonCompIssue.find :all,
       :conditions => ["" + @search_string + "", @begin, @end, @id, @status], 
       :order => 'facility_id, created_on, id'
@@ -199,7 +199,7 @@ class ReportsController < ApplicationController
       @status = 42 #All_HACKITY_HACK
     end
     @search_string += " and category = ? "
-    if session[:facility].type.to_s == 'Junk'
+    if session[:facility].class.to_s == 'Junk'
     session[:report] = PppamsIssue.find :all,
       :conditions => ["" + @search_string + "", @begin, @end, @id, @status], 
       :order => 'facility_id, received_date, id'

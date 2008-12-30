@@ -41,7 +41,7 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
 	
 <table class='indextable'>
 	
-<%if session[:facility].type.to_s == 'Junk' && !@non_comp_issues.nil?%>
+<%if session[:facility].class.to_s == 'Junk' && !@non_comp_issues.nil?%>
 <% session[:dbtest] = @non_comp_issues[0]%>
 <tr class='blankrow'><td colspan=11><h3><%= @non_comp_issues[0].facility.facility %></h3></td></tr>
 <%end%>
@@ -93,7 +93,7 @@ Page: <%= pagination_links(@non_comp_issue_pages)%>
 <% end %>
 </table>
 <br />
-<%if session[:facility].type.to_s == 'Junk'%>
+<%if session[:facility].class.to_s == 'Junk'%>
 <p>Please select a facility from the drop-down menu to add a new issue.</p>
 <%else%>
 <%= link_to 'New Non Compliance Issue', :action => 'new' %>

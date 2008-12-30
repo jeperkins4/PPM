@@ -47,11 +47,12 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def set_facility
-    if ['reports', 'non_comp_issues', 'pppams_issues'].index(params[:controller]).nil? && session[:facility].type.to_s == 'Junk'
-        session[:facility] = '' 
-        params[:set_facility] = {:facility_id => ''} if params[:set_facility].nil?
-    end
+  def set_facility        
+    if ["reports", "non_comp_issues", "pppams_issues"].index(params[:controller]).nil? && session[:facility].class.to_s == 'Junk'
+      session[:facility] = '' 
+      params[:set_facility] = {:facility_id => ''} if params[:set_facility].nil?      
+    end    
+    
     if session[:access_level] == 'Administrator'
       unless params[:set_facility] 
         unless session[:facility]

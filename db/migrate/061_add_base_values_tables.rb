@@ -7,6 +7,8 @@ class AddBaseValuesTables < ActiveRecord::Migration
     create_table :pppams_indicator_base_refs do |t|
       t.column :question, :text
     end
+    PppamsIndicatorBaseRef.execute "CREATE INDEX 'question' ON 'pppams_indicator_base_refs' 'question' LENGTH 50"
+
   end
 
 

@@ -1,4 +1,4 @@
-class AddNonCompIssueTable < ActiveRecord::Migration
+class CreateNonCompIssueTable < ActiveRecord::Migration
   def self.up
     create_table :non_comp_issues do |t|
       t.column :facility_id, :integer

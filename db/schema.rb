@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 77) do
+ActiveRecord::Schema.define(:version => 86) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -19,6 +19,9 @@ ActiveRecord::Schema.define(:version => 77) do
     t.column "created_by",      :string
   end
 
+  add_index "accountability_log_details", ["facility_id"], :name => "index_accountability_log_details_on_facility_id"
+  add_index "accountability_log_details", ["context_id", "facility_id", "log_month", "log_year"], :name => "facil_prompt_year_month"
+
   create_table "accountability_logs", :force => true do |t|
     t.column "facility_id", :integer
     t.column "context_id",  :integer
@@ -31,6 +34,7 @@ ActiveRecord::Schema.define(:version => 77) do
   end
 
   add_index "accountability_logs", ["facility_id", "prompt_id", "log_year", "log_month"], :name => "facility_id"
+  add_index "accountability_logs", ["facility_id", "log_month", "log_year", "prompt_id"], :name => "facil_month_year_prompt"
 
   create_table "action_types", :force => true do |t|
     t.column "action",      :string
@@ -69,12 +73,6 @@ ActiveRecord::Schema.define(:version => 77) do
 
   add_index "employee_positions", ["position_number_id"], :name => "index_employee_positions_on_position_number_id"
   add_index "employee_positions", ["employee_id"], :name => "index_employee_positions_on_employee_id"
-
-  create_table "employee_status_logs", :force => true do |t|
-    t.column "employee_id", :integer
-    t.column "tea_status",  :string
-    t.column "status_date", :date
-  end
 
   create_table "employees", :force => true do |t|
     t.column "facility_id", :integer
@@ -179,8 +177,8 @@ ActiveRecord::Schema.define(:version => 77) do
     t.column "non_comp_issue_id", :integer
     t.column "created_on",        :date
     t.column "updated_on",        :date
-    t.column "created_by",        :date
-    t.column "updated_by",        :date
+    t.column "created_by",        :integer
+    t.column "updated_by",        :integer
   end
 
   create_table "non_comp_issues", :force => true do |t|
@@ -258,6 +256,7 @@ ActiveRecord::Schema.define(:version => 77) do
     t.column "description",    :text
     t.column "deductable",     :integer
     t.column "deduction_days", :integer
+    t.column "facility_id",    :integer
   end
 
   create_table "positions", :force => true do |t|
@@ -265,7 +264,6 @@ ActiveRecord::Schema.define(:version => 77) do
     t.column "position_type_id", :integer
     t.column "salary",           :decimal, :precision => 10, :scale => 2
     t.column "description",      :text
-    t.column "facility_id",      :integer
   end
 
   create_table "pppams_categories", :force => true do |t|
@@ -276,6 +274,8 @@ ActiveRecord::Schema.define(:version => 77) do
     t.column "updated_on",                  :datetime
     t.column "pppams_category_base_ref_id", :integer
   end
+
+  add_index "pppams_categories", ["facility_id"], :name => "facility_id"
 
   create_table "pppams_category_base_refs", :force => true do |t|
     t.column "name",                     :string
@@ -291,6 +291,9 @@ ActiveRecord::Schema.define(:version => 77) do
     t.column "pppams_category_base_ref_id", :integer
   end
 
+  add_index "pppams_indicator_base_refs", ["question"], :name => "question"
+  add_index "pppams_indicator_base_refs", ["pppams_category_base_ref_id"], :name => "pppams_cat_base_id"
+
   create_table "pppams_indicators", :force => true do |t|
     t.column "pppams_category_id",           :integer
     t.column "question",                     :text
@@ -302,36 +305,19 @@ ActiveRecord::Schema.define(:version => 77) do
     t.column "pppams_indicator_base_ref_id", :integer
   end
 
-  create_table "pppams_indicators_copy", :force => true do |t|
-    t.column "pppams_category_id", :integer
-    t.column "question",           :text
-    t.column "reference",          :string
-    t.column "frequency",          :integer
-    t.column "start_month",        :integer
-    t.column "created_on",         :datetime
-    t.column "updated_on",         :datetime
-  end
+  add_index "pppams_indicators", ["pppams_category_id"], :name => "pppams_category_id"
+  add_index "pppams_indicators", ["pppams_indicator_base_ref_id"], :name => "pppams_indicator_base_ref_id"
+  add_index "pppams_indicators", ["good_months"], :name => "good_months"
+  add_index "pppams_indicators", ["pppams_category_id", "good_months"], :name => "category_good_months"
 
   create_table "pppams_indicators_pppams_references", :id => false, :force => true do |t|
     t.column "pppams_indicator_id", :integer, :null => false
     t.column "pppams_reference_id", :integer, :null => false
   end
 
-  create_table "pppams_indicators_pppams_references_back", :id => false, :force => true do |t|
-    t.column "pppams_indicator_id", :integer, :null => false
-    t.column "pppams_reference_id", :integer, :null => false
-  end
-
-  create_table "pppams_indicators_temp", :force => true do |t|
-    t.column "pppams_category_id",           :integer
-    t.column "question",                     :text
-    t.column "frequency",                    :integer
-    t.column "start_month",                  :integer
-    t.column "created_on",                   :datetime
-    t.column "updated_on",                   :datetime
-    t.column "good_months",                  :string
-    t.column "pppams_indicator_base_ref_id", :integer
-  end
+  add_index "pppams_indicators_pppams_references", ["pppams_indicator_id"], :name => "index_pppams_indicators_pppams_references_on_pppams_indicator_id"
+  add_index "pppams_indicators_pppams_references", ["pppams_reference_id"], :name => "index_pppams_indicators_pppams_references_on_pppams_reference_id"
+  add_index "pppams_indicators_pppams_references", ["pppams_indicator_id", "pppams_reference_id"], :name => "indicator_reference"
 
   create_table "pppams_issue_follow_ups", :force => true do |t|
     t.column "follow_up",       :text
@@ -403,25 +389,9 @@ ActiveRecord::Schema.define(:version => 77) do
     t.column "real_creation_date",  :datetime
   end
 
-  create_table "pppams_reviews_back", :force => true do |t|
-    t.column "pppams_indicator_id", :integer
-    t.column "doc_count",           :integer
-    t.column "score",               :integer
-    t.column "observation_ref",     :text
-    t.column "documentation_ref",   :text
-    t.column "interview_ref",       :text
-    t.column "evidence",            :text
-    t.column "created_on",          :datetime
-    t.column "updated_on",          :datetime
-    t.column "status",              :string
-    t.column "notes",               :text
-    t.column "created_by",          :integer
-    t.column "updated_by",          :integer
-  end
-
-  create_table "pppams_temp", :id => false, :force => true do |t|
-    t.column "reference", :string
-  end
+  add_index "pppams_reviews", ["pppams_indicator_id"], :name => "index_pppams_reviews_on_pppams_indicator_id"
+  add_index "pppams_reviews", ["created_on"], :name => "index_pppams_reviews_on_created_on"
+  add_index "pppams_reviews", ["created_on", "pppams_indicator_id"], :name => "index_pppams_reviews_on_created_on_and_pppams_indicator_id"
 
   create_table "prompts", :force => true do |t|
     t.column "question",      :string
@@ -430,6 +400,8 @@ ActiveRecord::Schema.define(:version => 77) do
     t.column "used_in_total", :integer
     t.column "active",        :integer
   end
+
+  add_index "prompts", ["context_id", "used_in_total"], :name => "context_used_in_total"
 
   create_table "sessions", :force => true do |t|
     t.column "session_id", :string
@@ -449,6 +421,8 @@ ActiveRecord::Schema.define(:version => 77) do
     t.column "updated_on",       :datetime
     t.column "created_by",       :integer
   end
+
+  add_index "uploads", ["created_by", "pppams_review_id"], :name => "created_by_pppams_review_id"
 
   create_table "user_types", :force => true do |t|
     t.column "user_type",       :string

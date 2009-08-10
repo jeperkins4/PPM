@@ -3,7 +3,7 @@ class PositionTypesController < ApplicationController
 layout 'administration'
 
   def index
-    @position_types = PositionType.find(:all)
+    @position_types = PositionType.find(:all, :include => [:facility], :order => 'facilities.facility')
 
     respond_to do |format|
       format.html # index.rhtml

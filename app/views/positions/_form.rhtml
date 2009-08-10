@@ -1,29 +1,26 @@
 <p>
-			<b>Facility: </b><br />
-				<%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
-				<%= session[:facility].facility %>
-  <p>
-  	
-  <p>
-	  <b>Position type</b><br />
-	  <%= f.select("position_type_id", PositionType.find(:all).collect {|pt| [ pt.position_type, pt.id ] }, { :include_blank => true })%>
-  </p>
-  
-  <p>
-    <b>Title</b><br />
+    <b>Facility:</b>
+    <%= session[:facility].facility %>
+</p>
+<p>
+    <b>Position type</b>
+    <br/>
+    <%= f.select("position_type_id", PositionType.find(:all, :conditions => {:facility_id => session[:facility].id}).collect {|pt| [ pt.position_type, pt.id ] }, { :include_blank => true }) %>
+</p>
+<p>
+    <b>Title</b>
+    <br/>
     <%= f.text_field :title %>
-  </p>
-  
-   <p>
-    <b>Description</b><br />
-    <%= f.text_area :description, :cols => 45, :rows => 3 %>    
-  </p>
-      
-  <p>
-    <b>Salary</b><br />
+</p>
+<p>
+    <b>Description</b>
+    <br/>
+    <%= f.text_area :description, :cols => 45, :rows => 3 %>
+</p>
+<p>
+    <b>Salary</b>
+    <br/>
     <%= f.text_field :salary %>
-  </p>
-
-
-    <%= submit_tag "Save" %>
-  </p>
+</p>
+<%= submit_tag "Save" %>
+</p>

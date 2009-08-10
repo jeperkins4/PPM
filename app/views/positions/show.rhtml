@@ -1,6 +1,6 @@
 <p>
   <b>Facility:</b>
-  <%=h @position.facility.facility %>
+  <%=h @position.position_type.facility.facility %>
 </p>
 
 <p>
@@ -25,6 +25,6 @@
 
 <%= link_to 'Edit', edit_position_path(@position) %> |
 <%= link_to 'Back', positions_path %>
-<br \>
-<br \>
+<br />
+<br />
 <%= link_to 'Go to Employee/Position Tracking', employee_positions_path %>

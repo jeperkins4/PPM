@@ -5,8 +5,9 @@ class PositionsController < ApplicationController
   # GET /positions
   # GET /positions.xml
   def index
-    @positions =  session[:facility].positions.find(:all, :order=>'position_type_id, title')
-    
+    @facility = session[:facility]
+    @positions = facility_positions_sorted
+
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @positions.to_xml }
@@ -17,7 +18,7 @@ class PositionsController < ApplicationController
   # GET /positions/1.xml
   def show
     
-    @position =  session[:facility].positions.find(params[:id])
+    @position =  Position.find(params[:id])
     
     respond_to do |format|
       format.html # show.rhtml
@@ -85,7 +86,7 @@ class PositionsController < ApplicationController
   # DELETE /positions/1.xml
   def destroy
     
-    @position = session[:facility].positions.find(params[:id])
+    @position = Position.find(params[:id])
 
     @position.destroy
     
@@ -93,5 +94,13 @@ class PositionsController < ApplicationController
       format.html { redirect_to positions_url }
       format.xml  { head :ok }
     end
+  end
+  
+  private
+  
+  def facility_positions_sorted
+    session[:facility].position_types.find(:all, :order => 'position_type').map do |position_type|
+       position_type.positions.find(:all, :order => 'title')
+    end.flatten
   end
 end

@@ -19,9 +19,10 @@ class EmployeePositionsController < ApplicationController
   # GET /employee_positions/1
   # GET /employee_positions/1.xml
   def show
-    @position_facility = session[:facility].position_numbers
+    @position_facility = session[:facility].positions
+    @position_numbers = @position_facility.collect {|pos| pos.position_numbers}.flatten
     @employee_positions = []
-    @position_facility.each do |pf|
+    @position_numbers.each do |pf|
       if EmployeePosition.find(params[:id]).position_number_id == pf.id then
         @employee_position = EmployeePosition.find(params[:id])
       end
@@ -46,7 +47,7 @@ class EmployeePositionsController < ApplicationController
     @assigned_employees = EmployeePosition.find(:all, :select=>'employee_id as id', :conditions=>['id <> ?', params[:id]])
     @employee_position = EmployeePosition.find(params[:id])
     session[:position] = @employee_position.position_number.position
-    session[:facility] = session[:position].facility
+    session[:facility] = session[:position].position_type.facility
     session[:position_number] = @employee_position.position_number
   end
   
@@ -95,7 +96,7 @@ class EmployeePositionsController < ApplicationController
     @assigned_numbers = EmployeePosition.find(:all, :select=>'position_number_id as id', :conditions=>['id <> ?', params[:id]])
     @assigned_employees = EmployeePosition.find(:all, :select=>'employee_id as id', :conditions=>['id <> ?', params[:id]])
     session[:position] = @employee_position.position_number.position
-    session[:facility] = session[:position].facility
+    session[:facility] = session[:position].position_type.facility
     session[:position_number] = @employee_position.position_number
     
     respond_to do |format|
@@ -149,9 +150,10 @@ class EmployeePositionsController < ApplicationController
   # DELETE /employee_positions/1
   # DELETE /employee_positions/1.xml
   def destroy
-    @position_facility = session[:facility].position_numbers
+    @position_facility = session[:facility].positions
+    @position_numbers = @position_facility.collect {|pos| pos.position_numbers}.flatten
     @employee_positions = []
-    @position_facility.each do |pf|
+    @position_numbers.each do |pf|
       if EmployeePosition.find(params[:id]).position_number_id == pf.id then
         @employee_position = EmployeePosition.find(params[:id])
       end
@@ -198,9 +200,7 @@ class EmployeePositionsController < ApplicationController
   
   
   def set_position_new
-    
     if request.post?
-      
       session[:position] = Position.find(params[:facility][:position_id])
       redirect_to new_employee_position_path   
     end
@@ -210,12 +210,12 @@ class EmployeePositionsController < ApplicationController
     session[:search_dropdown] = params[:id][:filter_drop] rescue ''
     session[:search_text] = params[:employee_position][:filter_text] rescue ''
     if session[:search_dropdown].to_s != nil and session[:search_dropdown] != "" then
-      @search = 'ep.employee_id = e.id and ep.position_number_id = pn.id and pn.position_id = p.id and p.facility_id = f.id and ' +
+      @search = 'ep.employee_id = e.id and ep.position_number_id = pn.id and pn.position_id = p.id and pt.id = p.position_type_id and pt.facility_id = f.id and ' +
         session[:search_dropdown] + " like " + '"' + session[:search_text] + "%" + '"' + ' and f.id = ?'
       
       @employee_positions = EmployeePosition.find(:all, :select => 'ep.id as id, ep.position_number_id, ep.employee_id, ep.start_date,
                                                  ep.end_date', :order=>'p.title',
-        :from=>'employees e, employee_positions ep, position_numbers pn, positions p, facilities f',
+        :from=>'employees e, employee_positions ep, position_numbers pn, positions p, position_types pt, facilities f',
         :conditions=>["#{@search}", session[:facility][:id]])
       
       #    @employee_position_pages, @employee_positions = paginate_collection @employee_position_all, :page => params[:page]

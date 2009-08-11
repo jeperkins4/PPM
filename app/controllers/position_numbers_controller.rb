@@ -5,10 +5,11 @@ class PositionNumbersController < ApplicationController
   # GET /position_numbers.xml
   def index
     
-    @position_numbers_filter = session[:facility].position_numbers.find(:all, :order=>'position_num')
-    
+    @positions_filter = session[:facility].positions
+    @position_numbers = @positions_filter.collect {|pf| pf.position_numbers.find(:all, :order=>'position_num')}.flatten
+
        
-    @position_number_pages, @position_numbers = paginate_collection @position_numbers_filter, :page => params[:page]
+    @position_number_pages, @position_numbers = paginate_collection @position_numbers, :page => params[:page]
     
     respond_to do |format|
       format.html # index.rhtml
@@ -35,7 +36,7 @@ class PositionNumbersController < ApplicationController
   # GET /position_numbers/1;edit
   def edit
     @position_number = PositionNumber.find(params[:id])
-    session[:facility] = @position_number.position.facility
+    session[:facility] = @position_number.position.position_type.facility
   end
   
   # POST /position_numbers
@@ -90,10 +91,10 @@ class PositionNumbersController < ApplicationController
     session[:search_dropdown] = params[:id][:filter_drop] rescue ''
     session[:search_text] = params[:position_number][:filter_text] rescue ''
     if session[:search_dropdown].to_s != nil and session[:search_dropdown] != "" then
-      @search = 'pn.position_id = p.id and ' + session[:search_dropdown] + " like " + '"' + session[:search_text] + "%%" + '"' + 
-      ' and p.facility_id = ?'
+      @search = 'pt.id = p.position_type_id and pn.position_id = p.id and ' + session[:search_dropdown] + " like " + '"' + session[:search_text] + "%%" + '"' + 
+      ' and pt.facility_id = ?'
       @position_numbers =  PositionNumber.find(:all, :select => 'pn.id as id, pn.position_id, pn.position_num, pn.position_type,
-       pn.waiver_approval_date, pn.created_on',:from => 'position_numbers pn , positions p',
+       pn.waiver_approval_date, pn.created_on',:from => 'position_numbers pn , positions p, position_types pt',
                   :conditions=> ["#{@search}",session[:facility][:id]],:order=>'pn.position_num')
    #   @position_number_pages, @position_numbers = paginate_collection @position_numbers_filter, :page => params[:page]
       render :action => 'index'

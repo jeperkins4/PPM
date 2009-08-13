@@ -1,14 +1,14 @@
 <% form_tag(:action => :index) do -%>
 <p>Please Select A Month and Year from the Drop Down Menu: 
-<br \>
+<br />
 Monthly reports are generated for the prior months activities.
 For example if October is selected, the report will be gereated for vacancies through the end of September.
 </p>
   <p>
    <%= select_month(session[:selectmonth].to_i) %>
    <%= select_year(session[:selectyear].to_i) %>
-   <br \>
-   <br \>
+   <br />
+   <br />
 <p>Please Select the report you would like to run from the Drop Down Menu:</p>
     <%= select(:id, :selection, ["Vacancy","Deduction"], {:include_blank=> true},{:onchange => "JavaScript:submit()"})%>
   </p>  

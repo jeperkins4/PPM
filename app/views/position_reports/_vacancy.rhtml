@@ -1,33 +1,33 @@
 <% if session[:user_type] == 'Web Developer' %>
 
   Debug Info:
-  <br \>
+  <br />
     
       All Deductable Position Numbers:
       <% for x in @deductable_position_numbers %>
           <%= x.position_num %>
       <% end %>
-      <br \>
+      <br />
       Not Assigned with deductions:
       <% for x in  @not_assigned_position_numbers %>
           <%= x.position_num %>
       <% end %>
-      <br \>
+      <br />
       History with Current Activity with deductions:
       <% for x in  @current_assigned_with_history %>
           <%= x.position_number.position_num %>
       <% end %>
-      <br \>
+      <br />
       History Without Current Activity with deductions:
       <% for x in  @history_with_no_current %>
-          <%= x.position_number.position_num %><br \>
+          <%= x.position_number.position_num %><br />
       <% end %>
-      <br \>
+      <br />
       Current With No History Activity with deductions:
       <% for x in @current_assigned_no_history %>
           <%= x.position_number.position_num %>
       <% end %>
-      <br \>
+      <br />
     <% end %>
     
     <table width = "50%">

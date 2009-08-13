@@ -12,4 +12,4 @@
 <% end %>
 
 <%= link_to 'Show', position_number_path(@position_number) %> |
-<%= link_to 'Back', "/" + (URI.parse(request.env['HTTP_REFERER']).path).split("/")[1] %>
+<%= link_to 'Back', "/" + (request.env['HTTP_REFERER'].blank? ? position_numbers_path : (URI.parse(request.env['HTTP_REFERER']).path).split("/")[1] ) %>

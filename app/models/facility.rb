@@ -14,4 +14,8 @@ class Facility < ActiveRecord::Base
   has_many :notification_reports
   has_many :non_comp_issues
   has_many :pppams_issues
+  
+  def position_numbers
+    self.positions.map(&:position_numbers).flatten
+  end
 end

@@ -1,6 +1,9 @@
 class PositionNumbersController < ApplicationController
   before_filter :authenticate
   layout 'administration'
+  
+  @@filter_params = {'1' => {'title' => 'Position Number', 'table' => 'pn.position_num'},
+                     '2' => {'title' => 'Position Title',  'table' => 'p.title'}}
   # GET /position_numbers
   # GET /position_numbers.xml
   def index
@@ -8,8 +11,9 @@ class PositionNumbersController < ApplicationController
     @positions_filter = session[:facility].positions
     @position_numbers = @positions_filter.collect {|pf| pf.position_numbers.find(:all, :order=>'position_num')}.flatten
 
-       
     @position_number_pages, @position_numbers = paginate_collection @position_numbers, :page => params[:page]
+    
+    @filter_params = @@filter_params
     
     respond_to do |format|
       format.html # index.rhtml
@@ -20,7 +24,7 @@ class PositionNumbersController < ApplicationController
   # GET /position_numbers/1
   # GET /position_numbers/1.xml
   def show
-    @position_number = session[:facility].position_numbers.find(params[:id])
+    @position_number = PositionNumber.find(params[:id])
     
     respond_to do |format|
       format.html # show.rhtml
@@ -77,7 +81,7 @@ class PositionNumbersController < ApplicationController
   # DELETE /position_numbers/1.xml
   def destroy
     
-    @position_number = session[:facility].position_numbers.find(params[:id])
+    @position_number = PositionNumber.find(params[:id])
     
     @position_number.destroy
     
@@ -88,14 +92,16 @@ class PositionNumbersController < ApplicationController
   end
   
    def set_filter
+    @filter_params = @@filter_params
+
     session[:search_dropdown] = params[:id][:filter_drop] rescue ''
     session[:search_text] = params[:position_number][:filter_text] rescue ''
     if session[:search_dropdown].to_s != nil and session[:search_dropdown] != "" then
-      @search = 'pt.id = p.position_type_id and pn.position_id = p.id and ' + session[:search_dropdown] + " like " + '"' + session[:search_text] + "%%" + '"' + 
+      @search = 'pt.id = p.position_type_id and pn.position_id = p.id and ' + @@filter_params[session[:search_dropdown]]['table'] + " like ? "+ 
       ' and pt.facility_id = ?'
       @position_numbers =  PositionNumber.find(:all, :select => 'pn.id as id, pn.position_id, pn.position_num, pn.position_type,
        pn.waiver_approval_date, pn.created_on',:from => 'position_numbers pn , positions p, position_types pt',
-                  :conditions=> ["#{@search}",session[:facility][:id]],:order=>'pn.position_num')
+                  :conditions=> ["#{@search}", session[:search_text] + '%%' ,session[:facility][:id]],:order=>'pn.position_num')
    #   @position_number_pages, @position_numbers = paginate_collection @position_numbers_filter, :page => params[:page]
       render :action => 'index'
     else

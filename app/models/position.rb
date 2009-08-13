@@ -5,4 +5,8 @@ class Position < ActiveRecord::Base
   validates_presence_of [:title, :salary, :position_type_id]
   validates_uniqueness_of :title, :scope => :position_type_id
   
+  def facility
+    self.position_type.facility
+  end
+  
 end

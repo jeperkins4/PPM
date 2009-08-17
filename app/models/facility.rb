@@ -4,7 +4,6 @@ class Facility < ActiveRecord::Base
   has_many :inmate_counts
   has_many :position_types
   has_many :positions, :through => :position_types
-  has_many :position_hists, :through => :positions
   has_many :incidents
   has_many :employees
   has_many :accountability_logs
@@ -17,5 +16,9 @@ class Facility < ActiveRecord::Base
   
   def position_numbers
     self.positions.map(&:position_numbers).flatten
+  end
+  
+  def position_hists
+    self.positions.map(&:position_hists).flatten.sort {|a,b| b.create_date <=> a.create_date}
   end
 end

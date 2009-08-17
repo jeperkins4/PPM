@@ -19,7 +19,7 @@ end
 
 Facility.blueprint do
   facility         { Sham.company }
-  address1         {Sham.address}
+  address1         { Sham.address}
   state            { Sham.state}
   warden           { Sham.name}
   contract_monitor { Sham.name}
@@ -27,9 +27,37 @@ Facility.blueprint do
   phone 
   city
 end
-Facility.blueprint(:with_position_number) do
-  
+PositionHist.blueprint do
+  position { Position.make }
+  salary   { Faker.numerify '######.##'}
+  create_date {(rand(0.99)+0.9).years.ago}
 end
+IncidentType.blueprint do
+  incident_type {['Aggravated Battery (Inmate vs. Inmate)','Assault or Battery on Inmate','Assault or Battery on Staff','Attempted Escape','Attempted Suicide','Battery on Law Enforcement Officer','Computer Security Incident','Drugs Found','Emergency Evacuation','Employee Death','Escape','Excessive Force','Fire','High Profile Incidents','Hostage Situation','Improper Conduct (Inmate)','Inmate Death','Inmate/Employee Work Stoppage','Major Disturbance','Natural or Environmental Disaster','Physical Abuse (Staff on Inmate)','Recovery of Contraband','Recovery of Weapon','Serious Accident','Serious Battery (life threatening)','Sexual Battery (inmate on inmate)','Sexual Battery (staff member)','Staff/Offender Relationship','Total Lockdown of Institution','Use of Force Reports','Use or Discovery of an Explosive','Use or Discovery of a Firearm','Weapon Found']}
+  description {Faker::Lorem.paragraph}
+end
+
+Incident.blueprint do
+  facility {Facility.make}
+  incident_type {IncidentType.make}
+  incident_class {IncidentClass.make}
+  action_type {ActionType.make}
+  mins { Faker.numerify('#######')}
+  incident_date {(rand(1.5)+1).year.ago}
+  reported_date {(rand(0.99)+0.9).years.ago}
+  facility_investigation_complete_date {(rand(0.89)+0.80).years.ago}
+end
+
+IncidentClass.blueprint do
+  incident_class { Faker::Lorem.words(1)}
+  description    {Faker::Lorem.paragraph}
+end
+
+ActionType.blueprint do
+  action { ['Downgraded','Referred to Management','Staff Termination','Staff Resigned','Staff Suspension','Inmate Transferred','Documented in Personnel Record','Inmate Arrested','Disciplinary Report Issued to Inmate',]}
+  description
+end
+
 EmployeePosition.blueprint do
   position_number { PositionNumber.make}
   employee        { Employee.make}

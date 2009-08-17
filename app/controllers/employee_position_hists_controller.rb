@@ -7,7 +7,7 @@ class EmployeePositionHistsController < ApplicationController
   # GET /employee_position_hists.xml
   def index
     
-    @facility_position_numbers = session[:facility].position_numbers.find(:all)    
+    @facility_position_numbers = session[:facility].position_numbers.sort {|a,b| a.position_num <=> b.position_num}    
     @employee_position_hists = EmployeePositionHist.find_all_by_position_number_id(@facility_position_numbers)
     
     respond_to do |format|
@@ -29,7 +29,6 @@ class EmployeePositionHistsController < ApplicationController
 
   # GET /employee_position_hists/new
   def new
-    
   end
 
   # GET /employee_position_hists/1;edit

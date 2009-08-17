@@ -117,7 +117,6 @@ class ReportsController < ApplicationController
     end
   end
 
-
   def build_report_non_comp_issue(excel)
     
     @id = params[:report][:id] rescue ''

@@ -1,6 +1,5 @@
 class PositionReportsController < ApplicationController
   layout 'administration'    
-    
   def index
     
     if request.post?
@@ -28,7 +27,7 @@ class PositionReportsController < ApplicationController
     @deductable_position_type = PositionType.find(:all, :conditions => ['deductable = ?', 1])
     
     #Find deductable Positions based on the types
-    @deductable_positions = Position.find(:all, :conditions => ['position_type_id IN (?) and facility_id = ?', @deductable_position_type, session[:facility].id])
+    @deductable_positions = Position.find(:all, :include => ['position_type'], :conditions => ['position_type_id IN (?) and position_types.facility_id = ?', @deductable_position_type, session[:facility].id])
     
     #Now get the position numbers tied to the position types found above
     if @deductable_positions != nil

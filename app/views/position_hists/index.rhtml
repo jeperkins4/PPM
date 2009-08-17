@@ -11,7 +11,7 @@
   
 <% for position_hist in @position_hists %>
   <tr>
-    <td><%=h position_hist.position.facility.facility %></td>
+    <td><%=h position_hist.position.position_type.facility.facility %></td>
     <td><%=h position_hist.position.title %></td>
     <td><%=h number_to_currency(position_hist.salary) %></td>
     <td><%=h position_hist.create_date %></td>

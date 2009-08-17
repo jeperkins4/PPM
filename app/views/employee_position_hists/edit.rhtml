@@ -6,7 +6,7 @@
 
   <p>
     <b>Position number</b><br />	
-    <%= f.select("position_number_id",   session[:facility].position_numbers.find(:all, :order => 'position_num asc').collect {|pn| [ pn.position_num + "-" + pn.position.title , pn.id ] } )%>
+    <%= f.select("position_number_id",   position_number_select_options )%>
   </p>
 
   <p>

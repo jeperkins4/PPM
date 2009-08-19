@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   
   attr_accessor :password_confirmation
   cattr_accessor :current_user
-
+  attr_accessible :recently_forgot
   validates_confirmation_of :password
   
   def validate
@@ -51,6 +51,20 @@ class User < ActiveRecord::Base
   def is_admin?
     return true if self.user_type.access_level_id == 1
     return false
+  end
+  
+  def forgot_password
+    @recently_forgot = true
+    self.make_password_reset_code
+  end
+  def recently_forgot_password?
+    @recently_forgot
+  end
+
+protected
+
+  def make_password_reset_code
+    self.password_reset_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
   end
   
   private

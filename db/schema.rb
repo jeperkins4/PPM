@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 86) do
+ActiveRecord::Schema.define(:version => 87) do
 
   create_table "access_levels", :force => true do |t|
     t.column "access_level", :string
@@ -431,16 +431,17 @@ ActiveRecord::Schema.define(:version => 86) do
   end
 
   create_table "users", :force => true do |t|
-    t.column "firstname",          :string
-    t.column "lastname",           :string
-    t.column "name",               :string
-    t.column "email",              :string
-    t.column "hashed_password",    :string
-    t.column "salt",               :string
-    t.column "user_type_id",       :integer
-    t.column "facility_id",        :integer
-    t.column "notify_method",      :string
-    t.column "notify_digest_time", :string
+    t.column "firstname",           :string
+    t.column "lastname",            :string
+    t.column "name",                :string
+    t.column "email",               :string
+    t.column "hashed_password",     :string
+    t.column "salt",                :string
+    t.column "user_type_id",        :integer
+    t.column "facility_id",         :integer
+    t.column "notify_method",       :string
+    t.column "notify_digest_time",  :string
+    t.column "password_reset_code", :string,  :limit => 40
   end
 
 end

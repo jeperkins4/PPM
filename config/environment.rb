@@ -10,6 +10,11 @@ RAILS_GEM_VERSION = '1.2.3' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+#Load application and environment specific constants
+require 'yaml'
+raw_config = File.read(RAILS_ROOT + "/config/config.yml")
+APP_CONFIG = YAML.load(raw_config)[RAILS_ENV]
+
 Rails::Initializer.run do |config|
 
   # Settings in config/environments/* take precedence over those specified here
@@ -37,7 +42,7 @@ Rails::Initializer.run do |config|
   # config.active_record.schema_format = :sql
 
   # Activate observers that should always be running
-  # config.active_record.observers = :cacher, :garbage_collector
+   config.active_record.observers = :user_observer
 
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc

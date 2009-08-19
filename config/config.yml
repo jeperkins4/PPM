@@ -1,0 +1,12 @@
+# Auto-generated template
+default: &default
+  support_email: AppsHelp@mydmsservices.com
+development:
+  <<: *default
+  domain: 'localhost'
+test:
+  <<: *default
+  domain: 'ppm-test.dms.myflorida.com'
+production:
+  <<: *default
+  domain: 'ppm.dms.myflorida.com'

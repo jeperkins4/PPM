@@ -79,7 +79,7 @@ class UsersController < ApplicationController
   end
   
   def reset_password
-    
+    @hide_search_div = true
     if session[:user_id] || params[:password_reset_code]
       case 
       when session[:user_id]

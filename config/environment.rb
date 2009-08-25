@@ -69,6 +69,7 @@ end
 # require "#{File.dirname(__FILE__)}/active_record/dirty"
 require "active_record/dirty"
 
+ExceptionNotifier.exception_recipients = %w(bernardo.telles@dms.myflorida.com)
 
 ActiveRecord::Base.class_eval do
   include ActiveRecord::Dirty

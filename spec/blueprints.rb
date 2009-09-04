@@ -16,6 +16,7 @@ Sham.define do
   first_name {Faker::Name.first_name}
   last_name { Faker::Name.last_name}
   email   { Faker::Internet.email }
+  word    { Faker::Lorem.words(1)}
 end
 
 Facility.blueprint do
@@ -129,6 +130,7 @@ User.blueprint do
   lastname  {Sham.last_name }
   password  { 'faker' }
   password_confirmation { 'faker' }
+  user_type { UserType.make }
 end
 
 User.blueprint(:administrator) do

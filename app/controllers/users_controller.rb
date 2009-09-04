@@ -80,17 +80,27 @@ class UsersController < ApplicationController
   
   def reset_password
     @hide_search_div = true
-    if session[:user_id] || params[:password_reset_code]
-      case 
-      when session[:user_id]
+    if session[:user_id]
         @user = User.find(session[:user_id])
-      when params[:password_reset_code]
-        @user = User.find_by_password_reset_code(params[:password_reset_code])
-      end
-
-      if @request.put? && @user && @user.update_attributes(params[:user])
-        flash[:notice] = 'Password was successfully updated.'
-        redirect_to incidents_path
+        if request.put? && @user && params[:user]
+          @user.password = params[:user][:password]
+          @user.password_confirmation = params[:user][:password_confirmation]
+          if @user.save
+            flash[:notice] = 'Password was successfully updated.'
+            redirect_to incidents_path
+          else
+            render :action => 'reset_password'
+          end
+        end
+    elsif params[:password_reset_code]
+      @user = User.find_by_password_reset_code(params[:password_reset_code])
+      if @user
+         setup_session(@user)
+      else
+        flash[:notice] = "Could not find the given password reset code. 
+          Please check that you used the full web address from the email we sent you. 
+          If the problem persists, please contact the application support group."
+        redirect_to(:controller => 'login', :action => "index")
       end
     else
       redirect_to :controller => 'login', :action => 'index'
@@ -102,6 +112,7 @@ class UsersController < ApplicationController
     unless request.put?
       @hide_search_div = true
       @user = User.new
+      render :action => 'forgot_password', :layout => 'application'
     else
       begin
         @hide_search_div = true
@@ -109,10 +120,11 @@ class UsersController < ApplicationController
         @user.forgot_password
         @user.save
         flash[:notice] = "An email was sent to #{@user.email} with a link you can use to reset your password."
-        render :template => 'login/index'
+        render :template => 'login/index', :layout => 'application'
       rescue
         flash[:notice] = "We were not able to find your username. If you are sure you entered the correct username, please contact us at <a href='mailto:#{APP_CONFIG['support_email']}'>#{APP_CONFIG['support_email']}</a>"
       end
     end
   end
+
 end

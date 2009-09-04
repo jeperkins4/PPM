@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require "ruby-debug"
 
 describe UsersController do
   integrate_views
@@ -39,16 +38,73 @@ describe UsersController do
       end
     end
   end
-  
-  describe 'route generation' do
-    it 'maps forgot password' do
-      route_for(:controller => 'users', :action => 'forgot_password').should == '/forgot_password'
+  describe "reset_password" do
+    before do
+      @user = User.make
+      @user.send(:make_password_reset_code)
+      @user.save
+    end
+    describe 'GET' do
+      it "should accept a previously generated password_reset_code" do
+        get :reset_password, :password_reset_code => @user.password_reset_code
+        response.should_not be_redirect        
+        response.should have_tag("form") 
+      end
+      it "should login the user if the password reset code is valid" do
+        get :reset_password, :password_reset_code => @user.password_reset_code
+        session[:user_id].should == @user.id
+      end
+      it "should not accept an invalid password_reset_code" do
+        get :reset_password, :password_reset_code => 'aaaaaaaaaa'
+        assigns[:flash][:notice].should have_text /not find/
+        response.should redirect_to(start_path)            
+      end
+      it "should tell the user that he/she is changing a password" do
+        get :reset_password, :password_reset_code => @user.password_reset_code
+        response.should have_text /Changing the password for #{@user.name}/i
+      end
+    end
+    describe "PUT" do
+      describe "with valid params" do
+        it "should redirect to the incidents path" do
+          session[:user_id] = @user.id
+          put :reset_password, :user => {:password => 'aoeuao', :password_confirmation => 'aoeuao'}
+          response.should redirect_to incidents_path
+        end
+      end
+      describe "with invalid params" do
+        it "should render itself" do
+          session[:user_id] = @user.id
+          put :reset_password, :password => 'aoeuao'
+          response.should render_template('users/reset_password')        
+        end
+        it "should show the error that occured" do
+          session[:user_id] = @user.id
+          put :reset_password, :user => {:password => 'aoeuao', :password_confirmation => '21222'}
+          response.body.should =~ /match confirmation/
+        end
+        it "should show the error that occured" do
+          session[:user_id] = @user.id
+          put :reset_password, :invalid_param => 'aoeuao'
+          response.body.should =~ /new password/i
+        end
+      end
+    end
+    describe 'route generation' do
+      it 'maps forgot password' do
+        route_for(:controller => 'users', :action => 'forgot_password').should == '/forgot_password'
+      end
+      it 'maps reset password' do
+        route_for(:controller => 'users', :action => 'reset_password').should == '/users/reset_password'
+      end
     end
   end
-  
   describe "route recognition" do
     it "generates params for #forgot_password" do
       params_from(:get, "/forgot_password").should == {:controller => "users", :action => "forgot_password"}
+    end
+    it "generates params for #reset_password" do
+      params_from(:get, "/reset_password/aoeu").should == {:controller => "users", :action => "reset_password", :password_reset_code => "aoeu"}
     end
   end
 

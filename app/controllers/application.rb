@@ -2,7 +2,6 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  
   include ExceptionNotifiable
 
   # Pick a unique cookie name to distinguish our session data from others'
@@ -138,7 +137,19 @@ class ApplicationController < ActionController::Base
     end
   end
   
-
-
+  def setup_session(user)
+    unless user.nil?
+      session[:user_id] = user.id
+      session[:user] = user.firstname + ' ' + user.lastname
+      session[:user_type] = user.user_type.user_type
+      session[:name] = user.name
+      session[:access_level] = user.user_type.access_level.access_level
+      session[:facility] = user.facility
+      yield if block_given?
+    else
+      flash[:notice] = "Invalid user/password combination"
+    end
+  end
+  
 
 end

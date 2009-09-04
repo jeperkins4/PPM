@@ -4,16 +4,8 @@ class LoginController < ApplicationController
     session[:user_id] = nil
     if request.post?
       user = User.authenticate( params[:name], params[:password] )
-      if user
-        session[:user_id] = user.id
-        session[:user] = user.firstname + ' ' + user.lastname
-        session[:user_type] = user.user_type.user_type
-        session[:name] = user.name
-        session[:access_level] = user.user_type.access_level.access_level
-        session[:facility] = user.facility
+      setup_session(user) do
         redirect_to :controller => :incidents, :action => :index
-      else
-        flash[:notice] = "Invalid user/password combination"
       end
     end
   end

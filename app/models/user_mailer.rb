@@ -4,7 +4,7 @@ class UserMailer < ActionMailer::Base
     setup_email(user)
     domain_name = APP_CONFIG['domain']
     @subject    += 'Password reset'
-    @body[:url]  = 'http://'+domain_name+'/reset_password/'+user.password_reset_code 
+    @body[:url]  = 'http://'+domain_name+'/reset_from_code/'+user.password_reset_code 
     @recently_forgot = false
   end
   

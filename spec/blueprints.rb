@@ -138,6 +138,7 @@ User.blueprint(:administrator) do
   password  { 'faker' }
   password_confirmation { password }
   user_type { UserType.make(:administrator) }
+  facility { Facility.make }
 end
 
 

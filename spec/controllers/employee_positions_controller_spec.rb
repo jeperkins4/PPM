@@ -110,4 +110,16 @@ describe EmployeePositionsController do
       end
     end
   end
+#  describe "create with lateral moove" do
+#    it "should move an existing employee to a vacant position" do
+#      post :create, 'commit' => 'Save',
+#      'employee_position' => {'start_date(1i)' => '2009'},
+#      'employee_position' => {'start_date(2i)' => '7'   },
+#      'employee_position' => {'start_date(3i)' => '2'   },
+#      'employee_id' => '3611',
+#      'position_number_id' => '1785'
+#      
+#      
+#    end
+#  end
 end

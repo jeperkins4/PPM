@@ -1,9 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'ruby-debug'
 describe PositionTypesController do
   integrate_views
   def mock_position_type(stubs={})
-    #debugger
     @mock_position_type ||= (stubs.empty? ? PositionType.make : mock_model(PositionType, stubs))
   end
   

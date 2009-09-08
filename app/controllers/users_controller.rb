@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :admin_authenticate, :except => [:reset_password, :forgot_password]
+  before_filter :admin_authenticate, :except => [:reset_from_code, :forgot_password, :reset_password]
+  before_filter :authenticate, :only => [:reset_password]
   layout 'administration'
   
   def index
@@ -80,22 +81,26 @@ class UsersController < ApplicationController
   
   def reset_password
     @hide_search_div = true
-    if session[:user_id]
-        @user = User.find(session[:user_id])
-        if request.put? && @user && params[:user]
-          @user.password = params[:user][:password]
-          @user.password_confirmation = params[:user][:password_confirmation]
-          if @user.save
-            flash[:notice] = 'Password was successfully updated.'
-            redirect_to incidents_path
-          else
-            render :action => 'reset_password'
-          end
-        end
-    elsif params[:password_reset_code]
+    @user = User.find(session[:user_id])
+    if request.put? && @user && params[:user]
+      @user.password = params[:user][:password]
+      @user.password_confirmation = params[:user][:password_confirmation]
+      if @user.save
+        flash[:notice] = 'Password was successfully updated.'
+        redirect_to incidents_path
+      else
+        flash[:notice] = 'Unable to save the new password.'
+      end
+    end
+  end
+  
+  def reset_from_code
+   @hide_search_div = true
+   if params[:password_reset_code]
       @user = User.find_by_password_reset_code(params[:password_reset_code])
       if @user
          setup_session(@user)
+         redirect_to :action => 'reset_password'
       else
         flash[:notice] = "Could not find the given password reset code. 
           Please check that you used the full web address from the email we sent you. 

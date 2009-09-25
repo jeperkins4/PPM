@@ -10,7 +10,7 @@ class NonCompIssue < ActiveRecord::Base
     validates_presence_of :cap_due_date, :if => :is_resolved?
     validates_presence_of :cap_review_date, :if => :is_resolved?
 
-    after_save :set_nci_status
+    before_save :set_nci_status
     
     def is_resolved?
       !resolved_date.nil?
@@ -28,7 +28,6 @@ class NonCompIssue < ActiveRecord::Base
       else 
         self.nci_status =  4
       end
-      self.update_without_callbacks
     end
 
 

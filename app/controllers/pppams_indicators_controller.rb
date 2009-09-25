@@ -15,16 +15,16 @@ class PppamsIndicatorsController < ApplicationController
          :redirect_to => { :action => :list }
 
   def list
-    @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :per_page => 100
+    @pppams_indicators = PppamsIndicator.paginate :page => params[:page]
     session[:indicator_list_mode] = 'list'
   end
 
   def pure_list
-    @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :per_page => 100
+    @pppams_indicators = PppamsIndicator.paginate :page => params[:page]
   end
 
   def editable_list
-    @pppams_indicator_pages, @pppams_indicators = paginate :pppams_indicators, :per_page => 100
+    @pppams_indicators = PppamsIndicator.paginate :page => params[:page]
     session[:indicator_list_mode] = 'editable_list'
     render :action => 'list'
   end

@@ -10,10 +10,10 @@ class IncidentsController < ApplicationController
     end
     (session[:status]) ? @status = session[:status] : @status = 0
 
-    @incident_pages, @incidents = paginate :incident, 
-    :order => 'incident_date, mins',
-    :per_page => 20,
-    :conditions => ['investigation_closed = ? and facility_id = ?', @status, session[:facility].id]
+    @incidents = Incident.paginate :order => 'incident_date, mins',
+                  :per_page => 20,
+                  :page => params[:page],
+                  :conditions => ['investigation_closed = ? and facility_id = ?', @status, session[:facility].id]
     
     respond_to do |format|
       format.html # index.rhtml

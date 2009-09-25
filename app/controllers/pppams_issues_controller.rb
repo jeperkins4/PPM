@@ -12,10 +12,10 @@ class PppamsIssuesController < ApplicationController
     
     condition_ar = session[:facility].class.to_s == 'Junk' ? ['pppams_issue_status in (?)', @status_ar_st ]: ['pppams_issue_status in (?) and facility_id = ?', @status_ar_st, session[:facility].id ]
 
-    @pppams_issue_pages, @pppams_issues = paginate :pppams_issue, 
-    :order => "facility_id, received_date",
-    :per_page => 20,
-    :conditions => condition_ar
+    @pppams_issues = PppamsIssue.paginate :page => params[:page],
+      :order => "facility_id, received_date",
+      :per_page => 20,
+      :conditions => condition_ar
     
     respond_to do |format|
       format.html # index.rhtml

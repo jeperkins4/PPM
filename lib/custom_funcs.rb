@@ -8,9 +8,9 @@ class Array
           out
         end
 
-        def sum
-          inject( nil ) { |sum,x| sum ? sum+x : x }
-        end
+#        def sum
+#          inject( nil ) { |sum,x| sum ? sum+x : x }
+#        end
 
         def mean
           sum.to_f / size

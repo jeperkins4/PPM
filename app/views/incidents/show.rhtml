@@ -61,7 +61,7 @@
 <% @follow_ups.each do |follow_up| -%>
  
     <b><%=h follow_up.follow_up_date %></b><br />
-    <p><%=h follow_up.follow_up %>&nbsp;<%= link_to 'View', follow_up_path(@incident, follow_up) %></p>
+    <p><%=h follow_up.follow_up %>&nbsp;<%= link_to 'View', follow_up_path(@incident.id, follow_up.id) %></p>
 
  <hr> 
 <% end -%>

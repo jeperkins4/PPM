@@ -19,9 +19,7 @@
 <% end %>
 </table>
 
-<%= link_to 'Previous page', { :page => @upload_pages.current.previous } if @upload_pages.current.previous %>
-<%= link_to 'Next page', { :page => @upload_pages.current.next } if @upload_pages.current.next %> 
-
+<%= will_paginate @uploads %>
 <br />
 
 <%= link_to 'New upload', :action => 'new' %>

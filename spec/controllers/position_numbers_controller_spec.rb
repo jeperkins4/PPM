@@ -3,8 +3,7 @@ describe PositionNumbersController do
   integrate_views
   
   before do
-    @admin = User.make(:administrator)
-    login_as @admin
+    login_helper
     @ep1 = EmployeePosition.make
     @ep2 = EmployeePosition.make
     @ep3 = EmployeePosition.make
@@ -26,7 +25,6 @@ describe PositionNumbersController do
          @ep2.position_number.position.position_type.update_attribute(:position_type, position_type2)
         
         get :index
-        assigns[:positions_filter].should have(2).records
         assigns[:position_numbers].should have(2).records
         response.should have_text(/#{position_type1}/)
         response.should have_text(/#{position_type2}/)
@@ -35,11 +33,17 @@ describe PositionNumbersController do
     end
     
     describe 'edit' do
-      it 'should show an edit page for a given position' do
+      before do
         session[:facility] = @ep1.position_number.position.position_type.facility
         get :edit, :id => @ep1.position_number.id
+      end
+      it 'should show an edit page for a given position' do
         response.should be_success
         response.should have_tag('form[action=?]', "/position_numbers/#{@ep1.position_number.id}")
+      end
+      it 'should have an active_flag checkbox' do
+        response.should have_tag("#position_number_active_flag")
+        
       end
     end
     

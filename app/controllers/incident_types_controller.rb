@@ -3,7 +3,7 @@ class IncidentTypesController < ApplicationController
   layout 'administration'
   # GET /incident_types.xml
   def index
-    @incident_type_pages, @incident_types = paginate :incident_types
+    @incident_types = IncidentType.paginate :per_page => 10, :page => params[:page] 
     #IncidentType.find(:all)
 
     respond_to do |format|

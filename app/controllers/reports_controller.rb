@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-
+  require 'ruby-debug'
   before_filter :authenticate 
   layout 'administration_with_all'
 
@@ -31,32 +31,32 @@ class ReportsController < ApplicationController
       if !params[:report].nil? && params[:report][:ready] == "1"
         @excel = false
         case session[:type].gsub(" ", "_").downcase
-        when 'incident'   
+        when 'incident'
           build_report_incident(@excel)
-        when 'non_comp_issue'   
+        when 'non_comp_issue'
           build_report_non_comp_issue(@excel)
-        when 'pppams_issue'   
+        when 'pppams_issue'
           build_report_pppams_issue(@excel)
         when 'accountability'
           if  session[:acct_begin_date] then
             session[:acct_begin_date] > session[:acct_end_date] ? (flash[:notice] = "Date Range is Invalid"; render :action => 'index' and return) : ""
-          end          
-          build_report_accountability(@excel)          
-        end      
+          end
+          build_report_accountability(@excel)
+        end
       end
     end
   end
-  
+
   def export_excel
     @excel = true
     case session[:type].gsub(" ", "_").downcase
-    when 'incident'   
+    when 'incident'
       build_report_incident(@excel)
-    when 'non_comp_issue'   
+    when 'non_comp_issue'
       build_report_non_comp_issue(@excel)
-    when 'pppams_issue'   
+    when 'pppams_issue'
       build_report_pppams_issue(@excel)
-    when 'accountability'   
+    when 'accountability'
       build_report_accountability(@excel)
     end
     response.headers['CONTENT-TYPE'] = 'application/vnd.ms-excel'
@@ -84,11 +84,13 @@ class ReportsController < ApplicationController
     unless @mins == '' or @mins == nil
       @search_string += " and mins = ? "
     else
+      @mins = ''
       @search_string += " and mins <> ? "
     end 
     unless @incident_type  == '' or @incident_type == nil
       @search_string += " and incident_type_id = ? "
     else
+      @incident_type = ''
       @search_string += " and incident_type_id <> ? "
     end
     
@@ -100,7 +102,7 @@ class ReportsController < ApplicationController
       @search_string += " and investigation_closed = ? "
       @status = 1
     when 'All'
-      @search_string += " and investigation_closed <> ? "
+      @search_string += " and (investigation_closed <> ? OR 1 = 1)"
       @status = 42 #All_HACKITY_HACK
     end
     if session[:facility].class.to_s == 'Junk'
@@ -136,7 +138,7 @@ class ReportsController < ApplicationController
       @search_string += " and issue_number = ? "
     else
       @id = ''
-      @search_string += " and issue_number <> ? "
+      @search_string += " and (issue_number <> ? OR 1=1) "
     end 
     
     case session[:status]
@@ -147,7 +149,7 @@ class ReportsController < ApplicationController
       @search_string += " and nci_status = ? "
       @status = 4
     when 'All'
-      @search_string += " and nci_status <> ? "
+      @search_string += " and (nci_status <> ? OR 1=1)"
       @status = 42 #All_HACKITY_HACK
     end
     if session[:facility].class.to_s == 'Junk'

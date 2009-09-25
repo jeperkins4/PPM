@@ -8,7 +8,7 @@
   <% end %>
 
   </tr>
-  
+
 <% for pppams_review in @pppams_reviews %>
   <tr>
   <td><%= link_to image_tag("view_icon.png", :border=>0), :controller => 'pppams_reviews', :action => 'show', :id => pppams_review %></td>
@@ -26,7 +26,5 @@
 <% end %>
 </table>
 
-<%= link_to 'Previous page', { :page => @pppams_review_pages.current.previous } if @pppams_review_pages.current.previous %>
-<%= link_to 'Next page', { :page => @pppams_review_pages.current.next } if @pppams_review_pages.current.next %> 
-
+<%= will_paginate @pppams_reviews %>
 <br />

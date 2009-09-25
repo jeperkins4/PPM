@@ -19,9 +19,7 @@
 <% end %>
 </table>
 
-<%= link_to 'Previous page', { :page => @pppams_category_group_pages.current.previous } if @pppams_category_group_pages.current.previous %>
-<%= link_to 'Next page', { :page => @pppams_category_group_pages.current.next } if @pppams_category_group_pages.current.next %> 
-
+<%= will_paginate(@pppams_category_groups, :page_links => false) if @pppams_category_groups.total_pages > 1 %>
 <br />
 
 <%= link_to 'New pppams_category_group', :action => 'new' %>

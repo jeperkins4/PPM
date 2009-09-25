@@ -72,10 +72,11 @@ layout 'administration'
   # DELETE /pppams_issue_follow_ups/1.xml
   def destroy
     @pppams_issue_follow_up = PppamsIssueFollowUp.find(params[:id])
+    @pppams_issue = @pppams_issue_follow_up.pppams_issue
     @pppams_issue_follow_up.destroy
 
     respond_to do |format|
-      format.html { redirect_to pppams_issue_follow_ups_url(@pppams_issue) }
+      format.html { redirect_to @pppams_issue }
       format.xml  { head :ok }
     end
   end

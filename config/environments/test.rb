@@ -13,6 +13,9 @@ config.whiny_nils = true
 config.action_controller.consider_all_requests_local = true
 config.action_controller.perform_caching             = false
 
+config.gem "rspec", :lib => false, :version => ">= 1.2.0"
+config.gem "rspec-rails", :lib => false, :version => ">= 1.2.0"
+
 # Tell ActionMailer not to deliver emails to the real world.
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.

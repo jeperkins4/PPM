@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 describe ReportsController do
-  
+  integrate_views 
   before do
     @admin = User.make(:administrator)
     login_as @admin
@@ -23,30 +23,28 @@ describe ReportsController do
     describe 'index' do
       
       it 'should render incident reports' do
-        incident = Incident.make
+        incident = Incident.make(:description => 'hello descript')
         session[:facility] = incident.facility
-        session[:type] = 'Incident'
-        session[:use_date] = 'No'
-        session[:status] = 'All'
-        session[:category] = PppamsIssue.categories[0]
-        session[:report] = {}
-        session[:report][:ready] = '1'
-        post :index
-        response.should be_success
-        response.should have_text incident.description
+        post :index, :report => {:report_type => 'incident', 
+                                 :use_date => 'No',
+                                 :status => 'All',
+                                 :category => PppamsIssue.categories[0],
+                                 :ready => '1'
+                      }
+        session[:report].should have(1).record
+        response.should be_redirect
       end
       it 'should render non_comp reports' do
-        incident = Incident.make
-        session[:facility] = incident.facility
-        session[:type] = 'Non Comp Issue'
-        session[:use_date] = 'No'
-        session[:status] = 'All'
-        session[:category] = PppamsIssue.categories[0]
-        session[:report] = {}
-        session[:report][:ready] = '1'
-        post :index
-        response.should be_success
-        response.should have_text incident.description
+        non_comp_issue = NonCompIssue.make
+        session[:facility] = non_comp_issue.facility
+        post :index, :report => {:report_type => 'non_comp_issue', 
+                                :use_date => 'No',
+                                :status => 'All',
+                                :category => PppamsIssue.categories[0],
+                                :ready => '1'
+                      }
+        session[:report].should have(1).record
+        response.should be_redirect
       end
     end
   end

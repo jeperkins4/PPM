@@ -19,7 +19,7 @@ class PppamsReviewsController < ApplicationController
          :redirect_to => { :action => :list }
 
   def list
-    @pppams_review_pages, @pppams_reviews = paginate :pppams_reviews, :per_page => 10
+    @pppams_reviews = PppamsReview.paginate :page => params[:page]
   end
 
   def show

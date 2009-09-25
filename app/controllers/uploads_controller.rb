@@ -14,7 +14,7 @@ class UploadsController < ApplicationController
          :redirect_to => { :action => :list }
 
   def list
-    @upload_pages, @uploads = paginate :uploads, :per_page => 10
+    @uploads = Upload.paginate :page => params[:page]
   end
 
   def show

@@ -15,20 +15,20 @@ describe EmployeePositionsController do
     it 'should show all employee positions' do
 
       ep1_facility = @ep1.position_number.position.position_type.facility
-      
+
       session[:facility] = ep1_facility
-      
+
       @ep2.position_number.position.position_type.update_attribute(:facility, ep1_facility)
-      
+
       ep1_full_name = @ep1.employee.first_name + ' ' + @ep1.employee.last_name
       ep2_full_name = @ep2.employee.first_name + ' ' + @ep2.employee.last_name
-      
+
       get :index
-      
-      assigns[:employee_position_all].should have(2).records
+
+      assigns[:employee_positions].should have(2).records
       response.should have_text(/#{ep1_full_name}/)
       response.should have_text(/#{ep2_full_name}/)
-      
+
     end
   end
   

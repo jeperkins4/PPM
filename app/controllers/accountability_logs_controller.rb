@@ -2,28 +2,22 @@ class AccountabilityLogsController < ApplicationController
   before_filter :authenticate
   layout 'administration'
   
-  def index    
-    @category_titles =  Context.find(:all, :order => 'position')
-    @category_pages, @categories = paginate :context, 
-      :order => 'position',
-      :per_page => 1,
-      :parameter => 'category'      
-    
+  def index
+    @categories = Context.paginate(:all, :order => 'position', :per_page => 1, :page => params[:category])
+
     if request.post?
       session[:questions] = params[:questions]
-      session[:context_log] = params[:log]    
+      session[:context_log] = params[:log]
       redirect_to :action => :collect
-    else      
+    else
       if Time.now.month >= 7 then
         session[:admin_year] ? "" : session[:admin_year] = Time.now.year
       else
         session[:admin_year] ? "" : session[:admin_year] = Time.now.year - 1
       end
-      
     end
-   
-  end                                            
-    
+  end
+
   def set_admin_fy
     session[:admin_year] = params[:accountability_logs][:fiscal_year].to_i
     redirect_to :action => 'index'
@@ -64,7 +58,7 @@ class AccountabilityLogsController < ApplicationController
     end
     @not_updated = 0
     @questions.each_pair do |prompt_id, response|
-      
+
       if response.split(".").to_s =~ /\A[+-]?\d+\Z/ then
         @update_response = AccountabilityLogs.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and prompt_id = ? and facility_id = ?', @year, @month, @context_id, prompt_id, session[:facility].id])
         unless @update_response then

@@ -12,9 +12,9 @@
     </p>
 <% end -%>	
 	
-<% if @non_comp_issue_pages.length.to_i > 1 -%>
+<% if @non_comp_issues.total_pages > 1 -%>
 <p>
-Page: <%= pagination_links(@non_comp_issue_pages)%>
+Page: <%= will_paginate @non_comp_issues %>
 </p>
 <% end -%>
 

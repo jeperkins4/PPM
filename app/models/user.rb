@@ -14,7 +14,8 @@ class User < ActiveRecord::Base
   
   attr_accessor :password_confirmation
   cattr_accessor :current_user
-  attr_accessible :recently_forgot
+  attr_accessor :recently_forgot
+
   validates_confirmation_of :password
   
   def validate

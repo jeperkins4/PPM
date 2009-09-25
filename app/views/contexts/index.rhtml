@@ -18,14 +18,7 @@
 
 <br />
 <p>
-<%= link_to 'Previous page', ({
-                :action => 'index',
-                :page => @context_pages.current.previous }) \
-                if @context_pages.current.previous %>
-<%= link_to 'Next page', ({
-                :action => 'index',
-                :page => @context_pages.current.next}) \
-                if @context_pages.current.next %>
+<%= will_paginate @contexts, {:page_links => false, :container => false, :previous_label => 'Previous Page', :next_label => 'Next Page'}%>
 </p>
 
 <%= link_to 'New Accountability Log Category', new_context_path %>

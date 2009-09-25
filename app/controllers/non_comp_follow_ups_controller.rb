@@ -72,10 +72,11 @@ layout 'administration_with_all'
   # DELETE /non_comp_follow_ups/1.xml
   def destroy
     @non_comp_follow_up = NonCompFollowUp.find(params[:id])
+    @non_comp_issue = @non_comp_follow_up.non_comp_issue
     @non_comp_follow_up.destroy
 
     respond_to do |format|
-      format.html { redirect_to non_comp_follow_ups_url(@non_comp_issue) }
+      format.html { redirect_to non_comp_issue_url(@non_comp_issue.id) }
       format.xml  { head :ok }
     end
   end

@@ -6,8 +6,7 @@ class EmployeesController < ApplicationController
   # GET /employees.xml  
   def index
     
-    @employee_filter =  session[:facility].employees.find(:all, :order =>['last_name, first_name'])     
-    @employee_pages, @employees = paginate_collection @employee_filter, :page => params[:page]
+    @employees = Employee.paginate(:all, :conditions => {:facility_id => session[:facility].id}, :page => params[:page], :per_page => 100)
     
     respond_to do |format|
       format.html # index.rhtml
@@ -90,7 +89,6 @@ class EmployeesController < ApplicationController
     if session[:search_dropdown].to_s != nil and session[:search_dropdown] != "" then
       session[:test] =  @search = session[:search_dropdown] + " like " + '"' + session[:search_text] + "%%" + '"'
       @employees =  session[:facility].employees.find(:all, :conditions=> ["#{@search}"], :order =>['first_name, last_name'])
-#      @employee_pages, @employees = paginate_collection @employee_filter, :page => params[:page]
       render :action => 'index'
     else
       redirect_to :action => 'index'

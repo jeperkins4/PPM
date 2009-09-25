@@ -43,7 +43,7 @@ ActionController::Routing::Routes.draw do |map|
                 :contexts
   
   map.resources :incidents do |incidents|
-     incidents.resources :follow_ups
+     incidents.resources :follow_ups, :name_prefix => nil
   end
 
   map.destroy_non_comp_follow_up 'non_comp_issues/:non_comp_issue_id/non_comp_follow_ups/:id/;destroy', :controller => 'non_comp_follow_ups', :action => 'destroy'
@@ -55,11 +55,11 @@ ActionController::Routing::Routes.draw do |map|
   map.destroy_non_comp_issue 'non_comp_issues/:id/destroy', :controller => 'non_comp_issues', :action => 'destroy'
 
   map.resources :non_comp_issues do |non_comp_issues|
-     non_comp_issues.resources :non_comp_follow_ups
+     non_comp_issues.resources :non_comp_follow_ups, :name_prefix => nil
   end
 
   map.resources :pppams_issues do |pppams_issues|
-     pppams_issues.resources :pppams_issue_follow_ups
+     pppams_issues.resources :pppams_issue_follow_ups, :name_prefix => nil
   end
 
 

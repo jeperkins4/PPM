@@ -25,14 +25,7 @@
 
 <br />
 <p>
-<%= link_to 'Previous page', ({
-                :action => 'index',
-                :page => @prompt_pages.current.previous }) \
-                if @prompt_pages.current.previous %>
-<%= link_to 'Next page', ({
-                :action => 'index',
-                :page => @prompt_pages.current.next}) \
-                if @prompt_pages.current.next %>
+<%= will_paginate @prompts %>
 </p>
 
 <%= link_to 'New Log Question', new_prompt_path %>

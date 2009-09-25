@@ -19,6 +19,19 @@ Sham.define do
   word    { Faker::Lorem.words(1)}
 end
 
+Context.blueprint do
+  title {Faker::Lorem.words(3)}
+end
+AccountabilityLogs.blueprint do
+  facility {Facility.make}
+  log_year {Date.today.year}
+  log_month {Date.today.month}
+end
+
+Prompt.blueprint do
+  question {Faker::Lorem.sentence}
+end
+
 Facility.blueprint do
   facility         { Sham.company }
   address1         { Sham.address}
@@ -32,7 +45,7 @@ end
 PositionHist.blueprint do
   position { Position.make }
   salary   { Faker.numerify '######.##'}
-  create_date {(rand(0.99)+0.9).years.ago}
+  create_date {(17..18).to_a.rand.months.ago}
 end
 IncidentType.blueprint do
   incident_type {['Aggravated Battery (Inmate vs. Inmate)','Assault or Battery on Inmate','Assault or Battery on Staff','Attempted Escape','Attempted Suicide','Battery on Law Enforcement Officer','Computer Security Incident','Drugs Found','Emergency Evacuation','Employee Death','Escape','Excessive Force','Fire','High Profile Incidents','Hostage Situation','Improper Conduct (Inmate)','Inmate Death','Inmate/Employee Work Stoppage','Major Disturbance','Natural or Environmental Disaster','Physical Abuse (Staff on Inmate)','Recovery of Contraband','Recovery of Weapon','Serious Accident','Serious Battery (life threatening)','Sexual Battery (inmate on inmate)','Sexual Battery (staff member)','Staff/Offender Relationship','Total Lockdown of Institution','Use of Force Reports','Use or Discovery of an Explosive','Use or Discovery of a Firearm','Weapon Found']}
@@ -45,31 +58,31 @@ Incident.blueprint do
   incident_class {IncidentClass.make}
   action_type {ActionType.make}
   mins { Faker.numerify('#######')}
-  incident_date {(rand(1.5)+1).year.ago}
-  reported_date {(rand(0.99)+0.9).years.ago}
-  facility_investigation_complete_date {(rand(0.89)+0.80).years.ago}
+  incident_date {(12..16).to_a.rand.months.ago}
+  reported_date {(10..11).to_a.rand.months.ago}
+  facility_investigation_complete_date {(7..9).to_a.rand.months.ago}
 end
 
 IncidentClass.blueprint do
   incident_class { Faker::Lorem.words(1)}
-  description    {Faker::Lorem.paragraph}
+  description    {Faker::Lorem.paragraphs(1) }
 end
 
 ActionType.blueprint do
-  action { ['Downgraded','Referred to Management','Staff Termination','Staff Resigned','Staff Suspension','Inmate Transferred','Documented in Personnel Record','Inmate Arrested','Disciplinary Report Issued to Inmate',]}
+  action { 'a'}#['Downgraded','Referred to Management','Staff Termination','Staff Resigned','Staff Suspension','Inmate Transferred','Documented in Personnel Record','Inmate Arrested','Disciplinary Report Issued to Inmate',]}
   description
 end
 
 EmployeePosition.blueprint do
   position_number { PositionNumber.make}
   employee        { Employee.make}
-  start_date      { (2..8).to_a.rand.years.ago }
+  start_date      { 3.years.ago }#(2..8).to_a.rand.years.ago }
 end
 
 Employee.blueprint do
   first_name
   last_name
-  tea_status { %w{certified na facility academy pending registered}.rand }
+  tea_status { 'certified'}# $%w{certified na facility academy pending registered}.rand }
 end
 
 Position.blueprint do
@@ -87,14 +100,24 @@ end
 
 PositionType.blueprint do
   position_type  { ['Security', 'Non-Security'].rand }
-  description    
+  description
   deductable     { (0..1).to_a.rand }
   deduction_days { (10..120).to_a.rand }
   facility       { Facility.make }
 end
 
+NonCompIssue.blueprint do
+  facility          {Facility.make}
+  discovery_date    {3.days.ago}
+  details           {Faker::Lorem.paragraph}
+  requirement       {"OMC Article 5."+(0..100).to_a.rand.to_s}
+  notification_date {2.days.ago}
+  cap_due_date      {1.days.ago}
+  cap_review_date   {1.day.from_now}
+end
+
 PositionType.blueprint(:with_facility) do
-  position_type  { ['Security', 'Non-Security'].rand }
+  position_type  { 'aoeu' }#['Security', 'Non-Security'].rand }
   description    
   deductable     { (0..1).to_a.rand }
   deduction_days { (10..120).to_a.rand }
@@ -124,7 +147,7 @@ UserType.blueprint(:administrator) do
 end
 
 User.blueprint do
-  name { Sham.user_name}
+  name { 'aoeu'}#Sham.user_name}
   email
   firstname {Sham.first_name}
   lastname  {Sham.last_name }
@@ -134,11 +157,19 @@ User.blueprint do
 end
 
 User.blueprint(:administrator) do
-  name { Sham.user_name}
+  name { 'aoeuao'}#Sham.user_name}
   password  { 'faker' }
   password_confirmation { password }
   user_type { UserType.make(:administrator) }
   facility { Facility.make }
 end
 
+PppamsCategoryGroup.blueprint do
+  name { Faker::Lorem.words(3) }
+end
+Upload.blueprint do
+  size { Faker.numerify('######') }
+  file_type { %w{application/pdf application/vnd.ms-excel image/pjpeg application/octet-stream application/msword text/html application/vnd.ms-powerpoint application/vnd.openxmlformats-officedocument.wordprocessingml.document image/tiff text/plain application/vnd.openxmlformats-officedocument.spreadsheetml.sheet}.rand}
+  name { Faker::Lorem.words(3)}
+end
 

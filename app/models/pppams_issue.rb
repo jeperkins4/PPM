@@ -6,7 +6,7 @@ class PppamsIssue < ActiveRecord::Base
     validates_presence_of :received_date
     validates_presence_of :description
 
-    after_save :set_pppams_issue_status
+    before_save :set_pppams_issue_status
 
   
   def set_pppams_issue_status
@@ -19,7 +19,6 @@ class PppamsIssue < ActiveRecord::Base
     else 
       self.pppams_issue_status =  3
     end
-    self.update_without_callbacks
   end
   
   def self.categories

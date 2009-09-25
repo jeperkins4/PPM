@@ -106,7 +106,7 @@ describe UsersController do
       end
       it "should not accept an invalid password_reset_code" do
         get :reset_from_code, :password_reset_code => 'aaaaaaaaaa'
-        assigns[:flash][:notice].should have_text /not find/
+        flash[:notice].should have_text /not find/
         response.should redirect_to(start_path)            
       end
     end

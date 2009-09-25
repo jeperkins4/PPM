@@ -10,10 +10,10 @@ class NonCompIssuesController < ApplicationController
     @status_ar_st = (@nci_status.to_i == 4) ? "4" : (0..@nci_status.to_i).to_a
     
     condition_ar = session[:facility].class.to_s == 'Junk' ? ['nci_status in (?)', @status_ar_st] : ['nci_status in (?) and facility_id = ?', @status_ar_st, session[:facility].id]
-    @non_comp_issue_pages, @non_comp_issues = paginate :non_comp_issue, 
-    :order => 'facility_id, discovery_date',
-    :per_page => 20,
-    :conditions => condition_ar
+    @non_comp_issues = NonCompIssue.paginate :page => params[:page],
+      :order => 'facility_id, discovery_date',
+      :per_page => 20,
+      :conditions => condition_ar
     
     respond_to do |format|
       format.html # index.rhtml

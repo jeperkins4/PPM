@@ -12,11 +12,7 @@
     </p>
 <% end -%>	
 	
-<% if @pppams_issue_pages.length.to_i > 1 -%>
-<p>
-Page: <%= pagination_links(@pppams_issue_pages)%>
-</p>
-<% end -%>
+Page: <%= will_paginate @pppams_issue_pages %>
 
 	<% if @pppams_issue_status.to_i < 3 -%>
 <p>

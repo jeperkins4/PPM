@@ -1,76 +1,17 @@
-# Be sure to restart your web server when you modify this file.
+RAILS_GEM_VERSION = '2.3.3' unless defined? RAILS_GEM_VERSION
 
-# Uncomment below to force Rails into production mode when 
-# you don't control web/app server and can't set it the proper way
-# ENV['RAILS_ENV'] ||= 'production'
-
-# Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '1.2.3' unless defined? RAILS_GEM_VERSION
-
-# Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-#Load application and environment specific constants
 require 'yaml'
 raw_config = File.read(RAILS_ROOT + "/config/config.yml")
 APP_CONFIG = YAML.load(raw_config)[RAILS_ENV]
 
 Rails::Initializer.run do |config|
+  config.action_controller.session = { :key => "_ppms_session", :secret => "a salty phrase for ppm us3rs et 411 07h3r5" }
+  config.active_record.observers = :user_observer
+  config.gem 'mislav-will_paginate', :version => '~> 2.3.11', :lib => 'will_paginate', 
+    :source => 'http://gems.github.com'
 
-  # Settings in config/environments/* take precedence over those specified here
-  
-  # Skip frameworks you're not going to use (only works if using vendor/rails)
-  # config.frameworks -= [ :action_web_service, :action_mailer ]
-
-  # Only load the plugins named here, by default all plugins in vendor/plugins are loaded
-  # config.plugins = %W( exception_notification ssl_requirement )
-
-  # Add additional load paths for your own custom dirs
-  # config.load_paths += %W( #{RAILS_ROOT}/extras )
-
-  # Force all environments to use the same logger level 
-  # (by default production uses :info, the others :debug)
-  # config.log_level = :debug
-
-  # Use the database for sessions instead of the file system
-  # (create the session table with 'rake db:sessions:create')
-  # config.action_controller.session_store = :active_record_store
-
-  # Use SQL instead of Active Record's schema dumper when creating the test database.
-  # This is necessary if your schema can't be completely dumped by the schema dumper, 
-  # like if you have constraints or database-specific column types
-  # config.active_record.schema_format = :sql
-
-  # Activate observers that should always be running
-   config.active_record.observers = :user_observer
-
-  # Make Active Record use UTC-base instead of local time
-  # config.active_record.default_timezone = :utc
-  
-  # See Rails::Configuration for more options
 end
-
-# Add new inflection rules using the following format 
-# (all these examples are active by default):
-# Inflector.inflections do |inflect|
-#   inflect.plural /^(ox)$/i, '\1en'
-#   inflect.singular /^(ox)en/i, '\1'
-#   inflect.irregular 'person', 'people'
-#   inflect.uncountable %w( fish sheep )
-# end
-
-# Add new mime types for use in respond_to blocks:
-# Mime::Type.register "text/richtext", :rtf
-# Mime::Type.register "application/x-mobile", :mobile
-
-# Include your application configuration below
-
-# http://blog.sidu.in/2008/05/get-dirty-objects-in-rails.html
-# require "#{File.dirname(__FILE__)}/active_record/dirty"
-require "active_record/dirty"
 
 ExceptionNotifier.exception_recipients = %w(bernardo.telles@dms.myflorida.com)
-
-ActiveRecord::Base.class_eval do
-  include ActiveRecord::Dirty
-end

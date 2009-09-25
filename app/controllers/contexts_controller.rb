@@ -4,7 +4,7 @@ class ContextsController < ApplicationController
   layout 'administration'
   
   def index
-    @context_pages, @contexts = paginate :contexts
+    @contexts = Context.paginate :per_page => 10, :page => params[:page]
     @contexts_for_order = Context.find(:all, :order => 'position')
     
     respond_to do |format|

@@ -9,7 +9,7 @@ describe EmployeePosition do
       
       facility = ep1.position_number.position.position_type.facility
       
-      EmployeePosition.available_positions(facility.id).size.should == 1
+      EmployeePosition.available_positions(facility.id).to_a.size.should == 1
       EmployeePosition.available_positions(facility.id)[0].id == ep1.id
     end
   end

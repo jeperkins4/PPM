@@ -2,20 +2,24 @@ class EmployeePositionsController < ApplicationController
   before_filter :authenticate
   layout 'administration'
   
-  
   # GET /employee_positions
   # GET /employee_positions.xml
   def index
-    
-    @employee_position_all = EmployeePosition.available_positions(session[:facility][:id])
-    @employee_position_pages, @employee_positions = paginate_collection @employee_position_all, :page => params[:page]
-    
+
+    @employee_positions = EmployeePosition.available_positions(session[:facility]).
+      paginate(:page => params[:page],
+               :per_page => 100,
+               :total_entries => EmployeePosition.count( :from=>'employee_positions ep, position_numbers pn, positions p, position_types pt, facilities f',
+                                                         :conditions=>['ep.position_number_id = pn.id and pn.position_id = p.id and pt.id = p.position_type_id 
+                                                           and pt.facility_id = f.id and f.id = ?', session[:facility]])
+    ) 
+
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @employee_positions.to_xml }
     end
   end
-  
+
   # GET /employee_positions/1
   # GET /employee_positions/1.xml
   def show
@@ -26,21 +30,21 @@ class EmployeePositionsController < ApplicationController
       if EmployeePosition.find(params[:id]).position_number_id == pf.id then
         @employee_position = EmployeePosition.find(params[:id])
       end
-    end    
-    
+    end
+
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @employee_position.to_xml }
     end
   end
-  
+
   # GET /employee_positions/new
   def new
     @assigned_numbers = EmployeePosition.find(:all, :select=>'position_number_id as id' )
     @assigned_employees = EmployeePosition.find(:all, :select=>'employee_id as id')
     @employee_position = EmployeePosition.new
   end
-  
+
   # GET /employee_positions/1;edit
   def edit
     @assigned_numbers = EmployeePosition.find(:all, :select=>'position_number_id as id', :conditions=>['id <> ?', params[:id]])
@@ -180,13 +184,12 @@ class EmployeePositionsController < ApplicationController
   #end
   
   def lateral_move
-        
+       
     @new_position_number = Position.find(:first, :select=>'p.id as id',:from=>'position_numbers pn, positions p',
       :conditions=>['pn.id = ? and pn.position_id = p.id', params[:employee_position][:position_number_id]])    
     
     @old_position_number = EmployeePositionHist.find(:first, :conditions=>['employee_id = ? AND end_date = (SELECT MAX(end_date) FROM employee_position_hists where employee_id = ?)',params[:employee_position][:employee_id], params[:employee_position][:employee_id]])
-    
-    if @new_position_number != nil and @old_position_number != nil then
+    if @new_position_number != nil and @old_position_number != nil and @old_position_number.position_number then
       if @new_position_number.id == @old_position_number.position_number.position_id
         flash[:notice] = "You are trying to assign " + @old_position_number.employee.first_name + 
           " to a position number that holds the same Position Title as the employees previous position number:" + @old_position_number.position_number.position_num + "."
@@ -213,12 +216,10 @@ class EmployeePositionsController < ApplicationController
       @search = 'ep.employee_id = e.id and ep.position_number_id = pn.id and pn.position_id = p.id and pt.id = p.position_type_id and pt.facility_id = f.id and ' +
         session[:search_dropdown] + " like " + '"' + session[:search_text] + "%" + '"' + ' and f.id = ?'
       
-      @employee_positions = EmployeePosition.find(:all, :select => 'ep.id as id, ep.position_number_id, ep.employee_id, ep.start_date,
-                                                 ep.end_date', :order=>'p.title',
-        :from=>'employees e, employee_positions ep, position_numbers pn, positions p, position_types pt, facilities f',
-        :conditions=>["#{@search}", session[:facility][:id]])
-      
-      #    @employee_position_pages, @employee_positions = paginate_collection @employee_position_all, :page => params[:page]
+      @employee_positions = EmployeePosition.find(:all, :select => 'ep.id as id, ep.position_number_id, ep.employee_id, ep.start_date, ep.end_date', 
+                                                 :order=>'p.title',
+                                                 :from=>'employees e, employee_positions ep, position_numbers pn, positions p, position_types pt, facilities f',
+                                                 :conditions=>["#{@search}", session[:facility][:id]])
       render :action => 'index'
     else
       redirect_to :action => 'index'

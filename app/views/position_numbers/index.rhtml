@@ -37,14 +37,13 @@
   </tr>
 <% end %>
 
-<% if @position_number_pages != nil then %>
-<tr>RESULTS:  <%= pagination_links(@position_number_pages, :window_size => 10)%> </tr>
+<% if @position_numbers.respond_to?(:total_pages) && @position_numbers.total_pages > 1 %>
+<tr>RESULTS:  <%= will_paginate(@position_numbers, :container => false)%> </tr>
 <% end %>
 
 </table>
-<% if @position_number_pages != nil then %>
-<tr>RESULTS: <%= pagination_links(@position_number_pages, :window_size => 10)%> </tr>
+<% if @position_numbers.respond_to?(:total_pages) && @position_numbers.total_pages > 1 %>
+<tr>RESULTS:  <%= will_paginate(@position_numbers, :container => false)%> </tr>
 <% end %>
 <br />
-
 <%= link_to 'Add New Position Number', new_position_number_path %>

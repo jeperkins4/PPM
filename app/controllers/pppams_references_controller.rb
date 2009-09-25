@@ -12,7 +12,7 @@ class PppamsReferencesController < ApplicationController
          :redirect_to => { :action => :list }
 
   def list
-    @pppams_reference_pages, @pppams_references = paginate :pppams_references, :per_page => 1000, :order_by => 'name'
+    @pppams_references = PppamsReference.paginate :page => params[:page], :per_page => 1000, :order_by => 'name'
   end
 
   def show

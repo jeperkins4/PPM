@@ -32,13 +32,13 @@
 <% end %>
   </tr>
 <% end %>
-<% if @employee_pages  != nil then %>
-<tr>RESULTS: <%= pagination_links(@employee_pages, :window_size => 10)%></tr>
+<% if @employees.respond_to?(:total_pages) && @employees.total_pages > 1 %>
+<tr>RESULTS: <%= will_paginate(@employees, :container => false)%></tr>
 <% end %>
 </table>
 <br />
-<% if @employee_pages != nil then %>
-<tr>RESULTS: <%= pagination_links(@employee_pages, :window_size => 10)%></tr>
+<% if @employees.respond_to?(:total_pages) && @employees.total_pages > 1 %>
+<tr>RESULTS: <%= will_paginate(@employees, :container => false)%></tr>
 <% end %>
 <br />
 

@@ -12,7 +12,7 @@ class PppamsReportFiltersController < ApplicationController
          :redirect_to => { :action => :list }
 
   def list
-    @pppams_report_filter_pages, @pppams_report_filters = paginate :pppams_report_filters, :per_page => 10
+    @pppams_report_filters = PppamsReportFilter.paginate :page => params[:page]
   end
 
   def show

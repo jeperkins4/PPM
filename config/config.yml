@@ -10,3 +10,6 @@ test:
 production:
   <<: *default
   domain: 'ppm.dms.myflorida.com'
+cucumber: 
+  <<: *default
+  domain: 'ppm-test.dms.myflorida.com'

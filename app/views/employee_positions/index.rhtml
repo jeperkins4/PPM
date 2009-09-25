@@ -8,7 +8,10 @@
 	<td><%= f.text_field :filter_text %></td> <td><%= button_to "Filter" %></td>
  <% end %>
 </tr>
-<table>
+</table>
+<% if @employee_positions.respond_to?(:total_pages) && @employee_positions.total_pages > 1 %>
+  <p>RESULTS: <%= will_paginate(@employee_positions,:container => false)%></p>
+ <% end %>
 
 <table>
   <tr>
@@ -35,13 +38,10 @@
 <% end %>
   </tr>
 <% end %>
-<% if @employee_position_pages != nil then %>
- <tr>RESULTS: <%= pagination_links(@employee_position_pages, :window_size => 10)%></tr>
- <% end %>
 </table>
-<% if @employee_position_pages != nil then %>
- <tr>RESULTS: <%= pagination_links(@employee_position_pages, :window_size => 10)%></tr>
- <% end %>
+<% if @employee_positions.respond_to?(:total_pages) && @employee_positions.total_pages > 1 %>
+  <p>RESULTS: <%= will_paginate(@employee_positions,:container => false)%></p>
+<% end %>
 <br />
 <br />
 

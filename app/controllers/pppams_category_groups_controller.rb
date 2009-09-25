@@ -12,7 +12,7 @@ class PppamsCategoryGroupsController < ApplicationController
          :redirect_to => { :action => :list }
 
   def list
-    @pppams_category_group_pages, @pppams_category_groups = paginate :pppams_category_groups, :per_page => 10
+    @pppams_category_groups = PppamsCategoryGroup.paginate :page => params[:page], :per_page => 20
   end
 
   def show

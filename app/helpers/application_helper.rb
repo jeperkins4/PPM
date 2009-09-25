@@ -1,6 +1,5 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-
   def collection_select_multiple(object, method,
                                  collection, value_method, text_method,
                                  options = {}, html_options = {})

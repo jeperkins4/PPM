@@ -4,8 +4,7 @@ class PromptsController < ApplicationController
   layout 'administration'
   
   def index
-    @prompt_pages, @prompts = paginate :prompts
-    #@prompts = Prompt.find(:all)
+    @prompts = Prompt.paginate :page => params[:page]
     
     respond_to do |format|
       format.html # index.rhtml

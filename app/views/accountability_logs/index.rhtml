@@ -12,10 +12,10 @@
 
 <div style="color:white; width:325px; background-color:#3366FF; font-weight:bold;"><em>
     You are currrently in the <%= session[:admin_year] ? "#{session[:admin_year].to_s} to #{session[:admin_year] + 1} Fiscal Year": "no year" %>
-</em></div>      
+</em></div>
 
 <%= calendar %>
-<p>Category: <%= pagination_links(@category_pages, {:window_size => 50, :name => 'category'}, nil, @category_titles) %></p>
+<p>Category: <%= will_paginate(@categories, :inner_window => 30, :container => false, :param_name => 'category')%></p>
 <p><%= session[:facility].facility %></p>
 <% form_tag 'accountability_logs', :enctype => 'multipart/form-data' do %>
 
@@ -23,14 +23,14 @@
   <%= text_field_tag :month, @month, :style => 'display:none;' %>
   <% @categories.each do |category| -%>
     <h3><b><%= category.title %></b></h3>
-    <table>  
-  
+    <table>
+
       <% if @month.to_i >= 7 then %>
         <%  @year = session[:admin_year] -%>
       <% else -%>
         <%  @year = session[:admin_year] + 1 -%>
       <% end -%>
-  
+
       <% @questions = Prompt.find(:all, :conditions =>  ['active = ? and context_id = ?', 1, category.id], :order => 'used_in_total DESC, question') -%> 
       <% @questions.each do |question| -%>
         <% @accountability_question_response = AccountabilityLogs.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and prompt_id = ? and facility_id = ?', @year, @month, category.id, question.id, session[:facility].id]) -%>
@@ -50,7 +50,7 @@
       <% @log = AccountabilityLogDetails.find(:first, :conditions => ['log_year = ? and log_month = ? and context_id = ? and facility_id = ?', @year, @month, category.id, session[:facility].id]) -%>
       Additional Information:<br />
       <%= text_area_tag "log[#{category.id}]", (@log) ? @log.detail_response : "", :max_chars => 1023, :size => "60x8" %>
-    </p>    
+    </p>
     <p style="margin-left:20px;">
       <div id='spinner'></div>
       <%= submit_tag 'Record/Update',:disable_with => "Please wait...", :onclick => "submit(); document.getElementById('spinner').innerHTML=\"<img src='images/spinner.gif'/>\";" %>

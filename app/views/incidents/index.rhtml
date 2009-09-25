@@ -11,13 +11,13 @@
 </p>
 	<% end -%>	
 	
-<% if @incident_pages.length.to_i > 1 -%>
-<p>
-Page: <%= pagination_links(@incident_pages)%>
-</p>
+<% if @incidents.total_pages > 1 -%>
+  <p>
+    Page: <%= will_paginate @incidents, :previous_label => false, :next_label => false, :container => false %>
+  </p>
 <% end -%>
 
-	<% if @status.to_i == 0 -%>
+<% if @status.to_i == 0 -%>
 <p>
 	<table>
 		<th>Scale:</th>

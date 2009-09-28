@@ -1,7 +1,13 @@
 <h1>Position Numbers</h1>
 
 <%= link_to 'Add New Position Number', new_position_number_path %>
-
+<table style='float:right'>
+	<tbody><tr><th>Legend:</th>
+		</tr><tr>
+			<td bgcolor="#ff3300">Inactive Position Number</td>
+		</tr>
+  </tbody>
+</table>
 <table>	
 <% form_for(:position_number, :url => {:action => :set_filter}) do |f| %>
   <tr><td>	Filter: <%= select(:id, :filter_drop, @filter_params.collect {|key,v| [v['title'], key]}, {:include_blank=> true})%></td.
@@ -9,7 +15,7 @@
  <% end %>
 </tr>
 </table>
-	
+
 <table>
   <tr>
 	<th>Position Type</th>
@@ -22,7 +28,7 @@
   </tr>
   
 <% for position_number in @position_numbers %>
-  <tr>
+  <tr class="<%= "active_flag_#{position_number.active_flag}"%>">
     <td><%=h position_number.position.position_type.position_type %></td>
     <td><%=h position_number.position.title %></td>
     <td><%=h position_number.position_num %></td>
@@ -30,9 +36,6 @@
     <td><%=h position_number.waiver_approval_date %></td>
 	<td><%=h position_number.created_on %></td>
     <td><%= link_to 'Show', position_number_path(position_number) %> <%= link_to 'Edit', edit_position_number_path(position_number) %>
-<% if session[:access_level] == 'Administrator' -%>
-    <%= link_to 'Destroy', position_number_path(position_number), :confirm => 'Are you sure?', :method => :delete %>
-	<% end -%>
 	</td>
   </tr>
 <% end %>

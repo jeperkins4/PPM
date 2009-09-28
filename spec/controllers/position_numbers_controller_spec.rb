@@ -3,7 +3,7 @@ describe PositionNumbersController do
   integrate_views
   
   before do
-    login_helper
+    login_as_admin
     @ep1 = EmployeePosition.make
     @ep2 = EmployeePosition.make
     @ep3 = EmployeePosition.make
@@ -69,7 +69,6 @@ describe PositionNumbersController do
         response.should redirect_to(position_number_url(@ep1.position_number.id))
       end
     end
-  
     describe 'set_filter' do
       it 'should show items when they are filtered by any of several criteria' do
         @ep1.position_number.update_attribute(:position_num, 'aaaaaaaa')
@@ -79,7 +78,7 @@ describe PositionNumbersController do
         @ep2.position_number.position.position_type.update_attribute(:facility, ep1_facility)
         session[:facility] = ep1_facility
   
-        get :set_filter, :id => {:filter_drop => '1'}, :position_number => {:filter_text => 'aaaaaaaa'}
+        put :set_filter, :id => {:filter_drop => '1'}, :position_number => {:filter_text => 'aaaaaaaa'}
         
         assigns[:position_numbers].should have(1).record
         assigns[:position_numbers][0].should == @ep1.position_number

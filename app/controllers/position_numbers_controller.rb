@@ -8,7 +8,7 @@ class PositionNumbersController < ApplicationController
   # GET /position_numbers.xml
   def index
 
-    @position_numbers = PositionNumber.for_facility(session[:facility]).paginate(:page => params[:page], :per_page => 100)
+    @position_numbers = PositionNumber.send(:with_exclusive_scope) {PositionNumber.for_facility(session[:facility]).paginate(:page => params[:page], :per_page => 100)}
     @filter_params = @@filter_params
 
     respond_to do |format|
@@ -20,7 +20,7 @@ class PositionNumbersController < ApplicationController
   # GET /position_numbers/1
   # GET /position_numbers/1.xml
   def show
-    @position_number = PositionNumber.find(params[:id])
+    @position_number = PositionNumber.send(:with_exclusive_scope) { PositionNumber.find(params[:id]) }
 
     respond_to do |format|
       format.html # show.rhtml
@@ -95,9 +95,9 @@ class PositionNumbersController < ApplicationController
     if session[:search_dropdown].to_s != nil and session[:search_dropdown] != "" then
       @search = 'pt.id = p.position_type_id and pn.position_id = p.id and ' + @@filter_params[session[:search_dropdown]]['table'] + " like ? "+ 
       ' and pt.facility_id = ?'
-      @position_numbers =  PositionNumber.find(:all, :select => 'pn.id as id, pn.position_id, pn.position_num, pn.position_type,
-                                                       pn.waiver_approval_date, pn.created_on',:from => 'position_numbers pn , positions p, position_types pt',
-                                                   :conditions=> ["#{@search}", session[:search_text] + '%%' ,session[:facility][:id]],:order=>'pn.position_num')
+      @position_numbers =  PositionNumber.send(:with_exclusive_scope){ PositionNumber.find(:all, :select => 'pn.id as id, pn.position_id, pn.position_num, pn.position_type,
+                                                       pn.waiver_approval_date, pn.created_on, pn.active_flag',:from => 'position_numbers pn , positions p, position_types pt',
+                                                   :conditions=> ["#{@search}", session[:search_text] + '%%' ,session[:facility][:id]],:order=>'pn.position_num')}
       render :action => 'index'
     else
       redirect_to :action => 'index'

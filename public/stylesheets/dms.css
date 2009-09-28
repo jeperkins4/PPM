@@ -1200,4 +1200,9 @@ tr.blankrow, tr.blankrow td {
 	border: none;
 	background: #ffffff;
 }
-
+tr.active_flag_false td a {
+  display:none;
+}
+tr.active_flag_false td {
+  background-color:#ff3300;
+}

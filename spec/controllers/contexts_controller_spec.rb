@@ -2,7 +2,7 @@
 
  describe ContextsController do
    before do
-     login_helper
+     login_as_admin
    end
    describe "index" do
      describe "GET" do

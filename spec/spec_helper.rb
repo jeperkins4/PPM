@@ -30,7 +30,4 @@ Spec::Runner.configure do |config|
 
 end
 
-def login_helper
-  @admin = User.make(:administrator)
-  login_as @admin
-end
+

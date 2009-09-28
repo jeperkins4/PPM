@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
  describe UploadsController do
    before do
-     login_helper
+     login_as_admin
    end
    describe "list" do
      describe "GET" do

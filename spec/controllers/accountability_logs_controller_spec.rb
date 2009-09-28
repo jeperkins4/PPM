@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe AccountabilityLogsController do
   before do
-    login_helper
+    login_as_admin
     session[:facility] = Facility.make
     27.times do |i|
       @c = Context.make(:position => i)

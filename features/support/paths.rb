@@ -10,12 +10,12 @@ module NavigationHelpers
     
     when /the homepage/
       '/'
-    
-    # Add more mappings here.
-    # Here is a more fancy example:
-    #
-    #   when /^(.*)'s profile page$/i
-    #     user_profile_path(User.find_by_login($1))
+    when "the Position Numbers page"
+      '/position_numbers'
+    when "the employee positions page"
+      '/employee_positions'
+    when "the employee position history page"
+      '/employee_position_hists'
 
     else
       raise "Can't find mapping from \"#{page_name}\" to a path.\n" +

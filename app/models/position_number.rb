@@ -9,5 +9,5 @@ class PositionNumber < ActiveRecord::Base
                                 :conditions => ['facility_id = ?', facility_id]).map(&:id)
     {:conditions => "position_id in ('#{position_ids.join('\',\'')}')"}
   }
-#  default_scope :conditions => ["active_flag = ?", true]
+  default_scope :conditions => ["active_flag = ?", true]
 end

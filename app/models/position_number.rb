@@ -6,7 +6,7 @@ class PositionNumber < ActiveRecord::Base
   validates_presence_of [:position_id, :position_num, :position_type]
   validates_each :active_flag, :if => :changed_active_flag do |record, attr, value|
     if record.id && EmployeePosition.first(:select => 'id', :conditions => "position_number_id = #{record.id}")
-      record.errors.add attr, "is set to inactive but an employee position still uses this position number. Delete the employee position first." 
+      record.errors.add attr, "is set to inactive but an employee still uses this position number. Delete the employee from Employee/Position Tracking first." 
     end
   end
   

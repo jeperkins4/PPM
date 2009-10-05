@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091002194228) do
+ActiveRecord::Schema.define(:version => 20091005175811) do
 
   create_table "access_levels", :force => true do |t|
     t.string "access_level"
@@ -255,6 +255,7 @@ ActiveRecord::Schema.define(:version => 20091002194228) do
     t.date    "created_on"
     t.boolean "active_flag",          :default => true
     t.date    "inactive_on"
+    t.text    "inactive_comment"
   end
 
   create_table "position_reports", :force => true do |t|

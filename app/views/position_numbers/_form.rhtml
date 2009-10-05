@@ -17,8 +17,10 @@
   <b><%=f.label :inactive_on, "Date Inactive"%></b><br />
   <%=f.date_select :inactive_on, {:include_blank => true, :default => nil}%>
   </p>
+  <p><b><%=f.label :inactive_comment, "Inactive Comment" %></b><br />
+  <%=f.text_area :inactive_comment, :cols => 25, :rows => 8 %>
+  </p>
   <b>Special Position Type</b><br />
-  
    <p> <%= radio_button "position_number", "position_type", "none", :checked => true %> None &nbsp;&nbsp
    <%= radio_button "position_number", "position_type", "contract" %> Contracted &nbsp;&nbsp
 	<%= radio_button "position_number", "position_type", "iwtf" %>IWTF 

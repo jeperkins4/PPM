@@ -1,5 +1,4 @@
 class ReportsController < ApplicationController
-  require 'ruby-debug'
   before_filter :authenticate 
   layout 'administration_with_all'
 

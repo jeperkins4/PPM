@@ -5,7 +5,6 @@ def set_criteria_date(date)
 end
 
 describe PositionReportsController do
-  require 'ruby-debug'
   
   describe 'GET index' do
     it "should run a vacancy report when asked" do

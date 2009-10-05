@@ -8,7 +8,7 @@ class PositionNumbersController < ApplicationController
   # GET /position_numbers.xml
   def index
 
-    @position_numbers = PositionNumber.send(:with_exclusive_scope) {PositionNumber.for_facility(session[:facility]).paginate(:page => params[:page], :per_page => 100)}
+    @position_numbers = PositionNumber.send(:with_exclusive_scope) {PositionNumber.for_facility(session[:facility]).paginate(:page => params[:page], :per_page => 100, :order => 'active_flag desc, position_num asc')}
     @filter_params = @@filter_params
 
     respond_to do |format|
@@ -35,8 +35,14 @@ class PositionNumbersController < ApplicationController
 
   # GET /position_numbers/1;edit
   def edit
-    @position_number = PositionNumber.find(params[:id])
-    session[:facility] = @position_number.position.position_type.facility
+    begin
+      @position_number = PositionNumber.find(params[:id])
+      session[:facility] = @position_number.position.position_type.facility
+    rescue
+      position_number = PositionNumber.send(:with_exclusive_scope) { PositionNumber.find(params[:id]).position_num }
+      flash[:notice] = "The position number #{position_number} is set to inactive. Recreate it to use it again."
+      redirect_to position_numbers_path
+    end
   end
 
   # POST /position_numbers
@@ -60,7 +66,6 @@ class PositionNumbersController < ApplicationController
   # PUT /position_numbers/1.xml
   def update
     @position_number = PositionNumber.find(params[:id])
-    
     respond_to do |format|
       if @position_number.update_attributes(params[:position_number])
         flash[:notice] = 'PositionNumber was successfully updated.'
@@ -96,8 +101,8 @@ class PositionNumbersController < ApplicationController
       @search = 'pt.id = p.position_type_id and pn.position_id = p.id and ' + @@filter_params[session[:search_dropdown]]['table'] + " like ? "+ 
       ' and pt.facility_id = ?'
       @position_numbers =  PositionNumber.send(:with_exclusive_scope){ PositionNumber.find(:all, :select => 'pn.id as id, pn.position_id, pn.position_num, pn.position_type,
-                                                       pn.waiver_approval_date, pn.created_on, pn.active_flag',:from => 'position_numbers pn , positions p, position_types pt',
-                                                   :conditions=> ["#{@search}", session[:search_text] + '%%' ,session[:facility][:id]],:order=>'pn.position_num')}
+                                                       pn.waiver_approval_date, pn.created_on, pn.inactive_on, pn.active_flag',:from => 'position_numbers pn , positions p, position_types pt',
+                                                   :conditions=> ["#{@search}", session[:search_text] + '%%' ,session[:facility][:id]],:order=>'pn.active_flag desc, pn.position_num asc')}
       render :action => 'index'
     else
       redirect_to :action => 'index'

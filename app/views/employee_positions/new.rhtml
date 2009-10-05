@@ -11,16 +11,14 @@
 <% form_tag(:action => :set_position_new) do -%>
   <p>
     <b>Positions</b><br />	
-    <%= select("facility","position_id", (session[:facility]) ? session[:facility].positions.find(:all, :order => :title).collect {|pn| [ pn.title, pn.id ] } : '', { :include_blank => true, :selected => (session[:position]) ? session[:position].id : ""},{:onchange => "JavaScript:submit()"})%>
+    <%= select_position %>
   </p>  
 <% end -%>
-
-
 
 <% form_for(:employee_position, :url => employee_positions_path) do |f| %>
   <p>
     <b>Position number</b><br />	
-    <%= f.select("position_number_id", (session[:position]) ? session[:position].position_numbers.find(:all,:conditions=>['id not in (?)', @assigned_numbers],:order => :position_num).collect {|pn| [ pn.position_num, pn.id ] } : '', { :include_blank => true, :selected => (session[:position_number]) ? session[:position_number].id : "" })%>
+    <%= select_position_number(f) %>
   </p>
 
   <p>

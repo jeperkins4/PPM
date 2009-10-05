@@ -6,10 +6,10 @@ class EmployeePositionHistsController < ApplicationController
   # GET /employee_position_hists
   # GET /employee_position_hists.xml
   def index
-    
-    @facility_position_numbers = session[:facility].position_numbers.sort {|a,b| a.position_num <=> b.position_num}    
-    @employee_position_hists = EmployeePositionHist.find_all_by_position_number_id(@facility_position_numbers)
-    
+    @facility_position_numbers = PositionNumber.send(:with_exclusive_scope) do
+      session[:facility].position_numbers.sort {|a,b| a.position_num <=> b.position_num}
+    end
+    @employee_position_hists =  EmployeePositionHist.generic_for_position_numbers(@facility_position_numbers.map(&:id))
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @employee_position_hists.to_xml }

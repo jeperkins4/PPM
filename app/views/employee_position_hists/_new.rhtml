@@ -7,7 +7,7 @@
       <%= f.select("position_number_id",   position_number_select_options)%>
     </td>
     <td> 
-      <%= f.select("employee_id", session[:facility].employees.find(:all, :order => 'last_name asc')    .collect {|em| ["#{em.last_name},#{em.first_name}", em.id ] },:include_blank => "true")-%>
+      <%= f.select("employee_id", session[:facility].employees.find(:all, :order => 'last_name asc')    .collect {|em| ["#{em.last_name},#{em.first_name}", em.id ] },:include_blank => true)-%>
     </td>
   </tr>
   <th align="center">Start date</th>

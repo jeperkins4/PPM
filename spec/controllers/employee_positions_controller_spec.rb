@@ -41,10 +41,21 @@ describe EmployeePositionsController do
       @ep2.position_number.position.position_type.update_attribute(:facility, ep1_facility)
       session[:facility] = ep1_facility
 
-      get :set_filter, :id => {:filter_drop => 'e.first_name'}, :employee_position => {:filter_text => 'aaaaaaaa'}
+      post :set_filter, :id => {:filter_drop => 'e.first_name'}, :employee_position => {:filter_text => 'aaaaaaaa'}
       
       assigns[:employee_positions].should have(1).record
       assigns[:employee_positions][0].should == @ep1
+    end
+    it 'should not display inactive position numbers' do
+      @ep1.position_number.update_attribute(:active_flag, false)
+      position_title = @ep1.position_number.position.title
+      ep1_facility = @ep1.position_number.position.position_type.facility
+      session[:facility] = ep1_facility
+
+      post :set_filter, :id => {:filter_drop => 'p.title'}, :employee_position => {:filter_text => position_title}
+
+      assigns[:employee_positions].should have(0).record
+      assigns[:employee_positions].should be_empty
     end
   end
   
@@ -72,7 +83,7 @@ describe EmployeePositionsController do
       flash[:notice].should == 'End Date must be greater than the Start Date'
 
     end
-    it 'should  save new end date' do
+    it 'should  update end date' do
       session[:facility] = @ep1.position_number.position.position_type.facility
       new_attributes = @ep1.attributes.reject {|k,v| k.to_s == 'end_date' || k.to_s == 'start_date'}.
                                        merge({'start_date(3i)' => '01', 
@@ -81,22 +92,59 @@ describe EmployeePositionsController do
                                               'end_date(3i)' => '01', 
                                               'end_date(2i)' => '03',
                                               'end_date(1i)' => '2009'})
-      post :update, :id => @ep1.id, :employee_position => new_attributes
+      put :update, :id => @ep1.id, :employee_position => new_attributes
       response.should redirect_to(employee_path(@ep1.employee.id)) do 
         response.should have_tag('p', /Start date\:.*2009\-03\-01/)
       end
     end
-    it 'should save new employee positions' do
+    it 'should update positions' do
       session[:facility] = @ep1.position_number.position.position_type.facility
+      position_number = PositionNumber.make(:position => @ep1.position_number.position)
       new_attributes = @ep1.attributes.reject {|k,v| k.to_s == 'end_date' || k.to_s == 'start_date'}.
-                                       merge({'position_number_id' => 2790,
+                                       merge({'position_number_id' => position_number.id,
                                               'end_date(3i)' => '', 
                                               'end_date(2i)' => '',
                                               'end_date(1i)' => ''})
-      post :update, :id => @ep1.id, :employee_position => new_attributes
+      put :update, :id => @ep1.id, :employee_position => new_attributes
       response.should redirect_to(employee_position_path(@ep1.id)) do
         response.should be_success
       end
+    end
+  end
+  describe 'POST create' do
+    before do
+      session[:facility] = @ep1.position_number.position.position_type.facility
+      @employee = @ep1.employee
+      @employee.employee_position = nil
+      @employee.save
+
+      @position_number = @ep1.position_number
+      @ep1.destroy
+      @position_number.update_attribute(:active_flag, false)
+      
+    end
+    it 'should allow creation of employee_positions for position numbers that were once inactive' do
+      @active_position_number = PositionNumber.make
+      post :create, :employee_position => {
+                      'position_number_id' => @active_position_number.id.to_s,
+                      'employee_id' => @employee.id.to_s,
+                      'start_date(1i)' => Date.yesterday.year.to_s,
+                      'start_date(2i)' => Date.yesterday.month.to_s,
+                      'start_date(3i)' => Date.yesterday.day.to_s 
+      }
+      assigns[:employee_position].position_number.should == @active_position_number
+      assigns[:employee_position].employee.should == @employee
+      assigns[:employee_position].should be_valid
+    end
+    it 'should not allow creation of employee positions for position numbers that are only inactive' do
+      post :create, :employee_position => {
+                      'position_number_id' => @position_number.id.to_s,
+                      'employee_id' => @employee.id.to_s,
+                      'start_date(1i)' => Date.yesterday.year.to_s,
+                      'start_date(2i)' => Date.yesterday.month.to_s,
+                      'start_date(3i)' => Date.yesterday.day.to_s 
+      }
+      assigns[:employee_position].should_not be_valid
     end
   end
   describe 'delete' do

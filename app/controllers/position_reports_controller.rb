@@ -1,7 +1,7 @@
 class PositionReportsController < ApplicationController
   layout 'administration'    
   def index
-    
+
     if request.post?
       session[:selectmonth] = params[:date][:month].to_i
       session[:selectyear] = params[:date][:year].to_i
@@ -9,7 +9,7 @@ class PositionReportsController < ApplicationController
 
       unless params[:id] == ""
         session[:report_selection] = params[:id][:selection]
-        
+
         case session[:report_selection]
         when "Vacancy"
           @results = 'vacancy'
@@ -19,54 +19,73 @@ class PositionReportsController < ApplicationController
           vacancy
         end
       end
-    end    
+    end
   end
-  
+
   def vacancy
     #Find deductable types by the current facility for user
-    @deductable_position_type = PositionType.find(:all, :conditions => ['deductable = ?', 1])
-    
+    @deductable_position_type = PositionType.find(:all, :conditions => ['deductable = ? and facility_id = ?', 1, session[:facility]])
+
     #Find deductable Positions based on the types
-    @deductable_positions = Position.find(:all, :include => ['position_type'], :conditions => ['position_type_id IN (?) and position_types.facility_id = ?', @deductable_position_type, session[:facility].id])
-    
+    @deductable_positions = Position.find(:all, 
+                                          :conditions => ['position_type_id IN (?)', @deductable_position_type])
+
     #Now get the position numbers tied to the position types found above
     if @deductable_positions != nil
-      @deductable_position_numbers = PositionNumber.find(:all, :conditions => ['position_id IN (?) AND position_type = ? and waiver_approval_date is null', @deductable_positions, "none"])        
-    end    
-    
-    
+      @deductable_position_numbers = PositionNumber.send(:with_exclusive_scope) { PositionNumber.find(:all, 
+                                                         :conditions => ['position_id IN (?) 
+                                                           AND position_type = ? 
+                                                           AND waiver_approval_date is null
+                                                           AND (DATE(inactive_on) >= DATE(?) OR active_flag = 1)', 
+                                                          @deductable_positions,
+                                                          "none", @criteria_date])}
+    end
     @not_assigned_position_numbers = []
     @current_assigned_no_history = []
     @current_assigned_with_history = []
     @history_with_no_current = []
     @report = []
-    
-    @deductable_position_numbers.each do |dpn|     
-      @not_assigned_position_numbers += PositionNumber.find(:all, :conditions =>['id = ? and id not in(select position_number_id from employee_positions where start_date <= LAST_DAY(?))
-                                                            and id not in (select position_number_id from employee_position_hists where start_date <= LAST_DAY(?))
-                                                            and created_on <= LAST_DAY(?) and datediff(LAST_DAY(?),created_on) > ?', dpn.id,
+
+    @deductable_position_numbers.each do |dpn|
+      @not_assigned_position_numbers += PositionNumber.find(:all, :conditions =>['id = ? 
+          and id not in(select position_number_id from employee_positions where start_date <= LAST_DAY(?))
+          and id not in (select position_number_id from employee_position_hists where start_date <= LAST_DAY(?))
+          and created_on <= LAST_DAY(?) 
+          and datediff(LAST_DAY(?),created_on) > ?', 
+          dpn.id,
           @criteria_date, @criteria_date,@criteria_date, @criteria_date,dpn.position.position_type.deduction_days])    
-   
-      @current_assigned_no_history += EmployeePosition.find(:all,:from =>'employee_positions ep, position_numbers pn',:conditions =>['ep.position_number_id = ? and ep.position_number_id = pn.id
-                                                             and ep.start_date between ? AND ? and ep.position_number_id not in (select position_number_id from employee_position_hists)
-                                                             and datediff(ep.start_date ,pn.created_on) > ?', dpn.id, @criteria_date.at_beginning_of_month, 
-          @criteria_date.at_end_of_month, dpn.position.position_type.deduction_days])
-                                                            
+
+      @current_assigned_no_history += EmployeePosition.find(:all,
+         # The order of tables here ensures that ids are assigned
+         # correctly to the object, otherwise the EP's id would
+         # the position_numbers.id
+         :from =>'position_numbers pn, employee_positions ep',
+         :conditions =>['ep.position_number_id = ? 
+          and ep.position_number_id = pn.id
+          and ep.start_date between ? 
+          AND ? 
+          and ep.position_number_id not in (select position_number_id from employee_position_hists)
+          and datediff(ep.start_date ,pn.created_on) > ?',
+          dpn.id, 
+          @criteria_date.at_beginning_of_month, 
+          @criteria_date.at_end_of_month, 
+          dpn.position.position_type.deduction_days])
+
       @current_assigned_with_history += EmployeePosition.find(:all, :select =>'ep.position_number_id, ep.employee_id as filling_employee, ep.start_date, eph.end_date,
                                                                eph.employee_id as leaving_employee',:from =>'employee_positions ep, employee_position_hists eph',
         :conditions => ['ep.position_number_id = ? and ep.start_date between ? AND ? and ep.position_number_id = eph.position_number_id
                                                                and eph.end_date = (select max(end_date) from employee_position_hists where position_number_id = ?)
                                                                and datediff(ep.start_date,(select max(end_date) from employee_position_hists where position_number_id = ?)) > ?',
           dpn.id, @criteria_date.at_beginning_of_month, @criteria_date.at_end_of_month, dpn.id,dpn.id,dpn.position.position_type.deduction_days])
-            
+
       @history_with_no_current += EmployeePositionHist.find(:all, :limit => 1, :order => 'end_date desc', :conditions =>['position_number_id = ? and position_number_id not in 
                                                             (select position_number_id from employee_positions where start_date <= ?)
                                                             and (datediff(?, (select max(end_date) from employee_position_hists
                                                             where position_number_id = ?)) > ?)', dpn.id, @criteria_date.at_end_of_month,
           @criteria_date.at_end_of_month, dpn.id, dpn.position.position_type.deduction_days])
     end
-   
-    
+
+
     @not_assigned_position_numbers.each do |napn|    
       @report += [{
           :position_type=> napn.position.position_type.position_type, 
@@ -123,7 +142,6 @@ class PositionReportsController < ApplicationController
       end    
       
       if @validation_days > 0  then
-      
         @report += [{
             :position_type=> cawh.position_number.position.position_type.position_type, 
             :position_number => cawh.position_number.position_num,
@@ -147,26 +165,27 @@ class PositionReportsController < ApplicationController
     end
     
     @history_with_no_current.each do |hwnc|
+      position_number = PositionNumber.send(:with_exclusive_scope) { PositionNumber.find(hwnc.position_number_id)}
       @report += [{
-          :position_type=> hwnc.position_number.position.position_type.position_type, 
-          :position_number => hwnc.position_number.position_num,
-          :position_title => hwnc.position_number.position.title,
+          :position_type=> position_number.position.position_type.position_type, 
+          :position_number => position_number.position_num,
+          :position_title => position_number.position.title,
           :employee_vacate => hwnc.employee_id,
           :vacate_date => hwnc.end_date,
           :hire_date => "",
           :employee_hire => "",
-          :salary => hwnc.position_number.position.salary,
-          :salary120 => (hwnc.position_number.position.salary * 1.2),
-          :salaryday => ((hwnc.position_number.position.salary * 1.2) / 365),
-          :totaldeduc => (((hwnc.position_number.position.salary * 1.2) / 365) *
+          :salary => position_number.position.salary,
+          :salary120 => (position_number.position.salary * 1.2),
+          :salaryday => ((position_number.position.salary * 1.2) / 365),
+          :totaldeduc => (((position_number.position.salary * 1.2) / 365) *
             (@criteria_date.at_end_of_month.to_date - 
                 hwnc.end_date.to_date - 
-                hwnc.position_number.position.position_type.deduction_days)),
-          :special_position_type => hwnc.position_number.position_type,
-          :date_waiver_approval => hwnc.position_number.waiver_approval_date,
+                position_number.position.position_type.deduction_days)),
+          :special_position_type => position_number.position_type,
+          :date_waiver_approval => position_number.waiver_approval_date,
           :validation_days => (@criteria_date.at_end_of_month.to_date - 
               hwnc.end_date.to_date - 
-              hwnc.position_number.position.position_type.deduction_days)
+              position_number.position.position_type.deduction_days)
         }]
     end
 

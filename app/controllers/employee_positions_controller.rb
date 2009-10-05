@@ -11,7 +11,7 @@ class EmployeePositionsController < ApplicationController
                :per_page => 100,
                :total_entries => EmployeePosition.count( :from=>'employee_positions ep, position_numbers pn, positions p, position_types pt, facilities f',
                                                          :conditions=>['ep.position_number_id = pn.id and pn.position_id = p.id and pt.id = p.position_type_id 
-                                                           and pt.facility_id = f.id and f.id = ?', session[:facility]])
+                                                           and pt.facility_id = f.id and pn.active_flag = 1 and f.id = ?', session[:facility]])
     ) 
 
     respond_to do |format|
@@ -59,16 +59,16 @@ class EmployeePositionsController < ApplicationController
   # POST /employee_positions.xml
   def create
     if lateral_move then
-      unless session[:user_type] =='Administrator'      
+      unless session[:user_type] =='Administrator'
         redirect_to :back
       else
         @employee_position = EmployeePosition.new(params[:employee_position])
-      
-        respond_to do |format|        
+
+        respond_to do |format|
           if @employee_position.save
             flash[:notice] = "This is a information notice for Administrators:  You are assigning this employee to a position of the same type as their previous
                             position number: #{session[:old_pos]}.  If you did not want to perform this action please delete this record from the system using the delete link below."
-                            
+
             format.html { redirect_to employee_position_url(@employee_position) }
             format.xml  { head :created, :location => employee_position_url(@employee_position) }
           else
@@ -77,10 +77,10 @@ class EmployeePositionsController < ApplicationController
           end
         end
       end
-    else      
+    else
       @employee_position = EmployeePosition.new(params[:employee_position])
-      
-      respond_to do |format|        
+
+      respond_to do |format|
         if @employee_position.save
           flash[:notice] = 'EmployeePosition was successfully created.'
           format.html { redirect_to employee_position_url(@employee_position) }
@@ -214,8 +214,7 @@ class EmployeePositionsController < ApplicationController
     session[:search_text] = params[:employee_position][:filter_text] rescue ''
     if session[:search_dropdown].to_s != nil and session[:search_dropdown] != "" then
       @search = 'ep.employee_id = e.id and ep.position_number_id = pn.id and pn.position_id = p.id and pt.id = p.position_type_id and pt.facility_id = f.id and ' +
-        session[:search_dropdown] + " like " + '"' + session[:search_text] + "%" + '"' + ' and f.id = ?'
-      
+        session[:search_dropdown] + " like " + '"' + session[:search_text] + "%" + '"' + ' and f.id = ? and pn.active_flag = 1'
       @employee_positions = EmployeePosition.find(:all, :select => 'ep.id as id, ep.position_number_id, ep.employee_id, ep.start_date, ep.end_date', 
                                                  :order=>'p.title',
                                                  :from=>'employees e, employee_positions ep, position_numbers pn, positions p, position_types pt, facilities f',
@@ -223,7 +222,6 @@ class EmployeePositionsController < ApplicationController
       render :action => 'index'
     else
       redirect_to :action => 'index'
-    end   
-  end  
-  
+    end
+  end
 end

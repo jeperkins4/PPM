@@ -1,5 +1,5 @@
 module PositionNumbersHelper
   def active(position_number)
-    position_number.active_flag ? 'Active position number' : 'Inactive position number'
+    position_number.inactive_on ? position_number.inactive_on : 'Still active'
   end
 end

@@ -35,7 +35,7 @@
     <td><%=h position_number.position_type.upcase %></td>
     <td><%=h position_number.waiver_approval_date %></td>
 	<td><%=h position_number.created_on %></td>
-    <td><%= link_to 'Show', position_number_path(position_number) %> <%= link_to 'Edit', edit_position_number_path(position_number) %>
+  <td><%= link_to 'Show', position_number_path(position_number) %> <%= link_to 'Edit', edit_position_number_path(position_number), :alt => 'edit' %>
 	</td>
   </tr>
 <% end %>

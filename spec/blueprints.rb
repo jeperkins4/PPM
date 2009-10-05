@@ -172,4 +172,3 @@ Upload.blueprint do
   file_type { %w{application/pdf application/vnd.ms-excel image/pjpeg application/octet-stream application/msword text/html application/vnd.ms-powerpoint application/vnd.openxmlformats-officedocument.wordprocessingml.document image/tiff text/plain application/vnd.openxmlformats-officedocument.spreadsheetml.sheet}.rand}
   name { Faker::Lorem.words(3)}
 end
-

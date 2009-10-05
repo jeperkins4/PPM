@@ -25,13 +25,13 @@
   <h4>All Employee History</h4><br>
   <% for employee_position_hist in @employee_position_hists %>
     <tr>
-      <td><%=h employee_position_hist.position_number.position.facility.facility %></td>
-      <td><%=h employee_position_hist.position_number.position.title %></td>
-      <td><%=h employee_position_hist.position_number.position_num %></td>
-      <td><%=h employee_position_hist.employee.first_name + ' ' + employee_position_hist.employee.last_name rescue ' ' %></td>
-      <td><%=h number_to_currency(employee_position_hist.salary) %></td>
-      <td><%=h employee_position_hist.start_date %></td>
-      <td><%=h employee_position_hist.end_date %></td>	
+      <td><%=h employee_position_hist['facility'] %></td>
+      <td><%=h employee_position_hist['title'] %></td>
+      <td><%=h employee_position_hist['position_num'] %></td>
+      <td><%=h employee_position_hist['first_name'] + ' ' + employee_position_hist['last_name'] rescue ' ' %></td>
+      <td><%=h number_to_currency(employee_position_hist['salary']) %></td>
+      <td><%=h employee_position_hist['start_date'] %></td>
+      <td><%=h employee_position_hist['end_date'] %></td>	
       <td>      
         <%= link_to 'Edit', edit_employee_position_hist_path(employee_position_hist) %>
         <% if session[:user_type] == 'Web Developer' or session[:user_type] == 'Administrator' -%>

@@ -36,7 +36,8 @@ class PppamsReportFilter < ActiveRecord::Base
       ind_string = all_inds.flatten.uniq.join(",")
     end
     fac_string = new_filter[0].collect{|i| i.to_i}.join(",")
-    ouput = [PppamsIndicator.find(:all, :include => :pppams_category, :conditions =>["pppams_indicator_base_ref_id in (#{ind_string}) and facility_id in (#{fac_string})"]), group_level]
+    ouput = [PppamsIndicator.find(:all, :joins => "inner join pppams_categories on pppams_categories.id = pppams_indicators.pppams_category_id",
+                                  :conditions =>["pppams_indicator_base_ref_id in (#{ind_string}) and pppams_categories.facility_id in (#{fac_string})"]), group_level]
   end
 
   def self.good_reviews(from_date, to_date, status_filter, score_filter, good_ids)

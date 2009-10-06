@@ -3,7 +3,7 @@ class PppamsReportsController < ApplicationController
   before_filter :authenticate
 
   layout 'administration'
-  require RAILS_ROOT + '/vendor/plugins/calendar_date_select/init.rb'
+  #require RAILS_ROOT + '/vendor/plugins/calendar_date_select/init.rb'
   require 'orderedhash.rb'
   require RAILS_ROOT + '/vendor/plugins/multiple_select/init.rb'
   

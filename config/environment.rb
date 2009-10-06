@@ -12,7 +12,7 @@ Rails::Initializer.run do |config|
   config.active_record.observers = :user_observer
   config.gem 'mislav-will_paginate', :version => '~> 2.3.11', :lib => 'will_paginate', 
     :source => 'http://gems.github.com'
-
+  config.gem "calendar_date_select"
 end
 
 ExceptionNotifier.exception_recipients = %w(bernardo.telles@dms.myflorida.com)

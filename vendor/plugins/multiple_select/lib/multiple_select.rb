@@ -71,7 +71,7 @@ module FightTheMelons #:nodoc:
         object, method, collection, value_method, text_method, options = {}
       )
         InstanceTag.new(
-          object, method, self, nil, options.delete(:object)
+          object, method, self, options.delete(:object)
         ).to_collection_multiple_select_tag(
           "#{object}[#{method}]", collection, value_method, text_method, options
         )
@@ -99,7 +99,7 @@ module FightTheMelons #:nodoc:
       # element that wraps the checkbox list.
       def multiple_select(object, method, container, options = {})
         InstanceTag.new(
-          object, method, self, nil, options.delete(:object)
+          object, method, self, options.delete(:object)
         ).to_multiple_select_tag("#{object}[#{method}]", container, options)
       end
       
@@ -125,7 +125,7 @@ module FightTheMelons #:nodoc:
       # element that wraps the checkbox hierarchy.
       def tree_multiple_select(object, method, nodes, value_method, text_method, options = {})
         InstanceTag.new(
-          object, method, self, nil, options.delete(:object)
+          object, method, self, options.delete(:object)
         ).to_tree_multiple_select_tag(
           "#{object}[#{method}]", nodes, value_method, text_method, options
         )
@@ -299,7 +299,6 @@ module FightTheMelons #:nodoc:
       def multiple_select_with_path(name, options, &block)
         val = value(object) if respond_to? :value
         selected_items = options.has_key?(:selected_items) ? options[:selected_items] : val
-
         selected_items ||= []
         outer_class = (options[:outer_class] or
           FormMultipleSelectHelperConfiguration.outer_class)

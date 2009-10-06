@@ -65,7 +65,7 @@ class PppamsReviewsController < ApplicationController
     if !@pppams_review.can_edit?
       flash[:notice] = 'You do not have permission to edit this review! Please contact an administrator!'
       redirect_to :controller => 'pppams_indicators'
-      break
+      return
     end
     @pppams_indicator = @pppams_review.pppams_indicator
     @new = false

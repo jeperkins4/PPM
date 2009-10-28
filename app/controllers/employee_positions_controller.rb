@@ -23,9 +23,9 @@ class EmployeePositionsController < ApplicationController
   # GET /employee_positions/1
   # GET /employee_positions/1.xml
   def show
-    @position_facility = session[:facility].positions
-    @position_numbers = @position_facility.collect {|pos| pos.position_numbers}.flatten
-    @employee_positions = []
+    @position_numbers = PositionNumber.find(:all, :joins => "inner join positions on position_numbers.position_id = positions.id
+                                                             inner join position_types on position_types.id = positions.position_type_id",
+                                             :conditions => ["facility_id = ?", session[:facility].id])
     @position_numbers.each do |pf|
       if EmployeePosition.find(params[:id]).position_number_id == pf.id then
         @employee_position = EmployeePosition.find(params[:id])

@@ -14,7 +14,7 @@ class PppamsIndicator < ActiveRecord::Base
     good_ids = "(#{this_facility.pppams_category_ids.join(',')})" 
     find_me = "%:" + this_date.month.to_s + ":%"
     if this_facility.pppams_category_ids.size > 0 and this_date >= this_facility.pppams_started_on
-       PppamsIndicator.find(:all, :order => 'pppams_category_id',:conditions => ["pppams_category_id in #{good_ids} AND good_months like ?",  find_me ])
+      PppamsIndicator.find(:all, :order => 'pppams_category_id',:conditions => ["pppams_category_id in #{good_ids} AND good_months like ?",  find_me ])
     else
 	[]
     end

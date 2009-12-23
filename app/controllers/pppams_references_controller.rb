@@ -1,54 +1,86 @@
 class PppamsReferencesController < ApplicationController
   before_filter :authenticate
-  layout 'administration'
-  
+  layout 'administration'  # GET /pppams_references
+  # GET /pppams_references.xml
   def index
-    list
-    render :action => 'list'
-  end
+    @pppams_references = PppamsReference.paginate(:all, :per_page => 50, :page => params[:page], :order => 'name')
 
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update ],
-         :redirect_to => { :action => :list }
-
-  def list
-    @pppams_references = PppamsReference.paginate :page => params[:page], :per_page => 1000, :order_by => 'name'
-  end
-
-  def show
-    @pppams_reference = PppamsReference.find(params[:id])
-  end
-
-  def new
-    @pppams_reference = PppamsReference.new
-  end
-
-  def create
-    @pppams_reference = PppamsReference.new(params[:pppams_reference])
-    if @pppams_reference.save
-      flash[:notice] = 'PppamsReference was successfully created.'
-      redirect_to :action => 'list', :pppams_category_id => params[:pppams_category_id]
-    else
-      render :action => 'new'
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @pppams_references }
     end
   end
 
+  # GET /pppams_references/1
+  # GET /pppams_references/1.xml
+  def show
+    @pppams_reference = PppamsReference.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @pppams_reference }
+    end
+  end
+
+  # GET /pppams_references/new
+  # GET /pppams_references/new.xml
+  def new
+    @pppams_reference = PppamsReference.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @pppams_reference }
+    end
+  end
+
+  # GET /pppams_references/1/edit
   def edit
     @pppams_reference = PppamsReference.find(params[:id])
   end
 
-  def update
-    @pppams_reference = PppamsReference.find(params[:id])
-    if @pppams_reference.update_attributes(params[:pppams_reference])
-      flash[:notice] = 'PppamsReference was successfully updated.'
-      redirect_to :action => 'show', :id => @pppams_reference, :pppams_category_id => params[:pppams_category_id]
-    else
-      render :action => 'edit'
+  # POST /pppams_references
+  # POST /pppams_references.xml
+  def create
+    @pppams_reference = PppamsReference.new(params[:pppams_reference])
+
+    respond_to do |format|
+      if @pppams_reference.save
+        flash[:notice] = 'PppamsReference was successfully created.'
+        format.html { redirect_to(@pppams_reference) }
+        format.xml  { render :xml => @pppams_reference, :status => :created, :location => @pppams_reference }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @pppams_reference.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
+  # PUT /pppams_references/1
+  # PUT /pppams_references/1.xml
+  def update
+    @pppams_reference = PppamsReference.find(params[:id])
+
+    respond_to do |format|
+      if @pppams_reference.update_attributes(params[:pppams_reference])
+        flash[:notice] = 'PppamsReference was successfully updated.'
+        format.html { redirect_to(@pppams_reference) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @pppams_reference.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /pppams_references/1
+  # DELETE /pppams_references/1.xml
   def destroy
-    PppamsReference.find(params[:id]).destroy
-    redirect_to :action => 'list', :pppams_category_id => params[:pppams_category_id]
+    @pppams_reference = PppamsReference.find(params[:id])
+    @pppams_reference.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(pppams_references_url) }
+      format.xml  { head :ok }
+    end
   end
 end

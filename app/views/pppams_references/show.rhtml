@@ -1,8 +1,9 @@
-<% for column in PppamsReference.content_columns %>
 <p>
-  <b><%= column.human_name %>:</b> <%=h @pppams_reference.send(column.name) %>
+  <b>Name:</b> <%=h @pppams_reference.name %>
 </p>
-<% end %>
+<p>
+  <b>Url:</b> <%=h @pppams_reference.url%>
+</p>
 
 <%= link_to 'Edit', :action => 'edit', :id => @pppams_reference, :pppams_category_id => params[:pppams_category_id]  %> |
-<%= link_to 'Back', :action => 'list', :pppams_category_id => params[:pppams_category_id] %>
+<%= link_to 'Back', :action => 'index', :pppams_category_id => params[:pppams_category_id] %>

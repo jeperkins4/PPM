@@ -40,7 +40,8 @@ ActionController::Routing::Routes.draw do |map|
                 :position_hists,
                 :employees,
                 :prompts,
-                :contexts
+                :contexts,
+                :pppams_references
   
   map.resources :incidents do |incidents|
      incidents.resources :follow_ups, :name_prefix => nil

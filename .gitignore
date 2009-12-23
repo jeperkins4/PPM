@@ -26,3 +26,5 @@ all.js
 * *.csv
 *.csv
 *.docx
+*.swp
+*.swo

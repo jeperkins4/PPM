@@ -1,0 +1,22 @@
+<h1>Listing pppams_indicator_base_refs</h1>
+
+<table>
+  <tr>
+    <th>Question</th>
+    <th>Pppams category base ref</th>
+  </tr>
+
+<% @pppams_indicator_base_refs.each do |pppams_indicator_base_ref| %>
+  <tr>
+    <td><%=h pppams_indicator_base_ref.question %></td>
+    <td><%=h pppams_indicator_base_ref.pppams_category_base_ref_id %></td>
+    <td><%= link_to 'Show', pppams_indicator_base_ref %></td>
+    <td><%= link_to 'Edit', edit_pppams_indicator_base_ref_path(pppams_indicator_base_ref) %></td>
+    <td><%= link_to 'Destroy', pppams_indicator_base_ref, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New pppams_indicator_base_ref', new_pppams_indicator_base_ref_path %>

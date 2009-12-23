@@ -17,6 +17,7 @@ Sham.define do
   last_name { Faker::Name.last_name}
   email   { Faker::Internet.email }
   word    { Faker::Lorem.words(1)}
+  sentence { Faker::Lorem.sentence }
 end
 
 Context.blueprint do
@@ -171,4 +172,11 @@ Upload.blueprint do
   size { Faker.numerify('######') }
   file_type { %w{application/pdf application/vnd.ms-excel image/pjpeg application/octet-stream application/msword text/html application/vnd.ms-powerpoint application/vnd.openxmlformats-officedocument.wordprocessingml.document image/tiff text/plain application/vnd.openxmlformats-officedocument.spreadsheetml.sheet}.rand}
   name { Faker::Lorem.words(3)}
+end
+
+PppamsIndicator.blueprint do
+  question { sentence }
+  frequency { 1 }
+  start_month { (1..12).to_a.rand }
+
 end

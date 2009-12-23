@@ -41,6 +41,7 @@ ActionController::Routing::Routes.draw do |map|
                 :employees,
                 :prompts,
                 :contexts,
+                :pppams_indicator_base_refs,
                 :pppams_references
   
   map.resources :incidents do |incidents|

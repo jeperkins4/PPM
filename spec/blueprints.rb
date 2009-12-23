@@ -173,10 +173,19 @@ Upload.blueprint do
   file_type { %w{application/pdf application/vnd.ms-excel image/pjpeg application/octet-stream application/msword text/html application/vnd.ms-powerpoint application/vnd.openxmlformats-officedocument.wordprocessingml.document image/tiff text/plain application/vnd.openxmlformats-officedocument.spreadsheetml.sheet}.rand}
   name { Faker::Lorem.words(3)}
 end
-
+PppamsCategoryBaseRef.blueprint do
+  name {Sham.sentence }
+  pppams_category_group {PppamsCategoryGroup.make}
+end
+PppamsCategory.blueprint do
+  name {Sham.sentence }
+  pppams_category_base_ref {PppamsCategoryBaseRef.make}
+  facility {Facility.make}
+end
 PppamsIndicator.blueprint do
-  question { sentence }
+  question { Sham.sentence }
   frequency { 1 }
   start_month { (1..12).to_a.rand }
-
+  pppams_category {PppamsCategory.make}
+  good_months {":#{start_month}:"}
 end

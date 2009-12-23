@@ -28,3 +28,6 @@ all.js
 *.docx
 *.swp
 *.swo
+*.directory
+Session.vim
+TAGS

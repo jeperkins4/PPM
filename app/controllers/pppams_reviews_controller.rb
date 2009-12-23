@@ -82,6 +82,7 @@ class PppamsReviewsController < ApplicationController
       flash[:notice] = 'PppamsReview was successfully updated.'
       redirect_to :controller => 'pppams_indicators'
     else
+      @pppams_indicator = @pppams_review.pppams_indicator
       render :action => 'edit'
     end
   end

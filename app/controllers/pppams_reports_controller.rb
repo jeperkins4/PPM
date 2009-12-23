@@ -37,7 +37,6 @@ class PppamsReportsController < ApplicationController
         @filter[:category_filter] = PppamsCategory.find(:all, :conditions => ["facility_id in (#{@filter[:facility_filter]})"]).collect {|p| [ p.pppams_category_base_ref_id] }
       end
       type = @filter[:report_type].nil? ? "full" : @filter[:report_type].split('.')[0]
-
       base_filter = [@filter[:facility_filter], @filter[:category_filter], @filter[:indicator_filter]]
       good_ids_ar = PppamsReportFilter.good_indicator_ids(base_filter)
       @pppamsIndicators = good_ids_ar[0] << Junk.new

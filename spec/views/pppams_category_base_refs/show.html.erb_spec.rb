@@ -14,4 +14,5 @@ describe "/pppams_category_base_refs/show.html.erb" do
     response.should have_text(/value\ for\ name/)
     response.should have_text(/1/)
   end
+  it 'should rendor the category group name'
 end

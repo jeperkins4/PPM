@@ -21,4 +21,5 @@ describe "/pppams_category_base_refs/index.html.erb" do
     response.should have_tag("tr>td", "value for name".to_s, 2)
     response.should have_tag("tr>td", 1.to_s, 2)
   end
+  it 'renders the name of the associated category group'
 end

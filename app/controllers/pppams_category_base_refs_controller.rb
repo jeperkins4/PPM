@@ -1,4 +1,6 @@
 class PppamsCategoryBaseRefsController < ApplicationController
+  before_filter :authenticate
+  layout 'administration'
   # GET /pppams_category_base_refs
   # GET /pppams_category_base_refs.xml
   def index

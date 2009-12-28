@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe PppamsCategoryBaseRefsController do
+  before do
+    login_as_admin
+  end
 
   def mock_pppams_category_base_ref(stubs={})
     @mock_pppams_category_base_ref ||= mock_model(PppamsCategoryBaseRef, stubs)

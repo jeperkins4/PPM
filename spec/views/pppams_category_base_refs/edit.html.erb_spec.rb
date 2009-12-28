@@ -16,7 +16,7 @@ describe "/pppams_category_base_refs/edit.html.erb" do
 
     response.should have_tag("form[action=#{pppams_category_base_ref_path(@pppams_category_base_ref)}][method=post]") do
       with_tag('input#pppams_category_base_ref_name[name=?]', "pppams_category_base_ref[name]")
-      with_tag('input#pppams_category_base_ref_pppams_category_group_id[name=?]', "pppams_category_base_ref[pppams_category_group_id]")
+      with_tag('select#pppams_category_base_ref_pppams_category_group_id[name=?]', "pppams_category_base_ref[pppams_category_group_id]")
     end
   end
 end

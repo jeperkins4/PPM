@@ -1,5 +1,5 @@
 <h1>Listing <%= t(:pppams_indicator_base_ref).pluralize%></h1>
-<%= link_to 'New Overall Indicator', new_pppams_indicator_base_ref_path %>
+<%= link_to 'New Global Indicator', new_pppams_indicator_base_ref_path %>
 <br />
 <br />
 <%= will_paginate(@pppams_indicator_base_refs) %>
@@ -7,13 +7,13 @@
   <tr>
     <th colspan="2">Actions</th>
     <th>Question</th>
-    <th>Overall Category</th>
+    <th>Global Category</th>
   </tr>
 
 <% @pppams_indicator_base_refs.each do |pppams_indicator_base_ref| %>
   <tr>
-    <td><%= link_to image_tag("view_icon.png", :border=>0, :title=>'Show this overall category') , pppams_indicator_base_ref %></td>
-    <td><%= link_to image_tag("edit_icon.png", :border=>0, :title=>"Edit this overall category"), edit_pppams_indicator_base_ref_path(pppams_indicator_base_ref) %></td>
+    <td><%= link_to image_tag("view_icon.png", :border=>0, :title=>'Show this Global category') , pppams_indicator_base_ref %></td>
+    <td><%= link_to image_tag("edit_icon.png", :border=>0, :title=>"Edit this Global category"), edit_pppams_indicator_base_ref_path(pppams_indicator_base_ref) %></td>
     <td><%=h pppams_indicator_base_ref.question %></td>
     <td><%=h pppams_indicator_base_ref.pppams_category_base_ref %></td>
   </tr>
@@ -24,4 +24,4 @@
 <%= will_paginate(@pppams_indicator_base_refs) %>
 <br />
 <br />
-<%= link_to 'New Overall Indicator', new_pppams_indicator_base_ref_path %>
+<%= link_to 'New Global Indicator', new_pppams_indicator_base_ref_path %>

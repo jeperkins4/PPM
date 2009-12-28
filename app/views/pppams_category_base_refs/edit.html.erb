@@ -1,4 +1,4 @@
-<h1>Editing Overall Category</h1>
+<h1>Editing Global Category</h1>
 <div class="yui-g">
   <div class="yui-u first">
     <% form_for(@pppams_category_base_ref) do |f| %>
@@ -22,7 +22,7 @@
     <% end %>
   </div>
   <div class="yui-u">
-    <p><strong> Facilities with this Overall Category </strong></p>
+    <p><strong> Facilities with this Global Category </strong></p>
     <ul>
       <% @facilities_with_base.each do |facility| %>
         <li><%= facility.facility %></li>

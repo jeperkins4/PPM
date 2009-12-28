@@ -1,6 +1,6 @@
 <h1>Listing <%= t(:pppams_category_base_ref).pluralize%></h1>
 
-<%= link_to 'New Overall Category', new_pppams_category_base_ref_path %>
+<%= link_to 'New Global Category', new_pppams_category_base_ref_path %>
 <br />
 <br />
 <%= will_paginate @pppams_category_base_refs %>
@@ -13,8 +13,8 @@
 
 <% @pppams_category_base_refs.each do |pppams_category_base_ref| %>
   <tr>
-    <td><%= link_to image_tag("view_icon.png", :border=>0, :title=>'Show this overall category') , pppams_category_base_ref %></td>
-    <td><%= link_to image_tag("edit_icon.png", :border=>0, :title=>"Edit this overall category"), edit_pppams_category_base_ref_path(pppams_category_base_ref) %></td>
+    <td><%= link_to image_tag("view_icon.png", :border=>0, :title=>'Show this Global category') , pppams_category_base_ref %></td>
+    <td><%= link_to image_tag("edit_icon.png", :border=>0, :title=>"Edit this Global category"), edit_pppams_category_base_ref_path(pppams_category_base_ref) %></td>
     <td><%=h pppams_category_base_ref.name %></td>
     <td><%=h pppams_category_base_ref.pppams_category_group %></td>
   </tr>
@@ -26,4 +26,4 @@
 <%= will_paginate @pppams_category_base_refs %>
 <br />
 <br />
-<%= link_to 'New Overall Category', new_pppams_category_base_ref_path %>
+<%= link_to 'New Global Category', new_pppams_category_base_ref_path %>

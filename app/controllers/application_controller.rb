@@ -70,6 +70,8 @@ class ApplicationController < ActionController::Base
             'reset_password',
             'contexts',
             'prompts',
+            'pppams_category_base_refs',
+            'pppams_indicator_base_refs',
             'pppams_notifications'].each do |page_check|
             request.request_uri.split('/').each do |page|
               page.split('?').each do |page2|

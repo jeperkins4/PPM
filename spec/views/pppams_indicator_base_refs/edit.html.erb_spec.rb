@@ -20,6 +20,4 @@ describe "/pppams_indicator_base_refs/edit.html.erb" do
       with_tag('select#pppams_indicator_base_ref_pppams_category_base_ref_id[name=?]', "pppams_indicator_base_ref[pppams_category_base_ref_id]")
     end
   end
-  it 'should translate pppams_indicator_base_ref'
-  
 end

@@ -4,7 +4,7 @@ class PppamsCategoryBaseRefsController < ApplicationController
   # GET /pppams_category_base_refs
   # GET /pppams_category_base_refs.xml
   def index
-    @pppams_category_base_refs = PppamsCategoryBaseRef.all
+    @pppams_category_base_refs = PppamsCategoryBaseRef.paginate(:all, :page =>  params[:page], :per_page => 30)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -27,6 +27,7 @@ class PppamsCategoryBaseRefsController < ApplicationController
   # GET /pppams_category_base_refs/new.xml
   def new
     @pppams_category_base_ref = PppamsCategoryBaseRef.new
+    @pppams_category_groups = PppamsCategoryGroup.all.map { |pcg| [pcg.name, pcg.id] }
 
     respond_to do |format|
       format.html # new.html.erb
@@ -37,6 +38,7 @@ class PppamsCategoryBaseRefsController < ApplicationController
   # GET /pppams_category_base_refs/1/edit
   def edit
     @pppams_category_base_ref = PppamsCategoryBaseRef.find(params[:id])
+    @pppams_category_groups = PppamsCategoryGroup.all.map { |pcg| [pcg.name, pcg.id] }
   end
 
   # POST /pppams_category_base_refs

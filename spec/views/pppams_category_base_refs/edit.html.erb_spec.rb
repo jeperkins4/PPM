@@ -9,6 +9,7 @@ describe "/pppams_category_base_refs/edit.html.erb" do
       :name => "value for name",
       :pppams_category_group_id => 1
     )
+    assigns[:pppams_category_groups] = [['hello', 1]]
   end
 
   it "renders the edit pppams_category_base_ref form" do

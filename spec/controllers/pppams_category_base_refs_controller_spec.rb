@@ -11,7 +11,7 @@ describe PppamsCategoryBaseRefsController do
 
   describe "GET index" do
     it "assigns all pppams_category_base_refs as @pppams_category_base_refs" do
-      PppamsCategoryBaseRef.stub!(:find).with(:all).and_return([mock_pppams_category_base_ref])
+      PppamsCategoryBaseRef.stub!(:paginate).and_return([mock_pppams_category_base_ref])
       get :index
       assigns[:pppams_category_base_refs].should == [mock_pppams_category_base_ref]
     end
@@ -31,13 +31,27 @@ describe PppamsCategoryBaseRefsController do
       get :new
       assigns[:pppams_category_base_ref].should equal(mock_pppams_category_base_ref)
     end
-  end
+     it "assigns a pppams_category_groups for select as @pppams_category_groups" do
+      PppamsCategoryBaseRef.stub!(:new).and_return(mock_pppams_category_base_ref)
+      @pppams_category_groups = [mock_model(PppamsCategoryGroup, :id => 1, :name => 'hello')]
+      PppamsCategoryGroup.stub!(:all).and_return(@pppams_category_groups)
+      get :new
+      assigns[:pppams_category_groups].should == [['hello', 1]]
+    end
+ end
 
   describe "GET edit" do
     it "assigns the requested pppams_category_base_ref as @pppams_category_base_ref" do
       PppamsCategoryBaseRef.stub!(:find).with("37").and_return(mock_pppams_category_base_ref)
       get :edit, :id => "37"
       assigns[:pppams_category_base_ref].should equal(mock_pppams_category_base_ref)
+    end
+     it "assigns a pppams_category_groups for select as @pppams_category_groups" do
+      PppamsCategoryBaseRef.stub!(:new).and_return(mock_pppams_category_base_ref)
+      @pppams_category_groups = [mock_model(PppamsCategoryGroup, :id => 1, :name => 'hello')]
+      PppamsCategoryGroup.stub!(:all).and_return(@pppams_category_groups)
+      get :new
+      assigns[:pppams_category_groups].should == [['hello', 1]]
     end
   end
 

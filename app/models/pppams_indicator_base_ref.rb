@@ -5,5 +5,4 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
   def short_question
     self.question[0,100] + "..."
   end
-
 end

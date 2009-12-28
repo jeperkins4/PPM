@@ -38,6 +38,7 @@ class PppamsCategoryBaseRefsController < ApplicationController
   # GET /pppams_category_base_refs/1/edit
   def edit
     @pppams_category_base_ref = PppamsCategoryBaseRef.find(params[:id])
+    @facilities_with_base = Facility.with_category_base(params[:id])
     @pppams_category_groups = PppamsCategoryGroup.all.map { |pcg| [pcg.name, pcg.id] }
   end
 

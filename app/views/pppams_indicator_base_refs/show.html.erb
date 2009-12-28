@@ -5,6 +5,13 @@
 <p>
   <%=h @pppams_indicator_base_ref.question %>
 </p>
+<p>
+  <b>Inactive as of:</b>
+</p>
+<p>
+  <%= @pppams_indicator_base_ref.inactive_on ? @pppams_indicator_base_ref.inactive_on : "Still active" %>
+</p>
+
 
 <p>
   <b>Overall Category:</b>

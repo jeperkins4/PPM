@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091005175811) do
+ActiveRecord::Schema.define(:version => 20091228183157) do
 
   create_table "access_levels", :force => true do |t|
     t.string "access_level"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 20091005175811) do
   end
 
   add_index "accountability_log_details", ["context_id", "facility_id", "log_month", "log_year"], :name => "facil_prompt_year_month"
-  add_index "accountability_log_details", ["facility_id"], :name => "index_accountability_log_details_on_facility_id"
+  add_index "accountability_log_details", ["facility_id"], :name => "facility_id"
 
   create_table "accountability_logs", :force => true do |t|
     t.integer "facility_id"
@@ -48,16 +48,203 @@ ActiveRecord::Schema.define(:version => 20091005175811) do
     t.text   "description"
   end
 
+  create_table "application_status_codes", :force => true do |t|
+    t.string   "code"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "application_statuses", :force => true do |t|
+    t.integer  "firm_id"
+    t.integer  "application_status_code_id"
+    t.integer  "deprecating_user_id"
+    t.integer  "created_by_id"
+    t.date     "application_in_at"
+    t.date     "application_closed_at"
+    t.date     "deprecated_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "application_statuses", ["application_status_code_id"], :name => "app_status_code"
+  add_index "application_statuses", ["firm_id"], :name => "firm_id"
+
+  create_table "assert_certs", :force => true do |t|
+    t.integer  "firm_id"
+    t.integer  "assertion_code_id"
+    t.integer  "certification_code_id"
+    t.integer  "status_qualifier_code_id"
+    t.date     "effective_date"
+    t.integer  "officer_id"
+    t.date     "deprecated_date"
+    t.integer  "deprecating_user_id"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "assert_certs", ["assertion_code_id"], :name => "assertion_code_id"
+  add_index "assert_certs", ["certification_code_id", "status_qualifier_code_id"], :name => "cert_status"
+  add_index "assert_certs", ["certification_code_id"], :name => "certification_code_id"
+  add_index "assert_certs", ["effective_date"], :name => "effective_date"
+  add_index "assert_certs", ["firm_id"], :name => "firm_id"
+  add_index "assert_certs", ["status_qualifier_code_id"], :name => "status_qualifier_code_id"
+
+  create_table "assertion_codes", :force => true do |t|
+    t.string  "code"
+    t.string  "name"
+    t.date    "deprecated_date"
+    t.integer "deprecating_user"
+    t.integer "used_for_selection"
+    t.integer "assertion_type_id"
+    t.integer "duration"
+  end
+
+  add_index "assertion_codes", ["code"], :name => "code"
+
+  create_table "assertion_types", :force => true do |t|
+    t.string "name", :limit => 50
+    t.string "desc", :limit => 100
+  end
+
+  create_table "business_designation_codes", :force => true do |t|
+    t.string   "code"
+    t.string   "mfmp_code"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "business_designation_codes", ["description"], :name => "index_business_designation_codes_on_description"
+
+  create_table "certification_codes", :force => true do |t|
+    t.string   "code"
+    t.text     "description"
+    t.integer  "duration"
+    t.date     "deprecated_date"
+    t.integer  "deprecating_user_id"
+    t.integer  "duration_period_code_id"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "certification_codes", ["code"], :name => "code"
+
+  create_table "certifying_entities", :force => true do |t|
+    t.string   "entity_name"
+    t.string   "entity_description"
+    t.boolean  "active_flag"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "certifying_informations", :force => true do |t|
+    t.integer  "vendor_id"
+    t.string   "owner"
+    t.integer  "employees"
+    t.decimal  "sales",               :precision => 10, :scale => 2
+    t.decimal  "net_worth",           :precision => 10, :scale => 2
+    t.date     "deprecated_date"
+    t.integer  "deprecating_user_id"
+    t.date     "created_at"
+    t.integer  "created_by_id"
+    t.datetime "updated_at"
+    t.string   "osd_file_number"
+    t.integer  "analyst_id"
+    t.string   "specialty"
+  end
+
+  add_index "certifying_informations", ["analyst_id"], :name => "analyst_id"
+  add_index "certifying_informations", ["vendor_id"], :name => "vendor_id"
+
+  create_table "commodity_codes", :force => true do |t|
+    t.string "code"
+    t.text   "description"
+  end
+
+  add_index "commodity_codes", ["code"], :name => "index_commodity_codes_on_code"
+
   create_table "contexts", :force => true do |t|
     t.string  "title"
     t.text    "description"
     t.integer "position"
   end
 
+  create_table "correspondences", :force => true do |t|
+    t.integer  "firm_id"
+    t.integer  "certification_id"
+    t.integer  "certification_code_id"
+    t.integer  "duration_period_code_id"
+    t.integer  "prior_correspondence_id"
+    t.integer  "incoming"
+    t.integer  "duration"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "message_template_id"
+    t.string   "subject"
+    t.text     "body"
+    t.date     "effective_date"
+    t.datetime "built_at"
+    t.datetime "sent_at"
+    t.date     "expire_date"
+    t.integer  "sent_by_id"
+    t.boolean  "email"
+  end
+
+  add_index "correspondences", ["firm_id"], :name => "firm_id"
+  add_index "correspondences", ["message_template_id"], :name => "message_template_id"
+
+  create_table "county_codes", :force => true do |t|
+    t.string "code"
+    t.string "abbreviation"
+    t.string "profiler_code"
+    t.text   "description"
+  end
+
+  add_index "county_codes", ["code"], :name => "code"
+  add_index "county_codes", ["profiler_code"], :name => "index_county_codes_on_profiler_code"
+
   create_table "custody_types", :force => true do |t|
     t.string "custody_type"
     t.text   "description"
   end
+
+  create_table "directory_adv_vendors", :id => false, :force => true do |t|
+    t.integer "firm_id"
+    t.string  "id",              :limit => 273
+    t.string  "tin_type"
+    t.string  "tin"
+    t.integer "tin_sequence"
+    t.string  "company"
+    t.string  "shortname"
+    t.string  "contact"
+    t.text    "address",         :limit => 2147483647
+    t.string  "phone"
+    t.string  "city"
+    t.integer "county_code"
+    t.binary  "minority_code",   :limit => 2147483647
+    t.text    "minority_desc",   :limit => 2147483647
+    t.string  "state"
+    t.string  "zip"
+    t.string  "email"
+    t.string  "ci",              :limit => 1
+    t.string  "commodity_num",   :limit => 6
+    t.string  "commodity_descr", :limit => 80
+  end
+
+  add_index "directory_adv_vendors", ["commodity_num"], :name => "commnum"
+  add_index "directory_adv_vendors", ["company"], :name => "company"
+  add_index "directory_adv_vendors", ["county_code"], :name => "index_directory_adv_vendors_tmp_on_county_code"
+  add_index "directory_adv_vendors", ["firm_id"], :name => "index_directory_adv_vendors_tmp_on_firm_id"
+  add_index "directory_adv_vendors", ["id"], :name => "index_directory_adv_vendors_tmp_on_id"
+  add_index "directory_adv_vendors", ["minority_code"], :name => "minority_code"
+  add_index "directory_adv_vendors", ["shortname"], :name => "shortname"
 
   create_table "employee_position_hists", :force => true do |t|
     t.integer "position_number_id"
@@ -255,7 +442,7 @@ ActiveRecord::Schema.define(:version => 20091005175811) do
     t.date    "created_on"
     t.boolean "active_flag",          :default => true
     t.date    "inactive_on"
-    t.text    "inactive_comment"
+    t.string  "inactive_comment"
   end
 
   create_table "position_reports", :force => true do |t|
@@ -288,8 +475,9 @@ ActiveRecord::Schema.define(:version => 20091005175811) do
   add_index "pppams_categories", ["facility_id"], :name => "facility_id"
 
   create_table "pppams_category_base_refs", :force => true do |t|
-    t.string  "name"
-    t.integer "pppams_category_group_id"
+    t.string   "name"
+    t.integer  "pppams_category_group_id"
+    t.datetime "inactive_on"
   end
 
   create_table "pppams_category_groups", :force => true do |t|
@@ -297,8 +485,9 @@ ActiveRecord::Schema.define(:version => 20091005175811) do
   end
 
   create_table "pppams_indicator_base_refs", :force => true do |t|
-    t.text    "question"
-    t.integer "pppams_category_base_ref_id"
+    t.text     "question"
+    t.integer  "pppams_category_base_ref_id"
+    t.datetime "inactive_on"
   end
 
   add_index "pppams_indicator_base_refs", ["pppams_category_base_ref_id"], :name => "pppams_cat_base_id"
@@ -326,8 +515,13 @@ ActiveRecord::Schema.define(:version => 20091005175811) do
   end
 
   add_index "pppams_indicators_pppams_references", ["pppams_indicator_id", "pppams_reference_id"], :name => "indicator_reference"
-  add_index "pppams_indicators_pppams_references", ["pppams_indicator_id"], :name => "index_pppams_indicators_pppams_references_on_pppams_indicator_id"
-  add_index "pppams_indicators_pppams_references", ["pppams_reference_id"], :name => "index_pppams_indicators_pppams_references_on_pppams_reference_id"
+  add_index "pppams_indicators_pppams_references", ["pppams_indicator_id"], :name => "pppams_indicator_id"
+  add_index "pppams_indicators_pppams_references", ["pppams_reference_id"], :name => "pppams_reference_id"
+
+  create_table "pppams_indicators_pppams_references_copy", :id => false, :force => true do |t|
+    t.integer "pppams_indicator_id", :null => false
+    t.integer "pppams_reference_id", :null => false
+  end
 
   create_table "pppams_issue_follow_ups", :force => true do |t|
     t.text    "follow_up"
@@ -399,9 +593,9 @@ ActiveRecord::Schema.define(:version => 20091005175811) do
     t.datetime "real_creation_date"
   end
 
-  add_index "pppams_reviews", ["created_on", "pppams_indicator_id"], :name => "index_pppams_reviews_on_created_on_and_pppams_indicator_id"
-  add_index "pppams_reviews", ["created_on"], :name => "index_pppams_reviews_on_created_on"
-  add_index "pppams_reviews", ["pppams_indicator_id"], :name => "index_pppams_reviews_on_pppams_indicator_id"
+  add_index "pppams_reviews", ["created_on", "pppams_indicator_id"], :name => "created_on_pppams_indicator"
+  add_index "pppams_reviews", ["created_on"], :name => "created_on"
+  add_index "pppams_reviews", ["pppams_indicator_id"], :name => "pppams_indicator_id"
 
   create_table "prompts", :force => true do |t|
     t.string  "question"
@@ -412,6 +606,11 @@ ActiveRecord::Schema.define(:version => 20091005175811) do
   end
 
   add_index "prompts", ["context_id", "used_in_total"], :name => "context_used_in_total"
+  add_index "prompts", ["question"], :name => "prompt_questions"
+
+  create_table "schema_info", :id => false, :force => true do |t|
+    t.integer "version"
+  end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id"
@@ -451,7 +650,7 @@ ActiveRecord::Schema.define(:version => 20091005175811) do
     t.integer "facility_id"
     t.string  "notify_method"
     t.string  "notify_digest_time"
-    t.string  "password_reset_code", :limit => 40
+    t.string  "password_reset_code"
   end
 
 end

@@ -1,20 +1,35 @@
 <h1>Editing Overall Indicator</h1>
+<div class="yui-g">
+  <div class="yui-u first">
+    <% form_for(@pppams_indicator_base_ref) do |f| %>
+      <%= f.error_messages %>
 
-<% form_for(@pppams_indicator_base_ref) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :question %><br />
-    <%= f.text_area :question %>
-  </p>
-  <p>
-    Overall Category<br />
-    <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, PppamsCategoryBaseRef.all.collect {|a| [a.name, a.id]}, :include_blank => true %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
-<% end %>
-
-<%= link_to 'Show', @pppams_indicator_base_ref %> |
-<%= link_to 'Back', pppams_indicator_base_refs_path %>
+      <p>
+        <%= f.label :question %><br />
+        <%= f.text_area :question %>
+      </p>
+      <p>
+        Overall Category<br />
+        <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, PppamsCategoryBaseRef.all.collect {|a| [a.name, a.id]}, :include_blank => true %>
+      </p>
+      <p>
+        Date Inactive
+        <br />
+        <%= f.date_select :inactive_on, {:include_blank => true}%>
+      </p>
+      <p>
+        <%= f.submit 'Update' %>
+      </p>
+    <% end %>
+    <%= link_to 'Show', @pppams_indicator_base_ref %> |
+    <%= link_to 'Back', pppams_indicator_base_refs_path %>
+  </div>
+  <div class="yui-u">
+    <p><strong>Facilities Using This Overall Indicator</strong</p>
+    <ul>
+      <% @facilities_with_base.each do |facility| %>
+        <li><%=facility.facility %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

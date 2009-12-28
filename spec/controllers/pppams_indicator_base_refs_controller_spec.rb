@@ -47,6 +47,13 @@ describe PppamsIndicatorBaseRefsController do
       get :edit, :id => "37"
       assigns[:pppams_indicator_base_ref].should equal(mock_pppams_indicator_base_ref)
     end
+    it "assigns @indicators_using_base" do
+      PppamsIndicatorBaseRef.stub!(:find).with("37").and_return(mock_pppams_indicator_base_ref)
+      facility_with_base = [stub_model(Facility, :name => 'random fac')]
+      Facility.stub!(:with_indicator_base).with("37").and_return(facility_with_base)
+      get :edit, :id => "37"
+      assigns[:facilities_with_base].should eql(facility_with_base)
+    end
   end
 
   describe "POST create" do
@@ -123,20 +130,6 @@ describe PppamsIndicatorBaseRefsController do
       end
     end
 
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested pppams_indicator_base_ref" do
-      PppamsIndicatorBaseRef.should_receive(:find).with("37").and_return(mock_pppams_indicator_base_ref)
-      mock_pppams_indicator_base_ref.should_receive(:destroy)
-      delete :destroy, :id => "37"
-    end
-
-    it "redirects to the pppams_indicator_base_refs list" do
-      PppamsIndicatorBaseRef.stub!(:find).and_return(mock_pppams_indicator_base_ref(:destroy => true))
-      delete :destroy, :id => "1"
-      response.should redirect_to(pppams_indicator_base_refs_url)
-    end
   end
 
 end

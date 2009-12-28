@@ -37,6 +37,7 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   # GET /pppams_indicator_base_refs/1/edit
   def edit
     @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id])
+    @facilities_with_base = Facility.with_indicator_base(params[:id])
   end
 
   # POST /pppams_indicator_base_refs
@@ -73,15 +74,4 @@ class PppamsIndicatorBaseRefsController < ApplicationController
     end
   end
 
-  # DELETE /pppams_indicator_base_refs/1
-  # DELETE /pppams_indicator_base_refs/1.xml
-  def destroy
-    @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id])
-    @pppams_indicator_base_ref.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(pppams_indicator_base_refs_url) }
-      format.xml  { head :ok }
-    end
-  end
 end

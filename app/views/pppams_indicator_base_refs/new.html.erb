@@ -1,15 +1,15 @@
-<h1>New pppams_indicator_base_ref</h1>
+<h1>New <%= t(:pppams_indicator_base_ref)%></h1>
 
 <% form_for(@pppams_indicator_base_ref) do |f| %>
   <%= f.error_messages %>
 
   <p>
     <%= f.label :question %><br />
-    <%= f.text_field :question %>
+    <%= f.text_area :question %>
   </p>
   <p>
-    <%= f.label :pppams_category_base_ref_id %><br />
-    <%= f.text_field :pppams_category_base_ref_id %>
+    Overall Category<br />
+    <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, @pppams_category_base_refs, {:include_blank => true } %>
   </p>
   <p>
     <%= f.submit 'Create' %>

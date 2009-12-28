@@ -14,4 +14,5 @@ describe "/pppams_indicator_base_refs/show.html.erb" do
     response.should have_text(/value\ for\ question/)
     response.should have_text(/1/)
   end
+  it 'should render the category name'
 end

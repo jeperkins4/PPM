@@ -1,15 +1,18 @@
-<h1>Listing pppams_indicator_base_refs</h1>
-
+<h1>Listing <%= t(:pppams_indicator_base_ref).pluralize%></h1>
+<%= link_to 'New Overall Indicator', new_pppams_indicator_base_ref_path %>
+<br />
+<br />
+<%= will_paginate(@pppams_indicator_base_refs) %>
 <table>
   <tr>
     <th>Question</th>
-    <th>Pppams category base ref</th>
+    <th>Overall Category</th>
   </tr>
 
 <% @pppams_indicator_base_refs.each do |pppams_indicator_base_ref| %>
   <tr>
     <td><%=h pppams_indicator_base_ref.question %></td>
-    <td><%=h pppams_indicator_base_ref.pppams_category_base_ref_id %></td>
+    <td><%=h pppams_indicator_base_ref.pppams_category_base_ref %></td>
     <td><%= link_to 'Show', pppams_indicator_base_ref %></td>
     <td><%= link_to 'Edit', edit_pppams_indicator_base_ref_path(pppams_indicator_base_ref) %></td>
     <td><%= link_to 'Destroy', pppams_indicator_base_ref, :confirm => 'Are you sure?', :method => :delete %></td>
@@ -18,5 +21,7 @@
 </table>
 
 <br />
-
-<%= link_to 'New pppams_indicator_base_ref', new_pppams_indicator_base_ref_path %>
+<%= will_paginate(@pppams_indicator_base_refs) %>
+<br />
+<br />
+<%= link_to 'New Overall Indicator', new_pppams_indicator_base_ref_path %>

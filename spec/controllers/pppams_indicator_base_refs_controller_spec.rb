@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe PppamsIndicatorBaseRefsController do
+  before do
+    login_as_admin
+  end
 
   def mock_pppams_indicator_base_ref(stubs={})
     @mock_pppams_indicator_base_ref ||= mock_model(PppamsIndicatorBaseRef, stubs)
@@ -8,10 +11,11 @@ describe PppamsIndicatorBaseRefsController do
 
   describe "GET index" do
     it "assigns all pppams_indicator_base_refs as @pppams_indicator_base_refs" do
-      PppamsIndicatorBaseRef.stub!(:find).with(:all).and_return([mock_pppams_indicator_base_ref])
+      PppamsIndicatorBaseRef.stub!(:paginate).and_return([mock_pppams_indicator_base_ref])
       get :index
       assigns[:pppams_indicator_base_refs].should == [mock_pppams_indicator_base_ref]
     end
+    it 'should be capable of filtering data by question content or category'
   end
 
   describe "GET show" do
@@ -27,6 +31,13 @@ describe PppamsIndicatorBaseRefsController do
       PppamsIndicatorBaseRef.stub!(:new).and_return(mock_pppams_indicator_base_ref)
       get :new
       assigns[:pppams_indicator_base_ref].should equal(mock_pppams_indicator_base_ref)
+    end
+    it "assigns a pppams_category_base_refs for select as @pppams_category_base_refs" do
+      PppamsIndicatorBaseRef.stub!(:new).and_return(mock_pppams_indicator_base_ref)
+      @pppams_category_base_refs = [mock_model(PppamsCategoryBaseRef, :id => 1, :name => 'hello')]
+      PppamsCategoryBaseRef.stub!(:all).and_return(@pppams_category_base_refs)
+      get :new
+      assigns[:pppams_category_base_refs].should == [['hello', 1]]
     end
   end
 

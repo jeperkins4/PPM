@@ -19,6 +19,5 @@ describe "/pppams_indicator_base_refs/index.html.erb" do
   it "renders a list of pppams_indicator_base_refs" do
     render
     response.should have_tag("tr>td", "value for question".to_s, 2)
-    response.should have_tag("tr>td", 1.to_s, 2)
   end
 end

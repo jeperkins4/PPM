@@ -9,14 +9,15 @@ describe "/pppams_indicator_base_refs/new.html.erb" do
       :question => "value for question",
       :pppams_category_base_ref_id => 1
     )
+    assigns[:pppams_category_base_refs] = [['hello', 1]]
   end
 
   it "renders new pppams_indicator_base_ref form" do
     render
 
     response.should have_tag("form[action=?][method=post]", pppams_indicator_base_refs_path) do
-      with_tag("input#pppams_indicator_base_ref_question[name=?]", "pppams_indicator_base_ref[question]")
-      with_tag("input#pppams_indicator_base_ref_pppams_category_base_ref_id[name=?]", "pppams_indicator_base_ref[pppams_category_base_ref_id]")
+      with_tag("textarea#pppams_indicator_base_ref_question[name=?]", "pppams_indicator_base_ref[question]")
+      with_tag("select#pppams_indicator_base_ref_pppams_category_base_ref_id[name=?]", "pppams_indicator_base_ref[pppams_category_base_ref_id]")
     end
   end
 end

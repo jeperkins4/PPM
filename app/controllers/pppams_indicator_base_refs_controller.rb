@@ -1,8 +1,10 @@
 class PppamsIndicatorBaseRefsController < ApplicationController
+  before_filter :authenticate
+  layout 'administration'
   # GET /pppams_indicator_base_refs
   # GET /pppams_indicator_base_refs.xml
   def index
-    @pppams_indicator_base_refs = PppamsIndicatorBaseRef.all
+    @pppams_indicator_base_refs = PppamsIndicatorBaseRef.paginate(:all, :per_page => 20, :page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,7 +27,7 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   # GET /pppams_indicator_base_refs/new.xml
   def new
     @pppams_indicator_base_ref = PppamsIndicatorBaseRef.new
-
+    @pppams_category_base_refs = PppamsCategoryBaseRef.all.map { |pcb| [pcb.name, pcb.id]}    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @pppams_indicator_base_ref }

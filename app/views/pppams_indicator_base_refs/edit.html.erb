@@ -5,11 +5,11 @@
 
   <p>
     <%= f.label :question %><br />
-    <%= f.text_field :question %>
+    <%= f.text_area :question %>
   </p>
   <p>
-    <%= f.label :pppams_category_base_ref_id %><br />
-    <%= f.text_field :pppams_category_base_ref_id %>
+    Overall Category<br />
+    <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, PppamsCategoryBaseRef.all.collect {|a| [a.name, a.id]}, :include_blank => true %>
   </p>
   <p>
     <%= f.submit 'Update' %>

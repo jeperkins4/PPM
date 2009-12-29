@@ -1,0 +1,10 @@
+
+test: &TEST
+  adapter: mysql
+  database: privateprison_test
+  username: pp_test
+  password: pp_test
+  host: sun115.dms.state.fl.us
+
+cucumber:
+  <<: *TEST

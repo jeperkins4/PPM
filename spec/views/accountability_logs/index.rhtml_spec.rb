@@ -4,6 +4,7 @@
    before do
      session[:user_id] = User.make.id
      session[:facility] = Facility.make
+     session[:admin_year] = Time.now
      27.times do |i|
        c = Context.make(:position => i)
        (3..5).to_a.rand.times {|i| Prompt.make(:context_id => c.id)}

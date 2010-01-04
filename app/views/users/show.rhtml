@@ -28,6 +28,16 @@
   <%=h @user.facility_id %>
 </p>
 
+<p>
+  <b>Inactive as of:</b>
+  <%=h @user.inactive_on%>
+</p>
+
+<p>
+  <b>Inactive comment:</b>
+  <%=h @user.inactive_comment%>
+</p>
+
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

@@ -29,6 +29,17 @@
   </p>
 
   <p>
+    <b>Inactive as of</b><br />
+    <%= f.date_select :inactive_on, :include_blank => true%>
+  </p>
+
+  <p>
+    <b>Inactive comment</b><br />
+    <%= f.text_field :inactive_comment%>
+  </p>
+
+
+  <p>
     <%= submit_tag "Update" %>
   </p>
 <% end %>

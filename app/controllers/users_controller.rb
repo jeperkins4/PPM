@@ -53,7 +53,6 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
-    
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:notice] = 'User was successfully updated.'
@@ -65,19 +64,7 @@ class UsersController < ApplicationController
       end
     end
   end
-  
-  # DELETE /users/1
-  # DELETE /users/1.xml
-  def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-    
-    respond_to do |format|
-      format.html { redirect_to users_url }
-      format.xml  { head :ok }
-    end
-  end
-  
+   
   def reset_password
     @hide_search_div = true
     @user = User.find(session[:user_id])

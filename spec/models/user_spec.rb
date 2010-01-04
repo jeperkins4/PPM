@@ -13,6 +13,19 @@ describe User do
       @user.forgot_password
       @user.password_reset_code.should_not be_nil
     end
+    it 'should authenticate active users' do
+      @user.password = 'aaaa'
+      @user.password_confirmation = 'aaaa'
+      @user.save
+      User.authenticate(@user.name, 'aaaa').should == @user
+    end
+    it 'should not authenticate inactive users' do
+      @user.inactive_on = Time.now
+      @user.password = 'aaaa'
+      @user.password_confirmation = 'aaaa'
+      @user.save
+      User.authenticate(@user.name, 'aaaa').should == nil
+    end
   end
   
 end

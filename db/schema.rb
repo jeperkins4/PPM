@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091228183157) do
+ActiveRecord::Schema.define(:version => 20100104154526) do
 
   create_table "access_levels", :force => true do |t|
     t.string "access_level"
@@ -640,17 +640,19 @@ ActiveRecord::Schema.define(:version => 20091228183157) do
   end
 
   create_table "users", :force => true do |t|
-    t.string  "firstname"
-    t.string  "lastname"
-    t.string  "name"
-    t.string  "email"
-    t.string  "hashed_password"
-    t.string  "salt"
-    t.integer "user_type_id"
-    t.integer "facility_id"
-    t.string  "notify_method"
-    t.string  "notify_digest_time"
-    t.string  "password_reset_code"
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "name"
+    t.string   "email"
+    t.string   "hashed_password"
+    t.string   "salt"
+    t.integer  "user_type_id"
+    t.integer  "facility_id"
+    t.string   "notify_method"
+    t.string   "notify_digest_time"
+    t.string   "password_reset_code"
+    t.datetime "inactive_on"
+    t.string   "inactive_comment"
   end
 
 end

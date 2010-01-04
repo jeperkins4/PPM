@@ -1,5 +1,6 @@
 # MySQL (default setup).  Versions 4.1 and 5.0 are recommended.
 #
+# Install the MySQL driver:
 
 test: &TEST
   adapter: mysql

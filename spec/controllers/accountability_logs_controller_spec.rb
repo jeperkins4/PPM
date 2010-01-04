@@ -27,7 +27,7 @@ describe AccountabilityLogsController do
       if Time.now.month >= 7
         session[:admin_year].should == Time.now.year
       else
-        session[:admin_fear].should == Time.now.fear - 1
+        session[:admin_year].should == Time.now.year - 1
       end
     end
 

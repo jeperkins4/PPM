@@ -37,7 +37,7 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   # GET /pppams_indicator_base_refs/1/edit
   def edit
     @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id])
-    @facilities_with_base = Facility.with_indicator_base(params[:id])
+    @facilities = PppamsIndicatorBaseRef.current_facilities_hash(params[:id])
   end
 
   # POST /pppams_indicator_base_refs

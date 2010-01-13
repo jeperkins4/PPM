@@ -1,37 +1,54 @@
-<h1>Editing Global Indicator</h1>
-<div class="yui-g">
-  <div class="yui-u first">
-    <% form_for(@pppams_indicator_base_ref) do |f| %>
-      <%= f.error_messages %>
+<h1>
+  Editing Global Indicator
+</h1>
+<% form_for(@pppams_indicator_base_ref) do |f| %>
+  <%= f.error_messages %>
 
-      <p>
-        <%= f.label :question %><br />
-        <%= f.text_area :question %>
-      </p>
-      <p>
-        Global Category<br />
-        <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, PppamsCategoryBaseRef.all.collect {|a| [a.name, a.id]}, :include_blank => true %>
-      </p>
-      <p>
-        Date Inactive
-        <br />
-        <%= f.date_select :inactive_on, {:include_blank => true}%>
-      </p>
-      <p>
-        <%= f.submit 'Update' %>
-      </p>
-    <% end %>
-    <%= link_to 'Show', @pppams_indicator_base_ref %> |
-    <%= link_to 'Back', pppams_indicator_base_refs_path %>
-  </div>
-  <div class="yui-u">
-    <p><strong>Facilities Using This Global Indicator</strong</p>
-    <ul>
-      <% @facilities_with_base.each do |facility| %>
-        <li><%=facility.facility %></li>
-      <% end %>
-    </ul>
+  <p>
+    <%= f.label :question %><br />
+    <%= f.text_area :question %>
+  </p>
+  <p>
+    Category<br />
+    <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, PppamsCategoryBaseRef.all.collect {|a| [a.name, a.id]}, :include_blank => true %>
+  </p>
+  <p>
+    <strong>Facilities Using This Global Indicator</strong>
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Facility</th>
+        <th>Status</th>
+        <th>Added to facility on</th>
+        <th>Becomes inactive on</th>
+      </tr>
+      </thead>
+      <tbody>
+
+        <% count = 0; @facilities.each do |facility_id, facility| %>
+          <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][facility_id]", facility_id %>
+            <tr>
+              <% if facility[:active] %>
+                <td><%= link_to facility[:name], edit_pppams_indicator_path(facility[:indicator_id])%></td>
+                <td>Active</td>
+                <td><%= facility[:created_on] %></td>
+                <td><%= date_select("pppams_indicator_base_ref[pppams_indicators_attributes][#{count}]",'inactive_on', {:include_blank => true} )%></td>
+              <% else %>
+                <td><%= facility[:name] %></td>
+                <td>Inactive</td>
+                <td><%= date_select("pppams_indicator_base_ref[pppams_indicators_attributes][#{count}]", 'created_on', {:include_blank => true} ) %></td>
+                <td></td>
+              <% end %>
+            </tr>
+         <% count += 1; end %>
+      </tbody>
+    </table>
     <p>
+      <%= f.submit 'Update' %>
     </p>
-  </div>
-</div>
+  <% end %>
+<p>
+  <%= link_to 'Show', @pppams_indicator_base_ref %> |
+  <%= link_to 'Back', pppams_indicator_base_refs_path %>
+</p>

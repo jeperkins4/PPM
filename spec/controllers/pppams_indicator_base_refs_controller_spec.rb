@@ -44,15 +44,15 @@ describe PppamsIndicatorBaseRefsController do
   describe "GET edit" do
     it "assigns the requested pppams_indicator_base_ref as @pppams_indicator_base_ref" do
       PppamsIndicatorBaseRef.stub!(:find).with("37").and_return(mock_pppams_indicator_base_ref)
+      PppamsIndicatorBaseRef.stub!(:current_facilities_hash).with('37').and_return( {1 => {:active => true, :name => 'Graceville'}})
       get :edit, :id => "37"
       assigns[:pppams_indicator_base_ref].should equal(mock_pppams_indicator_base_ref)
     end
-    it "assigns @indicators_using_base" do
+    it "assigns existing_facilities" do
       PppamsIndicatorBaseRef.stub!(:find).with("37").and_return(mock_pppams_indicator_base_ref)
-      facility_with_base = [stub_model(Facility, :name => 'random fac')]
-      Facility.stub!(:with_indicator_base).with("37").and_return(facility_with_base)
-      get :edit, :id => "37"
-      assigns[:facilities_with_base].should eql(facility_with_base)
+      PppamsIndicatorBaseRef.stub!(:current_facilities_hash).with('37').and_return( {1 => {:active => true, :name => 'Graceville'}})
+      get :edit, :id => '37'
+      assigns[:facilities].should == {1 => {:active => true, :name => 'Graceville'}}
     end
   end
 

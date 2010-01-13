@@ -10,7 +10,9 @@ describe "/pppams_indicator_base_refs/edit.html.erb" do
       :pppams_category_base_ref_id => 1
     )
     assigns[:pppams_category_base_refs] = [['hello', 1]]
-    assigns[:facilities_with_base] = [stub_model(Facility, :facility => 'rand fac', :id => 1)]
+    assigns[:facilities] = {1 => {:active => true, :name => 'active'},
+                            2 => {:active => false, :name => 'inactive'}
+                           }
   end
 
   it "renders the edit pppams_indicator_base_ref form" do
@@ -23,6 +25,7 @@ describe "/pppams_indicator_base_refs/edit.html.erb" do
   end
   it "renders facilities that use this overall indicator" do
     render
-    response.should have_tag("li", /rand fac/)
+    response.should have_tag("td", /active/i)
+    response.should have_tag("td", /inactive/i)
   end
 end

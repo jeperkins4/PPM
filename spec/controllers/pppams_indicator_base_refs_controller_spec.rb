@@ -108,6 +108,27 @@ describe PppamsIndicatorBaseRefsController do
         put :update, :id => "1"
         response.should redirect_to(pppams_indicator_base_ref_url(mock_pppams_indicator_base_ref))
       end
+
+      it 'should create new pppams_indicator if the "created_on" date is set.' do
+        PppamsIndicatorBaseRef.stub!(:find).and_return(mock_pppams_indicator_base_ref(:update_attributes => true))
+        Facility.should_receive(:find).with('2').and_return(stub(:facility => 'random name'))
+        
+        PppamsIndicator.should_receive(:create).with('facility_id' => '2',
+                                                     'created_on(1i)' => '2008',
+                                                     'created_on(2i)' => '3',
+                                                     'created_on(3i)' => '4',
+                                                     'pppams_indicator_base_ref_id' => '1').and_return(stub(:errors => nil))
+        put :update, :id => '1', :pppams_indicator_base_ref => {:pppams_indicators_attributes => [
+                                                                   {:id => '',
+                                                                    :facility_id => '2',
+                                                                    'created_on(1i)' => '2008',
+                                                                    'created_on(2i)' => '3',
+                                                                    'created_on(3i)' => '4'
+                                                                   }]
+                                                              }
+      end
+      it "should deactivate pppams_indicators if the 'inactive_on' date is set."
+        
     end
 
     describe "with invalid params" do

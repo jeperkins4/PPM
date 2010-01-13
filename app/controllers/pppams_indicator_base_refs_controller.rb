@@ -62,6 +62,14 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   def update
     @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id])
 
+    if params[:pppams_indicator_base_ref].try('has_key?', :pppams_indicators_attributes)
+      new_facility_indicators, indicators_to_deactivate = params[:pppams_indicator_base_ref][:pppams_indicators_attributes].partition {|ind| ind['created_on(1i)'] }
+
+      create_indicators_for new_facility_indicators
+
+      deactivate_indicators_for indicators_to_deactivate
+    end
+
     respond_to do |format|
       if @pppams_indicator_base_ref.update_attributes(params[:pppams_indicator_base_ref])
         flash[:notice] = 'PppamsIndicatorBaseRef was successfully updated.'
@@ -72,6 +80,32 @@ class PppamsIndicatorBaseRefsController < ApplicationController
         format.xml  { render :xml => @pppams_indicator_base_ref.errors, :status => :unprocessable_entity }
       end
     end
+  end
+
+  private
+
+  def create_indicators_for(new_facility_indicators)
+    new_facility_indicators.each do |facility_indicator_attributes|
+
+      facility = Facility.find(facility_indicator_attributes[:facility_id])
+      indicator_base = params[:id]
+
+      valid_new_indicator_attributes = facility_indicator_attributes.reject! {|k,v| k.to_sym == :id }.
+                                       merge({:pppams_indicator_base_ref_id => indicator_base})
+
+
+      if PppamsIndicator.create(valid_new_indicator_attributes).errors.nil?
+        flash[:notice] ||= []
+        flash[:notice] << "Successfully added indicator for #{facility.facility}"
+      else
+        flash[:alert] ||= []
+        flash[:alert] << "There was a problem creating the indicator for facility #{facility.facility}"
+      end
+    end
+  end
+
+  def deactivate_indicators_for(indicators_to_deactivate)
+
   end
 
 end

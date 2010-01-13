@@ -5,28 +5,23 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
   named_scope :current_facilities, lambda { |indicator_base_id|
     { :select => "facilities.id,
                   facilities.facility,
-                  sub.inactive_on,
-                  sub.indicator_id,
-                  sub.created_on",
-    :from => 'facilities',
-    :joins => sanitize_sql_array(["LEFT OUTER JOIN ( SELECT pppams_categories.facility_id AS fac_id, 
-                               pppams_indicators.inactive_on, 
-                               pppams_indicators.updated_on,
-                               pppams_indicators.created_on,
-                               pppams_indicators.pppams_indicator_base_ref_id,
-                               pppams_indicators.id AS indicator_id
-                               FROM pppams_indicators
-                               LEFT OUTER JOIN `pppams_categories` ON `pppams_categories`.id = `pppams_indicators`.pppams_category_id 
-                               LEFT OUTER JOIN `pppams_indicator_base_refs` ON pppams_indicators.pppams_indicator_base_ref_id = pppams_indicator_base_refs.id 
-                               GROUP BY fac_id, 
-                                      pppams_indicators.inactive_on, 
-                                      pppams_indicators.updated_on,
-                                      pppams_indicators.created_on,
-                                      pppams_indicator_base_refs.id,
-                                      indicator_id
-                               HAVING (pppams_indicators.pppams_indicator_base_ref_id = ?) 
-                               ORDER BY pppams_indicators.updated_on DESC) sub
-                ON sub.fac_id = facilities.id", indicator_base_id])
+                  pppams_indicators.inactive_on,
+                  pppams_indicators.id AS indicator_id,
+                  pppams_indicators.created_on,
+                  pppams_indicators.updated_on,
+                  pppams_indicators.pppams_indicator_base_ref_id",
+      :from => 'facilities',
+      :joins => "LEFT OUTER JOIN pppams_indicators ON pppams_indicators.facility_id = facilities.id",
+      :group => "facilities.id, 
+              facilities.facility,
+        pppams_indicators.inactive_on, 
+        pppams_indicators.updated_on,
+        pppams_indicators.created_on,
+        pppams_indicators.pppams_indicator_base_ref_id,
+        indicator_id",
+      :having => ["pppams_indicators.pppams_indicator_base_ref_id = ?
+                   OR pppams_indicators.pppams_indicator_base_ref_id is null", indicator_base_id],
+      :order => "pppams_indicators.updated_on DESC"
     }
   }
   def short_question
@@ -36,7 +31,9 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
   #retrieves hash of all facilties, indicating which one
   #has an active  hash is in the form of:
   # { facility_id => {:active => true/false,
-  #                   :name => facility_name
+  #                   :name => facility_name,
+  #                   :indicator_id => ...,
+  #                   :created_on => date indicator was created
   #                  },
   #   ...
   # }

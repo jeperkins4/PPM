@@ -39,7 +39,7 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
   # }
   def self.current_facilities_hash(indicator_base_id)
     current_facilities(indicator_base_id).inject({}) do |memo, record|
-      {record.id => {:active => ((record.inactive_on.nil? && record.indicator_id.nil? ||
+      {record.id => {:active => ((record.inactive_on.nil? && record.created_on.nil? ||
                                   record.inactive_on) ? false : true),
                      :name => record.facility,
                      :indicator_id => record.indicator_id,

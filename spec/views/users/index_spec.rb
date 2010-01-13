@@ -16,8 +16,8 @@ describe "users_index" do
                                       :id => 2)]
 
     render 'users/index'
-    response.should have_tag('tr.inactive td', 'bob')
-    response.should_not have_tag('tr.inactive td', /destroy/i)
+    response.should have_tag('tr.active_flag_false td', 'bob')
+    response.should_not have_tag('tr.active_flag_false td', /destroy/i)
   end
 
 end

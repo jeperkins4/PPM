@@ -63,11 +63,12 @@ class PppamsIndicatorBaseRefsController < ApplicationController
     @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id])
 
     if params[:pppams_indicator_base_ref].try('has_key?', :pppams_indicators_attributes)
-      new_facility_indicators, indicators_to_deactivate = params[:pppams_indicator_base_ref][:pppams_indicators_attributes].partition {|ind| ind['created_on(1i)'] }
+      new_facility_indicators, indicators_to_deactivate = params[:pppams_indicator_base_ref][:pppams_indicators_attributes].
+                                                            partition {|ind| ind.has_key? 'created_on(1i)' }
 
-      create_indicators_for new_facility_indicators
+      create_indicators_for(new_facility_indicators) if new_facility_indicators
 
-      deactivate_indicators_for indicators_to_deactivate
+      deactivate_indicators_for(indicators_to_deactivate) if indicators_to_deactivate
     end
 
     respond_to do |format|
@@ -87,14 +88,25 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   def create_indicators_for(new_facility_indicators)
     new_facility_indicators.each do |facility_indicator_attributes|
 
-      facility = Facility.find(facility_indicator_attributes[:facility_id])
+      facility = Facility.find(facility_indicator_attributes[:facility_id], :select => 'facility')
       indicator_base = params[:id]
-
+      indicator_id = facility_indicator_attributes[:id]
       valid_new_indicator_attributes = facility_indicator_attributes.reject! {|k,v| k.to_sym == :id }.
                                        merge({:pppams_indicator_base_ref_id => indicator_base})
 
+      #separate out the date fields and the fields
+      #that define a unique indicator
+      created_on_date, find_attributes = valid_new_indicator_attributes.partition {|k,v| ['created_on(1i)',
+                                                                      'created_on(2i)',
+                                                                      'created_on(3i)'].include?(k) }
+      #make the find and updated attributes into hashes
+      #this would be much easier in Ruby 1.8.7
+      find_attributes    = find_attributes.inject({})    {|memo, array| {array[0] => array[1]}.merge(memo) }
+      created_on_date    = created_on_date.inject({}) {|memo, array| {array[0] => array[1]}.merge(memo) }
 
-      if PppamsIndicator.create(valid_new_indicator_attributes).errors.nil?
+      #find or create the indicator,
+      #then update its created_on date
+      if PppamsIndicator.find_or_create_by_facility_id(find_attributes).try(:update_attributes, created_on_date) then
         flash[:notice] ||= []
         flash[:notice] << "Successfully added indicator for #{facility.facility}"
       else
@@ -105,7 +117,17 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   end
 
   def deactivate_indicators_for(indicators_to_deactivate)
-
+    indicators_to_deactivate.each do |indicator_to_deactivate|
+      indicator_id = indicator_to_deactivate['id']
+      inactive_on = indicator_to_deactivate.reject! {|k,v| k =~ /id|facility_id/}
+      if PppamsIndicator.find(indicator_id).try(:update_attributes, inactive_on)
+        flash[:notice] ||= []
+        flash[:notice] << "Successfully deactivated an indicator"
+      else
+        flash[:alert] ||= []
+        flash[:alert] << "There was a problem deactivating anindicator"
+      end
+    end
   end
 
 end

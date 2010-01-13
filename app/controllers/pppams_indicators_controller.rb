@@ -1,5 +1,5 @@
 class PppamsIndicatorsController < ApplicationController
-  before_filter :authenticate, :set_frequency_options
+  before_filter :authenticate
   layout 'administration'
   
  require 'rubygems'
@@ -93,13 +93,6 @@ class PppamsIndicatorsController < ApplicationController
   end
 
 
-  def set_frequency_options
-    @frequency_options=OrderedHash.new()
-    @frequency_options['1 - Annual'] =1
-    @frequency_options['2 - Semi-annual'] = 2
-    @frequency_options['4 - Quarterly'] = 4
-    @frequency_options['12 - Monthly'] = 12
-  end
 
   def edit
     @pppams_indicator = PppamsIndicator.find(params[:id])

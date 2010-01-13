@@ -177,15 +177,14 @@ PppamsCategoryBaseRef.blueprint do
   name {Sham.sentence }
   pppams_category_group {PppamsCategoryGroup.make}
 end
-PppamsCategory.blueprint do
-  name {Sham.sentence }
-  pppams_category_base_ref {PppamsCategoryBaseRef.make}
-  facility {Facility.make}
-end
 PppamsIndicator.blueprint do
+  #pppams_indicator_base_ref {PppamsIndicatorBaseRef.make}
+  #frequency { 1 }
+  facility {Facility.make}
+  #start_month { (1..12).to_a.rand }
+  # good_months {":#{start_month}:"}
+end
+PppamsIndicatorBaseRef.blueprint do
   question { Sham.sentence }
-  frequency { 1 }
-  start_month { (1..12).to_a.rand }
-  pppams_category {PppamsCategory.make}
-  good_months {":#{start_month}:"}
+  pppams_category_base_ref {PppamsCategoryBaseRef.make}
 end

@@ -1,18 +1,25 @@
 require 'rubygems'
 require 'spork'
+require 'spork/ext/ruby-debug'
+
+ENV["RAILS_ENV"] ||= 'test'
 
 Spork.prefork do
+  require File.dirname(__FILE__) + "/../config/environment" #unless defined?(RAILS_ROOT)
+  require 'spec'
+  require 'spec/autorun'
+  require 'spec/rails'
+  require 'machinist/active_record'
+  require 'faker'
+  require 'sham'
+
+
 end
 
 Spork.each_run do
+  require File.expand_path(File.dirname(__FILE__) + "/blueprints")
 end
 
-ENV["RAILS_ENV"] ||= 'test'
-require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
-require 'spec/autorun'
-require 'spec/rails'
-
-require File.expand_path(File.dirname(__FILE__) + "/blueprints")
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 

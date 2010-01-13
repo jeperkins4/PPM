@@ -72,6 +72,7 @@ class ApplicationController < ActionController::Base
             'prompts',
             'pppams_category_base_refs',
             'pppams_indicator_base_refs',
+            'pppams_indicators',
             'pppams_notifications'].each do |page_check|
             request.request_uri.split('/').each do |page|
               page.split('?').each do |page2|

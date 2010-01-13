@@ -1,14 +1,12 @@
 <%= error_messages_for 'pppams_indicator' %>
 
-<p><label for="pppams_indicator_is_global">Global indicator?</label><br/>
-<input type='checkbox' name = 'is_global'></p>
-
 <!--[form:pppams_indicator]-->
 <p><label for="pppams_indicator_question">Question</label><br/>
-<%= text_area 'pppams_indicator', 'question'  %></p>
+  <%= @pppams_indicator.question  %>
+</p>
 
 <p><label for="pppams_indicator_frequency">Annual frequency</label><br/>
-<%= select( "pppams_indicator", "frequency", @frequency_options ) %>
+<%= select( "pppams_indicator", "frequency", frequency_options ) %>
 </p>
 
 <p><label for="pppams_indicator_start_month">Start month</label><br/>

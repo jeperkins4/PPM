@@ -64,20 +64,22 @@ class PppamsIndicatorBaseRefsController < ApplicationController
 
     if params[:pppams_indicator_base_ref].try('has_key?', :pppams_indicators_attributes)
       new_facility_indicators, indicators_to_deactivate = params[:pppams_indicator_base_ref][:pppams_indicators_attributes].
-                                                            partition {|ind| ind.has_key? 'created_on(1i)' }
+                                                            partition {|index, indicator_attributes| indicator_attributes.has_key? 'active_on(1i)' }
 
-      create_indicators_for(new_facility_indicators) if new_facility_indicators
+      create_indicators_for(new_facility_indicators.to_hash) unless new_facility_indicators.empty?
 
-      deactivate_indicators_for(indicators_to_deactivate) if indicators_to_deactivate
+      debugger
+      deactivate_indicators_for(indicators_to_deactivate.to_hash) unless indicators_to_deactivate.empty?
     end
+    base_attributes = params[:pppams_indicator_base_ref].reject! {|k,v| k == 'pppams_indicators_attributes'}
 
     respond_to do |format|
       if @pppams_indicator_base_ref.update_attributes(params[:pppams_indicator_base_ref])
         flash[:notice] = 'PppamsIndicatorBaseRef was successfully updated.'
-        format.html { redirect_to(@pppams_indicator_base_ref) }
+        format.html { redirect_to(edit_pppams_indicator_base_ref_path(@pppams_indicator_base_ref)) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { redirect_to :action => "edit" }
         format.xml  { render :xml => @pppams_indicator_base_ref.errors, :status => :unprocessable_entity }
       end
     end
@@ -86,7 +88,7 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   private
 
   def create_indicators_for(new_facility_indicators)
-    new_facility_indicators.each do |facility_indicator_attributes|
+    new_facility_indicators.each do |useless_key, facility_indicator_attributes|
 
       facility = Facility.find(facility_indicator_attributes[:facility_id], :select => 'facility')
       indicator_base = params[:id]
@@ -96,17 +98,17 @@ class PppamsIndicatorBaseRefsController < ApplicationController
 
       #separate out the date fields and the fields
       #that define a unique indicator
-      created_on_date, find_attributes = valid_new_indicator_attributes.partition {|k,v| ['created_on(1i)',
-                                                                      'created_on(2i)',
-                                                                      'created_on(3i)'].include?(k) }
+      active_on_date, find_attributes = valid_new_indicator_attributes.partition {|k,v| ['active_on(1i)',
+                                                                      'active_on(2i)',
+                                                                      'active_on(3i)'].include?(k) }
       #make the find and updated attributes into hashes
-      #this would be much easier in Ruby 1.8.7
-      find_attributes    = find_attributes.inject({})    {|memo, array| {array[0] => array[1]}.merge(memo) }
-      created_on_date    = created_on_date.inject({}) {|memo, array| {array[0] => array[1]}.merge(memo) }
+      #(would be much easier in Ruby 1.8.7)
+      find_attributes    = find_attributes.to_hash
+      active_on_date    = active_on_date.to_hash
 
       #find or create the indicator,
-      #then update its created_on date
-      if PppamsIndicator.find_or_create_by_facility_id(find_attributes).try(:update_attributes, created_on_date) then
+      #then update its active_on date
+      if (active_on_date.all? {|k,v| !v.blank?}) && PppamsIndicator.find_or_create_by_facility_id(find_attributes).try(:update_attributes, active_on_date) then
         flash[:notice] ||= []
         flash[:notice] << "Successfully added indicator for #{facility.facility}"
       else
@@ -117,15 +119,15 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   end
 
   def deactivate_indicators_for(indicators_to_deactivate)
-    indicators_to_deactivate.each do |indicator_to_deactivate|
+    indicators_to_deactivate.each do |useless_key, indicator_to_deactivate|
       indicator_id = indicator_to_deactivate['id']
-      inactive_on = indicator_to_deactivate.reject! {|k,v| k =~ /id|facility_id/}
-      if PppamsIndicator.find(indicator_id).try(:update_attributes, inactive_on)
+      inactive_on_date = indicator_to_deactivate.reject! {|k,v| k =~ /id|facility_id/}
+      if (inactive_on_date.all? {|k,v| !v.blank?}) && PppamsIndicator.try(:find,indicator_id).try(:update_attributes, inactive_on_date)
         flash[:notice] ||= []
         flash[:notice] << "Successfully deactivated an indicator"
       else
         flash[:alert] ||= []
-        flash[:alert] << "There was a problem deactivating anindicator"
+        flash[:alert] << "There was a problem deactivating an indicator."
       end
     end
   end

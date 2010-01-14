@@ -1,12 +1,15 @@
 class RemovePppamsCategories < ActiveRecord::Migration
   def self.up
     add_column :pppams_indicators, :facility_id, :integer
+
     PppamsIndicator.find(:all, :include => :pppams_category).each do |indicator|
       indicator.update_attribute(:facility_id, indicator.pppams_category.facility_id)
+      indicator.update_attribute(:created_on, Date.new(2008,1,1))
     end
     drop_table :pppams_categories
     remove_column :pppams_indicators, :pppams_category_id
     remove_column :pppams_indicators, :question
+    add_column :pppams_indicators, :active_on, :date
   end
 
   def self.down

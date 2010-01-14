@@ -7,7 +7,7 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
                   facilities.facility,
                   pppams_indicators.inactive_on,
                   pppams_indicators.id AS indicator_id,
-                  pppams_indicators.created_on,
+                  pppams_indicators.active_on,
                   pppams_indicators.updated_on,
                   pppams_indicators.pppams_indicator_base_ref_id",
       :from => 'facilities',
@@ -16,7 +16,7 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
               facilities.facility,
         pppams_indicators.inactive_on, 
         pppams_indicators.updated_on,
-        pppams_indicators.created_on,
+        pppams_indicators.active_on,
         pppams_indicators.pppams_indicator_base_ref_id,
         indicator_id",
       :having => ["pppams_indicators.pppams_indicator_base_ref_id = ?
@@ -33,17 +33,17 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
   # { facility_id => {:active => true/false,
   #                   :name => facility_name,
   #                   :indicator_id => ...,
-  #                   :created_on => date indicator was created
+  #                   :active_on => date indicator was created
   #                  },
   #   ...
   # }
   def self.current_facilities_hash(indicator_base_id)
     current_facilities(indicator_base_id).inject({}) do |memo, record|
-      {record.id => {:active => ((record.inactive_on.nil? && record.created_on.nil? ||
+      {record.id => {:active => ((record.inactive_on.nil? && record.active_on.nil? ||
                                   record.inactive_on) ? false : true),
                      :name => record.facility,
                      :indicator_id => record.indicator_id,
-                     :created_on => record.created_on
+                     :active_on => record.active_on
                     }
       }.merge(memo)
     end

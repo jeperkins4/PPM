@@ -32,12 +32,18 @@
               <% if facility[:active] %>
                 <td><%= link_to facility[:name], edit_pppams_indicator_path(facility[:indicator_id])%></td>
                 <td>Active</td>
-                <td><%= facility[:created_on] %></td>
-                <td><%= date_select("pppams_indicator_base_ref[pppams_indicators_attributes][#{count}]",'inactive_on', {:include_blank => true} )%></td>
+                <td><%= facility[:active_on] %></td>
+                <td>
+                  <%= date_select("pppams_indicator_base_ref[pppams_indicators_attributes][#{count}]",'inactive_on', {:include_blank => true} )%>
+                  <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][id]", facility[:indicator_id] %>
+                </td>
               <% else %>
                 <td><%= facility[:name] %></td>
                 <td>Inactive</td>
-                <td><%= date_select("pppams_indicator_base_ref[pppams_indicators_attributes][#{count}]", 'created_on', {:include_blank => true} ) %></td>
+                <td>
+                  <%= date_select("pppams_indicator_base_ref[pppams_indicators_attributes][#{count}]", 'active_on', {:include_blank => true} ) %>
+                  <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][id]", facility[:indicator_id] %>
+                  </td>
                 <td></td>
               <% end %>
             </tr>

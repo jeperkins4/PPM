@@ -5,8 +5,8 @@ class PppamsIndicator < ActiveRecord::Base
   has_many :pppams_reviews
   has_many :pppams_delinquent_reviews
   has_and_belongs_to_many :pppams_references
-#  validates_presence_of [:pppams_indicator_base_ref_id,:frequency,:start_month, :good_months]
-  validates_uniqueness_of :facility_id #, :scope => :pppams_indicator_base_ref_id
+  validates_presence_of [:pppams_indicator_base_ref_id,:frequency,:start_month, :good_months]
+  validates_uniqueness_of :facility_id , :scope => :pppams_indicator_base_ref_id
   delegate :question, :to => :pppams_indicator_base_ref
   def self.find_current(this_date, this_facility)   
     if this_facility.pppams_started_on.nil? 

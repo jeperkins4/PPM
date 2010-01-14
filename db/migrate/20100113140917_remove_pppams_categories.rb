@@ -6,10 +6,15 @@ class RemovePppamsCategories < ActiveRecord::Migration
       indicator.update_attribute(:facility_id, indicator.pppams_category.facility_id)
       indicator.update_attribute(:created_on, Date.new(2008,1,1))
     end
+
     drop_table :pppams_categories
+
     remove_column :pppams_indicators, :pppams_category_id
     remove_column :pppams_indicators, :question
-    add_column :pppams_indicators, :active_on, :date
+    add_column    :pppams_indicators, :active_on, :date
+    change_column_default :pppams_indicators, :start_month, 1
+    change_column_default :pppams_indicators, :good_months, ":1:"
+    change_column_default :pppams_indicators, :frequency, 1
   end
 
   def self.down

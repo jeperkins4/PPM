@@ -5,13 +5,6 @@
 <p>
   <%=h @pppams_indicator_base_ref.question %>
 </p>
-<p>
-  <b>Inactive as of:</b>
-</p>
-<p>
-  <%= @pppams_indicator_base_ref.inactive_on ? @pppams_indicator_base_ref.inactive_on : "Still active" %>
-</p>
-
 
 <p>
   <b>Global Category:</b>
@@ -19,7 +12,26 @@
 <p>
   <%=h @pppams_indicator_base_ref.pppams_category_base_ref %>
 </p>
-
+<table>
+  <thead>
+    <tr>
+      <th>Facility</th>
+      <th>Status</th>
+      <th>Added to facility on</th>
+      <th>Becomes inactive on</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @facilities.each do |facility_id, facility| %>
+        <tr>
+          <td><%= link_to facility[:name], edit_pppams_indicator_path(facility[:indicator_id])%></td>
+          <td><%= facility[:active] ? 'Active' : 'Inactive' %></td>
+          <td><%= facility[:active_on] %></td>
+          <td><%= facility[:inactive_on] %></td>
+        </tr>
+     <% end %>
+  </tbody>
+</table>
 
 <%= link_to 'Edit', edit_pppams_indicator_base_ref_path(@pppams_indicator_base_ref) %> |
 <%= link_to 'Back', pppams_indicator_base_refs_path %>

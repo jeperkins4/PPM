@@ -178,11 +178,11 @@ PppamsCategoryBaseRef.blueprint do
   pppams_category_group {PppamsCategoryGroup.make}
 end
 PppamsIndicator.blueprint do
-  #pppams_indicator_base_ref {PppamsIndicatorBaseRef.make}
-  #frequency { 1 }
+  pppams_indicator_base_ref {PppamsIndicatorBaseRef.make}
+  frequency { 1 }
   facility {Facility.make}
-  #start_month { (1..12).to_a.rand }
-  # good_months {":#{start_month}:"}
+  start_month { (1..12).to_a.rand }
+   good_months {":#{start_month}:"}
 end
 PppamsIndicatorBaseRef.blueprint do
   question { Sham.sentence }

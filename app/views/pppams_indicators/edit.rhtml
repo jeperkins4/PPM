@@ -6,4 +6,4 @@
 <% end %>
 
 <%= link_to 'Back', :action => 'show', :id => @pppams_indicator %> |
-<%= link_to 'List', :controller => 'pppams_categories', :action => 'show', :id => @pppams_indicator.pppams_category_id %> 
+<%= link_to 'List', edit_pppams_indicator_base_ref_path(@pppams_indicator.pppams_indicator_base_ref) %> 

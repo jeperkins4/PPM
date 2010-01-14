@@ -7,11 +7,12 @@ describe "/pppams_indicator_base_refs/edit.html.erb" do
     assigns[:pppams_indicator_base_ref] = @pppams_indicator_base_ref = stub_model(PppamsIndicatorBaseRef,
       :new_record? => false,
       :question => "value for question",
-      :pppams_category_base_ref_id => 1
+      :pppams_category_base_ref_id => 1,
+      :id => 1
     )
     assigns[:pppams_category_base_refs] = [['hello', 1]]
-    assigns[:facilities] = {1 => {:active => true, :name => 'active'},
-                            2 => {:active => false, :name => 'inactive'}
+    assigns[:facilities] = {1 => {:active => true, :name => 'active', :indicator_id => 23},
+                            2 => {:active => false, :name => 'inactive', :indicator_id => 25}
                            }
   end
 
@@ -28,4 +29,10 @@ describe "/pppams_indicator_base_refs/edit.html.erb" do
     response.should have_tag("td", /active/i)
     response.should have_tag("td", /inactive/i)
   end
+  it "renders links to facility indicators" do
+    render
+    response.should have_tag(["a[href=?]", edit_pppams_indicator_path(23)])
+    response.should_not have_tag(["a[href=?]", edit_pppams_indicator_path(25)])
+  end
+
 end

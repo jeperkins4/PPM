@@ -16,6 +16,7 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   # GET /pppams_indicator_base_refs/1.xml
   def show
     @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id])
+    @facilities = @pppams_indicator_base_ref.current_facilities_hash
 
     respond_to do |format|
       format.html # show.html.erb
@@ -61,73 +62,14 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   # PUT /pppams_indicator_base_refs/1.xml
   def update
     @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id])
-
-    if params[:pppams_indicator_base_ref].try('has_key?', :pppams_indicators_attributes)
-      new_facility_indicators, indicators_to_deactivate = params[:pppams_indicator_base_ref][:pppams_indicators_attributes].
-                                                            partition {|index, indicator_attributes| indicator_attributes.has_key? 'active_on(1i)' }
-
-      create_indicators_for(new_facility_indicators.to_hash) unless new_facility_indicators.empty?
-
-      debugger
-      deactivate_indicators_for(indicators_to_deactivate.to_hash) unless indicators_to_deactivate.empty?
-    end
-    base_attributes = params[:pppams_indicator_base_ref].reject! {|k,v| k == 'pppams_indicators_attributes'}
-
-    respond_to do |format|
+     respond_to do |format|
       if @pppams_indicator_base_ref.update_attributes(params[:pppams_indicator_base_ref])
-        flash[:notice] = 'PppamsIndicatorBaseRef was successfully updated.'
+        flash[:notice] = 'The Global Indicator was successfully updated.'
         format.html { redirect_to(edit_pppams_indicator_base_ref_path(@pppams_indicator_base_ref)) }
         format.xml  { head :ok }
       else
         format.html { redirect_to :action => "edit" }
         format.xml  { render :xml => @pppams_indicator_base_ref.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  private
-
-  def create_indicators_for(new_facility_indicators)
-    new_facility_indicators.each do |useless_key, facility_indicator_attributes|
-
-      facility = Facility.find(facility_indicator_attributes[:facility_id], :select => 'facility')
-      indicator_base = params[:id]
-      indicator_id = facility_indicator_attributes[:id]
-      valid_new_indicator_attributes = facility_indicator_attributes.reject! {|k,v| k.to_sym == :id }.
-                                       merge({:pppams_indicator_base_ref_id => indicator_base})
-
-      #separate out the date fields and the fields
-      #that define a unique indicator
-      active_on_date, find_attributes = valid_new_indicator_attributes.partition {|k,v| ['active_on(1i)',
-                                                                      'active_on(2i)',
-                                                                      'active_on(3i)'].include?(k) }
-      #make the find and updated attributes into hashes
-      #(would be much easier in Ruby 1.8.7)
-      find_attributes    = find_attributes.to_hash
-      active_on_date    = active_on_date.to_hash
-
-      #find or create the indicator,
-      #then update its active_on date
-      if (active_on_date.all? {|k,v| !v.blank?}) && PppamsIndicator.find_or_create_by_facility_id(find_attributes).try(:update_attributes, active_on_date) then
-        flash[:notice] ||= []
-        flash[:notice] << "Successfully added indicator for #{facility.facility}"
-      else
-        flash[:alert] ||= []
-        flash[:alert] << "There was a problem creating the indicator for facility #{facility.facility}"
-      end
-    end
-  end
-
-  def deactivate_indicators_for(indicators_to_deactivate)
-    indicators_to_deactivate.each do |useless_key, indicator_to_deactivate|
-      indicator_id = indicator_to_deactivate['id']
-      inactive_on_date = indicator_to_deactivate.reject! {|k,v| k =~ /id|facility_id/}
-      if (inactive_on_date.all? {|k,v| !v.blank?}) && PppamsIndicator.try(:find,indicator_id).try(:update_attributes, inactive_on_date)
-        flash[:notice] ||= []
-        flash[:notice] << "Successfully deactivated an indicator"
-      else
-        flash[:alert] ||= []
-        flash[:alert] << "There was a problem deactivating an indicator."
       end
     end
   end

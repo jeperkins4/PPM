@@ -9,6 +9,6 @@
   <b>References:</b> <span class='inline-block'><% for this_ref in @pppams_indicator.pppams_references %><%=h this_ref.html %><br/><% end %></span>
 </p>
 
-
-<% if @user.is_admin? %><%= link_to 'Edit', :action => 'edit', :id => @pppams_indicator %> |<% end %>
-<%= link_to 'Back', :controller => 'pppams_categories', :action => 'show', :id => @pppams_indicator.pppams_category_id %> 
+<% if @user.is_admin? %>
+  <%= link_to('Back to Global Indicator', edit_pppams_indicator_base_ref_path(@pppams_indicator.pppams_indicator_base_ref)  %>
+<% end %>

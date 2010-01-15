@@ -1,25 +1,38 @@
 class PppamsIndicator < ActiveRecord::Base
-  belongs_to :pppams_category
   belongs_to :pppams_indicator_base_ref
   belongs_to :facility
   has_many :pppams_reviews
   has_many :pppams_delinquent_reviews
+  has_one :pppams_category_base_ref, :through => :pppams_indicator_base_ref
   has_and_belongs_to_many :pppams_references
   validates_presence_of [:pppams_indicator_base_ref_id,:frequency,:start_month, :good_months]
   validates_uniqueness_of :facility_id , :scope => :pppams_indicator_base_ref_id
   delegate :question, :to => :pppams_indicator_base_ref
-  def self.find_current(this_date, this_facility)   
-    if this_facility.pppams_started_on.nil? 
-       return []
-       break
-    end
-    good_ids = "(#{this_facility.pppams_category_ids.join(',')})" 
-    find_me = "%:" + this_date.month.to_s + ":%"
-    if this_facility.pppams_category_ids.size > 0 and this_date >= this_facility.pppams_started_on
-      PppamsIndicator.find(:all, :order => 'pppams_category_id',:conditions => ["pppams_category_id in #{good_ids} AND good_months like ?",  find_me ])
-    else
-	[]
-    end
+
+  #Find indicators that are from the given facility
+  #and whose facility started pppams after given date
+  #and whose indicators are active as of the given date.
+  def self.find_current(date, facility)   
+
+    #The facility started recording pppams before the given date
+    return [] if facility.pppams_started_on.nil? 
+    return [] if facility.pppams_started_on > date
+
+    PppamsIndicator.find(:all,
+                         :conditions => ["facility_id = ?
+                                          AND DATE(pppams_indicators.active_on) <= DATE(?)
+                                          AND (
+                                                DATE(pppams_indicators.inactive_on) >= DATE(?)
+                                                OR
+                                                pppams_indicators.inactive_on IS NULL
+                                              )
+                                          AND good_months LIKE ?",
+                                         facility.id,
+                                         date,
+                                         date,
+                                         "%:#{date.month}:%"],
+                        :include => {:pppams_indicator_base_ref => :pppams_category_base_ref},
+                        :order => 'pppams_category_base_refs.name')
   end 
 
   def current_review(this_month)  

@@ -2,19 +2,50 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe PppamsIndicator do
   before(:all) do
-    @pppams_indicator = PppamsIndicator.make
+    @pppams_indicator = PppamsIndicator.make(:start_month => Date.today.month,
+                                            :active_on => Date.yesterday,
+                                            :inactive_on => Date.tomorrow)
   end
   specify { @pppams_indicator.should respond_to(:pppams_indicator_base_ref) }
   describe "find_current_to_do" do
-    it "should handle the new indicator/category relations"
-  end
-  describe "current_review for an indicator" do
-    it "should find review created after given date's beginnig of month"
-    it "should find review created before given date's end of month"
+    before(:all) do
+      @facility = @pppams_indicator.facility
+      @current_review = PppamsReview.make(:pppams_indicator => @pppams_indicator,
+                                          :created_on => Time.now)
+      @old_review= PppamsReview.make(:pppams_indicator => @pppams_indicator,
+                                          :created_on => 2.months.ago)
+      @next_month_review= PppamsReview.make(:pppams_indicator => @pppams_indicator,
+                                          :created_on => 2.months.since)
+    end
 
+    it "should find review created during given date's month" do
+      @current_review.update_attribute(:status, 'Locked')
+      PppamsIndicator.should_receive(:find_current).with(Date.today, @facility).and_return([stub(:id => @pppams_indicator.id),
+                                                                                            stub(:id => 0)])
+      second_indicator = PppamsIndicator.make(:facility => @facility,
+                           :active_on => Date.yesterday,
+                           :inactive_on => Date.tomorrow,
+                           :start_month => Date.today.month)
+      PppamsReview.make(:pppams_indicator => second_indicator,
+                        :status => '')
+      PppamsIndicator.find_current_todo(Date.today, @facility).should == [1,2]
+    end
   end
-  describe "" do
-    it "should handle the new indicator/category relations"
+
+  describe "current_review for an indicator" do
+    before(:all) do
+      @facility = @pppams_indicator.facility
+      @current_review = PppamsReview.make(:pppams_indicator => @pppams_indicator,
+                                          :created_on => Time.now)
+      @old_review= PppamsReview.make(:pppams_indicator => @pppams_indicator,
+                                          :created_on => 2.months.ago)
+      @next_month_review= PppamsReview.make(:pppams_indicator => @pppams_indicator,
+                                          :created_on => 2.months.since)
+    end
+
+    it "should find review created during given date's month" do
+      @pppams_indicator.current_review(Time.now).should == @current_review
+    end
   end
   describe "find_current (DIFFERENT FROM find_current_to_do)" do
     before :all do
@@ -90,4 +121,14 @@ describe PppamsIndicator do
       @pppams_indicator.good_months.should == ":8:12:4:"
     end
   end
+  describe "update_good_months" do
+    it "should set the months requiring indication according to the frequency and start month." do
+      @pppams_indicator.good_months= nil
+      @pppams_indicator.save
+      @pppams_indicator.good_months.should == nil
+      @pppams_indicator.update_good_months(3,6)
+      @pppams_indicator.good_months.should == ":3:5:7:9:11:1:"
+    end
+  end
+
 end

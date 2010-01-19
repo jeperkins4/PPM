@@ -39,10 +39,16 @@ class PppamsIndicator < ActiveRecord::Base
 
   def current_review(this_month)  
     lowerlimit = this_month.beginning_of_month
-    upperlimit = DateTime.parse(this_month.month.to_s + "/" + this_month.end_of_month.day.to_s + "/" + this_month.year.to_s + " 23:59:59")
-    review = PppamsReview.find(:first, :conditions => ["created_on >= ? AND created_on <= ? and pppams_indicator_id = ?", lowerlimit, upperlimit, self.id])
+    upperlimit = this_month.to_time.end_of_month
+    review = PppamsReview.find(:first, 
+                               :conditions => ["DATE(created_on) >= DATE(?) AND DATE(created_on) <= DATE(?) and pppams_indicator_id = ?",
+                                               lowerlimit, 
+                                               upperlimit, 
+                                               self.id])
   end
 
+  # Find the total number of reviews that are locked 'this month', for 'this_facility'
+  # => [num_reviews_completed, num_indicators_total_this_month]
   def self.find_current_todo(this_month, this_facility)
     currents = PppamsIndicator.find_current(this_month, this_facility)
     if currents.length == 0 
@@ -51,8 +57,11 @@ class PppamsIndicator < ActiveRecord::Base
     end
     id_range = "(" + currents.collect {|x| x.id.to_s}.join(",") + ")"
     lowerlimit = this_month.beginning_of_month
-    upperlimit = DateTime.parse(this_month.month.to_s + "/" + this_month.end_of_month.day.to_s + "/" + this_month.year.to_s + " 23:59:59")
-    reviews = PppamsReview.find(:all, :conditions => ["created_on >= ? AND created_on <= ? and status = 'Locked' and pppams_indicator_id in #{id_range}", lowerlimit, upperlimit])
+    upperlimit = this_month.to_time.end_of_month
+    reviews = PppamsReview.find(:all, 
+                                :conditions => ["DATE(created_on) >= DATE(?) AND DATE(created_on) <= DATE(?) and status = 'Locked' and pppams_indicator_id in #{id_range}",
+                                  lowerlimit, 
+                                  upperlimit])
     return [reviews.length,currents.length] 
   end
   

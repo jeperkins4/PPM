@@ -12,6 +12,8 @@ class PppamsReview < ActiveRecord::Base
     before_save :update_submit_count
     after_save :generate_status_notifications
 
+    delegate :facility, :to => :pppams_indicator
+
     def self.earliest
       PppamsReview.find(:all).nil? ? PppamsReview.find(:first, :order =>  "created_on ASC").created_on.year : Time.now.year
     end
@@ -36,12 +38,8 @@ class PppamsReview < ActiveRecord::Base
       self.class.status_text(self.status)
     end
 
-    def facility
-      category.facility
-    end
-
     def category
-      pppams_indicator.pppams_category
+      pppams_indicator.pppams_category_base_ref
     end
 
     def updated_month_day

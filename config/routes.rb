@@ -49,6 +49,7 @@ ActionController::Routing::Routes.draw do |map|
      incidents.resources :follow_ups, :name_prefix => nil
   end
   
+  map.editable_indicators_list '/pppams_indicators/editable_list', :controller => 'pppams_indicators', :action => 'editable_list'
   map.resources :pppams_indicators, :only => ['edit', 'show']
   map.destroy_non_comp_follow_up 'non_comp_issues/:non_comp_issue_id/non_comp_follow_ups/:id/;destroy', :controller => 'non_comp_follow_ups', :action => 'destroy'
 

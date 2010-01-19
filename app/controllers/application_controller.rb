@@ -96,23 +96,27 @@ class ApplicationController < ActionController::Base
           redirect_to(:controller => request.request_uri.split('/'), :action => 'index')
         else
           session[:facility] = nil
-          render :text => "Please select a facility from the drop down above to continue.", :layout => true
+          ask_for_a_facility
         end
       end      
     end      
   end 
-  
+
+  def ask_for_a_facility
+    render :text => "Please select a facility from the drop down above to continue.", :layout => true
+  end
+
   def set_page
     @host = request.host
     @page = request.request_uri.split('?')
   end
-  
+
   def clean_up_uploads
     for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]])
       this_upload.destroy
     end
   end
-  
+
   def accountability_report
     if params[:menu] == 'Yes' then
       render :update do |page|
@@ -124,7 +128,7 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
+
   def setup_session(user)
     unless user.nil?
       session[:user_id] = user.id
@@ -138,6 +142,11 @@ class ApplicationController < ActionController::Base
       flash[:notice] = "Invalid user/password combination"
     end
   end
-  
+
+  def require_facility
+    unless session[:facility] 
+      ask_for_a_facility and return
+    end
+  end
 
 end

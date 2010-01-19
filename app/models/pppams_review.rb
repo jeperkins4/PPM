@@ -28,9 +28,12 @@ class PppamsReview < ActiveRecord::Base
        [7,8].index(score).nil?
     end
 
+    def self.status_text(status_field)
+      status_field.blank? ? "Submitted" : status_field
+    end
 
     def status_text
-      self.status == "" ? "Submitted" : self.status
+      self.class.status_text(self.status)
     end
 
     def facility
@@ -55,20 +58,25 @@ class PppamsReview < ActiveRecord::Base
       end
     end
 
-    def can_edit? 
+    def self.can_edit?(review) 
+       review = find(review) unless review.class == self
        this_user_type = User.current_user.user_type
 	     access_level = this_user_type.access_level.id
-       if !["", "Submitted", "Review"].index(self.status).nil? or this_user_type.user_type == "SuperAdministrator" 
+       if !["", "Submitted", "Review"].index(review.status).nil? or this_user_type.user_type == "SuperAdministrator" 
 	    return true
 	    break
        end 
-       if access_level == 1 and self.status != "Locked"
+       if access_level == 1 and review.status != "Locked"
 	    return true
 	    break
        end
        return false
     end
     
+    def can_edit?
+      self.class.can_edit?(self)
+    end
+
     def update_submit_count
       # Note: 'status_changed?' method requires ActiveRecord::Dirty from Rails 2.x
       # if the status has been changed and is being set to 'Submitted'

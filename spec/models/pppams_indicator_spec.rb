@@ -8,8 +8,10 @@ describe PppamsIndicator do
   describe "find_current_to_do" do
     it "should handle the new indicator/category relations"
   end
-  describe "current_review" do
-    it "should handle the new indicator/category relations"
+  describe "current_review for an indicator" do
+    it "should find review created after given date's beginnig of month"
+    it "should find review created before given date's end of month"
+
   end
   describe "" do
     it "should handle the new indicator/category relations"
@@ -79,6 +81,13 @@ describe PppamsIndicator do
     end
   end
   describe "set_good_months" do
-    it "should handle the new indicator/category relations"
+    it "should set the months requiring indication according to the frequency and start month." do
+      @pppams_indicator.good_months= nil
+      @pppams_indicator.good_months.should == nil
+      @pppams_indicator.frequency = 3
+      @pppams_indicator.start_month = 8
+      @pppams_indicator.set_good_months
+      @pppams_indicator.good_months.should == ":8:12:4:"
+    end
   end
 end

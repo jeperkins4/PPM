@@ -8,6 +8,8 @@ class PppamsIndicator < ActiveRecord::Base
   validates_presence_of [:pppams_indicator_base_ref_id,:frequency,:start_month, :good_months]
   validates_uniqueness_of :facility_id , :scope => :pppams_indicator_base_ref_id
   delegate :question, :to => :pppams_indicator_base_ref
+  delegate :pppams_category_base_ref, :to => :pppams_indicator_base_ref
+  delegate :pppams_category_base_ref_id, :to => :pppams_indicator_base_ref
 
   #Find indicators that are from the given facility
   #and whose facility started pppams after given date
@@ -55,15 +57,21 @@ class PppamsIndicator < ActiveRecord::Base
   end
   
   def set_good_months
-    addme = [self.start_month]
-    self.frequency.times { |f|
-        if f > 0
-            pushme = addme.last + f > 12 ?  addme.last + f  -12 : addme.last + f 
-            addme.push(pushme)
-        end
+    good_months_array = [self.start_month]
+    review_interval = 12/self.frequency
+    (self.frequency - 1).times { |f|
+            next_good_month = good_months_array.last + review_interval > 12 ?
+                       good_months_array.last + review_interval  -12 : 
+                       good_months_array.last + review_interval 
+            good_months_array.push(next_good_month)
     }
-    self.good_months = ":" + addme.join(':') + ":"
+    self.good_months = ":" + good_months_array.join(':') + ":"
   end
 
+  def update_good_months(start_month, frequency)
+    self.start_month = start_month.to_i
+    self.frequency = frequency.to_i
+    set_good_months
+  end
 end
  

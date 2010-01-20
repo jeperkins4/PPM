@@ -44,12 +44,12 @@ class PppamsIndicatorsController < ApplicationController
   # Update several reviews with new status and notes
   def bulk_update
     params[:pppams_review_selector].each { |id|
-      @pppams_review = PppamsReview.find(id)
-      @pppams_review.status = params[:pppams_review_new_status]
-      @pppams_review.notes = @pppams_review.notes.nil? ? 
+      pppams_review = PppamsReview.find(id)
+      pppams_review.status = params[:pppams_review_new_status]
+      pppams_review.notes = pppams_review.notes.nil? ? 
         params[:pppams_review_bulk_note] : 
-        @pppams_review.notes + "\r\n" + params[:pppams_review_bulk_note]
-      @pppams_review.save
+        pppams_review.notes + "\r\n" + params[:pppams_review_bulk_note]
+      pppams_review.save
     }
     render :text => "1"
   end

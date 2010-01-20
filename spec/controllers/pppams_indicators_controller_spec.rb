@@ -48,22 +48,20 @@ describe PppamsIndicatorsController do
       end
       describe "GET list" do
         it "should expose the current facility's indicators" do
-          
           get :list
           response.should render_template 'pppams_indicators/list'
         end
       end
-      describe "editable_list" do
-        it "should handle the new indicator relations" 
-      end
-      describe "_to_do" do
-        it "should handle the new indicator relations"
-      end
-      describe "_editable_to_do" do
-        it "should handle the new indicator relations"
-      end
       describe "bulk_update" do
-        it "should handle the new indicator relations"
+        def do_put_bulk_update
+          put :bulk_update, :pppams_review_selector => ['1', '2'], :pppams_review_bulk_note => 'some note',
+                                                                   :pppams_review_new_status => 'new_status'
+        end
+        it "should find and assign all of the selected reviews to their new notes and statuses" do
+          PppamsReview.should_receive(:find).with('1').and_return(mock_model(PppamsReview, 'status=' => 1, 'notes=' => nil, 'notes' => nil, :save => true))
+          PppamsReview.should_receive(:find).with('2').and_return(mock_model(PppamsReview, 'status=' => 1, 'notes=' => nil, 'notes' => nil, :save => true))
+          do_put_bulk_update
+        end
       end
     end
   end

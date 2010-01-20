@@ -12,15 +12,14 @@ class PppamsReportsController < ApplicationController
     render :action => 'filter'
   end
   
-  def filter
-    @last_post_to_xls = params[:last_post_to_xls]
-    if @last_post_to_xls == "1" or params.has_key?('commit')
-      use_params = params
-      if @last_post_to_xls == "1"
-        use_params = session[:last_post]
-      else
-        session[:last_post] = params
-      end
+  def filter(use_params = nil)
+    if params.has_key?('commit')
+
+      #If we're submitting an existing set of requests
+      #(i.e. from the reports_layout's "EXCEL" button)
+      #Then use the parameters from the last post.
+      use_params = params unless use_params
+      session[:last_post] = use_params
 
       @filter = use_params[:pppams_report_filter]
 
@@ -105,6 +104,8 @@ class PppamsReportsController < ApplicationController
     render :partial => 'form'
   end
 
-
+  def last_post_to_xls
+    filter session[:last_post]
+  end
   
 end

@@ -21,8 +21,8 @@
 <% id_store = 0 %>  
 <% for pppams_indicator in currents %>
   <% current_review = pppams_indicator.current_review(time) %>
-  <% if id_store != pppams_indicator.pppams_category_id %>
-  <tr><td colspan= <%= @user.is_admin? ? 7 : 5 %>><p class='cat_heading'><%=h pppams_indicator.pppams_category.name %></p></td></tr>
+  <% if id_store != pppams_indicator.pppams_category_base_ref_id %>
+  <tr><td colspan= <%= @user.is_admin? ? 7 : 5 %>><p class='cat_heading'><%=h pppams_indicator.pppams_category_base_ref.name %></p></td></tr>
   <% end %>
   <tr <% if (current_review.nil? or current_review.status != 'Locked') and time.beginning_of_month < Time.now.beginning_of_month %>class='warning_row' <% end %>>
   <% if time >= Time.now.next_month.beginning_of_month %>
@@ -43,7 +43,7 @@
 
   <td><% for this_ref in pppams_indicator.pppams_references %><%=h this_ref.html %><br/><% end %></td>
   </tr>
-  <% id_store = pppams_indicator.pppams_category_id %>
+  <% id_store = pppams_indicator.pppams_category_base_ref_id %>
 <% end %>
 </table>
 

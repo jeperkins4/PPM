@@ -28,7 +28,8 @@
 </head>
 <body>
 	<div class='no_print'>
-	<%= link_to "Back to Reports Dashboard",  "#{request.env["HTTP_REFERER"]}" %><br /><%= link_to(image_tag("/images/excel_large.gif", :border => 0), :action => :filter, :last_post_to_xls => 1 )%><br />
+    <%= link_to "Back to Reports Dashboard",  "#{request.env["HTTP_REFERER"]}" %><br />
+    <%= link_to(image_tag("/images/excel_large.gif", :border => 0), :action => 'last_post_to_xls')%><br />
 	</div>
     <div id="report_container">
       <% if flash[:notice] %>

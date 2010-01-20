@@ -182,9 +182,16 @@ PppamsIndicator.blueprint do
   frequency { 1 }
   facility {Facility.make}
   start_month { (1..12).to_a.rand }
-   good_months {":#{start_month}:"}
+  good_months {":#{start_month}:"}
 end
 PppamsIndicatorBaseRef.blueprint do
   question { Sham.sentence }
   pppams_category_base_ref {PppamsCategoryBaseRef.make}
+end
+PppamsReview.blueprint do
+  score {7}
+  observation_ref { 'some observation'}
+  documentation_ref { 'some documentation'}
+  interview_ref { 'some interview'}
+  evidence      { 'some interview'}
 end

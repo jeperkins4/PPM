@@ -3,7 +3,7 @@ class Array
         def uniq_numerics
           out = []
           self.uniq.each { |x|
-		out << x if x != ""
+		        out << x if x != ""
           }
           out
         end

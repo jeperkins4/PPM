@@ -184,13 +184,13 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
             group[:actual_score] += category[:actual_score]
             full_summary[:max_score] += category[:max_score]
             full_summary[:actual_score] += category[:actual_score]
-          else
+          elsif category[:percent] != 'na'
             group[:max_score] = 0
             group[:actual_score] = 0
           end
         end
-
-        if group[:max_score] == 0 || group[:max_score].nil?
+        #debugger if group[:name] =~ /inmate programs/i
+        if group[:max_score] == 0
           group[:percent] = 'na'
         else
           group[:percent] = ((group[:actual_score].to_i.to_f / group[:max_score])*100).round(1)

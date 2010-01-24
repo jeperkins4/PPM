@@ -152,5 +152,13 @@ describe PppamsCategoryBaseRef do
                       :percent => 55.0
                      }
     end
+#    it "should ignore indicator groups that do not have reviews" do
+#      @indicator_4 = PppamsIndicator.make(:facility => @indicator_1.facility,
+#                                          :good_months => ':3:4:',
+#                                          :active_on => Date.new(2009,1,1),
+#                                          :inactive_on => nil,
+#                                          :pppams_indicator_base_ref => @indicator_base_ref_1
+#
+#    end
   end
 end

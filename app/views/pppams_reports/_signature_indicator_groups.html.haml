@@ -1,0 +1,21 @@
+%table
+  - groups.each do |group_id, category_group|
+    -if group_id.instance_of?(Fixnum)
+      %tr
+        %th= category_group[:name]
+        %th Max Score
+        %th Rating
+        %th %
+      -category_group[:categories].each do |category|
+        %tr{:class => category[:missing_reviews] ? 'warning_row' : ''}
+          %td=category[:name]
+          %td=category[:max_score]
+          %td=category[:actual_score]
+          %td=category[:percent]
+      %tr.darker
+        %td Total:
+        %td=category_group[:max_score]
+        %td=category_group[:actual_score]
+        %td=category_group[:percent]
+      %tr
+        %td.blank(colspan='4')

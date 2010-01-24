@@ -1,5 +1,12 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+def retrieve_pristine_record
+  PppamsIndicator.active_in_months(@pppams_indicator.facility_id, 
+                                            Date.new(2009,3,1), 
+                                            Date.new(2009,4,1)
+                                         )
+end
+
 describe PppamsIndicator do
   before(:all) do
     @pppams_indicator = PppamsIndicator.make(:start_month => Date.today.month,
@@ -128,6 +135,72 @@ describe PppamsIndicator do
       @pppams_indicator.good_months.should == nil
       @pppams_indicator.update_good_months(3,6)
       @pppams_indicator.good_months.should == ":3:5:7:9:11:1:"
+    end
+  end
+
+  describe "active_in_months should retrieve" do
+    before(:all) do
+      PppamsIndicator.destroy_all
+      @pppams_indicator = PppamsIndicator.make(:start_month => 1,
+                                               :active_on => Date.new(2009,1,1),
+                                               :inactive_on => nil,
+                                               :good_months => ":3:")
+    end
+
+    it "indicators that are active before or on the start date" do
+      PppamsIndicator.make(:facility => @pppams_indicator.facility,
+                           :start_month => 1,
+                           :active_on => Date.new(2009,3,2),
+                           :inactive_on => nil,
+                           :good_months => ":3:")
+      results = retrieve_pristine_record
+      results.should have(1).record
+    end
+
+    it "indicators whose inactive date is after or on the end date or whose inactive date is nil" do
+      PppamsIndicator.make(:facility => @pppams_indicator.facility,
+                           :start_month => 1,
+                           :active_on => Date.new(2009,1,1),
+                           :inactive_on => Date.new(2009,3,3),
+                           :good_months => ":3:")
+      results = retrieve_pristine_record
+      results.should have(1).record
+    end
+
+    it "indicators whose good months are between the start and end dates" do
+      PppamsIndicator.make(:facility => @pppams_indicator.facility,
+                           :start_month => 1,
+                           :active_on => Date.new(2009,1,1),
+                           :inactive_on => nil,
+                           :good_months => ":6:")
+      results = retrieve_pristine_record
+      results.should have(1).record
+    end
+
+    it "indicators whose is the same as the given facility" do
+      PppamsIndicator.make(:facility => Facility.make,
+                           :start_month => 1,
+                           :active_on => Date.new(2009,1,1),
+                           :inactive_on => nil,
+                           :good_months => ":3:")
+      results = retrieve_pristine_record
+      results.should have(1).record
+    end
+
+    it "an indicator's id" do
+      retrieve_pristine_record[0].id.should == @pppams_indicator.id
+    end
+
+    it "an indicator's base reference id" do
+      retrieve_pristine_record[0].pppams_indicator_base_ref_id.should == @pppams_indicator.pppams_indicator_base_ref_id
+    end
+
+    it "an indicator's category id" do
+      retrieve_pristine_record[0].pppams_category_base_ref_id.should == @pppams_indicator.pppams_category_base_ref.id
+    end
+
+    it "the good_months attribute" do
+      retrieve_pristine_record[0].good_months.should == @pppams_indicator.good_months
     end
   end
 

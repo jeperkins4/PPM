@@ -1,0 +1,55 @@
+%h2{ :style => "text-align:center;" }
+  Program Performance By Standard
+%table.blank
+  %tr.blank
+    %th Standard
+    %th Program Score
+    %th Max Score
+    %th Rating
+    %th Failed
+    %th Minimal
+    %th Acceptable
+    %th Commendable
+    %th Exceptional
+    %th Overall Program Performance
+  %tr.blank
+    %td{ :colspan => "4" }
+    %th 0-59%
+    %th 60-69%
+    %th 70-79%
+    %th 80-89%
+    %th 90-100%
+    %th{:valign=>'middle', :style=>'text-align:center;', :rowspan => (groups.size-2)}
+      = groups[:percent]
+      \%
+  - groups.each do |group_id, group|
+    -if group_id.instance_of?(Fixnum)
+      %tr.blank
+        %td= h group[:name]
+        %td= group[:actual_score]
+        %td= group[:max_score]
+        %td= group[:percent]
+        %td
+        %td
+        %td
+        %td
+        %td
+  %tr.blank
+    %td Overall Score
+    %td= groups[:actual_score]
+    %td= groups[:max_score]
+    %td= groups[:percent]
+    %td
+    %td
+    %td
+    %td
+    %td
+  %tr.blank
+    %td.blank{ :colspan => "11" }
+  %tr.blank
+    %td.blank{ :colspan => "11" }
+  %tr.blank
+    %td{ :colspan => "11" }
+      Scoring Legend:
+      Performance Indicators: 
+      0=Non-Performance, 4-6=Partial, 7-8=Satisfactory, 9-10=Superior

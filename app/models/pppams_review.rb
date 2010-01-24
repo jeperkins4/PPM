@@ -104,5 +104,18 @@ class PppamsReview < ActiveRecord::Base
         self.status
       end
     end
-    
+
+  def self.with_indicators_and_date_range( indicator_ids, start_date, end_date)
+    find(:all,
+         :select => 'pppams_indicator_id,
+                     pppams_indicator_base_refs.pppams_category_base_ref_id,
+                     score',
+         :joins => {:pppams_indicator => :pppams_indicator_base_ref}) do
+      pppams_indicator_id == indicator_ids
+      created_on >= start_date
+      created_on <= end_date
+      status.not == ''
+    end
+  end
+
 end

@@ -35,7 +35,30 @@ class PppamsIndicator < ActiveRecord::Base
                                          "%:#{date.month}:%"],
                         :include => {:pppams_indicator_base_ref => :pppams_category_base_ref},
                         :order => 'pppams_category_base_refs.name')
-  end 
+  end
+
+  def self.active_in_months(facility_id_filter, start_date, end_date)
+    months_in_range = DateTime.all_months_between(start_date, end_date)
+    find(:all, :select => 'pppams_indicators.id,
+                           pppams_indicator_base_ref_id,
+                           pppams_category_base_ref_id,
+                           pppams_indicators.good_months',
+               :joins => "INNER JOIN pppams_indicator_base_refs on pppams_indicators.pppams_indicator_base_ref_id = pppams_indicator_base_refs.id") do
+      any do
+        months_in_range.each do |m|
+          good_months =~ '%:'+m.to_s+':%'
+        end
+      end
+
+      active_on <= start_date
+      any do
+        inactive_on == nil
+        inactive_on >= end_date
+      end
+
+      facility_id == facility_id_filter
+    end
+  end
 
   def current_review(this_month)  
     lowerlimit = this_month.beginning_of_month
@@ -64,7 +87,29 @@ class PppamsIndicator < ActiveRecord::Base
                                   upperlimit])
     return [reviews.length,currents.length] 
   end
-  
+
+  def self.with_report_criteria_matching(user_filter)
+
+    indicator_ids = find(:all, :select => [:id]) do
+      unless user_filters[:indicators].empty? && user_filters[:categories].empty?
+        any do
+          pppams_indicator_base_ref.pppams_category_base_ref_id == user_filter[:categories] unless user_filter[:categories].empty?
+          pppams_indicator_base_ref_id == user_filter[:indicators] unless user_filter[:indicators].empty?
+        end
+      end
+
+      facility_id == user_filter[:facilities] unless user_filter[:facilities].empty?
+
+      active_on <= user_filter[:start_date]
+      any do
+        inactive_on == nil
+        inactive_on >= user_filte[:end_date]
+      end
+    end
+
+  end
+
+ 
   def set_good_months
     good_months_array = [self.start_month]
     review_interval = 12/self.frequency
@@ -82,5 +127,7 @@ class PppamsIndicator < ActiveRecord::Base
     self.frequency = frequency.to_i
     set_good_months
   end
+
+
 end
  

@@ -8,7 +8,7 @@ class PppamsIssue < ActiveRecord::Base
 
     before_save :set_pppams_issue_status
 
-  
+
   def set_pppams_issue_status
     if self.received_date.nil?
       self.pppams_issue_status =  0
@@ -20,7 +20,7 @@ class PppamsIssue < ActiveRecord::Base
       self.pppams_issue_status =  3
     end
   end
-  
+
   def self.categories
     ['Complaint', 'Inmate Complaint','Contract File Note','Vendor/Lobbyist Correspondence','Telephone Inquiry','DMS Inquiry','From DMS Communication','Dept. Of Corrections Note','PPPAMS','Medical','Strategic Goals','Annual Report Information','IWTF','MMRF','General Note','Other'].sort
   end

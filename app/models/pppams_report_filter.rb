@@ -6,47 +6,24 @@ class PppamsReportFilter < ActiveRecord::Base
   serialize :indicator_filter
 
 
-  def self.good_indicator_ids(base_filter)
-	  filtered = {}
-	  all = {:facilities => Facility.all(:select => [:id]).collect(&:id),
-           :categories => PppamsCategoryBaseRef.all(:select => [:id]).collect(&:id),
-           :indicators => PppamsIndicatorBaseRef.all(:select => [:id]).collect(&:id)
-          }
-	  cc = 0
-	  group_level = 0
+  def self.good_indicator_ids(user_filter)
 
-    #If a filter type (category, indicator or facility) does not
-    #have any ids, include all ids of that filter type,
-    #if it does have some ids, then increment the result group level.
-	  base_filter.each do |filter_type, filter_ids| 
+    PppamsIndicator.find(:all) do
+      any do
+        pppams_indicator_base_ref.pppams_category_base_ref_id == user_filter[:categories] unless user_filter[:categories].empty?
+        pppams_indicator_base_ref_id == user_filter[:indicators] unless user_filter[:indicators].empty?
+        facility_id == user_filter[:facilities] unless user_filter[:facilities].empty?
+      end
 
-      #get uniq and valid number ids
-      filter_ids= filter_ids.uniq_numerics
-
-	    if filter_ids.size == 0 
-		    base_filter[filter_type] = all[filter_type] 
-      else 
-		    result_group_levels = cc + 1 
-	    end
-      filtered[filter_type] = base_filter[filter_type]
-      cc = cc + 1
+      active_on <= user_filter[:start_date]
+      any do
+        inactive_on == nil
+        inactive_on >= user_filte[:end_date]
+      end
     end
 
-    #
-    if filtered[:categories] == all[:categories] && filtered[:indicators] == all[:indicators]
-      ind_string = filtered[:indicators].collect(&:to_i).flatten.uniq.join(",")
 
-    elsif filtered[:categories] == all[:categories] && filtered[:indicators] != all[:indicators]
-      ind_string = filtered[:indicators].collect{|i| i.to_i}.flatten.uniq.join(",")
 
-    elsif filtered[:categories] != all[:categories] && filtered[:indicators] == all[:indicators]
-      ind_string = PppamsCategoryBaseRef.find(filtered[:categories]).collect{|c| c.pppams_indicator_base_ref_ids}.flatten.uniq.join(",")
-
-    else
-      from_cats = PppamsCategoryBaseRef.find(filtered[:categories]).collect{|c| c.pppams_indicator_base_ref_ids}.flatten!
-      all_inds = from_cats << filtered[:indicators].collect{|i| i.to_i}
-      ind_string = all_inds.flatten.uniq.join(",")
-    end
     fac_string = new_filter[0].collect{|i| i.to_i}.join(",")
     ouput = [PppamsIndicator.find(:all, 
                                   :joins => "inner join pppams_categories on pppams_categories.id = pppams_indicators.pppams_category_id",

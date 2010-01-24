@@ -45,12 +45,12 @@ class PppamsReportsController < ApplicationController
 
     @filter = @use_params[:pppams_report_filter]
 
-    #If user requested a signature report, prepare it then
-    #exit if it was an invalid report
-    if @filter[:report_type] == 'signature.rhtml'
-      return false unless create_signature_report
-    end
 
+    %w{signature summary_average summary_percent}.each do |report_type|
+      if @filter[:report_type] == report_type
+        return false unless send("create_#{report_type}_report")
+      end
+    end
     #default to 'full' report type if none was selected.
     report_type = @filter[:report_type].blank? ? "full" : @filter[:report_type].split('.')[0]
 
@@ -106,7 +106,7 @@ class PppamsReportsController < ApplicationController
   def create_signature_report
     #Make sure we only have one facility.
     @filter[:facility_filter].reject! {|a| a.blank?}
-    if @filter[:facility_filter] == [""] || @filter[:facility_filter].try(:size) > 1
+    if @filter[:facility_filter].empty? || @filter[:facility_filter].try(:size) > 1
        flash[:warning] = 'This report can only be run with a single facility selected.'
        @facilities =  Facility.find(:all) 
        @Cats = PppamsCategoryBaseRef.find(:all, :order => :name)

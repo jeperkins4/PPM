@@ -40,7 +40,7 @@ describe PppamsReportsController do
   describe "process_a_report" do
     describe "of type 'signature'" do
       it "when more or less than one facility is selected, should render flash warning " do
-        process_report({:report_type => 'signature.rhtml', :facility_filter => ['']})
+        process_report({:report_type => 'signature', :facility_filter => ['']})
         flash[:warning].should_not be_blank
       end
       it "should blank out the score_filter and other stuff"

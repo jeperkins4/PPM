@@ -1,11 +1,11 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-def retrieve_pristine_record
-  PppamsReview.with_indicators_and_date_range([@pppams_indicator.id],
-                                              Date.new(2009,1,1),
-                                              Date.new(2009,1,1))
-
-end
 describe "PppamsReview" do
+  def retrieve_pristine_record
+    PppamsReview.with_indicators_and_date_range([@pppams_indicator.id],
+                                                Date.new(2009,1,1),
+                                                Date.new(2009,1,1))
+
+  end
   before(:all) do
     PppamsReview.destroy_all
     @pppams_indicator = PppamsIndicator.make

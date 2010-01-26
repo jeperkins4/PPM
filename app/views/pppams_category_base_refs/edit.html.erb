@@ -8,11 +8,6 @@
         <%= f.text_field :name %>
       </p>
       <p>
-        Date Inactive
-        <br />
-        <%= f.date_select :inactive_on, {:include_blank => true}%>
-      </p>
-      <p>
         <%= f.label :pppams_category_group_id %><br />
         <%= select :pppams_category_base_ref, :pppams_category_group_id, @pppams_category_groups, {:include_blank => true } %>
       </p>

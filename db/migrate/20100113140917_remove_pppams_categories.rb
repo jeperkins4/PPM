@@ -10,6 +10,8 @@ class RemovePppamsCategories < ActiveRecord::Migration
     drop_table :pppams_categories
 
     remove_column :pppams_indicators, :pppams_category_id
+    remove_column :pppams_category_base_refs, :inactive_on
+    remove_column :pppams_indicator_base_refs, :inactive_on
     remove_column :pppams_indicators, :question
     add_column    :pppams_indicators, :active_on, :date
     change_column_default :pppams_indicators, :start_month, 1

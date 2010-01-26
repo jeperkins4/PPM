@@ -33,8 +33,8 @@ describe PppamsReportsController do
       flash[:warning].should_not be_blank
     end
     it "should accept parameters to be used in the report through the 'use_params' argument" do
-      controller.send(:filter, 'hello world')
-      controller.instance_variable_get(:@use_params).should == 'hello world'
+      controller.send(:filter, {:a => 'hello world'})
+      controller.instance_variable_get(:@use_params)[:a].should == 'hello world'
     end
   end
   describe "process_a_report" do

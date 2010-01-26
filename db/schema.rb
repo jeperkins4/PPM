@@ -294,14 +294,15 @@ ActiveRecord::Schema.define(:version => 20100113140917) do
   add_index "pppams_indicator_base_refs", ["question"], :name => "question"
 
   create_table "pppams_indicators", :force => true do |t|
-    t.integer  "frequency"
-    t.integer  "start_month"
+    t.integer  "frequency",                    :default => 1
+    t.integer  "start_month",                  :default => 1
     t.datetime "created_on"
     t.datetime "updated_on"
-    t.string   "good_months"
+    t.string   "good_months",                  :default => ":1:"
     t.integer  "pppams_indicator_base_ref_id"
     t.date     "inactive_on"
     t.integer  "facility_id"
+    t.date     "active_on"
   end
 
   add_index "pppams_indicators", ["good_months"], :name => "category_good_months"

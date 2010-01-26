@@ -24,7 +24,7 @@
   <tbody>
     <% @facilities.each do |facility_id, facility| %>
         <tr>
-          <td><%= link_to facility[:name], edit_pppams_indicator_path(facility[:indicator_id])%></td>
+          <td><%= link_to facility[:name], pppams_indicator_path(facility[:indicator_id])%></td>
           <td><%= facility[:active] ? 'Active' : 'Inactive' %></td>
           <td><%= facility[:active_on] %></td>
           <td><%= facility[:inactive_on] %></td>

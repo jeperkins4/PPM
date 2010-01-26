@@ -8,23 +8,24 @@ class Facility < ActiveRecord::Base
   has_many :employees
   has_many :accountability_logs
   has_many :accountability_log_details
-  has_many :pppams_categories
   has_many :pppams_indicators
+  has_many :pppams_indicator_base_refs, :through => :pppams_indicators
   has_many :notification_receivers
   has_many :notification_reports
   has_many :non_comp_issues
   has_many :pppams_issues
 
   named_scope :with_indicator_base, lambda { |base_ref_id| 
-    { :joins => "LEFT OUTER JOIN pppams_categories ON facilities.id = pppams_categories.facility_id
-                 LEFT OUTER JOIN pppams_indicators ON pppams_categories.id = pppams_indicators.pppams_category_id",
+    { :joins => "LEFT OUTER JOIN pppams_indicators ON pppams_indicators.facility_id = facilities.id",
       :conditions => ["pppams_indicators.pppams_indicator_base_ref_id = ?", base_ref_id]
     }
   }
 
   named_scope :with_category_base, lambda { |base_ref_id| 
-    { :joins =>  "LEFT OUTER JOIN pppams_categories ON pppams_categories.id = pppams_categories.pppams_category_base_ref_id",
-      :conditions => ["pppams_category_base_ref_id = ?", base_ref_id]
+    { :select => "DISTINCT(facilities.facility)",
+    :joins =>  "LEFT OUTER JOIN pppams_indicators ON pppams_indicators.facility_id = facilities.id
+                  LEFT OUTER JOIN pppams_indicator_base_refs ON pppams_indicator_base_refs.id = pppams_indicators.pppams_indicator_base_ref_id",
+      :conditions => ["pppams_indicator_base_refs.pppams_category_base_ref_id = ?", base_ref_id]
     }
   }
 

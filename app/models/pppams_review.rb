@@ -109,11 +109,26 @@ class PppamsReview < ActiveRecord::Base
     options[:score_values].reject! {|v| v.blank?} if options[:score_values].instance_of?(Array) && !options[:score_values].blank?
     
     select_all_valid_statuses = true if options[:status_values].blank?
-
-    find(:all,
-         :select => 'pppams_indicator_id,
+    if options[:full_review]
+      select_statement = 'pppams_reviews.id, 
+                     pppams_indicator_id,
                      pppams_indicator_base_refs.pppams_category_base_ref_id,
-                     score',
+                     observation_ref,
+                     documentation_ref,
+                     interview_ref,
+                     evidence,
+                     status,
+                     notes,
+                     real_creation_date,
+                     pppams_reviews.created_on,
+                     score'
+    else
+      select_statement = 'pppams_indicator_id,
+                     pppams_indicator_base_refs.pppams_category_base_ref_id,
+                     score'
+    end
+    find(:all,
+         :select => select_statement,
          :joins => {:pppams_indicator => :pppams_indicator_base_ref}) do
       pppams_indicator_id == indicator_ids
 

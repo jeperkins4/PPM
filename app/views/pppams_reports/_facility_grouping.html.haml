@@ -1,0 +1,9 @@
+%table
+  %tbody
+    %tr
+      %th.facility Facility
+      %th.average-score=sum_type.humanize.titleize
+    -data.each do |facility_id, facility|
+      %tr{:class => (facility[:missing_reviews] ? 'warning_row' : '')}
+        %td=facility[:name]
+        %td=average_or_percent(sum_type, facility[:percent])

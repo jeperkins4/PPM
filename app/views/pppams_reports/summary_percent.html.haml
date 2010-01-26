@@ -1,0 +1,2 @@
+= render :partial => 'summary_criteria', :locals => {:to => @show_to, :from => @show_from, :filter => @filter, :filter_name => @filter_name, :type => 'percent averages'}
+= render :partial => @grouping_type, :locals => {:data => @data, :sum_type => 'percent_average'}

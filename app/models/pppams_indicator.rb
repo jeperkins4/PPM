@@ -67,7 +67,7 @@ class PppamsIndicator < ActiveRecord::Base
       #Even if the options is an array, this will work.
       #We cleaned up and cleared out arrays earlier with remove_blanks_and_empties.
       pppams_indicator_base_ref_id == options[:pppams_indicator_base_ref_ids] unless options[:pppams_indicator_base_ref_ids].blank?
-      facility_id                  == options[:facility_id]                   unless options[:facility_id].blank?
+      facility_id                  == options[:facility_ids]                   unless options[:facility_ids].blank?
       pppams_indicator_base_ref.pppams_category_base_ref_id  == options[:pppams_category_base_ref_ids]  unless options[:pppams_category_base_ref_ids].blank?
     end
   end

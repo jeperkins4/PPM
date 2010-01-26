@@ -49,9 +49,9 @@ module PppamsReportsHelper
     return percent_value unless percent_value.instance_of? Float
 
     if sum_type == 'average_score'
-      (percent_value / 10).round(1)
-    elsif sum_type == 'percent_averages'
-      percent_value.to_s + '%'
+      (percent_value / 10).round(2)
+    elsif sum_type == 'percent_average'
+      percent_value.round(1).to_s + '%'
     end
   end
   def filtered_by?(symbol, filter)

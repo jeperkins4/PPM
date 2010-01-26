@@ -1,0 +1,40 @@
+%span.float-right
+  = "#{@show_from.strftime('%m/%d/%y')} - #{@show_to.strftime('%m/%d/%y')}"
+%h1
+  Full Data
+  = @filter_name.blank? ? '': "- #{@filter_name}"
+- fac_id_store = 0
+- id_store = 0
+%table
+  -@data.each do |facility_id, facility|
+    %tr.blank
+      %td{ :colspan => "10" }
+        %h2
+          = h facility[:name]
+    %tr
+      %th Date
+      %th Indicator
+      %th Score
+      %th Observation Ref
+      %th Documentation Ref
+      %th Interview Ref
+      %th Evidence
+      %th Status
+      %th Notes
+      %th Real Creation Date
+    -facility[:categories].each do |category_id, category|
+      %tr
+        %td(colspan='10')
+          %p.cat_heading=category[:name]
+      -category[:reviews].each do |review_id, review|
+        %tr
+          %td=review[:created_on].strftime('%m/%d/%y')
+          %td=review[:indicator_name]
+          %td=review[:score]
+          %td=review[:observation_ref]
+          %td=review[:documentation_ref]
+          %td=review[:interview_ref]
+          %td=review[:evidence]
+          %td=review[:status].blank? ? 'Submitted' : review[:status]
+          %td=review[:notes]
+          %td=review[:real_creation_date].strftime('%m/%d/%y') unless review[:real_creation_date].nil?

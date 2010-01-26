@@ -175,6 +175,18 @@ describe PppamsIndicator do
       results = PppamsIndicator.active_in_months( Date.new(2009,3,1), Date.new(2009,4,1))
       results.should have(2).record
     end
+    it "indicators for a specific facility if one was given" do
+      PppamsIndicator.make(:start_month => 1,
+                           :active_on => Date.new(2009,1,1),
+                           :inactive_on => nil,
+                           :good_months => ":3:",
+                           :facility => Facility.make)
+      results = PppamsIndicator.active_in_months( Date.new(2009,3,1), 
+                                                  Date.new(2009,4,1), 
+                                                  {:facility_ids => [@pppams_indicator.facility_id]}
+                                                )
+      results.should have(1).record
+    end
 
 
     it "indicators whose good months are between the start and end dates" do

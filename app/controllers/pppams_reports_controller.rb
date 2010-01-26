@@ -12,13 +12,14 @@ class PppamsReportsController < ApplicationController
     render :action => 'filter'
   end
 
-  def filter(use_params = nil)
-    @use_params = use_params
-    if params.has_key?(:report_request)
+  def filter(use_params = nil, excel = false)
+    @excel = excel
+    @use_params = use_params || params
+    if @use_params.has_key?(:report_request)
       return if process_a_report
-    elsif params.has_key?(:pppams_report_filter) && !params[:pppams_report_filter].try(:fetch,:name).blank? 
+    elsif @use_params.has_key?(:pppams_report_filter) && !@use_params[:pppams_report_filter].try(:fetch,:name).blank? 
       save_a_new_filter
-    elsif params.has_key?(:pppams_report_filter) && params[:pppams_report_filter].try(:fetch, :name).blank?
+    elsif @use_params.has_key?(:pppams_report_filter) && @use_params[:pppams_report_filter].try(:fetch, :name).blank?
       flash[:warning] = 'Please specify a name for the filter.'
     end
     @pppams_report_filter = PppamsReportFilter.find(params[:id]) if params[:id]
@@ -26,27 +27,24 @@ class PppamsReportsController < ApplicationController
     @Cats = PppamsCategoryBaseRef.find(:all, :order => :name)
   end
 
-  private
 
   def last_post_to_xls
-    filter session[:last_post]
     response.headers['CONTENT-TYPE'] = 'application/vnd.ms-excel'
-    response.headers['CONTENT-DISPOSITION'] = 'attachment; filename="' + report_type.capitalize + ' Report -' + Time.now.to_s + '.xls"'
-    render :partial => report_type , :type => 'application/vnd.ms-excel', :layout => false
+    report_type = session[:last_post].try(:fetch, :pppams_report_filter).try(:fetch, :report_type) || 'full'
+    response.headers['CONTENT-DISPOSITION'] = 'attachment; filename="' + report_type.humanize.titleize + ' Report -' + Time.now.to_s + '.xls"'
+    filter(session[:last_post], true) and return
   end
+
+  private
 
   def process_a_report
 
-    #If we're submitting an existing set of params
-    #(i.e. from the reports_layout's "EXCEL" button)
-    #Then use the parameters from the last post.
-    @use_params ||= params
     session[:last_post] = @use_params
 
     @filter = @use_params[:pppams_report_filter]
 
-    report_type = @filter[:report_type]
-    if %w{signature summary_average summary_percent}.include?(report_type)
+    report_type = @filter[:report_type] || 'full'
+    if %w{signature summary_average summary_percent full}.include?(report_type)
       return false unless send("create_#{report_type}_report")
     end
 
@@ -96,23 +94,43 @@ class PppamsReportsController < ApplicationController
   end
 
   def create_summary_average_report
-    assign_to_from_dates
-    @filter = @filter.remove_blanks_in_arrays
-    assign_grouping_type
-    assign_facilities
-
-    if @grouping_type == 'indicator_grouping'
-      @data = PppamsCategoryBaseRef.indicator_summary_between(@show_from, @show_to, summary_query_options)
-    elsif @grouping_type == 'category_grouping'
-      @data = PppamsCategoryBaseRef.category_summary_between(@show_from, @show_to, summary_query_options)
+    setup_summary_report
+    @data = PppamsCategoryBaseRef.indicator_summary_between(@show_from, @show_to, summary_query_options)
+    if @excel 
+      render :layout => 'pppams_reports', :action => 'summary_average', :type => 'application/vnd.ms-excel', :layout => false
     else
-      @data = PppamsCategoryBaseRef.facility_summary_between(@show_from, @show_to, summary_query_options)
+      render :layout => 'pppams_reports', :action => 'summary_average'
     end
-    render :layout => 'pppams_reports', :action => 'summary_average'
+  end
+  def create_summary_percent_report
+    setup_summary_report
+    @data = PppamsCategoryBaseRef.indicator_summary_between(@show_from, @show_to, summary_query_options)
+    if @excel 
+      render :layout => 'pppams_reports', :action => 'summary_percent', :type => 'application/vnd.ms-excel', :layout => false
+    else
+      render :layout => 'pppams_reports', :action => 'summary_percent'
+    end
+  end
+  def create_full_report
+    setup_summary_report
+    @data = PppamsCategoryBaseRef.review_summary(@show_from, @show_to, summary_query_options)
+    if @excel 
+      render :layout => 'pppams_reports', :action => 'full', :type => 'application/vnd.ms-excel', :layout => false
+    else
+      render :layout => 'pppams_reports', :action => 'full'
+    end
   end
 
 
   private
+
+  def setup_summary_report
+    assign_to_from_dates
+    @filter = @filter.remove_blanks_in_arrays
+    @filter_name = @filter[:name]
+    assign_grouping_type
+    assign_facilities
+  end
 
   def assign_to_from_dates(start_date_only = false)
     #make sure we have valid dates

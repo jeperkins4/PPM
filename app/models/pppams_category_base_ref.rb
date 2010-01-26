@@ -48,6 +48,52 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
     full_summary(actual_scores, max_scores)
 
   end
+  def self.review_summary(start_date, end_date, options = {})
+    months_in_range = DateTime.all_months_between(start_date, end_date)
+
+    # Note that this safely ignores 'options' that are not relevant to finding an indicator.
+    active_indicators = PppamsIndicator.active_in_months(start_date, end_date, options)
+
+    active_indicator_ids = active_indicators.map(&:id)
+
+    # Note that this safely ignores 'options' that are not relevant to finding a review.
+    reviews_matching_criteria = PppamsReview.with_indicators_and_date_range(active_indicator_ids,
+                                                                            start_date,
+                                                                            end_date,
+                                                                            options.merge({:full_review => true}))
+
+
+    reviews_matching_criteria.inject({}) do |full_review, review|
+
+      active_indicator = active_indicators.select {|indicator| indicator.id = review.pppams_indicator_id }[0]
+
+      facility = full_review[active_indicator.facility_id] ||= {:name => active_indicator.facility_name,
+                                                               :categories => {}
+                                                              }
+
+      category = facility[:categories][active_indicator.pppams_category_base_ref_id] ||= {
+                                                               :name => active_indicator.category_name,
+                                                               :reviews => {}
+                                                              }
+      current_review = category[:reviews][review.id] ||= {
+                                                               :indicator_name => active_indicator.indicator_name,
+                                                              }
+      [:observation_ref,
+       :documentation_ref,
+       :interview_ref,
+       :evidence,
+       :status,
+       :notes,
+       :real_creation_date,
+       :created_on,
+       :score
+      ].each {|attr| current_review[attr] = review.send(attr) }
+
+      full_review
+    end
+
+  end
+
   #from max_scores and actual_scores, get a hash of the form:
   # {category_group_id => {:name => group_name,
   #                        :max_score => sum_of_max_scores,
@@ -339,6 +385,7 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
       facility[:actual_reviews] ||= 0
       facility[:actual_reviews] += reviews unless reviews.to_i <= 0
+      facility[:missing_reviews] = true if category[:missing_reviews]
 
       if facility[:actual_reviews] > 0
         facility[:percent] = percent(facility[:actual_score], facility[:actual_reviews]*10)
@@ -353,8 +400,9 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
       if actual_scores[indicator_id]
         category_indicator.merge!(actual_scores[indicator_id])
         category_indicator[:percent] = percent(category_indicator[:actual_score], category_indicator[:actual_reviews]*10) unless category_indicator[:actual_reviews] == 0
+        category_indicator[:missing_reviews] = (category_indicator[:actual_reviews] < category_indicator[:max_reviews])
       else
-        category_indicator.merge!({:actual_score => 0, :actual_reviews => 0, :percent => 'N/A: No Reviews'})
+        category_indicator.merge!({:actual_score => 0, :actual_reviews => 0, :percent => 'N/A: No Reviews', :missing_reviews => true})
       end
       score = category_indicator[:actual_score]
       reviews = category_indicator[:actual_reviews]
@@ -364,6 +412,7 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
       category[:actual_reviews] ||= 0
       category[:actual_reviews] += reviews unless reviews.to_i <= 0
+      category[:missing_reviews] = (category[:actual_reviews].to_i < category[:max_reviews].to_i)
 
       if category[:actual_reviews].to_i <= 0
         category[:percent] = 'N/A: No Reviews'

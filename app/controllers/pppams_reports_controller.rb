@@ -35,6 +35,13 @@ class PppamsReportsController < ApplicationController
     filter(session[:last_post], true) and return
   end
 
+  def _form
+    @pppams_report_filter = PppamsReportFilter.find(params[:id]) if params[:id]
+    @facilities =  Facility.find(:all) 
+    @Cats = PppamsCategoryBaseRef.find(:all, :order => :name)
+    render :partial => 'form'
+  end
+
   private
 
   def process_a_report
@@ -120,9 +127,6 @@ class PppamsReportsController < ApplicationController
       render :layout => 'pppams_reports', :action => 'full'
     end
   end
-
-
-  private
 
   def setup_summary_report
     assign_to_from_dates

@@ -38,21 +38,110 @@ describe PppamsReportsController do
     end
   end
   describe "process_a_report" do
-    describe "of type 'signature'" do
-      it "when more or less than one facility is selected, should render flash warning " do
+    it "should create signature reports" do
+      controller.should_receive(:create_signature_report).and_return(false)
+      process_report({:report_type => 'signature'})
+    end
+    it "should create summary_average reports" do
+      controller.should_receive(:create_summary_average_report).and_return(false)
+      process_report({:report_type => 'summary_average'})
+    end
+    it "should create summary_percent reports" do
+      controller.should_receive(:create_summary_percent_report).and_return(false)
+      process_report({:report_type => 'summary_percent'})
+    end
+  end
+  describe "signature reports" do
+    describe "when more or less than one facility is selected" do
+      it "should render flash warning " do
         process_report({:report_type => 'signature', :facility_filter => ['']})
         flash[:warning].should_not be_blank
       end
-      it "should blank out the score_filter and other stuff"
-    end
-    describe "of type 'full'" do
-      it '' do
-        
+      it "should assign facilities" do
+        Facility.should_receive(:find).with(:all).and_return(['a'])
+        process_report({:report_type => 'signature', :facility_filter => ['']})
+        assigns[:facilities].should == ['a']
+      end
+      it "should assign cats" do
+        PppamsCategoryBaseRef.should_receive(:find).with(:all, :order => :name).and_return(['b'])
+        process_report({:report_type => 'signature', :facility_filter => ['']})
+        assigns[:Cats].should == ['b']
       end
     end
-    describe " of type 'summary (average)'"
-    describe " of type 'summary (percentage'"
-    it "should use params from the old post, when provided" #do
+    describe "when one facility is provided" do
+      before(:each) do
+        @valid_params = {
+                         :report_type => 'signature',
+                         :facility_filter => ['16'],
+                         :start_date => 'January 1, 2009',
+                         :end_date => 'January 1, 2009'
+                        }
+        Facility.stub!(:find => stub(:id => 16))
+        PppamsCategoryBaseRef.stub!(:signature_summary_for_facility => {23 => 1, 24 => 2, :hello => 'other'})
+      end
+      it 'should find and assign the facility' do
+        process_report(@valid_params)
+        assigns[:facility].id.should == 16
+      end
+      it 'should find and assign the from date' do
+        process_report(@valid_params)
+        assigns[:show_from].to_date.should == Date.new(2009,1,1)
+      end
+      it 'should find and assign the to date as the end of the month of the from date' do
+        process_report(@valid_params)
+        assigns[:show_to].to_date.should == Date.new(2009,1,31)
+      end
+      it 'should assign left and right groups, ignoring non-"id" hash keys' do
+        process_report(@valid_params)
+        assigns[:left_side_groups].should have(1).record
+        assigns[:right_side_groups].should have(1).record
+      end
+      it 'should render the signature action' do
+        process_report(@valid_params)
+        response.should render_template('signature')
+      end
+    end
+  end
+  describe "'summary (average)'" do
+    before(:each) do
+      @valid_params = {:report_type => 'summary_average',
+                       :start_date  => 'January 1, 2009',
+                       :end_date    => 'March 30, 2009'}
+    end
+    describe "when the user selects no facilities" do
+      it "should calculate the average score for all facilities"
+      it "should return one row with the average of all facilities"
+      it "should not return one summary for each facility"
+    end
+    describe "when the user selects one facility" do
+      before(:each) do
+        @valid_params.merge!({:facility_filter => ['5']})
+      end
+      describe "with no categories or indicators" do
+        it "should show one line containing the facility's average score for that time period"
+      end
+      describe "with multiple categories" do
+        it "should calculate the average for each category"
+        it "should show the category's name"
+        it "should not show the category's indicator names"
+        it "should calculate the average percent for all categories"
+      end
+      describe "with one or multiple indicators" do
+        it "should show the category name for that indicator" do
+          process_report(@valid_params.merge({:indicator_filter => ['5'] }))
+        end
+        it "should show the indicator's name"
+        it "should calculate the average for that one indicator"
+        it "should calculate the percent for that category name"
+        describe "and one or multiple categories" do
+          it "should show all indicators for the selected categories"
+        end
+      end
+    end
+  end
+  describe "'summary (percentage'"
+  describe "full reports" 
+  it "should use params from the old post, when provided" do
       #process_report
       #assigns[:use_params].should == {'report_request' => 'Value', 'pppams_report_filter' => ''}
     #end

@@ -9,6 +9,45 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
     name
   end
 
+  #from start_date, end_date and filter options,
+  #creates a summary hash of the form:
+  #  {1 =>  #facility_id
+  #    {:name => 'facility_name',
+  #     :percent => float_percent
+  #     :categories =>
+  #     {1 => 
+  #      {:name => 'category_name',
+  #       :indicators => 
+  #       {1 =>
+  #        {:name => 'indicator_name',
+  #         :percent => float_percent
+  #        }
+  #       }
+  #      }
+  #     }
+  #    }
+  #   }
+  def self.indicator_summary_between(start_date, end_date, options = {})
+    months_in_range = DateTime.all_months_between(start_date, end_date)
+
+    # Note that this safely ignores 'options' that are not relevant to finding an indicator.
+    active_indicators_in_range = PppamsIndicator.active_in_months(start_date, end_date, options)
+
+    active_indicator_ids = active_indicators_in_range.map(&:id)
+
+    # Note that this safely ignores 'options' that are not relevant to finding a review.
+    reviews_matching_criteria = PppamsReview.with_indicators_and_date_range(active_indicator_ids,
+                                                                            start_date,
+                                                                            end_date,
+                                                                            options)
+
+    max_scores    = max_review_sums(active_indicators_in_range, months_in_range)
+
+    actual_scores = actual_review_sums(reviews_matching_criteria)
+
+    full_summary(actual_scores, max_scores)
+
+  end
   #from max_scores and actual_scores, get a hash of the form:
   # {category_group_id => {:name => group_name,
   #                        :max_score => sum_of_max_scores,
@@ -27,11 +66,11 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
   #                       {:name => next_group_name
   #                        ...
   #  :percent => 63.33
-  def self.summary_for_facility_between(facility_id, start_date, end_date)
+  def self.signature_summary_for_facility(facility_id, start_date, end_date)
 
     months_in_range = DateTime.all_months_between(start_date, end_date)
 
-    active_indicators_in_range = PppamsIndicator.active_in_months(facility_id, start_date, end_date)
+    active_indicators_in_range = PppamsIndicator.active_in_months(start_date, end_date, {:facility_ids => [facility_id]})
 
     active_indicator_ids = active_indicators_in_range.map(&:id)
 
@@ -199,5 +238,143 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
     end
     full_summary[:max_score] == 0 ? full_summary[:percent] = 0 : full_summary[:percent] = ((full_summary[:actual_score].to_i.to_f / full_summary[:max_score])*100).round(1)
     full_summary
+  end
+
+  #from indicators and months in a range,
+  #get a hash of the form
+  # {facility_id => {:name => facility_name,
+  #                  :max_score => 123,
+  #                  :max_reviews => 123,
+  #                  :categories =>   {category_id => {:max_score => 123,
+  #                                                    :max_reviews => 123,
+  #                                                    :name => category_name
+  #                                                    :indicators => {indicator_id => {:name => indicator_name,
+  #                                                                                      :max_score => 123,
+  #                                                                                      :max_reviews => 123,
+  #                                                                                      :no_reviews => true/false
+  #                                                                                     }
+  #                                                                    }
+  #                                                   }
+  #                                   }
+  #                 }, 
+  #  facility_id => ...
+  # }
+  def self.max_review_sums(active_indicators, months_in_range)
+    active_indicators.inject({}) do |max_scores, active_indicator|
+
+      facility = max_scores[active_indicator.facility_id] ||= {:name => active_indicator.facility_name,
+                                                               :max_score => 0,
+                                                               :max_reviews => 0,
+                                                               :categories => {}
+                                                              }
+
+      category = facility[:categories][active_indicator.pppams_category_base_ref_id] ||= {
+                                                               :name => active_indicator.category_name,
+                                                               :max_score => 0,
+                                                               :max_reviews => 0,
+                                                               :indicators => {}
+                                                              }
+      indicator = category[:indicators][active_indicator.id] ||= {
+                                                               :name => active_indicator.indicator_name,
+                                                               :max_score => 0,
+                                                               :max_reviews => 0,
+                                                               :no_reviews => false
+                                                              }
+
+      months_in_indicator = active_indicator.good_months.split(':').uniq.reject {|month| month.blank?}
+      months_in_indicator.map!(&:to_i)
+
+      months_in_indicator_intersecting_months_in_range = (months_in_indicator & months_in_range).size
+
+      if months_in_indicator_intersecting_months_in_range > 0 
+
+        additional_score = (months_in_indicator_intersecting_months_in_range*10)
+        additional_reviews = months_in_indicator_intersecting_months_in_range
+        [facility, category, indicator].each do |item|
+          item[:max_score] = item[:max_score] + additional_score
+          item[:max_reviews] = item[:max_reviews] + additional_reviews
+        end
+      else
+        indicator[:no_reviews] = true
+      end
+      max_scores
+    end
+  end
+
+  # From a set of facility reviews, sum up the scores and
+  # organize by indicator_id like so:
+  # {indicator_id1 => {:actual_score => 123,
+  #                    :actual_reviews => 123},
+  #  indicator_id2 => {:actual_score => 123,
+  #                    :actual_reviews => 123}
+  # }
+  def self.actual_review_sums(facility_reviews)
+        facility_reviews.inject({}) do |actual_scores, review|
+
+          actual_scores[review.pppams_indicator_id] ||= {:actual_score => 0,
+                                                         :actual_reviews => 0}
+          actual_scores[review.pppams_indicator_id][:actual_score] += review.score
+          actual_scores[review.pppams_indicator_id][:actual_reviews] += 1
+
+          actual_scores
+        end
+  end
+
+  def self.full_summary(actual_scores, max_scores)
+    max_scores.each do |facility_id, facility|
+      if facility_id.instance_of?(Fixnum)
+        max_scores[facility_id] = category_summaries(facility, actual_scores)
+      end
+    end
+  end
+
+  def self.category_summaries(facility, actual_scores)
+    facility[:categories].each do |category_id, category|
+      category = indicator_summaries(category, actual_scores)
+      score = category[:actual_score]
+      reviews = category[:actual_reviews]
+
+      facility[:actual_score] ||= 0
+      facility[:actual_score] += score unless score.to_i <= 0
+
+      facility[:actual_reviews] ||= 0
+      facility[:actual_reviews] += reviews unless reviews.to_i <= 0
+
+      if facility[:actual_reviews] > 0
+        facility[:percent] = percent(facility[:actual_score], facility[:actual_reviews]*10)
+      end
+    end
+    facility
+  end
+
+  def self.indicator_summaries(category, actual_scores)
+    category[:indicators].each do |indicator_id, indicator|
+      category_indicator = category[:indicators][indicator_id]
+      if actual_scores[indicator_id]
+        category_indicator.merge!(actual_scores[indicator_id])
+        category_indicator[:percent] = percent(category_indicator[:actual_score], category_indicator[:actual_reviews]*10) unless category_indicator[:actual_reviews] == 0
+      else
+        category_indicator.merge!({:actual_score => 0, :actual_reviews => 0, :percent => 'N/A: No Reviews'})
+      end
+      score = category_indicator[:actual_score]
+      reviews = category_indicator[:actual_reviews]
+
+      category[:actual_score] ||= 0
+      category[:actual_score] += score unless score.to_i <= 0
+
+      category[:actual_reviews] ||= 0
+      category[:actual_reviews] += reviews unless reviews.to_i <= 0
+
+      if category[:actual_reviews].to_i <= 0
+        category[:percent] = 'N/A: No Reviews'
+      else
+        category[:percent] = percent(category[:actual_score], category[:actual_reviews]*10)
+      end
+    end
+    category
+  end
+
+  def self.percent(divide_me, by_bigger)
+    ((divide_me.to_f / by_bigger)*100).round(2)
   end
 end

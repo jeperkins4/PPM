@@ -1,9 +1,10 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 describe "PppamsReview" do
-  def retrieve_pristine_record
+  def retrieve_pristine_record(options = {})
     PppamsReview.with_indicators_and_date_range([@pppams_indicator.id],
                                                 Date.new(2009,1,1),
-                                                Date.new(2009,1,1))
+                                                Date.new(2009,1,1),
+                                                options)
 
   end
   before(:all) do
@@ -11,7 +12,8 @@ describe "PppamsReview" do
     @pppams_indicator = PppamsIndicator.make
     @pppams_review = PppamsReview.make(:created_on => Date.new(2009,1,1),
                                        :status => 'Locked',
-                                       :pppams_indicator => @pppams_indicator)
+                                       :pppams_indicator => @pppams_indicator,
+                                       :score => 8)
   end
   describe "with_indicators_and_date_range should retrieve" do
     it "only those reviews with the provided indicators" do
@@ -32,6 +34,19 @@ describe "PppamsReview" do
 
       retrieve_pristine_record.should have(1).record
     end
+    it "only reviews matching given score" do
+      PppamsReview.make(:created_on => Date.new(2009,1,1),
+                        :pppams_indicator => @pppams_indicator,
+                        :score => 7)
+      retrieve_pristine_record({:score_values => 8}).should have(1).record
+    end
+    it "only reviews matching given status" do
+      PppamsReview.make(:created_on => Date.new(2009,1,1),
+                        :pppams_indicator => @pppams_indicator,
+                        :status => 'Accepted')
+      retrieve_pristine_record({:status_values => 'Locked'}).should have(1).record
+    end
+
 
     it "the review's indicator_id" do
       retrieve_pristine_record[0].pppams_indicator_id.should == @pppams_indicator.id

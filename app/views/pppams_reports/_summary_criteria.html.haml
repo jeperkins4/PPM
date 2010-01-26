@@ -1,0 +1,37 @@
+%span.float-right
+  = "#{from.strftime('%m/%d/%Y')} - #{to.strftime('%m/%d/%Y')}"
+%h1
+  Summary Data
+  = filter_name == '' ? "" : "- #{filter_name}"
+%p
+  ="This report shows #{type} for the following category / indicator ids:"
+  %br
+  = filtered_by?(:category_filter, filter) ? "Category ids: #{filter[:category_filter].uniq_numerics.join(',')}<br/>" : 'All categories<br/>'
+  = filtered_by?(:indicator_filter, filter) ? "Indicator ids: #{filter[:indicator_filter].uniq_numerics.join(',')}<br/>" : 'All indicators<br/>'
+%p
+  For the following facilities:
+  %br
+  - if filtered_by?(:facility_filter, filter)
+    - filter[:facility_filter].uniq_numerics.collect do |x|
+      = h Facility.find(x).facility
+      %br
+  - else
+    All facilities
+    %br
+%p
+  Using the following criteria:
+  %br
+  Score:
+  - if filtered_by?(:score_filter, filter)
+    = filter[:score_filter].uniq_numerics.join(',')
+    %br
+  - else
+    All scores
+    %br
+  Status:
+  - if filtered_by?(:status_filter, filter)
+    = filter[:status_filter].uniq_numerics.join(',')
+    %br
+  - else
+    All statuses
+    %br

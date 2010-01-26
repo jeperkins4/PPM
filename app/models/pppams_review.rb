@@ -105,16 +105,25 @@ class PppamsReview < ActiveRecord::Base
       end
     end
 
-  def self.with_indicators_and_date_range( indicator_ids, start_date, end_date)
+  def self.with_indicators_and_date_range( indicator_ids, start_date, end_date, options = {})
+    options[:score_values].reject! {|v| v.blank?} if options[:score_values].instance_of?(Array) && !options[:score_values].blank?
+    
+    select_all_valid_statuses = true if options[:status_values].blank?
+
     find(:all,
          :select => 'pppams_indicator_id,
                      pppams_indicator_base_refs.pppams_category_base_ref_id,
                      score',
          :joins => {:pppams_indicator => :pppams_indicator_base_ref}) do
       pppams_indicator_id == indicator_ids
+
       created_on >= start_date
       created_on <= end_date
-      status.not == ''
+
+      score == options[:score_values] unless options[:score_values].blank?
+
+      status.not == '' if select_all_valid_statuses
+      status     == options[:status_values] unless select_all_valid_statuses
     end
   end
 

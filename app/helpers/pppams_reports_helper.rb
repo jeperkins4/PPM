@@ -44,4 +44,17 @@ module PppamsReportsHelper
     output
   end
 
+  def average_or_percent(sum_type, percent_value)
+
+    return percent_value unless percent_value.instance_of? Float
+
+    if sum_type == 'average_score'
+      (percent_value / 10).round(1)
+    elsif sum_type == 'percent_averages'
+      percent_value.to_s + '%'
+    end
+  end
+  def filtered_by?(symbol, filter)
+    filter[symbol] && filter[symbol].uniq_numerics.size > 0
+  end
 end

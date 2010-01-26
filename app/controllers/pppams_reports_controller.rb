@@ -45,39 +45,11 @@ class PppamsReportsController < ApplicationController
 
     @filter = @use_params[:pppams_report_filter]
 
-
-    %w{signature summary_average summary_percent}.each do |report_type|
-      if @filter[:report_type] == report_type
-        return false unless send("create_#{report_type}_report")
-      end
+    report_type = @filter[:report_type]
+    if %w{signature summary_average summary_percent}.include?(report_type)
+      return false unless send("create_#{report_type}_report")
     end
-    #default to 'full' report type if none was selected.
-    report_type = @filter[:report_type].blank? ? "full" : @filter[:report_type].split('.')[0]
 
-    #@pppams_indicators = reportable_indicators
-
-    #@good_ids = @pppams_indicators.collect(&:id)
-
-    #status_filter = []
-    #@filter[:status_filter].uniq.each { |x|
-    #  status_filter << x if x != "" and x != "Submitted" #I.E. Locked
-    #  status_filter << "" if x == "Submitted"
-    #}
-    #@to_date = @filter[:end_date] 
-    #@from_date = @filter[:start_date]
-    #months_dif = (@show_to.month + 12 * @show_to.year) - (@show_from.month + 12 * @show_from.year)
-    #start_with  = @show_from.month
-    #@show_span = []
-    #(0..(months_dif)).each do |x|
-    #  @show_span << (start_with%12).to_s
-    #  start_with+=1
-    #end
-    #@show_span.uniq!
-    #@pppams_reviews = PppamsReportFilter.good_reviews(@from_date, @to_date, status_filter, @filter[:score_filter].uniq_numerics, @good_ids)
-    #@pppams_reviews_clean = @pppams_reviews[1]
-    #@pppams_reviews = @pppams_reviews[0]
-    #@filter_name = @filter['name']
-    #@group_level = user_indicator_ids_ar[1]
     true
   end
 
@@ -108,16 +80,14 @@ class PppamsReportsController < ApplicationController
     @filter[:facility_filter].reject! {|a| a.blank?}
     if @filter[:facility_filter].empty? || @filter[:facility_filter].try(:size) > 1
        flash[:warning] = 'This report can only be run with a single facility selected.'
-       @facilities =  Facility.find(:all) 
-       @Cats = PppamsCategoryBaseRef.find(:all, :order => :name)
-       render(:action => 'filter')
        return false
     end
 
     @facility = Facility.find(@filter[:facility_filter][0], :select => 'facility, id')
-    @show_from = Time.parse(@filter[:start_date]).beginning_of_month
-    @show_to   = Time.parse(@filter[:start_date]).end_of_month
-    @pppams_groups = PppamsCategoryBaseRef.summary_for_facility_between(@facility.id,
+    
+    # 'true' below ignores the end date. 
+    assign_to_from_dates(true)
+    @pppams_groups = PppamsCategoryBaseRef.signature_summary_for_facility(@facility.id,
                                                                         @show_from,
                                                                         @show_to)
 
@@ -125,24 +95,62 @@ class PppamsReportsController < ApplicationController
     render :layout => 'pppams_reports', :action => 'signature' and return true
   end
 
-  def reportable_indicators
-    #setup the user-selected indicator filter.
-    user_filter = {:facilities => @filter[:facility_filter], 
-                   :categories => @filter[:category_filter], 
-                   :indicators => @filter[:indicator_filter]
-                  }
-    
+  def create_summary_average_report
+    assign_to_from_dates
+    @filter = @filter.remove_blanks_in_arrays
+    assign_grouping_type
+    assign_facilities
+
+    if @grouping_type == 'indicator_grouping'
+      @data = PppamsCategoryBaseRef.indicator_summary_between(@show_from, @show_to, summary_query_options)
+    elsif @grouping_type == 'category_grouping'
+      @data = PppamsCategoryBaseRef.category_summary_between(@show_from, @show_to, summary_query_options)
+    else
+      @data = PppamsCategoryBaseRef.facility_summary_between(@show_from, @show_to, summary_query_options)
+    end
+    render :layout => 'pppams_reports', :action => 'summary_average'
+  end
+
+
+  private
+
+  def assign_to_from_dates(start_date_only = false)
     #make sure we have valid dates
-    @show_from = user_filter[:start_date] = @filter[:start_date].blank? ?
+    @show_from = @filter[:start_date].blank? ?
       Time.now.beginning_of_month :
       Time.parse(@filter[:start_date])
 
-    @show_to = user_filter[:end_date] = @filter[:end_date].blank? ?
-      Time.now.end_of_month :
-      Time.parse(@filter[:end_date])
-
-    #find all indicators that match user's filter
-    PppamsIndicator.with_report_criteria_matching(user_filter)
+    if start_date_only
+      @show_to = @show_from.end_of_month
+    else
+      @show_to = @filter[:end_date].blank? ?
+        Time.now.end_of_month :
+        Time.parse(@filter[:end_date])
+    end
   end
 
+  def assign_grouping_type
+    if !@filter[:indicator_filter].blank?
+      @grouping_type = 'indicator_grouping'
+    elsif !@filter[:category_filter].blank?
+      @grouping_type = 'category_grouping'
+    else
+      @grouping_type = 'facility_grouping'
+    end
+  end
+
+  def assign_facilities
+    if @filter[:facility_filter].blank?
+      @filter[:facility_filter] = Facility.all(:select => [:id]).map(&:id)
+    end
+  end
+  def summary_query_options
+    {
+     :facility_ids => @filter[:facility_filter],
+     :pppams_category_base_ref_ids => @filter[:category_filter],
+     :pppams_indicator_base_ref_ids => @filter[:indicator_filter],
+     :score_values => @filter[:score_filter],
+     :status_values => @filter[:status_filter]
+    }
+  end
 end

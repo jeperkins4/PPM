@@ -78,7 +78,7 @@ describe PppamsCategoryBaseRef do
       end
     end
   end
-  describe "summary_for_facility_between" do
+  describe "signature_summary_for_facility" do
      before(:all) do
       [PppamsReview, PppamsIndicator, PppamsIndicatorBaseRef, PppamsCategoryBaseRef, PppamsCategoryGroup].each do |f|
         f.send(:destroy_all)
@@ -117,11 +117,11 @@ describe PppamsCategoryBaseRef do
                                         :status => 'Locked')
     end
     it 'should narrow search by facility' do
-      PppamsIndicator.should_receive(:active_in_months).with(1, Date.today, Date.tomorrow).and_return([])
-      PppamsCategoryBaseRef.summary_for_facility_between(1, Date.today, Date.tomorrow)
+      PppamsIndicator.should_receive(:active_in_months).with(Date.today, Date.tomorrow, {:facility_ids => [1]}).and_return([])
+      PppamsCategoryBaseRef.signature_summary_for_facility(1, Date.today, Date.tomorrow)
     end
     it 'should return a list of maximum reviews per category group' do
-      results = PppamsCategoryBaseRef.summary_for_facility_between(@indicator_1.facility_id,
+      results = PppamsCategoryBaseRef.signature_summary_for_facility(@indicator_1.facility_id,
                                                          Date.new(2009,1,1),
                                                          Date.new(2009,1,1))
       results.should == {@category_1.pppams_category_group_id => {
@@ -160,5 +160,148 @@ describe PppamsCategoryBaseRef do
 #                                          :pppams_indicator_base_ref => @indicator_base_ref_1
 #
 #    end
+  end
+  describe "self.max_review_sums" do
+    before(:all) do
+      active_indicators = [
+                           stub( :facility_id => 3,
+                                 :facility_name => 'fac_1',
+                                 :pppams_category_base_ref_id => 4,
+                                 :category_name => 'cat_1',
+                                 :id => 5,
+                                 :indicator_name => 'ind_1',
+                                 :good_months => ':3:4:5:'
+                              ),
+                           stub( :facility_id => 3,
+                                 :facility_name => 'fac_2',
+                                 :pppams_category_base_ref_id => 9,
+                                 :category_name => 'cat_3',
+                                 :id => 10,
+                                 :indicator_name => 'ind_3',
+                                 :good_months => ':4:5:6:'
+                              ),
+                           stub( :facility_id => 6,
+                                 :facility_name => 'fac_2',
+                                 :pppams_category_base_ref_id => 7,
+                                 :category_name => 'cat_2',
+                                 :id => 8,
+                                 :indicator_name => 'ind_2',
+                                 :good_months => ':4:5:6:'
+                              )
+
+                          ]
+
+      @results = PppamsCategoryBaseRef.max_review_sums(active_indicators, [3,4])
+    end
+    describe "for each facility" do
+      it "sums the max scores and reviews" do
+        @results[3][:max_score].should == 30
+        @results[3][:max_reviews].should == 3
+      end
+      it "stores the facility's name" do
+        @results[3][:name].should == 'fac_1'
+        @results[6][:name].should == 'fac_2'
+      end
+      describe "'s category" do
+        it "sums the max score and reviews" do
+          @results[3][:categories][4][:max_score].should == 20
+          @results[3][:categories][4][:max_reviews].should == 2
+          @results[3][:categories][9][:max_score].should == 10
+          @results[3][:categories][9][:max_reviews].should == 1
+          @results[6][:categories][7][:max_score].should == 10
+          @results[6][:categories][7][:max_reviews].should == 1
+        end
+        it ", stores its name" do
+          @results[3][:categories][4][:name].should == 'cat_1'
+          @results[3][:categories][9][:name].should == 'cat_3'
+          @results[6][:categories][7][:name].should == 'cat_2'
+        end
+      end
+      describe "'s indicator" do
+        it 'sums the max score and reviews' do
+          @results[3][:categories][4][:indicators][5][:max_score].should == 20
+          @results[3][:categories][4][:indicators][5][:max_reviews].should == 2
+          @results[3][:categories][9][:indicators][10][:max_score].should == 10
+          @results[3][:categories][9][:indicators][10][:max_reviews].should == 1
+          @results[6][:categories][7][:indicators][8][:max_score].should == 10
+          @results[6][:categories][7][:indicators][8][:max_reviews].should == 1
+        end
+        it ', stores its name' do
+          @results[3][:categories][4][:indicators][5][:name].should == 'ind_1'
+          @results[3][:categories][9][:indicators][10][:name].should == 'ind_3'
+          @results[6][:categories][7][:indicators][8][:name].should == 'ind_2'
+        end
+      end
+    end
+    describe "self.actual_review_sums for each facility" do
+      before :all do
+        facility_reviews = [
+                    stub( :pppams_indicator_id => 1,
+                          :score => 7),
+                    stub( :pppams_indicator_id => 2,
+                          :score => 9),
+                    stub( :pppams_indicator_id => 2,
+                          :score => 3),
+
+                   ]
+        @results = PppamsCategoryBaseRef.actual_review_sums(facility_reviews)
+      end
+      it "sums the actual scores and reviews" do
+        @results[1][:actual_score].should == 7
+        @results[1][:actual_reviews].should == 1
+        @results[2][:actual_score].should == 12
+        @results[2][:actual_reviews].should == 2
+      end
+    end
+    describe "self.full_summary" do
+      before :all do
+        max_scores = ({
+                     1 => {:name => 'fac_1',
+                        :max_score => 40,
+                        :max_reviews => 4,
+                        :categories => { 
+                          4 => { :max_score => 30,
+                               :max_reviews => 3,
+                               :name => 'cat_1',
+                               :indicators => { 5 => { :name => 'ind_1', :max_score => 20, :max_reviews => 2, :no_reviews => false },
+                                                6 => { :name => 'ind_2', :max_score => 10, :max_reviews => 1, :no_reviews => false }
+                                }
+                             },
+                           7 => { :max_score => 10,
+                               :max_reviews => 1,
+                               :name => 'cat_2',
+                               :indicators => { 8 => {:name => 'ind_3', :max_score => 10, :max_reviews => 1, :no_reviews => false }
+                                }
+                             },
+                           9 => { :max_score => 10,
+                               :max_reviews => 1,
+                               :name => 'cat_3',
+                               :indicators => { 4 => {:name => 'ind_3', :max_score => 10, :max_reviews => 1, :no_reviews => false }
+                                }
+                             }
+                         }
+                      }
+                   })
+        actual_scores =  {5 => {:actual_score => 7,
+                                :actual_reviews => 1},
+                          6 => {:actual_score => 7,
+                                :actual_reviews => 1},
+                          8 => {:actual_score => 7,
+                                :actual_reviews => 1}
+                         }
+
+        @results = PppamsCategoryBaseRef.full_summary(actual_scores, max_scores)
+      end
+      it "should record the correct facility totals" do
+        @results[1][:actual_score].should == 21
+        @results[1][:actual_reviews] == 3
+      end
+      it "should record the percent based on actual_score / (actual_reviews*10)" do
+        @results[1][:percent].should == ((21.0/30)*100).round(2)
+      end
+      it 'ignores indicators without any reviews by assigning zeros' do
+        @results[1][:categories][9][:percent].should == 'N/A: No Reviews'
+      end
+    end
   end
 end

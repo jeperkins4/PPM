@@ -37,13 +37,21 @@ class PppamsIndicator < ActiveRecord::Base
                         :order => 'pppams_category_base_refs.name')
   end
 
-  def self.active_in_months(facility_id_filter, start_date, end_date)
+  def self.active_in_months(start_date, end_date, options = {})
+
+    options = options.remove_blanks_in_arrays
     months_in_range = DateTime.all_months_between(start_date, end_date)
     find(:all, :select => 'pppams_indicators.id,
                            pppams_indicator_base_ref_id,
+                           pppams_indicator_base_refs.question as indicator_name,
                            pppams_category_base_ref_id,
-                           pppams_indicators.good_months',
-               :joins => "INNER JOIN pppams_indicator_base_refs on pppams_indicators.pppams_indicator_base_ref_id = pppams_indicator_base_refs.id") do
+                           pppams_category_base_refs.name as category_name,
+                           pppams_indicators.good_months,
+                           pppams_indicators.facility_id,
+                           facilities.facility as facility_name',
+               :joins => "INNER JOIN pppams_indicator_base_refs on pppams_indicators.pppams_indicator_base_ref_id = pppams_indicator_base_refs.id
+                          INNER JOIN pppams_category_base_refs on pppams_indicator_base_refs.pppams_category_base_ref_id = pppams_category_base_refs.id
+                          INNER JOIN facilities on facilities.id = pppams_indicators.facility_id") do
       any do
         months_in_range.each do |m|
           good_months =~ '%:'+m.to_s+':%'
@@ -56,7 +64,11 @@ class PppamsIndicator < ActiveRecord::Base
         inactive_on >= end_date
       end
 
-      facility_id == facility_id_filter
+      #Even if the options is an array, this will work.
+      #We cleaned up and cleared out arrays earlier with remove_blanks_and_empties.
+      pppams_indicator_base_ref_id == options[:pppams_indicator_base_ref_ids] unless options[:pppams_indicator_base_ref_ids].blank?
+      facility_id                  == options[:facility_id]                   unless options[:facility_id].blank?
+      pppams_indicator_base_ref.pppams_category_base_ref_id  == options[:pppams_category_base_ref_ids]  unless options[:pppams_category_base_ref_ids].blank?
     end
   end
 
@@ -127,7 +139,6 @@ class PppamsIndicator < ActiveRecord::Base
     self.frequency = frequency.to_i
     set_good_months
   end
-
 
 end
  

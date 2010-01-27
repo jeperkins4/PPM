@@ -76,12 +76,15 @@ describe PppamsIndicator do
                                         :pppams_indicator_base_ref => base_ind_a,
                                         :active_on => Date.yesterday,
                                         :inactive_on => Date.tomorrow,
-                                        :good_months => ":#{Date.today.month}:")
+                                        :start_month => Date.today.month,
+                                        :frequency => 1
+                                        )
       @indicator_category_z = PppamsIndicator.make(:facility => @facility,
                                                    :pppams_indicator_base_ref => base_ind_b,
                                                    :active_on => Date.yesterday,
                                                    :inactive_on => Date.tomorrow,
-                                                   :good_months => ":#{Date.today.month}:")
+                                                   :start_month => Date.today.month,
+                                                   :frequency => 1)
     end
     it "should include active indicators for given facility" do
       PppamsIndicator.find_current(Date.today, @facility).should include(@indicator, @indicator_category_z)
@@ -131,7 +134,7 @@ describe PppamsIndicator do
   describe "update_good_months" do
     it "should set the months requiring indication according to the frequency and start month." do
       @pppams_indicator.good_months= nil
-      @pppams_indicator.save
+      @pppams_indicator.save(false)
       @pppams_indicator.good_months.should == nil
       @pppams_indicator.update_good_months(3,6)
       @pppams_indicator.good_months.should == ":3:5:7:9:11:1:"
@@ -141,45 +144,45 @@ describe PppamsIndicator do
   describe "active_in_months should retrieve" do
     before(:all) do
       PppamsIndicator.destroy_all
-      @pppams_indicator = PppamsIndicator.make(:start_month => 1,
+      @pppams_indicator = PppamsIndicator.make(:start_month => 3,
+                                               :frequency => 1,
                                                :active_on => Date.new(2009,1,1),
-                                               :inactive_on => nil,
-                                               :good_months => ":3:")
+                                               :inactive_on => nil)
     end
 
     it "indicators that are active before or on the start date" do
       PppamsIndicator.make(:facility => @pppams_indicator.facility,
-                           :start_month => 1,
+                           :start_month => 3,
                            :active_on => Date.new(2009,3,2),
-                           :inactive_on => nil,
-                           :good_months => ":3:")
+                           :frequency => 1,
+                           :inactive_on => nil)
       results = retrieve_pristine_record
       results.should have(1).record
     end
 
     it "indicators whose inactive date is after or on the end date or whose inactive date is nil" do
       PppamsIndicator.make(:facility => @pppams_indicator.facility,
-                           :start_month => 1,
+                           :start_month => 3,
+                           :frequency => 1,
                            :active_on => Date.new(2009,1,1),
-                           :inactive_on => Date.new(2009,3,3),
-                           :good_months => ":3:")
+                           :inactive_on => Date.new(2009,3,3))
       results = retrieve_pristine_record
       results.should have(1).record
     end
 
     it "indicators for all facilities if no facility was given" do
-      PppamsIndicator.make(:start_month => 1,
+      PppamsIndicator.make(:start_month => 3,
                            :active_on => Date.new(2009,1,1),
-                           :inactive_on => nil,
-                           :good_months => ":3:")
+                           :frequency => 1,
+                           :inactive_on => nil)
       results = PppamsIndicator.active_in_months( Date.new(2009,3,1), Date.new(2009,4,1))
       results.should have(2).record
     end
     it "indicators for a specific facility if one was given" do
-      PppamsIndicator.make(:start_month => 1,
+      PppamsIndicator.make(:start_month => 3,
                            :active_on => Date.new(2009,1,1),
+                           :frequency => 1,
                            :inactive_on => nil,
-                           :good_months => ":3:",
                            :facility => Facility.make)
       results = PppamsIndicator.active_in_months( Date.new(2009,3,1), 
                                                   Date.new(2009,4,1), 
@@ -191,20 +194,20 @@ describe PppamsIndicator do
 
     it "indicators whose good months are between the start and end dates" do
       PppamsIndicator.make(:facility => @pppams_indicator.facility,
-                           :start_month => 1,
+                           :start_month => 6,
+                           :frequency => 1,
                            :active_on => Date.new(2009,1,1),
-                           :inactive_on => nil,
-                           :good_months => ":6:")
+                           :inactive_on => nil)
       results = retrieve_pristine_record
       results.should have(1).record
     end
 
     it "indicators whose indicator_base_ref_ids match the given criteria" do
       PppamsIndicator.make(:facility => @pppams_indicator.facility,
-                           :start_month => 1,
+                           :start_month => 3,
+                           :frequency => 1,
                            :active_on => Date.new(2009,1,1),
-                           :inactive_on => nil,
-                           :good_months => ":3:")
+                           :inactive_on => nil)
       results = retrieve_pristine_record({:pppams_indicator_base_ref_ids => @pppams_indicator.pppams_indicator_base_ref_id})
       results.should have(1).record
     end
@@ -212,10 +215,10 @@ describe PppamsIndicator do
     it "indicators whose category_base_ref_ids match the given criteria" do
       indicator_base_with_other_category = PppamsIndicatorBaseRef.make
       PppamsIndicator.make(:facility => @pppams_indicator.facility,
-                           :start_month => 1,
+                           :start_month => 3,
+                           :frequency => 1,
                            :active_on => Date.new(2009,1,1),
                            :inactive_on => nil,
-                           :good_months => ":3:",
                            :pppams_indicator_base_ref => indicator_base_with_other_category)
       results = retrieve_pristine_record({:pppams_category_base_ref_ids => @pppams_indicator.pppams_indicator_base_ref.pppams_category_base_ref_id})
       results.should have(1).record

@@ -9,6 +9,8 @@ describe "edit" do
                                       :pppams_reference_ids => nil,
                                       :errors => [],
                                       :pppams_category_id => 3,
+                                      :facility_id => 3,
+                                      :pppams_indicator_base_ref_id => 3,
                                       :pppams_indicator_base_ref => mock_model(PppamsIndicatorBaseRef, :id => 32)
                                      )
 

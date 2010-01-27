@@ -24,7 +24,8 @@ describe PppamsIndicatorBaseRef do
       @facility_inactive = Facility.make
     end
     it "should retrieve all facilities regardless of active status" do
-      PppamsIndicatorBaseRef.current_facilities.size.should == 4
+      PppamsIndicatorBaseRef.current_facilities(@base_indicator.id).size.should == 4
+
     end
     describe "the hash version" do
       it "should say that a facility whose current indicator has inactive_on set is ':active => false'" do

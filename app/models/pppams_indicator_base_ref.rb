@@ -3,25 +3,20 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
   belongs_to :pppams_category_base_ref
   accepts_nested_attributes_for :pppams_indicators
   named_scope :current_facilities, lambda { |indicator_base_id|
-    { :select => "facilities.id,
+    { :select => sanitize_sql_array(["facilities.id,
                   facilities.facility,
-                  pppams_indicators.inactive_on,
-                  pppams_indicators.id AS indicator_id,
-                  pppams_indicators.active_on,
-                  pppams_indicators.updated_on,
-                  pppams_indicators.pppams_indicator_base_ref_id",
+                  indicators.inactive_on,
+                  indicators.id AS indicator_id,
+                  indicators.active_on,
+                  indicators.updated_on,
+                  ? as pppams_indicator_base_ref_id ", indicator_base_id]),
       :from => 'facilities',
-      :joins => "LEFT OUTER JOIN pppams_indicators ON pppams_indicators.facility_id = facilities.id",
-      :group => "facilities.id, 
-              facilities.facility,
-        pppams_indicators.inactive_on, 
-        pppams_indicators.updated_on,
-        pppams_indicators.active_on,
-        pppams_indicators.pppams_indicator_base_ref_id,
-        indicator_id",
-      :having => ["pppams_indicators.pppams_indicator_base_ref_id = ?
-                   OR pppams_indicators.pppams_indicator_base_ref_id is null", indicator_base_id],
-      :order => "pppams_indicators.updated_on DESC"
+      :joins => sanitize_sql_array([" LEFT OUTER JOIN (
+                       SELECT * 
+                       FROM pppams_indicators 
+                       WHERE pppams_indicator_base_ref_id = ?
+                       ) indicators ON indicators.facility_id = facilities.id ",indicator_base_id]),
+      :order => "facilities.facility ASC"
     }
   }
   def short_question
@@ -34,6 +29,7 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
   #                   :name => facility_name,
   #                   :indicator_id => ...,
   #                   :active_on => date indicator was created
+  #                   :pppams_indicator_base_ref_id => base_indicator_id
   #                  },
   #   ...
   # }
@@ -44,7 +40,9 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
                                   DateTime.strptime(record.active_on, '%Y-%m-%d') > Time.now ? false : true),
                      :name => record.facility,
                      :indicator_id => record.indicator_id,
+                     :facility_id=> record.id,
                      :active_on => record.active_on,
+                     :pppams_indicator_base_ref_id=> record.pppams_indicator_base_ref_id,
                      :inactive_on => record.inactive_on
                     }
       }.merge(memo)

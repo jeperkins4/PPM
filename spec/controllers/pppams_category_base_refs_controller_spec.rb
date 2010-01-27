@@ -19,10 +19,11 @@ describe PppamsCategoryBaseRefsController do
 
   describe "GET show" do
     it "assigns the requested pppams_category_base_ref as @pppams_category_base_ref" do
-      PppamsCategoryBaseRef.stub!(:find).with("37").and_return(mock_pppams_category_base_ref)
+      PppamsCategoryBaseRef.stub!(:find).with("37", :include => [:pppams_indicator_base_refs]).and_return(mock_pppams_category_base_ref)
       get :show, :id => "37"
       assigns[:pppams_category_base_ref].should equal(mock_pppams_category_base_ref)
     end
+    it "retrieves the category's indicators as well"
   end
 
   describe "GET new" do
@@ -42,17 +43,18 @@ describe PppamsCategoryBaseRefsController do
 
   describe "GET edit" do
     it "assigns the requested pppams_category_base_ref as @pppams_category_base_ref" do
-      PppamsCategoryBaseRef.stub!(:find).with("37").and_return(mock_pppams_category_base_ref)
+      PppamsCategoryBaseRef.stub!(:find).with("37", :include => [:pppams_indicator_base_refs]).and_return(mock_pppams_category_base_ref)
       get :edit, :id => "37"
       assigns[:pppams_category_base_ref].should equal(mock_pppams_category_base_ref)
     end
-     it "assigns a pppams_category_groups for select as @pppams_category_groups" do
+    it "assigns a pppams_category_groups for select as @pppams_category_groups" do
       PppamsCategoryBaseRef.stub!(:new).and_return(mock_pppams_category_base_ref)
       @pppams_category_groups = [mock_model(PppamsCategoryGroup, :id => 1, :name => 'hello')]
       PppamsCategoryGroup.stub!(:all).and_return(@pppams_category_groups)
       get :new
       assigns[:pppams_category_groups].should == [['hello', 1]]
     end
+
   end
 
   describe "POST create" do

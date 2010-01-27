@@ -7,7 +7,9 @@ describe "/pppams_category_base_refs/edit.html.erb" do
     assigns[:pppams_category_base_ref] = @pppams_category_base_ref = stub_model(PppamsCategoryBaseRef,
       :new_record? => false,
       :name => "value for name",
-      :pppams_category_group_id => 1
+      :pppams_category_group_id => 1,
+      :id => 123,
+      :pppams_indicator_base_refs => [stub_model(PppamsIndicatorBaseRef, :question => 'q1', :id => 5)]
     )
     assigns[:pppams_category_groups] = [['hello', 1]]
     assigns[:facilities_with_base] = [stub_model(Facility, :facility => 'rand fac', :id => 1)]
@@ -24,6 +26,10 @@ describe "/pppams_category_base_refs/edit.html.erb" do
   it "renders facilities that use this overall indicator" do
     render
     response.should have_tag("li", /rand fac/)
+  end
+  it 'renders indicator base references' do
+    render
+    response.should have_tag('td', 'q1')
   end
 
 end

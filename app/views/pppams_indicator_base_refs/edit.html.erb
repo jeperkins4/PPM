@@ -27,40 +27,16 @@
       <tbody>
 
         <% count = 0; @facilities.each do |facility_id, facility| %>
-          <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][facility_id]", facility_id %>
-            <tr>
-              <% if facility[:active] %>
-                <td><%= link_to facility[:name], edit_pppams_indicator_path(facility[:indicator_id])%></td>
-                <td>Active</td>
-                <td><%= facility[:active_on] %></td>
-                <td>
-                  <%= date_select("pppams_indicator_base_ref[pppams_indicators_attributes][#{count}]",'inactive_on', {:include_blank => true} )%>
-                  <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][id]", facility[:indicator_id] %>
-                  </td>
-              <% elsif (!facility[:inactive_on] && !facility[:active] && facility[:active_on]) %>
-                <td><%= link_to facility[:name], edit_pppams_indicator_path(facility[:indicator_id])%></td>
-                <td>Inactive</td>
-                <td><%= facility[:active_on] %></td>
-                <td>
-                  <%= date_select("pppams_indicator_base_ref[pppams_indicators_attributes][#{count}]",'inactive_on', {:include_blank => true} )%>
-                  <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][id]", facility[:indicator_id] %>
-                </td>
-
-              <% elsif facility[:active] == false && facility[:indicator_id].blank? %>
-                <td><%= facility[:name] %></td>
-                <td>Inactive</td>
-                <td>
-                  <%= date_select("pppams_indicator_base_ref[pppams_indicators_attributes][#{count}]", 'active_on', {:include_blank => true} ) %>
-                  <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][id]", facility[:indicator_id] %>
-                  </td>
-                <td></td>
-              <% else %>
-                <td><%= link_to facility[:name], pppams_indicator_path(facility[:indicator_id]) %></td>
-                <td>Inactive</td>
-                <td><%= facility[:active_on] %></td>
-                <td><%= facility[:inactive_on] %></td>
-              <% end %>
-            </tr>
+          <% facility[:count] = count %>
+          <tr>
+            <td><%= indicator_link(facility, :editable => true)%>
+                <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][facility_id]", facility_id %>
+                <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][id]", facility[:indicator_id] %>
+            </td>
+            <td><%= active?(facility)%></td>
+            <td><%= active_on(facility, :editable => true) %></td>
+            <td><%= inactive_on(facility, :editable => true) %></td>
+           </tr>
          <% count += 1; end %>
       </tbody>
     </table>
@@ -70,5 +46,5 @@
   <% end %>
 <p>
   <%= link_to 'Show', @pppams_indicator_base_ref %> |
-  <%= link_to 'Back', pppams_indicator_base_refs_path %>
+  <%= link_to "Back to Global Category", edit_pppams_category_base_ref_path(@pppams_indicator_base_ref.pppams_category_base_ref_id)%>
 </p>

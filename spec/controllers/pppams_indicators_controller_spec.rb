@@ -14,6 +14,16 @@ describe PppamsIndicatorsController do
     before do
       login_as_admin
     end
+    describe "GET new" do
+      it "should expose a new indicator with the base and facility_id" do
+        PppamsIndicatorBaseRef.should_receive(:find).and_return(mock_model(PppamsIndicatorBaseRef,:id => 23))
+        Facility.should_receive(:find).and_return(mock_model(Facility, :id => 54))
+
+        get :new, :pppams_indicator_base_ref_id => '23', :facility_id => '54'
+        assigns[:pppams_indicator].pppams_indicator_base_ref_id.should == 23
+        assigns[:pppams_indicator].facility_id.should == 54
+      end
+    end
     describe "GET edit" do
       it "should expose the pppams_indicator" do
         PppamsIndicator.should_receive(:find).with('12').and_return(mock_indicator)

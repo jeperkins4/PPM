@@ -24,7 +24,7 @@
   <tbody>
     <% @facilities.each do |facility_id, facility| %>
         <tr>
-          <td><%= link_to facility[:name], pppams_indicator_path(facility[:indicator_id])%></td>
+          <td><%= indicator_link(facility)%></td>
           <td><%= facility[:active] ? 'Active' : 'Inactive' %></td>
           <td><%= facility[:active_on] %></td>
           <td><%= facility[:inactive_on] %></td>
@@ -34,4 +34,4 @@
 </table>
 
 <%= link_to 'Edit', edit_pppams_indicator_base_ref_path(@pppams_indicator_base_ref) %> |
-<%= link_to 'Back', pppams_indicator_base_refs_path %>
+<%= link_to 'Back to Global Category', pppams_category_base_ref_path(@pppams_indicator_base_ref.pppams_category_base_ref_id) %>

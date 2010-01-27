@@ -5,11 +5,13 @@ class PppamsIndicator < ActiveRecord::Base
   has_many :pppams_delinquent_reviews
   has_one :pppams_category_base_ref, :through => :pppams_indicator_base_ref
   has_and_belongs_to_many :pppams_references
+  before_validation :set_good_months
   validates_presence_of [:pppams_indicator_base_ref_id,:frequency,:start_month, :good_months]
   validates_uniqueness_of :facility_id , :scope => :pppams_indicator_base_ref_id
   delegate :question, :to => :pppams_indicator_base_ref
   delegate :pppams_category_base_ref, :to => :pppams_indicator_base_ref
   delegate :pppams_category_base_ref_id, :to => :pppams_indicator_base_ref
+  
 
   #Find indicators that are from the given facility
   #and whose facility started pppams after given date
@@ -140,5 +142,14 @@ class PppamsIndicator < ActiveRecord::Base
     set_good_months
   end
 
+  def self.new_standard_for_facility(facility_id, base_indicator_id)
+    create!( :good_months => ':1:',
+             :frequency => 1,
+             :active_on => nil,
+             :start_month => 1,
+             :facility_id => facility_id,
+             :pppams_indicator_base_ref_id => base_indicator_id
+           )
+  end
 end
  

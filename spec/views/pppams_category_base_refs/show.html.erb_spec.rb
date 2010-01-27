@@ -6,7 +6,8 @@ describe "/pppams_category_base_refs/show.html.erb" do
     assigns[:pppams_category_base_ref] = @pppams_category_base_ref = stub_model(PppamsCategoryBaseRef,
       :name => "value for name",
       :pppams_category_group => stub_model(PppamsCategoryGroup, :id => 1, :to_s => 'hi'), 
-      :active_on => nil
+      :active_on => nil,
+      :pppams_indicator_base_refs => [stub_model(PppamsIndicatorBaseRef, :question => 'q1', :id => 5)]
     )
   end
 
@@ -19,8 +20,8 @@ describe "/pppams_category_base_refs/show.html.erb" do
     render
     response.should have_text(/hi/)
   end
-  it 'should show still active when the category is active' do
+  it 'renders indicator base references' do
     render
-    response.should have_text(/still active/i)
+    response.should have_tag('td', 'q1')
   end
 end

@@ -40,6 +40,10 @@ describe PppamsIndicatorBaseRefsController do
       get :new
       assigns[:pppams_category_base_refs].should == [['hello', 1]]
     end
+    it "assigns the category base ref to the new indicator if one is specified" do
+      PppamsIndicatorBaseRef.should_receive(:new).with(:pppams_category_base_ref_id => '9').and_return(mock_pppams_indicator_base_ref)
+      get :new, :pppams_category_base_ref_id => '9'
+    end
   end
 
   describe "GET edit" do

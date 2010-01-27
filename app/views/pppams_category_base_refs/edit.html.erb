@@ -25,5 +25,11 @@
     </ul>
   </div>
 </div>
-<%= link_to 'Show', @pppams_category_base_ref %> |
-<%= link_to 'Back', pppams_category_base_refs_path %>
+<%= render :partial => 'pppams_indicator_base_refs/pppams_indicator_base_refs',
+           :object => @pppams_category_base_ref.pppams_indicator_base_refs,
+           :locals => {:pppams_category_base_ref_id => @pppams_category_base_ref.id,
+                       :editable => true}%>
+<p>
+  <%= link_to 'Show', @pppams_category_base_ref %> |
+  <%= link_to 'Back to All Categories', pppams_category_base_refs_path %>
+</p>

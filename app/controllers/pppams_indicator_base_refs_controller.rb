@@ -27,7 +27,11 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   # GET /pppams_indicator_base_refs/new
   # GET /pppams_indicator_base_refs/new.xml
   def new
-    @pppams_indicator_base_ref = PppamsIndicatorBaseRef.new
+    if params[:pppams_category_base_ref_id]
+      @pppams_indicator_base_ref = PppamsIndicatorBaseRef.new(:pppams_category_base_ref_id => params[:pppams_category_base_ref_id])
+    else
+      @pppams_indicator_base_ref = PppamsIndicatorBaseRef.new
+    end
     @pppams_category_base_refs = PppamsCategoryBaseRef.all.map { |pcb| [pcb.name, pcb.id]}    
     respond_to do |format|
       format.html # new.html.erb
@@ -62,6 +66,7 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   # PUT /pppams_indicator_base_refs/1.xml
   def update
     @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id])
+
      respond_to do |format|
       if @pppams_indicator_base_ref.update_attributes(params[:pppams_indicator_base_ref])
         flash[:notice] = 'The Global Indicator was successfully updated.'

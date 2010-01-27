@@ -1,5 +1,7 @@
 <%= error_messages_for 'pppams_indicator' %>
 
+<%= hidden_field_tag 'pppams_indicator[facility_id]', @pppams_indicator.facility_id %>
+<%= hidden_field_tag 'pppams_indicator[pppams_indicator_base_ref_id]', @pppams_indicator.pppams_indicator_base_ref_id%>
 <!--[form:pppams_indicator]-->
 <p><label for="pppams_indicator_question">Question</label><br/>
   <%= @pppams_indicator.question  %>

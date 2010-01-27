@@ -15,7 +15,7 @@ class PppamsCategoryBaseRefsController < ApplicationController
   # GET /pppams_category_base_refs/1
   # GET /pppams_category_base_refs/1.xml
   def show
-    @pppams_category_base_ref = PppamsCategoryBaseRef.find(params[:id])
+    @pppams_category_base_ref = PppamsCategoryBaseRef.find(params[:id], :include => [:pppams_indicator_base_refs])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -37,7 +37,7 @@ class PppamsCategoryBaseRefsController < ApplicationController
 
   # GET /pppams_category_base_refs/1/edit
   def edit
-    @pppams_category_base_ref = PppamsCategoryBaseRef.find(params[:id])
+    @pppams_category_base_ref = PppamsCategoryBaseRef.find(params[:id], :include => [:pppams_indicator_base_refs])
     @facilities_with_base = Facility.with_category_base(params[:id])
     @pppams_category_groups = PppamsCategoryGroup.all.map { |pcg| [pcg.name, pcg.id] }
   end

@@ -1,6 +1,6 @@
 class PppamsIndicatorsController < ApplicationController
   before_filter :authenticate
-  before_filter :require_facility, :except => [:show, :edit, :update]
+  before_filter :require_facility, :except => [:show, :edit, :update, :new]
 
   layout 'administration'
 
@@ -19,6 +19,32 @@ class PppamsIndicatorsController < ApplicationController
   def list
     @pppams_indicators = PppamsIndicator.paginate :page => params[:page]
     session[:indicator_list_mode] = 'list'
+  end
+
+  def show
+    @pppams_indicator = PppamsIndicator.find(params[:id])
+  end
+
+  def edit
+    @pppams_indicator = PppamsIndicator.find(params[:id])
+  end
+
+  def new
+    @pppams_indicator = PppamsIndicator.new(:pppams_indicator_base_ref => PppamsIndicatorBaseRef.find(params[:pppams_indicator_base_ref_id]),
+                                            :facility => Facility.find(params[:facility_id]))
+  end
+
+  def update
+    @pppams_indicator = PppamsIndicator.find(params[:id])
+    @pppams_indicator.update_good_months(params[:pppams_indicator][:start_month],
+                                         params[:pppams_indicator][:frequency])
+
+    if @pppams_indicator.update_attributes(params[:pppams_indicator])
+      flash[:notice] = 'PppamsIndicator was successfully updated.'
+      redirect_to :action => 'show', :id => @pppams_indicator
+    else
+      render :action => 'edit'
+    end
   end
 
   #Lists Review data
@@ -54,25 +80,5 @@ class PppamsIndicatorsController < ApplicationController
     render :text => "1"
   end
 
-  def show
-    @pppams_indicator = PppamsIndicator.find(params[:id])
-  end
-
-  def edit
-    @pppams_indicator = PppamsIndicator.find(params[:id])
-  end
-
-  def update
-    @pppams_indicator = PppamsIndicator.find(params[:id])
-    @pppams_indicator.update_good_months(params[:pppams_indicator][:start_month],
-                                         params[:pppams_indicator][:frequency])
-
-    if @pppams_indicator.update_attributes(params[:pppams_indicator])
-      flash[:notice] = 'PppamsIndicator was successfully updated.'
-      redirect_to :action => 'show', :id => @pppams_indicator
-    else
-      render :action => 'edit'
-    end
-  end
 
 end

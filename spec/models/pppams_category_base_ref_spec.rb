@@ -22,18 +22,21 @@ describe PppamsCategoryBaseRef do
       @category_1 = PppamsCategoryBaseRef.make
       @indicator_base_ref_1 = PppamsIndicatorBaseRef.make(:pppams_category_base_ref => @category_1)
       @indicator_1 = PppamsIndicator.make(:pppams_indicator_base_ref => @indicator_base_ref_1,
-                                          :good_months => ':1:')
+                                          :start_month => 1,
+                                          :frequency => 1 )
       @review_cat_1 = PppamsReview.make(:pppams_indicator => @indicator_1)
 
       @category_2 = PppamsCategoryBaseRef.make
       @indicator_base_ref_2 = PppamsIndicatorBaseRef.make(:pppams_category_base_ref => @category_2)
       @indicator_2 = PppamsIndicator.make(:pppams_indicator_base_ref => @indicator_base_ref_2,
-                                          :good_months => ':1:2:')
+                                          :start_month => 1,
+                                          :frequency => 2 )
       @review_2 = PppamsReview.make(:pppams_indicator => @indicator_2)
 
       @indicator_base_ref_3 = PppamsIndicatorBaseRef.make(:pppams_category_base_ref => @category_2)
       @indicator_3_cat_2 = PppamsIndicator.make(:pppams_indicator_base_ref => @indicator_base_ref_3,
-                                         :good_months => ':3:4:')
+                                          :start_month => 3,
+                                          :frequency => 2 )
       @review_3_cat_2= PppamsReview.make(:pppams_indicator => @indicator_3_cat_2)
       @indicator_array = [@indicator_1, @indicator_2, @indicator_3_cat_2]
     end
@@ -44,13 +47,13 @@ describe PppamsCategoryBaseRef do
       end
 
       it "return the max sum of all review scores for a particular category" do
-        results = PppamsCategoryBaseRef.category_max_review_sums(@indicator_array, [1,2])
+        results = PppamsCategoryBaseRef.category_max_review_sums(@indicator_array, [1,2,3,4,5,6])
         results[@category_2.id][:max_score].should == 20
         results[@category_1.id][:max_score].should == 10
       end
 
       it "return the max number of reviews for a particular category" do
-        results = PppamsCategoryBaseRef.category_max_review_sums(@indicator_array, [1,2])
+        results = PppamsCategoryBaseRef.category_max_review_sums(@indicator_array, [1,2,3,4,5,6])
         results[@category_2.id][:max_reviews].should == 2
         results[@category_1.id][:max_reviews].should == 1
       end
@@ -86,7 +89,8 @@ describe PppamsCategoryBaseRef do
       @category_1 = PppamsCategoryBaseRef.make
       @indicator_base_ref_1 = PppamsIndicatorBaseRef.make(:pppams_category_base_ref => @category_1)
       @indicator_1 = PppamsIndicator.make(:pppams_indicator_base_ref => @indicator_base_ref_1,
-                                          :good_months => ':1:',
+                                          :start_month => 1,
+                                          :frequency => 1,
                                           :active_on => Date.new(2009,1,1),
                                           :inactive_on => nil)
       @review_cat_1 = PppamsReview.make(:pppams_indicator => @indicator_1,
@@ -97,7 +101,8 @@ describe PppamsCategoryBaseRef do
       @category_2 = PppamsCategoryBaseRef.make(:pppams_category_group => @category_1.pppams_category_group)
       @indicator_base_ref_2 = PppamsIndicatorBaseRef.make(:pppams_category_base_ref => @category_2)
       @indicator_2 = PppamsIndicator.make(:pppams_indicator_base_ref => @indicator_base_ref_2,
-                                          :good_months => ':1:2:',
+                                          :start_month => 1,
+                                          :frequency => 2,
                                           :facility => @indicator_1.facility,
                                           :active_on => Date.new(2009,1,1),
                                           :inactive_on => nil)
@@ -108,12 +113,14 @@ describe PppamsCategoryBaseRef do
 
       @indicator_base_ref_3 = PppamsIndicatorBaseRef.make(:pppams_category_base_ref => @category_2)
       @indicator_3_cat_2 = PppamsIndicator.make(:pppams_indicator_base_ref => @indicator_base_ref_3,
-                                          :good_months => ':3:4:',
+                                          :start_month => 3,
+                                          :frequency => 2,
                                           :facility => @indicator_1.facility,
                                           :active_on => Date.new(2009,1,1),
                                           :inactive_on => nil)
       @review_3_cat_2= PppamsReview.make(:pppams_indicator => @indicator_3_cat_2,
                                          :created_on => Date.new(2009,1,1),
+                                         :score => 7,
                                         :status => 'Locked')
     end
     it 'should narrow search by facility' do
@@ -123,12 +130,12 @@ describe PppamsCategoryBaseRef do
     it 'should return a list of maximum reviews per category group' do
       results = PppamsCategoryBaseRef.signature_summary_for_facility(@indicator_1.facility_id,
                                                          Date.new(2009,1,1),
-                                                         Date.new(2009,1,1))
+                                                         Date.new(2009,6,1))
       results.should == {@category_1.pppams_category_group_id => {
                                                                   :name => @category_1.pppams_category_group.name,
-                                                                  :max_score => 20,
-                                                                  :actual_score => 11,
-                                                                  :percent => 55.0,
+                                                                  :max_score => 30,
+                                                                  :actual_score => 18,
+                                                                  :percent => 60.0,
                                                                   :categories => [
                                                                                    {
                                                                                      :name => @category_1.name,
@@ -139,17 +146,17 @@ describe PppamsCategoryBaseRef do
                                                                                    },
                                                                                    {
                                                                                      :name => @category_2.name,
-                                                                                     :max_score => 10,
-                                                                                     :actual_score => 6,
-                                                                                     :percent => 60.0,
+                                                                                     :max_score => 20,
+                                                                                     :actual_score => 13,
+                                                                                     :percent => 65.0,
                                                                                      :missing_reviews => false
                                                                                    }
 
                                                                                  ]
                                                                  },
-                      :actual_score => 11,
-                      :max_score => 20,
-                      :percent => 55.0
+                      :actual_score => 18,
+                      :max_score => 30,
+                      :percent => 60.0
                      }
     end
 #    it "should ignore indicator groups that do not have reviews" do

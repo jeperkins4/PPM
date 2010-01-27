@@ -4,6 +4,7 @@ describe "/pppams_indicator_base_refs/edit.html.erb" do
   include PppamsIndicatorBaseRefsHelper
 
   before(:each) do
+    assigns[:user] = stub('is_admin?'=> true)
     assigns[:pppams_indicator_base_ref] = @pppams_indicator_base_ref = stub_model(PppamsIndicatorBaseRef,
       :new_record? => false,
       :question => "value for question",

@@ -62,8 +62,8 @@ class NotificationReceiver < ActiveRecord::Base
       body = [
         "Review ID||#{review.id}", "Review Status||#{review.status}",
         "Date||#{review.updated_on.strftime("%B %d, %Y @ %H:%m")}",
-        "Facility||#{review.pppams_indicator.pppams_category.facility.facility}",
-        "Indicator Category||#{review.pppams_indicator.pppams_category.name}",
+        "Facility||#{review.pppams_indicator.facility.facility}",
+        "Indicator Category||#{review.pppams_indicator.pppams_indicator_base_ref.pppams_category_base_ref.name}",
         "Indicator Question||#{review.pppams_indicator.question}",
         "Link||http://#{NotificationReceiver.request_env['SERVER_NAME']}/pppams_reviews/#{review.id}"
       ].join("\n\n").gsub(/\|\|/,":\n  ")

@@ -65,7 +65,7 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
     reviews_matching_criteria.inject({}) do |full_review, review|
 
-      active_indicator = active_indicators.select {|indicator| indicator.id = review.pppams_indicator_id }[0]
+      active_indicator = active_indicators.select {|indicator| indicator.id == review.pppams_indicator_id }[0]
 
       facility = full_review[active_indicator.facility_id] ||= {:name => active_indicator.facility_name,
                                                                :categories => {}

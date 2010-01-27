@@ -1022,7 +1022,8 @@ p.cat_heading {
 }
 
 #score_box {
-    width: 360px;
+    width: 480px;
+    height: 110px;
 }
 
 .calendar_date_select td, .calendar_date_select th {

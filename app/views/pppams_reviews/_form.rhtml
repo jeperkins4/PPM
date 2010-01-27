@@ -48,7 +48,20 @@ $('trash').src = "/images/trash.jpg";
 
 
 <p><label for="pppams_review_score">Score</label><br/>
-<%= select( "pppams_review", "score", ['',0,4,5,6,7,8,9,10] , {}, {:onchange => "javascript: myval = this.options[this.selectedIndex].value; if (myval ==7 || myval == 8) {new Effect.Fade('pppams_review_evidence_wrap')} else {new Effect.Appear('pppams_review_evidence_wrap')}; "})%></p>
+<%= select( "pppams_review", 
+            "score", 
+            [ ['',''],
+              ['0 - Non-performance', 0],
+              ['4 - Partial Performance',4],
+              ['5',5],
+              ['6',6],
+              ['7 - Compliant',7],
+              ['8',8],
+              ['9',9],
+              ['10 - Commendable',10]
+            ],
+              {}, {:onchange => "javascript: myval = this.options[this.selectedIndex].value; if (myval ==7 || myval == 8) {new Effect.Fade('pppams_review_evidence_wrap')} else {new Effect.Appear('pppams_review_evidence_wrap')}; "})%>
+</p>
 
 </div>
 

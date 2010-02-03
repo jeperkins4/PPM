@@ -18,7 +18,6 @@
       %th Observation Ref
       %th Documentation Ref
       %th Interview Ref
-      %th Evidence
       %th Status
       %th Notes
       %th Real Creation Date
@@ -34,7 +33,6 @@
           %td=review[:observation_ref]
           %td=review[:documentation_ref]
           %td=review[:interview_ref]
-          %td=review[:evidence]
           %td=review[:status].blank? ? 'Submitted' : review[:status]
           %td=review[:notes]
           %td=review[:real_creation_date].strftime('%m/%d/%y') unless review[:real_creation_date].nil?

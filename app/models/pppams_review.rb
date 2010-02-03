@@ -116,7 +116,6 @@ class PppamsReview < ActiveRecord::Base
                      observation_ref,
                      documentation_ref,
                      interview_ref,
-                     evidence,
                      status,
                      notes,
                      real_creation_date,

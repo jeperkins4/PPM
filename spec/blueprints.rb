@@ -189,9 +189,9 @@ PppamsIndicatorBaseRef.blueprint do
   pppams_category_base_ref {PppamsCategoryBaseRef.make}
 end
 PppamsReview.blueprint do
-  score {7}
+  score {6}
   observation_ref { 'some observation'}
   documentation_ref { 'some documentation'}
   interview_ref { 'some interview'}
-  evidence      { 'some interview'}
+  notes { 'some notes'}
 end

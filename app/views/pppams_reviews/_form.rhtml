@@ -25,9 +25,6 @@ $('trash').src = "/images/trash.jpg";
 <%= radio_button("pppams_review", "status", "Locked", :disabled => @status_ar.index("Locked").nil?) %><label for="pppams_review_status_accepted">Locked</label><br/> 
 </fieldset>
 
-<p><label for="pppams_review_notes">Notes</label><br/>
-<%= text_area 'pppams_review', 'notes', {:rows => 15}  %></p>
-
 </div>
 
 <div id='score_box'>
@@ -59,8 +56,7 @@ $('trash').src = "/images/trash.jpg";
               ['8',8],
               ['9',9],
               ['10 - Commendable',10]
-            ],
-              {}, {:onchange => "javascript: myval = this.options[this.selectedIndex].value; if (myval ==7 || myval == 8) {new Effect.Fade('pppams_review_evidence_wrap')} else {new Effect.Appear('pppams_review_evidence_wrap')}; "})%>
+            ], {}) %>
 </p>
 
 </div>
@@ -76,13 +72,16 @@ $('trash').src = "/images/trash.jpg";
 
 <div id='pppams_review_evidence_wrap'>
 
+  <%= drop_receiving_element('trash', :accept => 'dragable_file', 
+                                      :with => "'upload=' + (element.id.split('_').last())", 
+                                      :url => {:action=>:trash_upload}, 
+                                      :before => "Element.hide(element)", 
+                                      :loading => "fill_trash()", 
+                                      :complete => "empty_trash()")%>
 
+  <p><label for="pppams_review_notes">Notes</label><br/>
+  <%= text_area 'pppams_review', 'notes', {:rows => 15}  %></p>
 
-<%= drop_receiving_element('trash', :accept => 'dragable_file', :with => "'upload=' + (element.id.split('_').last())", :url => {:action=>:trash_upload}, :before => "Element.hide(element)", :loading => "fill_trash()", :complete => "empty_trash()")%>
-
-
-<label for="pppams_review_evidence">Evidence</label><br/>
-<%= text_area 'pppams_review', 'evidence'  %>
 </div>
 
 <%= hidden_field 'pppams_review', 'pppams_indicator_id' %>

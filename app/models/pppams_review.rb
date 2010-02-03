@@ -5,7 +5,7 @@ class PppamsReview < ActiveRecord::Base
     belongs_to :pppams_indicator
     has_many :uploads
     validates_presence_of [:score, :observation_ref, :documentation_ref, :interview_ref]
-    validates_presence_of [:evidence], :if => :justify_score?
+    validates_presence_of [:notes], :message => "must be filled in if the score is not 7 or 8.", :if => :justify_score?
     belongs_to :created_by, :class_name => "User", :foreign_key => "created_by"
     belongs_to :updated_by, :class_name => "User", :foreign_key => "updated_by"
 
@@ -27,7 +27,7 @@ class PppamsReview < ActiveRecord::Base
     end
 
     def justify_score?
-       [7,8].index(score).nil?
+       [0,4,5,6,9,10].include?(score)
     end
 
     def self.status_text(status_field)

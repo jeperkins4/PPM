@@ -13,6 +13,7 @@ describe "/pppams_category_base_refs/edit.html.erb" do
     )
     assigns[:pppams_category_groups] = [['hello', 1]]
     assigns[:facilities_with_base] = [stub_model(Facility, :facility => 'rand fac', :id => 1)]
+    assigns[:user] = mock_model(User, 'is_admin?' => true)
   end
 
   it "renders the edit pppams_category_base_ref form" do

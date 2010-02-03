@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100113140917) do
+ActiveRecord::Schema.define(:version => 20100203092900) do
 
   create_table "access_levels", :force => true do |t|
     t.string "access_level"
@@ -276,6 +276,17 @@ ActiveRecord::Schema.define(:version => 20100113140917) do
     t.text    "description"
   end
 
+  create_table "pppams_categories", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "facility_id"
+    t.datetime "created_on"
+    t.datetime "updated_on"
+    t.integer  "pppams_category_base_ref_id"
+  end
+
+  add_index "pppams_categories", ["facility_id"], :name => "facility_id"
+
   create_table "pppams_category_base_refs", :force => true do |t|
     t.string  "name"
     t.integer "pppams_category_group_id"
@@ -382,7 +393,6 @@ ActiveRecord::Schema.define(:version => 20100113140917) do
     t.text     "observation_ref"
     t.text     "documentation_ref"
     t.text     "interview_ref"
-    t.text     "evidence"
     t.datetime "created_on"
     t.datetime "updated_on"
     t.string   "status"

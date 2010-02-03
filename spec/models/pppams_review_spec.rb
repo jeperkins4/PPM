@@ -15,6 +15,18 @@ describe "PppamsReview" do
                                        :pppams_indicator => @pppams_indicator,
                                        :score => 8)
   end
+  describe "justification for scores" do
+    it "should require notes for scores other than 7 or 8" do
+     pppams_review = PppamsReview.make(:created_on => Date.new(2009,1,1),
+                                       :status => 'Locked',
+                                       :notes => nil,
+                                       :pppams_indicator => @pppams_indicator,
+                                       :score => 8)
+      pppams_review.score = 9
+      pppams_review.save.should == false
+      pppams_review.errors.full_messages[0].should =~ /notes must be filled in/i
+    end
+  end
   describe "with_indicators_and_date_range should retrieve" do
     it "only those reviews with the provided indicators" do
       PppamsReview.make(:created_on => Date.new(2009,1,1),

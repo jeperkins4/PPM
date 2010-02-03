@@ -28,7 +28,6 @@ describe 'layouts/administration.rhtml' do
     specify { response.should have_tag("a[href*=/accountability_logs]") }
     specify { response.should have_tag("a[href*=/pppams_indicators]") }
     specify { response.should have_tag("a[href*=/pppams_reports]") }
-    specify { response.should have_tag("a[href*=#{pppams_indicator_base_refs_path}]") }
     specify { response.should have_tag("a[href*=#{pppams_category_base_refs_path}]") }
   end
 end

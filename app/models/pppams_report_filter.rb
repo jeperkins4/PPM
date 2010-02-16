@@ -18,7 +18,7 @@ class PppamsReportFilter < ActiveRecord::Base
       active_on <= user_filter[:start_date]
       any do
         inactive_on == nil
-        inactive_on >= user_filte[:end_date]
+        inactive_on >= user_filter[:end_date]
       end
     end
 

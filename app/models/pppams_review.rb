@@ -132,7 +132,7 @@ class PppamsReview < ActiveRecord::Base
       pppams_indicator_id == indicator_ids
 
       created_on >= start_date
-      created_on <= end_date
+      created_on <= end_date.end_of_day
 
       score == options[:score_values] unless options[:score_values].blank?
 

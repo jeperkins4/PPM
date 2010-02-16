@@ -63,7 +63,7 @@ class PppamsIndicator < ActiveRecord::Base
       active_on <= start_date
       any do
         inactive_on == nil
-        inactive_on >= end_date
+        inactive_on >= end_date.end_of_date
       end
 
       #Even if the options is an array, this will work.
@@ -117,7 +117,7 @@ class PppamsIndicator < ActiveRecord::Base
       active_on <= user_filter[:start_date]
       any do
         inactive_on == nil
-        inactive_on >= user_filte[:end_date]
+        inactive_on >= user_filter[:end_date]
       end
     end
 

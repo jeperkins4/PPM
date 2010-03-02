@@ -63,7 +63,7 @@ class PppamsIndicator < ActiveRecord::Base
       active_on <= start_date
       any do
         inactive_on == nil
-        inactive_on >= end_date.end_of_date
+        inactive_on >= end_date.end_of_day
       end
 
       #Even if the options is an array, this will work.

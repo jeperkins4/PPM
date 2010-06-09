@@ -48,14 +48,31 @@ module PppamsIndicatorBaseRefsHelper
       facility[:inactive_on]
     end
   end
+
   def frequency(facility, *args)
-    #options = args.extract_options!
-    #if options[:editable]
-    #  if facility[:inactive_on]
-    #  end
-    #end
+    options = args.extract_options!
+    if options[:editable]
+      select "pppams_indicator_base_ref[pppams_indicators_attributes][#{facility[:count]}]",
+             "frequency",
+             frequency_options,
+             :selected => facility[:frequency],
+             :include_blank => true
+    else
+      facility[:frequency]
+    end
   end
+
   def start_month(facility, *args)
+    options = args.extract_options!
+    if options[:editable]
+        select_month(facility[:start_month].blank? ? Date.today : facility[:start_month],
+                   :add_month_numbers => true,
+                   :field_name => 'start_month',
+                   :prefix => "pppams_indicator_base_ref[pppams_indicators_attributes][#{facility[:count]}]",
+                   :include_blank => true)
+    else
+      facility[:start_month]
+    end
   end
 
 end

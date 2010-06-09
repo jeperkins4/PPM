@@ -1,6 +1,7 @@
 	// Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+$.noConflict();
 function updateMonthTab(num) {
 	for (i=1;i<13;i++) {
 	    tab=$('month_tab_' + i);
@@ -61,6 +62,41 @@ var mainmargin_preset
 
 if (mainmargin_preset = readCookie("mainmargin")) document.write("<style>#main_block #main_block_content {margin-left:" + mainmargin_preset + "}</style>");
 
+function fillDownInitializer() {
+  jQuery('a.fill_down').live( 'click', function (eve) {
+    var itemsToFill = ['frequency',
+                       'start_month',
+                       'active_on_1i',
+                       'active_on_2i',
+                       'active_on_3i',
+                       'inactive_on_1i',
+                       'inactive_on_2i',
+                       'inactive_on_3i'
+                      ];
+    jQuery.each(itemsToFill, function(index, ending) {
 
+      for(var selectorNumber=0; selectorNumber < 5; selectorNumber= selectorNumber + 1 ) {
+        var aDropDownValue = dropDownValue(selectorNumber, ending);
+        if(typeof(aDropDownValue) != 'undefined') {
+          populate(aDropDownValue, ending);
+          break;
+        }
+      }
+    });
+  });
+}
+function dropDownValue(integer, ending) {
+  return jQuery('#pppams_indicator_base_ref_pppams_indicators_attributes_'+integer.toString()+'_'+ending).val();
+}
+function populate(value, ending) {
+  var aDropDownOptions = jQuery('table').find('select[id*=_'+ending+'] option');
+      aDropDownOptions.removeAttr('selected');
+      aDropDownOptions.filter('[value='+value+']').attr('selected', 'selected');
+}
+
+
+jQuery(document).ready( function() {
+    fillDownInitializer();
+});
 
 

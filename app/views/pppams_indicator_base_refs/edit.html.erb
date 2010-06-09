@@ -21,11 +21,13 @@
         <th>Facility</th>
         <th>Status</th>
         <th>Becomes active on</th>
+        <th>Frequency</th>
+        <th>Start Month</th>
         <th>Becomes inactive on</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
-
         <% count = 0; @facilities.each do |facility_id, facility| %>
           <% facility[:count] = count %>
           <tr>
@@ -35,7 +37,10 @@
             </td>
             <td><%= active?(facility)%></td>
             <td><%= active_on(facility, :editable => true) %></td>
+            <td><%= frequency(facility, :editable => true) %></td>
+            <td><%= start_month(facility, :editable => true) %></td>
             <td><%= inactive_on(facility, :editable => true) %></td>
+            <td><%= ( count == 0 ? "<a class=\"fill_down\">Fill down</a>" : '')%></td>
            </tr>
          <% count += 1; end %>
       </tbody>

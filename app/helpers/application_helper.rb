@@ -1,3 +1,4 @@
+require 'orderedhash'
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def collection_select_multiple(object, method,
@@ -24,7 +25,18 @@ module ApplicationHelper
     )
   end
 
+  def frequency_options
+    frequency_options=OrderedHash.new()
+    frequency_options['1 - Annual'] =1
+    frequency_options['2 - Semi-annual'] = 2
+    frequency_options['4 - Quarterly'] = 4
+    frequency_options['12 - Monthly'] = 12
+    frequency_options
+  end
 
-
+  def default_js
+   javascript_include_tag('prototype', 'effects', 'dragdrop', 'controls', 'limit_chars', 'jquery', 'application', 'overlib')+
+   calendar_date_select_includes('blue')
+  end
 
 end

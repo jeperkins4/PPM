@@ -15,7 +15,7 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   # GET /pppams_indicator_base_refs/1
   # GET /pppams_indicator_base_refs/1.xml
   def show
-    @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id])
+    @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id], :include => :pppams_indicators)
     @facilities = @pppams_indicator_base_ref.current_facilities_hash
 
     respond_to do |format|
@@ -67,8 +67,17 @@ class PppamsIndicatorBaseRefsController < ApplicationController
   def update
     @pppams_indicator_base_ref = PppamsIndicatorBaseRef.find(params[:id])
 
-     respond_to do |format|
-      if @pppams_indicator_base_ref.update_attributes(params[:pppams_indicator_base_ref])
+    new_attributes = params[:pppams_indicator_base_ref]
+
+    #delete blank settings in pppams_indicators settings
+    new_indicators = new_attributes[:pppams_indicators_attributes].inject({}) do |result, indicator_settings|
+      indicator_settings[1] = indicator_settings[1].delete_if {|key, value| value.blank?}
+      result[indicator_settings[0]]=indicator_settings[1]
+      result
+    end
+    new_attributes[:pppams_indicators_attributes]=new_indicators
+    respond_to do |format|
+      if @pppams_indicator_base_ref.update_attributes(new_attributes)
         flash[:notice] = 'The Global Indicator was successfully updated.'
         format.html { redirect_to(edit_pppams_indicator_base_ref_path(@pppams_indicator_base_ref)) }
         format.xml  { head :ok }

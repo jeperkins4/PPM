@@ -89,7 +89,7 @@ function dropDownValue(integer, ending) {
   return jQuery('#pppams_indicator_base_ref_pppams_indicators_attributes_'+integer.toString()+'_'+ending).val();
 }
 function populate(value, ending) {
-  var aDropDownOptions = jQuery('table').find('select[id*=_'+ending+'] option');
+  var aDropDownOptions = jQuery('table.fill_downable').find('select[id*=_'+ending+'] option');
       aDropDownOptions.removeAttr('selected');
       aDropDownOptions.filter('[value='+value+']').attr('selected', 'selected');
 }

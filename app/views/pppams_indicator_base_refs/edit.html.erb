@@ -13,9 +13,10 @@
     <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, PppamsCategoryBaseRef.all.collect {|a| [a.name, a.id]}, :include_blank => true %>
   </p>
   <p>
+    <span style="display:block; float:right"><a class="fill_down">Fill down</a></span>
     <strong>Facilities Using this Global Indicator</strong>
   </p>
-  <table>
+  <table class="fill_downable">
     <thead>
       <tr>
         <th>Facility</th>
@@ -24,7 +25,6 @@
         <th>Frequency</th>
         <th>Start Month</th>
         <th>Becomes inactive on</th>
-        <th></th>
       </tr>
       </thead>
       <tbody>
@@ -40,7 +40,6 @@
             <td><%= frequency(facility, :editable => true) %></td>
             <td><%= start_month(facility, :editable => true) %></td>
             <td><%= inactive_on(facility, :editable => true) %></td>
-            <td><%= ( count == 0 ? "<a class=\"fill_down\">Fill down</a>" : '')%></td>
            </tr>
          <% count += 1; end %>
       </tbody>

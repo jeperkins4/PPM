@@ -6,6 +6,8 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
     { :select => sanitize_sql_array(["facilities.id,
                   facilities.facility,
                   indicators.inactive_on,
+                  indicators.frequency,
+                  indicators.start_month,
                   indicators.id AS indicator_id,
                   indicators.active_on,
                   indicators.updated_on,
@@ -41,6 +43,8 @@ class PppamsIndicatorBaseRef < ActiveRecord::Base
                      :name => record.facility,
                      :indicator_id => record.indicator_id,
                      :facility_id=> record.id,
+                     :frequency => record.frequency,
+                     :start_month => record.start_month,
                      :active_on => record.active_on,
                      :pppams_indicator_base_ref_id=> record.pppams_indicator_base_ref_id,
                      :inactive_on => record.inactive_on

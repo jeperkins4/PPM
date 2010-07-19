@@ -1,6 +1,6 @@
 <h2>Accountability Log</h2>
 <br />
-<% if ["Web Developer","Administrator"].include?(User.find(session[:user_id]).user_type.user_type) %>
+<% if ["Web Developer","Administrator", "Contract Manager"].include?(User.find(session[:user_id]).user_type.user_type) %>
 
   <%  form_for(:accountability_logs, :url =>{:action => 'set_admin_fy'}, :method => 'post') do |f| %>
     Please select the Fiscal Year you would like to manage: <%= f.select :fiscal_year, 

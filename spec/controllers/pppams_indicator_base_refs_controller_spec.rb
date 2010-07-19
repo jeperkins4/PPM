@@ -3,6 +3,16 @@ require 'spec_helper'
 describe PppamsIndicatorBaseRefsController do
   before do
     login_as_admin
+        @attributes_hash =   {'pppams_indicators_attributes' => 
+                              { '0' =>
+                                {
+                                 'facility_id' => '2',
+                                 'active_on(1i)' => '2008',
+                                 'active_on(2i)' => '3',
+                                 'active_on(3i)' => '4'
+                                }
+                              }
+                            }
   end
 
   def mock_pppams_indicator_base_ref(stubs={})
@@ -21,7 +31,7 @@ describe PppamsIndicatorBaseRefsController do
   describe "GET show" do
     it "assigns the requested pppams_indicator_base_ref as @pppams_indicator_base_ref" do
       mock_pppams_indicator_base_ref(:current_facilities_hash => true)
-      PppamsIndicatorBaseRef.stub!(:find).with("37").and_return(mock_pppams_indicator_base_ref)
+      PppamsIndicatorBaseRef.stub!(:find).and_return(mock_pppams_indicator_base_ref)
       get :show, :id => "37"
       assigns[:pppams_indicator_base_ref].should equal(mock_pppams_indicator_base_ref)
     end
@@ -98,26 +108,26 @@ describe PppamsIndicatorBaseRefsController do
     describe "with valid params" do
       it "updates the requested pppams_indicator_base_ref" do
         PppamsIndicatorBaseRef.should_receive(:find).with("37").and_return(mock_pppams_indicator_base_ref)
-        mock_pppams_indicator_base_ref.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :pppams_indicator_base_ref => {:these => 'params'}
+        mock_pppams_indicator_base_ref.should_receive(:update_attributes).with({'pppams_indicators_attributes' => {}}).and_return(true)
+        put :update, :id => "37", :pppams_indicator_base_ref => {'pppams_indicators_attributes' => {}}
       end
 
       it "assigns the requested pppams_indicator_base_ref as @pppams_indicator_base_ref" do
         PppamsIndicatorBaseRef.stub!(:find).and_return(mock_pppams_indicator_base_ref(:update_attributes => true))
-        put :update, :id => "1"
+        put :update, :id => "1", :pppams_indicator_base_ref => @attributes_hash
         assigns[:pppams_indicator_base_ref].should equal(mock_pppams_indicator_base_ref)
       end
 
       it "redirects to the pppams_indicator_base_ref edit path" do
         PppamsIndicatorBaseRef.stub!(:find).and_return(mock_pppams_indicator_base_ref(:update_attributes => true))
-        put :update, :id => "1"
+        put :update, :id => "1", :pppams_indicator_base_ref => @attributes_hash
         response.should redirect_to(edit_pppams_indicator_base_ref_url(mock_pppams_indicator_base_ref))
       end
 
       it "should create new pppams_indicator if the 'active_on' date is set, and update existing indicators if the date isn't set" do
         attributes_hash =   {'pppams_indicators_attributes' => 
                               { '0' =>
-                                {'id' => '',
+                                {
                                  'facility_id' => '2',
                                  'active_on(1i)' => '2008',
                                  'active_on(2i)' => '3',
@@ -132,27 +142,5 @@ describe PppamsIndicatorBaseRefsController do
         put :update, :id => '2', :pppams_indicator_base_ref => attributes_hash
       end
     end
-
-    describe "with invalid params" do
-      it "updates the requested pppams_indicator_base_ref" do
-        PppamsIndicatorBaseRef.should_receive(:find).with("37").and_return(mock_pppams_indicator_base_ref)
-        mock_pppams_indicator_base_ref.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :pppams_indicator_base_ref => {:these => 'params'}
-      end
-
-      it "assigns the pppams_indicator_base_ref as @pppams_indicator_base_ref" do
-        PppamsIndicatorBaseRef.stub!(:find).and_return(mock_pppams_indicator_base_ref(:update_attributes => false))
-        put :update, :id => "1"
-        assigns[:pppams_indicator_base_ref].should equal(mock_pppams_indicator_base_ref)
-      end
-
-      it "redirects to the 'edit' action" do
-        PppamsIndicatorBaseRef.stub!(:find).and_return(mock_pppams_indicator_base_ref(:update_attributes => false))
-        put :update, :id => "1"
-        response.should redirect_to(edit_pppams_indicator_base_ref_path(1))
-      end
-    end
-
   end
-
 end

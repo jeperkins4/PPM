@@ -43,6 +43,10 @@
   <%=h @facility.contract_monitor %>
 </p>
 
+<p>
+  <b>PPPAMS Started On:</b>
+  <%=h @facility.pppams_started_on.to_date%>
+</p>
 
 
 <%= link_to 'Edit', edit_facility_path(@facility) %> |

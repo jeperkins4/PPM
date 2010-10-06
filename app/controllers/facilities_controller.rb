@@ -54,7 +54,8 @@ class FacilitiesController < ApplicationController
   # PUT /facilities/1.xml
   def update
     @facility = Facility.find(params[:id])
-    
+    session[:facility] = @facility if session[:facility].id == @facility.id 
+
     respond_to do |format|
       if @facility.update_attributes(params[:facility])
         flash[:notice] = 'Facility was successfully updated.'

@@ -23,7 +23,6 @@ describe PppamsCategoryBaseRefsController do
       get :show, :id => "37"
       assigns[:pppams_category_base_ref].should equal(mock_pppams_category_base_ref)
     end
-    it "retrieves the category's indicators as well"
   end
 
   describe "GET new" do

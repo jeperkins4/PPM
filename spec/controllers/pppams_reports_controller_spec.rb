@@ -108,43 +108,15 @@ describe PppamsReportsController do
                        :start_date  => 'January 1, 2009',
                        :end_date    => 'March 30, 2009'}
     end
-    describe "when the user selects no facilities" do
-      it "should calculate the average score for all facilities"
-      it "should return one row with the average of all facilities"
-      it "should not return one summary for each facility"
-    end
     describe "when the user selects one facility" do
       before(:each) do
         @valid_params.merge!({:facility_filter => ['5']})
-      end
-      describe "with no categories or indicators" do
-        it "should show one line containing the facility's average score for that time period"
-      end
-      describe "with multiple categories" do
-        it "should calculate the average for each category"
-        it "should show the category's name"
-        it "should not show the category's indicator names"
-        it "should calculate the average percent for all categories"
       end
       describe "with one or multiple indicators" do
         it "should show the category name for that indicator" do
           process_report(@valid_params.merge({:indicator_filter => ['5'] }))
         end
-        it "should show the indicator's name"
-        it "should calculate the average for that one indicator"
-        it "should calculate the percent for that category name"
-        describe "and one or multiple categories" do
-          it "should show all indicators for the selected categories"
-        end
       end
     end
-  end
-  describe "'summary (percentage'"
-  describe "full reports" 
-  it "should use params from the old post, when provided" do
-      #process_report
-      #assigns[:use_params].should == {'report_request' => 'Value', 'pppams_report_filter' => ''}
-    #end
-    
   end
 end

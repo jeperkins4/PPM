@@ -4,14 +4,14 @@ class PppamsReviewsController < ApplicationController
   layout 'administration'
 
   def set_status_ar
-    @status_access = {'Web Developer' => ['', 'Review','Accepted'], 
-                      'Administrator' => ['', 'Review','Accepted'], 
-                      'SuperAdministrator' => ['', 'Review','Accepted','Locked'], 
+    @status_access = {'Web Developer' => ['', 'Review','Accepted'],
+                      'Administrator' => ['', 'Review','Accepted'],
+                      'SuperAdministrator' => ['', 'Review','Accepted','Locked'],
                       'Contract Manager' => [''] }
     $cur_user_type =  User.current_user.user_type.user_type
     @status_ar = @status_access[$cur_user_type]
   end
-  
+
   def index
     list
     render :action => 'list'
@@ -37,7 +37,7 @@ class PppamsReviewsController < ApplicationController
 
   def create
     working_date = session[:working_date]
-    if working_date.month != Time.now.month or  working_date.year != Time.now.year 
+    if working_date.month != Time.now.month or  working_date.year != Time.now.year
       params[:pppams_review][:created_on] = DateTime.parse(working_date.month.to_s + "/" + working_date.end_of_month.day.to_s + "/" + working_date.year.to_s + " 23:59:59")
       params[:pppams_review][:real_creation_date] = Time.now
     end
@@ -94,7 +94,7 @@ class PppamsReviewsController < ApplicationController
     PppamsReview.find(params[:id]).destroy
     redirect_to :controller => 'pppams_indicators'
   end
-  
+
   def trash_upload
     Upload.find(params[:upload]).destroy
     render :update do |page|

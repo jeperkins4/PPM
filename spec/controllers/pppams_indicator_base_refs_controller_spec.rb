@@ -25,7 +25,6 @@ describe PppamsIndicatorBaseRefsController do
       get :index
       assigns[:pppams_indicator_base_refs].should == [mock_pppams_indicator_base_ref]
     end
-    it 'should be capable of filtering data by question content or category'
   end
 
   describe "GET show" do

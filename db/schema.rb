@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101008131904) do
+ActiveRecord::Schema.define(:version => 20101011214130) do
 
   create_table "access_levels", :force => true do |t|
     t.string "access_level"
@@ -712,6 +712,7 @@ ActiveRecord::Schema.define(:version => 20101008131904) do
     t.integer "updated_by"
     t.text    "notes"
     t.string  "issue_number"
+    t.text    "conclusion"
   end
 
   create_table "notes", :force => true do |t|

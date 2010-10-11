@@ -3,7 +3,7 @@ class PppamsReview < ActiveRecord::Base
     include Userstamped
     
     belongs_to :pppams_indicator
-    has_many :uploads
+    has_many :uploads, :as => :uploadable
     validates_presence_of [:score, :observation_ref, :documentation_ref, :interview_ref]
     validates_presence_of [:notes], :message => "must be filled in if the score is not 7 or 8.", :if => :justify_score?
     belongs_to :created_by, :class_name => "User", :foreign_key => "created_by"

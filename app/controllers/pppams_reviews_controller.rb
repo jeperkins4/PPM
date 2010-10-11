@@ -48,11 +48,7 @@ class PppamsReviewsController < ApplicationController
     else
       @pppams_review = PppamsReview.new(params[:pppams_review])
       if @pppams_review.save
-        for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]])
-          this_upload.pppams_review_id= @pppams_review.id
-          this_upload.created_by= nil
-          this_upload.save
-        end
+        save_uploads(@pppams_review)
         flash[:notice] = 'PppamsReview was successfully created.'
         redirect_to :controller => 'pppams_indicators'
       else
@@ -77,11 +73,7 @@ class PppamsReviewsController < ApplicationController
   def update
     @pppams_review = PppamsReview.find(params[:id])
     if @pppams_review.update_attributes(params[:pppams_review])
-      for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]])
-        this_upload.pppams_review_id=@pppams_review.id
-        this_upload.created_by=nil
-        this_upload.save
-      end
+      save_uploads(@pppams_review)
       flash[:notice] = 'PppamsReview was successfully updated.'
       redirect_to :controller => 'pppams_indicators'
     else

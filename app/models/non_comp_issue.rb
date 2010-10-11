@@ -1,6 +1,7 @@
 class NonCompIssue < ActiveRecord::Base
     belongs_to :facility
     has_many :non_comp_follow_ups
+    has_many :uploads, :as => :uploadable
 
     validates_presence_of :discovery_date
     validates_presence_of :facility_id

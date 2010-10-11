@@ -112,7 +112,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clean_up_uploads
-    for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]])
+    for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND uploadable_id is null", session[:user_id]])
       this_upload.destroy
     end
   end
@@ -149,4 +149,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def save_uploads(polymorphic_parent)
+    for this_upload in Upload.find(:all,
+                                   :conditions => ["created_by = ? AND uploadable_id is null AND uploadable_type = '#{polymorphic_parent.class.name}'",
+                                     session[:user_id]]
+                                  )
+      this_upload.uploadable_id=polymorphic_parent.id
+      this_upload.created_by=nil
+      this_upload.save
+    end
+  end
 end

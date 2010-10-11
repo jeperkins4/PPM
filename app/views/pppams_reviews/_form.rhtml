@@ -36,7 +36,7 @@ $('trash').src = "/images/trash.jpg";
 <% for this_upload in @pppams_review.uploads %>
 <%= render :partial => "uploads/upload", :locals => {:upload => this_upload} %>
 <% end %>
-<% for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND pppams_review_id is null", session[:user_id]]) %>
+<% for this_upload in Upload.find(:all, :conditions => ["created_by = ? AND uploadable_id is null AND uploadable_type = 'PppamsReview'", session[:user_id]]) %>
 <%= render :partial => "uploads/upload", :locals => {:upload => this_upload} %>
 <% end %>
 </div>

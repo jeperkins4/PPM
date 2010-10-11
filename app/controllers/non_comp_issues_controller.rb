@@ -54,6 +54,7 @@ class NonCompIssuesController < ApplicationController
       @non_comp_issue = NonCompIssue.new(params[:non_comp_issue])
       respond_to do |format|
         if @non_comp_issue.save
+          save_uploads(@non_comp_issue)
           year_start = DateTime.parse("1/1/#{Time.now.year}").strftime("%Y-%m-%d 00:00:00")
           first_this_year = NonCompIssue.find(:first, :order => :created_on, :conditions => ["created_on > '#{year_start}' and facility_id = '#{@non_comp_issue.facility_id}'"])
           mynum = (@non_comp_issue.id - first_this_year.id) + 1
@@ -83,6 +84,7 @@ class NonCompIssuesController < ApplicationController
     
     respond_to do |format|
       if @non_comp_issue.update_attributes(params[:non_comp_issue])
+        save_uploads(@non_comp_issue)
         flash[:notice] = 'NonCompIssue was successfully updated.'
         format.html { redirect_to non_comp_issue_url(@non_comp_issue) }
         format.xml  { head :ok }

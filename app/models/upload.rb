@@ -1,5 +1,5 @@
 class Upload < ActiveRecord::Base
-  belongs_to :pppams_reference
+  belongs_to :uploadable, :polymorphic => true
    
   attr_accessor :upload_data
    

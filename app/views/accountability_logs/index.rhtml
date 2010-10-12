@@ -23,6 +23,7 @@
   <%= text_field_tag :month, @month, :style => 'display:none;' %>
   <% @categories.each do |category| -%>
     <h3><b><%= category.title %></b></h3>
+    <p><%= category.description %></p>
     <table>
 
       <% if @month.to_i >= 7 then %>

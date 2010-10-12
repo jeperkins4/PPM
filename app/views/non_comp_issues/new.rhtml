@@ -6,4 +6,14 @@
  <%= render :partial => 'form', :locals => {:f => f} %>
 <% end %>
 
+<div id='file_upload_select' style="top: 12em; left: 380px; position: absolute; z-index: 1000">
+  <% form_tag ({:action => 'uploadFile', :controller => 'uploads'}), :multipart => true, :target => 'RSIFrame', :name => 'uploadform', :id => 'uploadform' do %>
+    <p class='no-top'><%= file_field 'upload', 'datafile', :class => 'hidden_file', :onchange => "javascript: forms.uploadform.submit()" %></p>
+    <p><%= hidden_field_tag 'uploadable_type', 'NonCompIssue'%></p>
+  <% end %> 
+</div>
+
+
+<iframe id="RSIFrame" name="RSIFrame" style="width:0px; height:0px; border: 0px" src="/blank.html"></iframe> 
+
 <%= link_to 'Back', non_comp_issues_path %>

@@ -91,3 +91,11 @@
   </tr>
 </table><br />
 
+
+  <%= drop_receiving_element('trash', :accept => 'dragable_file', 
+                                      :with => "'upload=' + (element.id.split('_').last())", 
+                                      :url => {:action=>:trash_upload}, 
+                                      :before => "Element.hide(element)", 
+                                      :loading => "fill_trash()", 
+                                      :complete => "empty_trash()")%>
+

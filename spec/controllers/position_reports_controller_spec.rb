@@ -36,7 +36,7 @@ describe PositionReportsController do
       controller.instance_variable_set(:@results, 'vacancy')
     end
 
-    it "should find deductable position numbers that are active." do
+    it "finds deductable position numbers that are active." do
       there_is_a_deductable_position_number
 
       #User queries for a date AFTER pn creation date
@@ -50,7 +50,7 @@ describe PositionReportsController do
       controller.instance_variable_get(:@deductable_position_numbers).should have(1).records
     end
 
-    it "should find position numbers that were active at the time being queried" do
+    it "finds position numbers that were active at the time being queried" do
        there_is_a_deductable_position_number
        position_number_was_rendered_inactive_in_May
 

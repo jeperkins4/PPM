@@ -12,7 +12,7 @@ Rails::Initializer.run do |config|
   config.active_record.observers = :user_observer
   config.gem 'mislav-will_paginate', :version => '~> 2.3.11', :lib => 'will_paginate', 
     :source => 'http://gems.github.com'
-  config.gem "calendar_date_select"
+  config.gem "calendar_date_select", :version => '1.16.1'
   config.i18n.default_locale = :en
 end
 

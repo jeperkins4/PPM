@@ -4,6 +4,7 @@ config/database.yml
 *.log
 *.pid
 tmp/**/*
+tmp/*
 .DS\_Store
 db/cstore/**
 doc/api
@@ -31,3 +32,5 @@ all.js
 *.directory
 Session.vim
 TAGS
+public/data/**/*
+public/data/*

@@ -4,6 +4,7 @@ config/database.yml
 *.log
 *.pid
 tmp/**/*
+tmp/*
 .DS\_Store
 db/cstore/**
 doc/api

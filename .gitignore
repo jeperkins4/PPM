@@ -31,3 +31,5 @@ all.js
 *.directory
 Session.vim
 TAGS
+public/data/**/*
+public/data/*

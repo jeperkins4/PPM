@@ -86,6 +86,13 @@ class PositionReportsController < ApplicationController
     end
 
     @not_assigned_position_numbers.each do |napn|
+      @validation_days = (@criteria_date.at_end_of_month.to_date - canh.created_on.to_date-
+          canh.position_number.position.position_type.deduction_days)
+      if @validation_days >= Time.days_in_month(@criteria_date.month, @criteria_date.year) or @validation_days > (@criteria_date.at_end_of_month.to_date - canh.created_on.to_date) then
+        @validation_days = @criteria_date.at_end_of_month.to_date - canh.created_on.to_date
+      else
+        @validation_days = @validation_days - 1
+      end
       @report += [{
           :position_type=> napn.position.position_type.position_type,
           :position_number => napn.position_num,
@@ -111,6 +118,13 @@ class PositionReportsController < ApplicationController
 
     @current_assigned_no_history.each do |canh|
 #      debugger if canh.position_num == '0084'
+      @validation_days = (canh.start_date.to_date - canh.created_on.to_date-
+          canh.position_number.position.position_type.deduction_days)
+      if @validation_days >= Time.days_in_month(@criteria_date.month, @criteria_date.year) or @validation_days > (canh.start_date.to_date - @criteria_date.at_beginning_of_month.to_date) then
+        @validation_days = canh.start_date.to_date - @criteria_date.at_beginning_of_month.to_date
+      else
+        @validation_days = @validation_days - 1
+      end
       @report += [{
           :position_type=> canh.position_number.position.position_type.position_type,
           :position_number => canh.position_number.position_num,
@@ -126,7 +140,7 @@ class PositionReportsController < ApplicationController
             (canh.start_date.to_date - canh.created_on.to_date - canh.position_number.position.position_type.deduction_days - 1)),
           :special_position_type => canh.position_number.position_type,
           :date_waiver_approval => canh.position_number.waiver_approval_date,
-          :validation_days => (canh.start_date.to_date - canh.created_on.to_date - canh.position_number.position.position_type.deduction_days - 1)
+          :validation_days => @validation_days
         }]
     end
 

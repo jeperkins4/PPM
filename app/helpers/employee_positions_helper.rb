@@ -1,8 +1,8 @@
 module EmployeePositionsHelper
   def select_position
-    if session[:facility] 
-      options = session[:facility].positions.find(:all, :order => :title).collect {|pn| [ pn.title, pn.id ] } 
-    else   
+    if session[:facility]
+      options = session[:facility].positions.find(:all, :order => :title).collect {|pn| [ pn.title, pn.id ] }
+    else
       options = ''
     end
 
@@ -13,7 +13,7 @@ module EmployeePositionsHelper
   def select_position_number(form_object)
     if session[:position]
       available_position_numbers = session[:position].position_numbers.
-        find(:all,:conditions=>['id not in (?)', @assigned_numbers],:order => :position_num).
+        find(:all,:conditions=>['(id not in (?) or id is null)', @assigned_numbers],:order => :position_num).
         collect {|pn| [ pn.position_num, pn.id ] }
     else
       available_position_numbers = ''

@@ -40,7 +40,7 @@ class EmployeePositionsController < ApplicationController
 
   # GET /employee_positions/new
   def new
-    @assigned_numbers = EmployeePosition.find(:all, :select=>'position_number_id as id' )
+    @assigned_numbers = EmployeePosition.find(:all, :select=>'position_number_id as id', :conditions => 'employee_id is not null' )
     @assigned_employees = EmployeePosition.find(:all, :select=>'employee_id as id')
     @employee_position = EmployeePosition.new
   end

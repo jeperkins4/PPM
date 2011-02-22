@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include ExceptionNotifiable
 
   before_filter :set_page
-  before_filter :set_facility, :except => ''  
+  before_filter :set_facility, :except => ''
 
   #AJR Added switch statement to proceed with updates to production while PPPAMS module is still being tested.
   #This code will automatically start loading when the new module is uploaded to production
@@ -15,8 +15,8 @@ class ApplicationController < ActionController::Base
       User.current_user = User.find_by_id(c.session[:user_id])
       NotificationReceiver.request_env = c.request.env
     end
-    after_filter :clean_up_uploads, :except => ['update', 'create', 'trash_upload', 'uploadFile']  
-    include DebugHelper    
+    after_filter :clean_up_uploads, :except => ['update', 'create', 'trash_upload', 'uploadFile']
+    include DebugHelper
     $LOAD_PATH.unshift 'vendor/plugins/responds_to_parent/lib'
     $LOAD_PATH.unshift 'vendor/plugins/orderedhash/lib'
     $LOAD_PATH.unshift 'vendor/plugins/fastercsv/lib'
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
     $LOAD_PATH.unshift 'vendor/plugins/multiple_select/lib'
     require 'custom_funcs'
   end
-    
+
   def admin_authenticate
     if session[:user_id]
       @user = User.find_by_id(session[:user_id])
@@ -37,22 +37,22 @@ class ApplicationController < ActionController::Base
       redirect_to(:controller => "login", :action => "index")
     end
   end
-  
+
   def authenticate
     unless @user = User.find_by_id(session[:user_id])
       flash[:notice]="Please log in."
       redirect_to(:controller => "login", :action => "index")
     end
   end
-  
-  def set_facility        
+
+  def set_facility
     if ["reports", "non_comp_issues", "pppams_issues"].index(params[:controller]).nil? && session[:facility].class.to_s == 'Junk'
-      session[:facility] = '' 
-      params[:set_facility] = {:facility_id => ''} if params[:set_facility].nil?      
-    end    
-    
+      session[:facility] = ''
+      params[:set_facility] = {:facility_id => ''} if params[:set_facility].nil?
+    end
+
     if session[:access_level] == 'Administrator'
-      unless params[:set_facility] 
+      unless params[:set_facility]
         unless session[:facility]
           @page_check = 0
           @page_check2 = 0
@@ -64,7 +64,6 @@ class ApplicationController < ActionController::Base
             'user_types',
             'login',
             'incident_types',
-            'position_hists',
             'position_types',
             'incident_classes',
             'reset_password',
@@ -79,7 +78,7 @@ class ApplicationController < ActionController::Base
                 if page2.to_s == page_check
                   @page_check += 1
                 end
-              end 
+              end
             end
           end
 
@@ -98,9 +97,9 @@ class ApplicationController < ActionController::Base
           session[:facility] = nil
           ask_for_a_facility
         end
-      end      
-    end      
-  end 
+      end
+    end
+  end
 
   def ask_for_a_facility
     render :text => "Please select a facility from the drop down above to continue.", :layout => true
@@ -144,7 +143,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_facility
-    unless session[:facility] 
+    unless session[:facility]
       ask_for_a_facility and return
     end
   end

@@ -57,7 +57,7 @@ class UploadsController < ApplicationController
   def uploadFile
     @upload = Upload.new(:created_by => session[:user_id], :uploadable_type => params[:uploadable_type])
     @upload.upload_data= params[:upload]
-    @upload.uploadable_type= params[:upload][:uploadable_type]
+    @upload.uploadable_type= params[:uploadable_type]
     @upload.save
     responds_to_parent do
       render :update do |page|

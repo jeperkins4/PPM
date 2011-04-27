@@ -15,7 +15,7 @@
 
 <div id='file_upload_select'>
 <% form_tag ({:action => 'uploadFile', :controller => 'uploads'}), :multipart => true, :target => 'RSIFrame', :name => 'uploadform', :id => 'uploadform' do %>
-  <%=hidden_field_tag 'upload[uploadable_type]', 'PppamsReview' %>
+  <%=hidden_field_tag 'uploadable_type', 'PppamsReview' %>
 <p class='no-top'><%= file_field 'upload', 'datafile', :class => 'hidden_file', :onchange => "javascript: forms.uploadform.submit()" %></p>
 <% end %> 
 </div>

@@ -45,7 +45,7 @@ Facility.blueprint do
 end
 PositionHist.blueprint do
   position { Position.make }
-  salary   { Faker.numerify '######.##'}
+  salary   { Faker::Base.numerify '######.##'}
   create_date {(17..18).to_a.rand.months.ago}
 end
 IncidentType.blueprint do
@@ -58,7 +58,7 @@ Incident.blueprint do
   incident_type {IncidentType.make}
   incident_class {IncidentClass.make}
   action_type {ActionType.make}
-  mins { Faker.numerify('#######')}
+  mins { Faker::Base.numerify('#######')}
   incident_date {(12..16).to_a.rand.months.ago}
   reported_date {(10..11).to_a.rand.months.ago}
   facility_investigation_complete_date {(7..9).to_a.rand.months.ago}
@@ -88,13 +88,13 @@ end
 
 Position.blueprint do
   title          { %w{WARDEN MANAGER DENTIST}.rand }
-  salary         { Faker.numerify((5..8).to_a.rand.times.map {|a| '#'}.join('')+'.##')}
+  salary         { Faker::Base.numerify((5..8).to_a.rand.times.map {|a| '#'}.join('')+'.##')}
   description    
   position_type       { PositionType.make }
 end
 
 PositionNumber.blueprint do
-  position_num { Faker.numerify('#######')}
+  position_num { Faker::Base.numerify('#######')}
   position { Position.make}
   position_type { %w{none iwtf contract}.rand}
 end
@@ -125,43 +125,22 @@ PositionType.blueprint(:with_facility) do
   facility       { Facility.make }
 end
 
-AccessLevel.blueprint do
-  id { 2 }
-  access_level { Sham.word }
-end
-
-AccessLevel.blueprint(:administrator) do
-  id { 1 }
-  access_level { 'Administrator' }
-  description  {'Replace Text'}
-end
-
-UserType.blueprint do
-  id { 2 }
-  user_type {'some type'}
-  access_level { AccessLevel.make }
-end
-UserType.blueprint(:administrator) do
-  user_type    { 'Administrator'}
-  description  { 'Full rights'}
-  access_level { AccessLevel.make(:administrator)}
-end
 
 User.blueprint do
-  name { 'aoeu'}#Sham.user_name}
+  name { 'aoeu'}
   email
   firstname {Sham.first_name}
   lastname  {Sham.last_name }
   password  { 'faker' }
   password_confirmation { 'faker' }
-  user_type { UserType.make }
+  user_type { UserType.contract_manager}
 end
 
 User.blueprint(:administrator) do
-  name { 'aoeuao'}#Sham.user_name}
+  name { 'aoeuao'}
   password  { 'faker' }
   password_confirmation { password }
-  user_type { UserType.make(:administrator) }
+  user_type { UserType.administrator }
   facility { Facility.make }
 end
 
@@ -169,7 +148,7 @@ PppamsCategoryGroup.blueprint do
   name { Faker::Lorem.words(3) }
 end
 Upload.blueprint do
-  size { Faker.numerify('######') }
+  size { Faker::Base.numerify('######') }
   file_type { %w{application/pdf application/vnd.ms-excel image/pjpeg application/octet-stream application/msword text/html application/vnd.ms-powerpoint application/vnd.openxmlformats-officedocument.wordprocessingml.document image/tiff text/plain application/vnd.openxmlformats-officedocument.spreadsheetml.sheet}.rand}
   name { Faker::Lorem.words(3)}
 end

@@ -9,7 +9,7 @@ describe "users/show" do
                        :name => 'al bundy',
                        :inactive_on => @time,
                        :inactive_comment => 'hiho',
-                       :user_type => UserType.make,
+                       :user_type => UserType.contract_manager,
                        :facility => Facility.make)
     assigns[:user] = @user
   end

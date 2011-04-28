@@ -3,10 +3,10 @@
 # implementing steps and scenarios will have to wait until the next
 # task.
 
-Given /^I am a logged in facility manager for the facility "([^\"]*)"$/ do |facility|
+Given /^I am a logged in facility manager$/ do
   u = User.make(:administrator, {:password => 'aaaa', 
                 :password_confirmation => 'aaaa',
-                :facility => Facility.make(:facility => facility)})
+                :facility => Facility.make})
   visit path_to 'the homepage'
   fill_in :name, :with => u.name
   fill_in :password, :with => 'aaaa'

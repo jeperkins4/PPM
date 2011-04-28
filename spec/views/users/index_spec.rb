@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 describe "users_index" do
   it 'should show edit functionality only for active users' do
     facility = Facility.make
-    user_type = UserType.make
+    user_type = UserType.contract_manager
     assigns[:users] = [stub_model(User, :firstname => 'al',
                                       :inactive_on => nil,
                                       :user_type => user_type,

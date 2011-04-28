@@ -6,7 +6,7 @@ describe "users/edit" do
                        :firstname => 'al',
                        :lastname => 'bundy',
                        :name => 'al bundy',
-                       :user_type => UserType.make,
+                       :user_type => UserType.contract_manager,
                        :facility => Facility.make)
     assigns[:user] = @user
   end

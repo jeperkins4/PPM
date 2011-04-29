@@ -3,6 +3,10 @@
 # implementing steps and scenarios will have to wait until the next
 # task.
 
+def review
+  @review ||= PppamsReview.make(:pppams_indicator => @indicator)
+end
+
 Given /^I am a logged in contract manager$/ do
   @facility = Facility.make(:pppams_started_on => Date.today.beginning_of_year)
   u = User.make(:contract_manager, {:password => 'aaaa', 
@@ -55,4 +59,8 @@ Given /the indicator "([^"]*)" is due this month$/ do |indicator_name|
                                    :start_month => 1,
                                    :frequency => 12,
                                    :active_on => Date.today.beginning_of_year)
+end
+
+Given /the review's "([^"]*)" is "([^"]*)"/ do |property, value|
+  review.update_attribute(property.to_sym, value)
 end

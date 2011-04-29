@@ -45,3 +45,19 @@ Then /^(?:|I )should not see the label "([^"]*)"$/ do |text|
     assert page.has_no_css('label', :text => text, :visible => true)
   end
 end
+
+Then /^(?:|I )should see the link "([^"]*)"$/ do |text|
+  if page.respond_to? :should
+    page.should have_link(text, :visible => true)
+  else
+    assert page.has_link(text, :visible => true)
+  end
+end
+
+Then /^(?:|I )should not see the link "([^"]*)"$/ do |text|
+  if page.respond_to? :should
+    page.should have_no_link(text, :visible => true)
+  else
+    assert page.has_no_link(text, :visible => true)
+  end
+end

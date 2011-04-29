@@ -20,8 +20,8 @@ Feature: A contract manager can manage indicator reviews
       | Notes             | And these are my notes                 |
     And   I press "Create"
     Then  I should see "Pppams Review was successfully created"
+    And   I should see the link "Edit the review for this indicator"
     When I follow "Edit the review for this indicator"
-    Then show me the page
     Then  I should see "Editing PPPAMS Review"
     And   I should see "Some observation Reference"
     And   I fill in the following:
@@ -29,8 +29,12 @@ Feature: A contract manager can manage indicator reviews
     And   I select "Non-Compliant" from "Score"
     And   I press "Save"
     Then  I should see "Pppams Review was successfully updated"
-  @wip
+
   Scenario: I cannot edit a locked indicator review
+    Given the review's "status" is "Locked"
+    When  I go to the PPPAMS Home page
+    Then  I should not see the link "Edit the review for this indicator"
 
   @wip
   Scenario: I can edit an indicator review for old indicators (and they show up as 1 thru 10)
+

@@ -49,7 +49,7 @@ class PppamsReviewsController < ApplicationController
       @pppams_review = PppamsReview.new(params[:pppams_review])
       if @pppams_review.save
         save_uploads(@pppams_review)
-        flash[:notice] = 'PppamsReview was successfully created.'
+        flash[:notice] = 'Pppams Review was successfully created.'
         redirect_to :controller => 'pppams_indicators'
       else
         @pppams_indicator = @pppams_review.pppams_indicator

@@ -13,8 +13,13 @@ Feature: A contract manager can manage indicator reviews
     And   I follow "Create a new review for this indicator"
     Then  I should see "New PPPAMS Review"
     When  I select "Compliant" from "Score"
+    And   I fill in the following:
+      | Observation ref   | Some observation Reference             |
+      | Documentation ref | Some documentation that refers to this |
+      | Interview ref     | I talked to Joe                        |
+      | Notes             | And these are my notes                 |
     And   I press "Create"
-    Then  I should see "errors prohibited"
+    Then  I should see "Pppams Review was successfully created"
 
   @wip
   Scenario: I can edit an indicator review

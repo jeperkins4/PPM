@@ -12,8 +12,8 @@ Feature: A contract manager can manage indicator reviews
     When  I go to the PPPAMS Home page
     And   I follow "Create a new review for this indicator"
     Then  I should see "New PPPAMS Review"
-    When  I select "Compliant" from "score"
-    And   I press "Save"
+    When  I select "Compliant" from "Score"
+    And   I press "Create"
     Then  I should see "errors prohibited"
 
   @wip

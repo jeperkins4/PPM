@@ -47,15 +47,9 @@ $('trash').src = "/images/trash.jpg";
 <p><label for="pppams_review_score">Score</label><br/>
 <%= select( "pppams_review", 
             "score", 
-            [ ['',''],
-              ['0 - Non-performance', 0],
-              ['4 - Partial Performance',4],
-              ['5',5],
-              ['6',6],
-              ['7 - Satisfactory',7],
-              ['8',8],
-              ['9',9],
-              ['10 - Commendable',10]
+            [ ['Compliant',1],
+              ['Non-Compliant', 0],
+              ['Not Applicable','']
             ], {}) %>
 </p>
 

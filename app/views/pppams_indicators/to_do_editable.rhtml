@@ -6,7 +6,10 @@
 <% session[:working_date] = time %>
 
 <form name='year_selector' id='year_selector'>
-<p>Live indicators this month (<%= time.strftime('%b') %> <%= select_year(Date.today, :field_name => 'selectedyear', :start_year => PppamsReview.earliest, :end_year => PppamsReview.latest ) %>): <%= currents.length %></p>
+  <p><label for='date_selectedyear'>Live indicators this month</label> (<%= time.strftime('%b') %> <%= select_year(Date.today,
+                                                                            :field_name => 'selectedyear',
+                                                                            :start_year => PppamsReview.earliest,
+                                                                            :end_year => PppamsReview.latest ) %>): <%= currents.length %></p>
 </form>
 
 <table>

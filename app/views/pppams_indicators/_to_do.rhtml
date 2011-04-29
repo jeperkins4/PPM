@@ -28,7 +28,7 @@
   <% if current_review.nil? %>
     <td><%= link_to image_tag("review_icon.png",
                               :border=>0,
-                              :title => "Create a new review for this indicator"),
+                              :alt   => "Create a new review for this indicator"),
                     {:controller => 'pppams_reviews',
                       :action => 'new',
                       :pppams_indicator_id => pppams_indicator,
@@ -36,11 +36,19 @@
                     :title => "Create a new review for this indicator"
                               %></td>
   <% else %>
-  <td><%if current_review.can_edit? %><%= link_to image_tag("edit_review_icon.png", :border=>0, :title => "Edit the review for this indicator"), :controller => 'pppams_reviews', :action => 'edit', :id => current_review %><% end %></td>
+    <td><%if current_review.can_edit? %><%= link_to image_tag("edit_review_icon.png",
+                                                                :border=>0,
+                                                                :alt=> "Edit the review for this indicator"),
+                                                  {:controller => 'pppams_reviews', :action => 'edit', :id => current_review},
+                                                  :title => "Edit the review for this indicator" %><% end %></td>
   <% end %>
   <% end %>
 
-  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0, :title => "Edit the way this indicator appears for this facility"), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>
+  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png",
+                                                      :border=>0,
+                                                      :alt   => "Edit the way this indicator appears for this facility"),
+                                          {:controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator},
+                                          :title => "Edit the way this indicator appears for this facility"  %></td>
   <td><%= link_to image_tag("delete_icon.png", :border=>0, :title => "Remove this indicator for this facility"), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
     <td><%=h pppams_indicator.id %></td>
     <td><%=h pppams_indicator.question %></td>

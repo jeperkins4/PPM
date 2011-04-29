@@ -74,7 +74,7 @@ class PppamsReviewsController < ApplicationController
     @pppams_review = PppamsReview.find(params[:id])
     if @pppams_review.update_attributes(params[:pppams_review])
       save_uploads(@pppams_review)
-      flash[:notice] = 'PppamsReview was successfully updated.'
+      flash[:notice] = 'Pppams Review was successfully updated.'
       redirect_to :controller => 'pppams_indicators'
     else
       @pppams_indicator = @pppams_review.pppams_indicator

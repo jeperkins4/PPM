@@ -6,7 +6,7 @@ Feature: A Facility manager can generate indicator reports for any timeframe.
   reproduce old reports.
 
   Background:
-    Given I am a logged in manager for facility "Prison Camp"
+    Given I am a logged in contract manager
 
   @wip
   Scenario: I can create a report for a date range that occured before the conversion.

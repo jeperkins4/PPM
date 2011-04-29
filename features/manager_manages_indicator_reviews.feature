@@ -1,22 +1,18 @@
-Feature: A Facility manager can manage indicator reviews
-  As a Facility's manager
-  I want to create, edit, and delete  indicator reviews
+Feature: A contract manager can manage indicator reviews
+  As a contract manager
+  I want to create, edit, and delete indicator reviews
   So that my facility will be charged and penalized for non-compliance
   in accordance with our contracts.
 
   Background:
-    Given I am a logged in facility manager
+    Given I am a logged in contract manager
     And   the indicator "Clothes and Amenities" is due this month
 
   Scenario: I can create an indicator review
     When  I go to the PPPAMS Home page
     And   I follow "Create a new review for this indicator"
-    Then show me the page
     Then  I should see "New PPPAMS Review"
-    And   I should see "Not Applicable"
-    And   I should see "Non-Compliant"
-    And   I should see "Compliant"
-    When  I select "Compliant"
+    When  I select "Compliant" from "score"
     And   I press "Save"
     Then  I should see "errors prohibited"
 

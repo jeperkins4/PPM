@@ -3,7 +3,7 @@
 # implementing steps and scenarios will have to wait until the next
 # task.
 
-Given /^I am a logged in facility manager$/ do
+Given /^I am a logged in contract manager$/ do
   @facility = Facility.make(:pppams_started_on => Date.today.beginning_of_year)
   u = User.make(:contract_manager, {:password => 'aaaa', 
                 :password_confirmation => 'aaaa',
@@ -12,7 +12,6 @@ Given /^I am a logged in facility manager$/ do
   fill_in 'name', :with => u.name
   fill_in 'password', :with => 'aaaa'
   click_button 'Login'
-  #select(@facility.facility, :from => 'set_facility_facility_id')
 end
 
 Given /^the facility has a position "([^\"]*)"$/ do |title|

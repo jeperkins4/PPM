@@ -16,6 +16,8 @@ module NavigationHelpers
       '/employee_positions'
     when "the employee position history page"
       '/employee_position_hists'
+    when "the PPPAMS Home page"
+      '/pppams_indicators'
 
     else
       raise "Can't find mapping from \"#{page_name}\" to a path.\n" +

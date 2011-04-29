@@ -5,12 +5,12 @@ Feature: A Facility manager can manage indicator reviews
   in accordance with our contracts.
 
   Background:
-    Given I am a logged in manager for facility "Prison Camp"
-    And   the inidicator "Clothes and Amenities" is due this month
+    Given I am a logged in facility manager
+    And   the indicator "Clothes and Amenities" is due this month
 
   Scenario: I can create an indicator review
     When  I go to the PPPAMS Home page
-    And   I press "Create a new review for this indicator"
+    And   I follow "Create a new review for this indicator"
     Then  I should see "Editing PPPAM Review"
     And   I should see "Not Applicable"
     And   I should see "Non-Compliant"

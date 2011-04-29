@@ -4,13 +4,15 @@
 # task.
 
 Given /^I am a logged in facility manager$/ do
-  u = User.make(:administrator, {:password => 'aaaa', 
+  @facility = Facility.make(:pppams_started_on => Date.today.beginning_of_year)
+  u = User.make(:contract_manager, {:password => 'aaaa', 
                 :password_confirmation => 'aaaa',
-                :facility => Facility.make})
+                :facility => @facility})
   visit path_to 'the homepage'
   fill_in :name, :with => u.name
   fill_in :password, :with => 'aaaa'
   click_button 'Login'
+  #select(@facility.facility, :from => 'set_facility_facility_id')
 end
 
 Given /^the facility has a position "([^\"]*)"$/ do |title|
@@ -47,14 +49,12 @@ Given /^the facility has an inactive position_number "([^\"]*)"$/ do |position_n
   position_number.update_attribute(:active_flag, false)
 end
 
-When /^I follow edit "([^\"]*)"$/ do |arg1|
-  pending
-end
 
-When /^I click "([^\"]*)"$/ do |arg1|
-  pending
-end
-
-When /^I submit the form$/ do
-  pending
+Given /the indicator "([^"]*)" is due this month$/ do |indicator_name|
+  @indicator= PppamsIndicator.make(:facility => @facility, 
+                                   :pppams_indicator_base_ref => PppamsIndicatorBaseRef.make(:question => indicator_name),
+                                   :start_month => 1,
+                                   :frequency => 12,
+                                   :active_on => Date.today.beginning_of_year)
+  puts "My indicator: #{@indicator.facility.facility}"
 end

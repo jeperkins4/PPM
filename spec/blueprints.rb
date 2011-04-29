@@ -138,9 +138,13 @@ end
 
 User.blueprint(:administrator) do
   name { 'aoeuao'}
-  password  { 'faker' }
-  password_confirmation { password }
   user_type { UserType.administrator }
+  facility { Facility.make }
+end
+
+User.blueprint(:contract_manager) do
+  name { 'aoeuao3'}
+  user_type { UserType.contract_manager}
   facility { Facility.make }
 end
 

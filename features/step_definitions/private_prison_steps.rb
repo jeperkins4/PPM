@@ -9,8 +9,8 @@ Given /^I am a logged in facility manager$/ do
                 :password_confirmation => 'aaaa',
                 :facility => @facility})
   visit path_to 'the homepage'
-  fill_in :name, :with => u.name
-  fill_in :password, :with => 'aaaa'
+  fill_in 'name', :with => u.name
+  fill_in 'password', :with => 'aaaa'
   click_button 'Login'
   #select(@facility.facility, :from => 'set_facility_facility_id')
 end
@@ -56,5 +56,4 @@ Given /the indicator "([^"]*)" is due this month$/ do |indicator_name|
                                    :start_month => 1,
                                    :frequency => 12,
                                    :active_on => Date.today.beginning_of_year)
-  puts "My indicator: #{@indicator.facility.facility}"
 end

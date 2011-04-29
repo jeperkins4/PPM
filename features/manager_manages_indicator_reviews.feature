@@ -11,7 +11,8 @@ Feature: A Facility manager can manage indicator reviews
   Scenario: I can create an indicator review
     When  I go to the PPPAMS Home page
     And   I follow "Create a new review for this indicator"
-    Then  I should see "Editing PPPAM Review"
+    Then show me the page
+    Then  I should see "New PPPAMS Review"
     And   I should see "Not Applicable"
     And   I should see "Non-Compliant"
     And   I should see "Compliant"

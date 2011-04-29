@@ -8,22 +8,26 @@ require File.expand_path(File.dirname(__FILE__) + "/../../spec/blueprints")
 require 'cucumber/rails/world'
 require 'capybara'
 require 'capybara/dsl'
+require 'capybara/rails'
+require 'capybara/cucumber'
+require 'capybara/session'
 require 'cucumber/formatter/unicode'
 require 'cucumber/rails/rspec'
 require 'database_cleaner'
 require 'database_cleaner/cucumber'
 
-#Capybara.javascript_driver= :webkit
+Capybara.default_selector = :css
+Capybara.javascript_driver= :webkit
 
 Cucumber::Rails::World.use_transactional_fixtures = false
 
 ActionController::Base.allow_rescue = false
 
-Webrat.configure do |config|
-  include AuthenticatedTestHelper
-  config.mode = :rails
-  config.open_error_files = false # Set to true if you want error pages to pop up in the browser
-end
+#Webrat.configure do |config|
+#  include AuthenticatedTestHelper
+#  config.mode = :rails
+#  config.open_error_files = false # Set to true if you want error pages to pop up in the browser
+#end
 
 begin
   DatabaseCleaner.strategy = (ENV['SELENIUM'] == 'true') ? :truncation : :transaction

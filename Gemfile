@@ -13,6 +13,7 @@ group :development, :test, :cucumber do
   gem 'rails-footnotes'
   gem 'faker'
   gem 'cucumber-rails', '= 0.3.2'
+  gem 'launchy'
   gem 'capybara'
   gem 'capybara-webkit'
   gem 'headless'
@@ -22,5 +23,4 @@ group :development, :test, :cucumber do
   gem 'rspec-rails', "~> 1.3.3"
   gem 'ruby-debug'
   gem 'spork', '~> 0.8.4'
-  gem 'webrat', '~> 0.7.2'
 end

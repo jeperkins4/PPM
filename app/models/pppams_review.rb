@@ -1,7 +1,27 @@
 class PppamsReview < ActiveRecord::Base
   
     include Userstamped
-    
+
+    NEW_SCORE_CUTOFF= Date.parse(APP_CONFIG['new_review_score_cutoff']).to_date
+
+    OLD_SCORES= [
+                  ['',''],
+                  ['0 - Non-performance', 0],
+                  ['4 - Partial Performance',4],
+                  ['5',5],
+                  ['6',6],
+                  ['7 - Satisfactory',7],
+                  ['8',8],
+                  ['9',9],
+                  ['10 - Commendable',10]
+                ]
+
+    NEW_SCORES=[
+                 ['Compliant',1],
+                 ['Non-Compliant', 0],
+                 ['Not Applicable','']
+               ]
+
     belongs_to :pppams_indicator
     has_many :uploads, :as => :uploadable
     validates_presence_of [:score, :observation_ref, :documentation_ref, :interview_ref]
@@ -20,6 +40,10 @@ class PppamsReview < ActiveRecord::Base
 
     def self.latest
       PppamsReview.find(:all).nil? ? PppamsReview.find(:first, :order =>  "created_on DESC").created_on.year : Time.now.year
+    end
+
+    def score_options
+      created_on > NEW_SCORE_CUTOFF ? NEW_SCORES : OLD_SCORES
     end
 
     def generate_status_notifications

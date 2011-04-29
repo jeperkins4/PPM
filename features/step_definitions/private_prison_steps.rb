@@ -8,7 +8,7 @@ def review
 end
 
 Given /^I am a logged in contract manager$/ do
-  @facility = Facility.make(:pppams_started_on => Date.today.beginning_of_year)
+  @facility = Facility.make(:pppams_started_on => Date.new(2010,1,1))
   u = User.make(:contract_manager, {:password => 'aaaa', 
                 :password_confirmation => 'aaaa',
                 :facility => @facility})
@@ -58,7 +58,7 @@ Given /the indicator "([^"]*)" is due this month$/ do |indicator_name|
                                    :pppams_indicator_base_ref => PppamsIndicatorBaseRef.make(:question => indicator_name),
                                    :start_month => 1,
                                    :frequency => 12,
-                                   :active_on => Date.today.beginning_of_year)
+                                   :active_on => Date.new(2010,1,1))
 end
 
 Given /the review's "([^"]*)" is "([^"]*)"/ do |property, value|

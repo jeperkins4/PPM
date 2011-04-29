@@ -61,3 +61,11 @@ Then /^(?:|I )should not see the link "([^"]*)"$/ do |text|
     assert page.has_no_link(text, :visible => true)
   end
 end
+
+Then /^"([^"]*)" should be an option in "([^"]*)"$/ do |option_value, select_box|
+  if page.respond_to? :should
+    page.should find_field(select_box).have_css('option', :text => option_value)
+  else
+    assert page.find_field(select_box).has_css('option', :text => option_value)
+  end
+end

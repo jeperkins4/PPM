@@ -1,6 +1,7 @@
 # Auto-generated template
 default: &default
   support_email: AppsHelp@mydmsservices.com
+  new_review_score_cutoff: '2010/12/30'
 development:
   <<: *default
   domain: 'localhost'
@@ -10,6 +11,7 @@ test:
 production:
   <<: *default
   domain: 'ppm.dms.myflorida.com'
+  new_review_score_cutoff: '2011/06/30'
 cucumber: 
   <<: *default
   domain: 'ppm-test.dms.myflorida.com'

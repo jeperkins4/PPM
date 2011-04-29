@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "/pppams_references/new.rhtml" do
-  include PppamsReferencesHelper
 
   before(:each) do
     assigns[:pppams_reference] = stub_model(PppamsReference,

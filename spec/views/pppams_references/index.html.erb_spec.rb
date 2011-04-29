@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "/pppams_references/index.rhtml" do
-  include PppamsReferencesHelper
 
   before(:each) do
     assigns[:user].should_receive('is_admin?').at_least(1).and_return(true)

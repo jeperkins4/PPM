@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "/pppams_category_base_refs/show.html.erb" do
-  include PppamsCategoryBaseRefsHelper
   before(:each) do
     assigns[:user] = mock_model(User, 'is_admin?' => true)
     assigns[:pppams_category_base_ref] = @pppams_category_base_ref = stub_model(PppamsCategoryBaseRef,

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "/pppams_category_base_refs/index.html.erb" do
-  include PppamsCategoryBaseRefsHelper
 
   before(:each) do
     assigns[:pppams_category_base_refs] = WillPaginate::Collection.new(1,10).replace([

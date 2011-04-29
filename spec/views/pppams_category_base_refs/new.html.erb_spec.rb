@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "/pppams_category_base_refs/new.html.erb" do
-  include PppamsCategoryBaseRefsHelper
 
   before(:each) do
     assigns[:pppams_category_base_ref] = stub_model(PppamsCategoryBaseRef,

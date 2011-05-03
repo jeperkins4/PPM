@@ -70,4 +70,16 @@ describe "PppamsReview" do
       retrieve_pristine_record[0].score.should == @pppams_review.score
     end
   end
+
+  describe "score_options" do
+    it "before the cutoff date renders 0 through 10" do
+      opts = PppamsReview.new(:created_on => PppamsReview::NEW_SCORE_CUTOFF - 1).score_options
+      opts.should include(['10 - Commendable', 10])
+    end
+
+    it "after the cutoff date renders Compliant and Non compliant" do
+      opts = PppamsReview.new(:created_on => PppamsReview::NEW_SCORE_CUTOFF + 1).score_options
+      opts.should include(['Compliant', 1])
+    end
+  end
 end

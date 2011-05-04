@@ -41,6 +41,8 @@ class PppamsIndicator < ActiveRecord::Base
 
   def self.active_in_months(start_date, end_date, options = {})
 
+    return false if start_date <= PppamsReview::NEW_SCORE_CUTOFF and end_date > PppamsReview::NEW_SCORE_CUTOFF
+
     options = options.remove_blanks_in_arrays
     months_in_range = DateTime.all_months_between(start_date, end_date)
     find(:all, :select => 'pppams_indicators.id,

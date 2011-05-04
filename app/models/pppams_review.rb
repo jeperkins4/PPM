@@ -43,7 +43,7 @@ class PppamsReview < ActiveRecord::Base
     end
 
     def score_options
-      created_on > NEW_SCORE_CUTOFF ? NEW_SCORES : OLD_SCORES
+      self.created_on > NEW_SCORE_CUTOFF ? NEW_SCORES : OLD_SCORES
     end
 
     def generate_status_notifications

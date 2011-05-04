@@ -311,4 +311,20 @@ describe PppamsCategoryBaseRef do
       end
     end
   end
+
+  describe "make sure queries have a valid date range (one in which PppamsReview scores do not have both 1 -10 and Comp/NonComp values)" do
+    #Note in dev and test environments, cutoff date is 12/30/2010
+    %w{review_summary indicator_summary_between}.each do |item|
+      method = item.to_sym
+      it "with dates before cutoff, the query does not return false" do
+        PppamsCategoryBaseRef.send(method, Date.new(2010,1,1), Date.new(2010,12,29)).should be
+      end
+      it "with dates after cutoff, the query does not return false" do
+        PppamsCategoryBaseRef.send(method,  Date.new(2011,1,1), Date.new(2011,12,30)).should be
+      end
+      it "with dates traversing the cutoff, returns false " do
+        PppamsCategoryBaseRef.send(method,  Date.new(2010,1,1), Date.new(2011,12,30)).should_not be
+      end
+    end
+  end
 end

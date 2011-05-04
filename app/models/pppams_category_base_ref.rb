@@ -33,6 +33,8 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
     # Note that this safely ignores 'options' that are not relevant to finding an indicator.
     active_indicators_in_range = PppamsIndicator.active_in_months(start_date, end_date, options)
 
+    return false unless active_indicators_in_range
+
     active_indicator_ids = active_indicators_in_range.map(&:id)
 
     # Note that this safely ignores 'options' that are not relevant to finding a review.
@@ -48,11 +50,15 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
     full_summary(actual_scores, max_scores)
 
   end
+
   def self.review_summary(start_date, end_date, options = {})
     months_in_range = DateTime.all_months_between(start_date, end_date)
 
     # Note that this safely ignores 'options' that are not relevant to finding an indicator.
     active_indicators = PppamsIndicator.active_in_months(start_date, end_date, options)
+
+    #Check that date range doesn't cross our cutoff for changing scoring systems.
+    return false unless active_indicators
 
     active_indicator_ids = active_indicators.map(&:id)
 
@@ -90,7 +96,6 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
       full_review
     end
-
   end
 
   #from max_scores and actual_scores, get a hash of the form:
@@ -132,7 +137,7 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
     #Generate hash of sums and percents
     calculate_sums_and_percents(actual_scores, max_scores)
 
-   end
+  end
 
     #get a hash of the form
     # {category_id => {:max_score => 123,
@@ -159,7 +164,6 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
       max_scores
     end
-
   end
 
    #given an array of reviews (with their corresponding category_base_ref_id)
@@ -285,25 +289,6 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
     full_summary
   end
 
-  #from indicators and months in a range,
-  #get a hash of the form
-  # {facility_id => {:name => facility_name,
-  #                  :max_score => 123,
-  #                  :max_reviews => 123,
-  #                  :categories =>   {category_id => {:max_score => 123,
-  #                                                    :max_reviews => 123,
-  #                                                    :name => category_name
-  #                                                    :indicators => {indicator_id => {:name => indicator_name,
-  #                                                                                      :max_score => 123,
-  #                                                                                      :max_reviews => 123,
-  #                                                                                      :no_reviews => true/false
-  #                                                                                     }
-  #                                                                    }
-  #                                                   }
-  #                                   }
-  #                 }, 
-  #  facility_id => ...
-  # }
   def self.max_review_sums(active_indicators, months_in_range)
     active_indicators.inject({}) do |max_scores, active_indicator|
 

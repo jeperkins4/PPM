@@ -64,8 +64,14 @@ end
 
 Then /^"([^"]*)" should be an option in "([^"]*)"$/ do |option_value, select_box|
   if page.respond_to? :should
-    page.should find_field(select_box).have_css('option', :text => option_value)
+    page.find_field(select_box).should have_css('option', :text => option_value)
   else
     assert page.find_field(select_box).has_css('option', :text => option_value)
   end
+end
+
+Given /^(?:I )change "([^"]*)" by selecting "([^"]*)"$/ do |field, value|
+  page.select(value, :from => field)
+  select = find(:xpath, XPath::HTML.select(field), :message => "The 'select' field #{field} does not exist")
+  page.evaluate_script("document.getElementById('#{select['id']}')")
 end

@@ -16,4 +16,28 @@ module PppamsIndicatorsHelper
                       :end_year => PppamsReview.latest + 1}
     "(#{mon} #{select_year(current_year, select_options )}): #{currents_length}"
   end
+
+  def new_or_edit_review_link(review, time= Time.now, indicator = nil)
+    if review.nil?
+      link_to image_tag("review_icon.png",
+                                :border=>0,
+                                :alt   => "Create a new review for this indicator"),
+              {:controller => 'pppams_reviews',
+                :action => 'new',
+                :pppams_review => {:pppams_indicator_id => indicator.id,
+                                   :created_on => time},
+                :create_time => time},
+              :title => "Create a new review for this indicator"
+    elsif review.try(:can_edit?)
+      link_to(image_tag("edit_review_icon.png",
+                        :border=>0,
+                        :alt=> "Edit the review for this indicator"),
+          {:controller => 'pppams_reviews',
+           :action => 'edit',
+           :id => review},
+          :title => "Edit the review for this indicator")
+    else
+      ''
+    end
+  end
 end

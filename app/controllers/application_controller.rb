@@ -39,6 +39,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
+    puts User.all.map(&:id).join(',') unless session[:user_id].present?
     unless @user = User.find_by_id(session[:user_id])
       flash[:notice]="Please log in."
       redirect_to(:controller => "login", :action => "index")

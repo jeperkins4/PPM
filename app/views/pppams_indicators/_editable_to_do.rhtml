@@ -33,10 +33,10 @@ with note: <textarea onfocus = "var currentTime = new Date();var datestamp = cur
   <tr <% if (current_review.nil? or current_review.status != 'Locked') and time.beginning_of_month < Time.now.beginning_of_month %>class='warning_row' <% end %>>
   <% if current_review.nil? %>
   <td></td>
-  <td><%= link_to image_tag("review_icon.png", :border=>0, :title => "Create a new review for this indicator"), :controller => 'pppams_reviews', :action => 'new', :pppams_indicator_id => pppams_indicator, :create_time => time  %></td>
+  <td><%= new_or_edit_review_link(current_review, time, pppams_indicator)%></td>
   <% else %>
   <td><%if current_review.can_edit? %><%= check_box_tag("pppams_review_selector[]", value = current_review.id) %><% end %></td>
-  <td><%if current_review.can_edit? %><%= link_to image_tag("edit_review_icon.png", :border=>0, :title => "Edit the review for this indicator"), :controller => 'pppams_reviews', :action => 'edit', :id => current_review %><% end %></td>
+  <td><%= new_or_edit_review_link(current_review, time, pppams_indicator)%></td>
   <% end %>
   <td><%=h pppams_indicator.id%></td>
   <td><%=h pppams_indicator.question%></td>
@@ -60,5 +60,16 @@ with note: <textarea onfocus = "var currentTime = new Date();var datestamp = cur
 <iframe id="RSIFrame" name="RSIFrame" style="width:0px; height:0px; border: 0px" src="/blank.html" onload = "if (this.contentWindow.document.body.innerHTML == 1) new Ajax.Updater(parent.document.getElementById('nav_results'), '/pppams_indicators/_editable_to_do?time=01-<%= session[:working_date].month %>-<%= session[:working_date].year %>', {asynchronous:true, evalScripts:true, onLoading:function(){$('nav_results').innerHTML = '<p style=\'text-align: center\'>Loading...</p>';}});"></iframe> 
 
 <script>
-$('year_selector')[0].onchange=function(){new Ajax.Updater('nav_results', '/pppams_indicators/_to_do?time=' + '01-' + $("current_month_store").value + '-' + this.options[this.selectedIndex].value, {asynchronous:true, evalScripts:true, onLoading:function(){$('nav_results').innerHTML = '<p style=\'text-align: center\'>Loading...</p>';}}); return false;};
+$('year_selector')[0].onchange=function(){
+  var newUrl = '/pppams_indicators/_to_do?time=' + '01-' + $("current_month_store").value + '-' + this.options[this.selectedIndex].value;
+
+  new Ajax.Updater('nav_results', newUrl,
+                    {
+                      asynchronous: true,
+                      evalScripts: true,
+                      onLoading: function(){$('nav_results').innerHTML = '<p style="text-align: center">Loading...</p>';}
+                    }
+                  );
+  return false;
+};
 </script>

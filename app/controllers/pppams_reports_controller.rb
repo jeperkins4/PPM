@@ -3,7 +3,6 @@ class PppamsReportsController < ApplicationController
   before_filter :authenticate
 
   layout 'administration'
-  #require RAILS_ROOT + '/vendor/plugins/calendar_date_select/init.rb'
   require 'orderedhash.rb'
   require RAILS_ROOT + '/vendor/plugins/multiple_select/init.rb'
 
@@ -43,6 +42,34 @@ class PppamsReportsController < ApplicationController
   end
 
   private
+
+  ### START MAIN REPORT ACTIONS ###
+  def create_summary_average_report
+    setup_summary_report
+    @data = PppamsCategoryBaseRef.indicator_summary_between(@show_from, @show_to, summary_query_options)
+    render_report('summary_average')
+  end
+  def create_summary_percent_report
+    setup_summary_report
+    @data = PppamsCategoryBaseRef.indicator_summary_between(@show_from, @show_to, summary_query_options)
+    render_report('summary_percent')
+  end
+
+  def create_full_report
+    setup_summary_report
+    @data = PppamsCategoryBaseRef.review_summary(@show_from, @show_to, summary_query_options)
+    render_report('full')
+  end
+
+  ### END MAIN REPORT ACTIONS ###
+
+  def setup_summary_report
+    assign_to_from_dates
+    @filter = @filter.remove_blanks_in_arrays
+    @filter_name = @filter[:name]
+    assign_grouping_type
+    assign_facilities
+  end
 
   def process_a_report
 
@@ -89,7 +116,7 @@ class PppamsReportsController < ApplicationController
     end
 
     @facility = Facility.find(@filter[:facility_filter][0], :select => 'facility, id')
-    
+
     # 'true' below ignores the end date. 
     assign_to_from_dates(true)
     @pppams_groups = PppamsCategoryBaseRef.signature_summary_for_facility(@facility.id,
@@ -100,41 +127,6 @@ class PppamsReportsController < ApplicationController
     render :layout => 'pppams_reports', :action => 'signature' and return true
   end
 
-  def create_summary_average_report
-    setup_summary_report
-    @data = PppamsCategoryBaseRef.indicator_summary_between(@show_from, @show_to, summary_query_options)
-    if @excel 
-      render :layout => 'pppams_reports', :action => 'summary_average', :type => 'application/vnd.ms-excel', :layout => false
-    else
-      render :layout => 'pppams_reports', :action => 'summary_average'
-    end
-  end
-  def create_summary_percent_report
-    setup_summary_report
-    @data = PppamsCategoryBaseRef.indicator_summary_between(@show_from, @show_to, summary_query_options)
-    if @excel 
-      render :layout => 'pppams_reports', :action => 'summary_percent', :type => 'application/vnd.ms-excel', :layout => false
-    else
-      render :layout => 'pppams_reports', :action => 'summary_percent'
-    end
-  end
-  def create_full_report
-    setup_summary_report
-    @data = PppamsCategoryBaseRef.review_summary(@show_from, @show_to, summary_query_options)
-    if @excel 
-      render :layout => 'pppams_reports', :action => 'full', :type => 'application/vnd.ms-excel', :layout => false
-    else
-      render :layout => 'pppams_reports', :action => 'full'
-    end
-  end
-
-  def setup_summary_report
-    assign_to_from_dates
-    @filter = @filter.remove_blanks_in_arrays
-    @filter_name = @filter[:name]
-    assign_grouping_type
-    assign_facilities
-  end
 
   def assign_to_from_dates(start_date_only = false)
     #make sure we have valid dates
@@ -174,5 +166,18 @@ class PppamsReportsController < ApplicationController
      :score_values => @filter[:score_filter],
      :status_values => @filter[:status_filter]
     }
+  end
+
+  def render_report(report_name)
+    if @data
+      if @excel 
+        render :layout => 'pppams_reports', :action => report_name, :type => 'application/vnd.ms-excel', :layout => false
+      else
+        render :layout => 'pppams_reports', :action => report_name
+      end
+    else
+      flash[:warning] = "Your start and end dates may not traverse #{PppamsReview::NEW_SCORE_CUTOFF.strftime('%m/%d/%Y')}, as the Review score calculations change between this date."
+      redirect_to :action => 'index'
+    end
   end
 end

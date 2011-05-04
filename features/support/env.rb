@@ -30,18 +30,18 @@ ActionController::Base.allow_rescue = false
 #end
 
 begin
-  DatabaseCleaner.strategy = (ENV['SELENIUM'] == 'true') ? :truncation : :transaction
+  DatabaseCleaner.strategy= :truncation, {:except => %w{access_levels action_types user_types}}
 rescue NameError
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
 
-#if Capybara.current_driver == :webkit
-#  require 'headless'
-#
-#  headless = Headless.new
-#  headless.start
-#
-#  at_exit do
-#    headless.destroy
-#  end
-#end
+if Capybara.current_driver == :webkit
+  require 'headless'
+
+  headless = Headless.new
+  headless.start
+
+  at_exit do
+    headless.destroy
+  end
+end

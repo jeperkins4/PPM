@@ -9,7 +9,7 @@ class LoginController < ApplicationController
       end
     end
   end
-  
+
   def logout
     session[:user_id] = nil
     session[:user] = nil

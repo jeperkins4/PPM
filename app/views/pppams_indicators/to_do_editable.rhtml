@@ -29,11 +29,7 @@
   <% if time >= Time.now.next_month.beginning_of_month %>
   <td></td>
   <% else %>
-  <% if current_review.nil? %>
-  <td><%= link_to image_tag("review_icon.png", :border=>0, :title => "Create a new review for this indicator"), :controller => 'pppams_reviews', :action => 'new', :pppams_indicator_id => pppams_indicator, :create_time => time  %></td>
-  <% else %>
-  <td><%if current_review.can_edit? %><%= link_to image_tag("edit_review_icon.png", :border=>0, :title => "Edit the review for this indicator"), :controller => 'pppams_reviews', :action => 'edit', :id => current_review %><% end %></td>
-  <% end %>
+  <%= new_or_edit_review_link(review, time, pppams_indicator) %></td>
   <% end %>
 
   <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0, :title => "Edit the way this indicator appears for this facility"), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>

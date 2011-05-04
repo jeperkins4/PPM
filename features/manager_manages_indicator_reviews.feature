@@ -35,10 +35,10 @@ Feature: A contract manager can manage indicator reviews
     When  I go to the PPPAMS Home page
     Then  I should not see the link "Edit the review for this indicator"
 
+  @wip @javascript
   Scenario: I can edit an indicator review for old indicators (and they show up as 1 thru 10)
-    Given I am on the PPPAMS Home page
-    When I select "2010" from "Live indicators this month"
-    And   I follow "Create a new review for this indicator"
+    When  I go to the PPPAMS Home page
+    And   I change "Live indicators this month" by selecting "2010"
+    Then  show me the page
+    When  I follow "Create a new review for this indicator"
     Then  "0 - Non-performance" should be an option in "Score"
-
-

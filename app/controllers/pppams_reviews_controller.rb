@@ -30,8 +30,8 @@ class PppamsReviewsController < ApplicationController
   end
 
   def new
-    @pppams_review = PppamsReview.new(:pppams_indicator_id => params[:pppams_indicator_id])
-    @pppams_indicator = PppamsIndicator.find(params[:pppams_indicator_id])
+    @pppams_review = PppamsReview.new(params[:pppams_review])
+    @pppams_indicator = PppamsIndicator.find(params[:pppams_review][:pppams_indicator_id])
     @new = true
   end
 

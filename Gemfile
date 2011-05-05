@@ -15,12 +15,12 @@ group :development, :test, :cucumber do
   gem 'cucumber-rails', '= 0.3.2'
   gem 'launchy'
   gem 'capybara'
-  gem 'capybara-webkit'
-  gem 'headless'
-  gem 'database_cleaner', '~> 0.6.0'
+#  gem 'capybara-webkit'
+#  gem 'headless'
+#  gem 'database_cleaner', '~> 0.6.0'
   gem 'machinist', '~> 1.0.6'
   gem 'rspec', "~> 1.3.1"
   gem 'rspec-rails', "~> 1.3.3"
   gem 'ruby-debug'
-  gem 'spork', '~> 0.8.4'
+#  gem 'spork', '~> 0.8.4'
 end

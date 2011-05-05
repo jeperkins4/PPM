@@ -5,6 +5,7 @@
   = @filter_name.blank? ? '': "- #{@filter_name}"
 - fac_id_store = 0
 - id_store = 0
+=render 'scoring_scheme', :scoring_scheme => @scoring_scheme
 %table
   -@data.each do |facility_id, facility|
     %tr.blank
@@ -29,7 +30,7 @@
         %tr
           %td=review[:created_on].strftime('%m/%d/%y')
           %td=review[:indicator_name]
-          %td=review[:score]
+          %td=standardized_score review[:score], @show_from
           %td=review[:observation_ref]
           %td=review[:documentation_ref]
           %td=review[:interview_ref]

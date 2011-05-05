@@ -4,21 +4,23 @@
   %tr.blank
     %th Standard
     %th Program Score
-    %th Max Score
-    %th Rating
-    %th Failed
-    %th Minimal
-    %th Acceptable
-    %th Commendable
-    %th Exceptional
+    %th=sum_header(:max_score, date)
+    -if score_type(date) == :one_to_ten
+      %th=sum_header(:rating, date)
+      %th Failed
+      %th Minimal
+      %th Acceptable
+      %th Commendable
+      %th Exceptional
     %th Overall Program Performance
   %tr.blank
-    %td{ :colspan => "4" }
-    %th 0-59%
-    %th 60-69%
-    %th 70-79%
-    %th 80-89%
-    %th 90-100%
+    %td{ :colspan => (score_type(date) == :one_to_ten ? '4' : '3') }
+    -if score_type(date) == :one_to_ten
+      %th 0-59%
+      %th 60-69%
+      %th 70-79%
+      %th 80-89%
+      %th 90-100%
     %th{:valign=>'middle', :style=>'text-align:center;', :rowspan => (groups.size-2)}
       = groups[:percent]
       \%
@@ -28,22 +30,24 @@
         %td= h group[:name]
         %td= group[:actual_score]
         %td= group[:max_score]
-        %td= group[:percent]
-        %td
-        %td
-        %td
-        %td
-        %td
+        -if score_type(date) == :one_to_ten
+          %td= group[:percent]
+          %td
+          %td
+          %td
+          %td
+          %td
   %tr.blank
     %td Overall Score
     %td= groups[:actual_score]
     %td= groups[:max_score]
-    %td= groups[:percent]
-    %td
-    %td
-    %td
-    %td
-    %td
+    -if score_type(date) == :one_to_ten
+      %td= groups[:percent]
+      %td
+      %td
+      %td
+      %td
+      %td
   %tr.blank
     %td.blank{ :colspan => "11" }
   %tr.blank
@@ -52,4 +56,7 @@
     %td{ :colspan => "11" }
       Scoring Legend:
       Performance Indicators: 
-      0=Non-Performance, 4-6=Partial, 7-8=Satisfactory, 9-10=Superior
+      -if score_type(date) == :one_to_ten
+        0=Non-Performance, 4-6=Partial, 7-8=Satisfactory, 9-10=Superior
+      -else
+        1=Compliant, 0=Non-Compliant

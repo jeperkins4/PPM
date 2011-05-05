@@ -6,7 +6,7 @@
           %h2=facility[:name]
       %tr
         %th.facility Category
-        %th.average-score=sum_type.humanize.titleize
+        %th.average-score=sum_head
       -facility[:categories].each do |catetgory_id, category|
         %tr{:class => (category[:missing_reviews] ? 'warning_row' : '')}
           %td=category[:name]

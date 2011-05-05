@@ -7,7 +7,7 @@
       -facility[:categories].each do |catetgory_id, category|
         %tr
           %th.facility Indicator
-          %th.average-score=sum_type.humanize.titleize
+          %th.average-score=sum_head
         %tr
           %td(colspan=8)
             %p.cat_heading=category[:name]

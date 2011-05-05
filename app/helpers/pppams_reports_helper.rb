@@ -48,13 +48,26 @@ module PppamsReportsHelper
 
     return percent_value unless percent_value.instance_of? Float
 
-    if sum_type == 'average_score'
+    if sum_type == :average_score
       (percent_value / 10).round(2)
-    elsif sum_type == 'percent_average'
+    elsif sum_type == :percent_average
       percent_value.round(1).to_s + '%'
     end
   end
   def filtered_by?(symbol, filter)
     filter[symbol] && filter[symbol].uniq_numerics.size > 0
+  end
+
+  def sum_header(prefix, date)
+    PppamsReportsController::REPORT_HEADERS[prefix][score_type(date)]
+  end
+
+  def standardized_score(score, date)
+    score_type(date) == :one_to_ten ? score :
+      score == 1 ? 'Compliant' : 'Non-Compliant'
+  end
+
+  def score_type(date)
+    date < PppamsReview::NEW_SCORE_CUTOFF ? :one_to_ten : :compliant_non
   end
 end

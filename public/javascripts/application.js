@@ -97,6 +97,7 @@ function populate(value, ending) {
 
 jQuery(document).ready( function() {
     fillDownInitializer();
+    scoreFilterSelecltor();
 });
 
 

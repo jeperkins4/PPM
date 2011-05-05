@@ -6,6 +6,30 @@ class PppamsReportsController < ApplicationController
   require 'orderedhash.rb'
   require RAILS_ROOT + '/vendor/plugins/multiple_select/init.rb'
 
+  REPORT_HEADERS= {
+                    :average_score => {
+                                        :one_to_ten => 'Average Score',
+                                        :compliant_non => 'Compliance'
+                                      },
+                    :percent_average => {
+                                        :one_to_ten => 'Percent Average',
+                                        :compliant_non => 'Percent Compliance'
+                                      },
+                    :average_score => {
+                                        :one_to_ten => 'Average Score',
+                                        :compliant_non => 'Total Compliance'
+                                      },
+                    :max_score     => {
+                                        :one_to_ten => 'Max Score',
+                                        :compliant_non => 'Total Indicators'
+                                      },
+                    :rating        => {
+                                        :one_to_ten => 'Rating',
+                                        :compliant_non => 'Compliant Indicators'
+                                      }
+
+  }
+
   def index
     filter
     render :action => 'filter'
@@ -44,11 +68,13 @@ class PppamsReportsController < ApplicationController
   private
 
   ### START MAIN REPORT ACTIONS ###
+
   def create_summary_average_report
     setup_summary_report
     @data = PppamsCategoryBaseRef.indicator_summary_between(@show_from, @show_to, summary_query_options)
     render_report('summary_average')
   end
+
   def create_summary_percent_report
     setup_summary_report
     @data = PppamsCategoryBaseRef.indicator_summary_between(@show_from, @show_to, summary_query_options)
@@ -127,7 +153,6 @@ class PppamsReportsController < ApplicationController
     render :layout => 'pppams_reports', :action => 'signature' and return true
   end
 
-
   def assign_to_from_dates(start_date_only = false)
     #make sure we have valid dates
     @show_from = @filter[:start_date].blank? ?
@@ -158,6 +183,7 @@ class PppamsReportsController < ApplicationController
       @filter[:facility_filter] = Facility.all(:select => [:id]).map(&:id)
     end
   end
+
   def summary_query_options
     {
      :facility_ids => @filter[:facility_filter],
@@ -170,6 +196,10 @@ class PppamsReportsController < ApplicationController
 
   def render_report(report_name)
     if @data
+      @show_from < PppamsReview::NEW_SCORE_CUTOFF ?
+        @scoring_scheme = "Reviews are scored between 0 and 10, 7 being a 'Compliant' review." :
+        @scoring_scheme = "Reviews are scored as Compliant or Non-Compliant."
+
       if @excel 
         render :layout => 'pppams_reports', :action => report_name, :type => 'application/vnd.ms-excel', :layout => false
       else

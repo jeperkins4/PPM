@@ -3,8 +3,8 @@
     -if group_id.instance_of?(Fixnum)
       %tr
         %th= category_group[:name]
-        %th Max Score
-        %th Rating
+        %th=sum_header(:max_score, date)
+        %th=sum_header(:rating, date)
         %th %
       -category_group[:categories].each do |category|
         %tr{:class => category[:missing_reviews] ? 'warning_row' : ''}

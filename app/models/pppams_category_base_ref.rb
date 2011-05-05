@@ -35,6 +35,8 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
     return false unless active_indicators_in_range
 
+    @@score_factor = score_factor(start_date)
+
     active_indicator_ids = active_indicators_in_range.map(&:id)
 
     # Note that this safely ignores 'options' that are not relevant to finding a review.
@@ -59,6 +61,8 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
     #Check that date range doesn't cross our cutoff for changing scoring systems.
     return false unless active_indicators
+
+    @@score_factor = score_factor(start_date)
 
     active_indicator_ids = active_indicators.map(&:id)
 
@@ -122,6 +126,10 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
     active_indicators_in_range = PppamsIndicator.active_in_months(start_date, end_date, {:facility_ids => [facility_id]})
 
+    return false unless active_indicators_in_range
+
+    @@score_factor = score_factor(start_date)
+
     active_indicator_ids = active_indicators_in_range.map(&:id)
 
     facility_reviews_in_date_range_valid_status = PppamsReview.with_indicators_and_date_range(active_indicator_ids,
@@ -159,7 +167,7 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
       max_scores[category] ||= {:max_score => 0,
                                 :max_reviews => 0}
-      max_scores[category][:max_score] += (months_in_indicator_intersecting_months_in_range*10)
+      max_scores[category][:max_score] += (months_in_indicator_intersecting_months_in_range*@@score_factor)
       max_scores[category][:max_reviews] += (months_in_indicator_intersecting_months_in_range)
 
       max_scores
@@ -318,7 +326,7 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
       if months_in_indicator_intersecting_months_in_range > 0 
 
-        additional_score = (months_in_indicator_intersecting_months_in_range*10)
+        additional_score = (months_in_indicator_intersecting_months_in_range*@@score_factor)
         additional_reviews = months_in_indicator_intersecting_months_in_range
         [facility, category, indicator].each do |item|
           item[:max_score] = item[:max_score] + additional_score
@@ -372,7 +380,7 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
       facility[:missing_reviews] = true if category[:missing_reviews]
 
       if facility[:actual_reviews] > 0
-        facility[:percent] = percent(facility[:actual_score], facility[:actual_reviews]*10)
+        facility[:percent] = percent(facility[:actual_score], facility[:actual_reviews]*@@score_factor)
       end
     end
     facility
@@ -383,7 +391,7 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
       category_indicator = category[:indicators][indicator_id]
       if actual_scores[indicator_id]
         category_indicator.merge!(actual_scores[indicator_id])
-        category_indicator[:percent] = percent(category_indicator[:actual_score], category_indicator[:actual_reviews]*10) unless category_indicator[:actual_reviews] == 0
+        category_indicator[:percent] = percent(category_indicator[:actual_score], category_indicator[:actual_reviews]*@@score_factor) unless category_indicator[:actual_reviews] == 0
         category_indicator[:missing_reviews] = (category_indicator[:actual_reviews] < category_indicator[:max_reviews])
       else
         category_indicator.merge!({:actual_score => 0, :actual_reviews => 0, :percent => 'N/A: No Reviews', :missing_reviews => true})
@@ -401,7 +409,7 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
       if category[:actual_reviews].to_i <= 0
         category[:percent] = 'N/A: No Reviews'
       else
-        category[:percent] = percent(category[:actual_score], category[:actual_reviews]*10)
+        category[:percent] = percent(category[:actual_score], category[:actual_reviews]*@@score_factor)
       end
     end
     category
@@ -409,5 +417,9 @@ class PppamsCategoryBaseRef < ActiveRecord::Base
 
   def self.percent(divide_me, by_bigger)
     ((divide_me.to_f / by_bigger)*100).round(2)
+  end
+
+  def self.score_factor(start_date)
+    start_date <= PppamsReview::NEW_SCORE_CUTOFF ? 10 : 1
   end
 end

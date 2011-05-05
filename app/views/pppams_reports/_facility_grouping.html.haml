@@ -2,7 +2,7 @@
   %tbody
     %tr
       %th.facility Facility
-      %th.average-score=sum_type.humanize.titleize
+      %th.average-score=sum_head
     -data.each do |facility_id, facility|
       %tr{:class => (facility[:missing_reviews] ? 'warning_row' : '')}
         %td=facility[:name]

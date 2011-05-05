@@ -10,10 +10,10 @@
   <legend>Report Type</legend>
 
   <%= radio_button("pppams_report_filter", "report_type", "summary_average") %>
-  <label for="pppams_report_type_summary">Summary (Average Scores)</label><br/> 
+  <label for="pppams_report_type_summary">Summary (Average Scores / Compliance)</label><br/> 
 
   <%= radio_button("pppams_report_filter", "report_type", "summary_percent") %>
-  <label for="pppams_report_type_summary">Summary (Percentage)</label><br/> 
+  <label for="pppams_report_type_summary">Summary (Percentage / Percentage Compliance)</label><br/> 
 
   <%= radio_button("pppams_report_filter", "report_type", "full") %>
   <label for="pppams_report_type_full">Full</label><br/>
@@ -32,7 +32,18 @@
 <div class='filter_float'>
   <fieldset>
     <legend>Score Filter <img src="/images/swapselect.gif" title ="Toggle selections"  onclick="swapselect(this);" class="fauxlink"/></legend>
-    <%= multiple_select("pppams_report_filter","score_filter", [0,4,5,6,7,8,9,10] ) %>
+    <div style='float: left; padding-right: 20px'>
+      <%= multiple_select("pppams_report_filter","score_filter", [0,4,5,6,7,8,9,10]) %>
+    </div>
+    <%= multiple_select("pppams_report_filter","score_filter", [['Compliant (1)', 1], ['Non-Compliant (0)', 0]] ) %>
+    <strong>
+    <br />
+    For dates after
+    <%=PppamsReview::NEW_SCORE_CUTOFF.strftime('%m/%d/%Y')%>
+    <br />
+    use Compliant/Non-Compliant
+    </strong>
+
   </fieldset>
 </div>
 

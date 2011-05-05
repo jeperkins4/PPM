@@ -26,8 +26,8 @@
 %h2{ :style => "text-align:center;" } Program Performance By Indicator
 .yui-g
   .yui-u.first
-    =render :partial => 'signature_indicator_groups', :locals => {:groups => @left_side_groups}
+    =render :partial => 'signature_indicator_groups', :locals => {:groups => @left_side_groups, :date => @show_from}
   .yui-u
-    =render :partial => 'signature_indicator_groups', :locals => {:groups => @right_side_groups}
-= render :partial => 'category_performance_by_groups', :locals => {:groups => @pppams_groups}
+    =render :partial => 'signature_indicator_groups', :locals => {:groups => @right_side_groups, :date => @show_from}
+= render :partial => 'category_performance_by_groups', :locals => {:groups => @pppams_groups, :date => @show_from}
 

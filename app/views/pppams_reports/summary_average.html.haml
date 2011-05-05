@@ -1,2 +1,3 @@
 = render :partial => 'summary_criteria', :locals => {:to => @show_to, :from => @show_from, :filter => @filter, :filter_name => @filter_name, :type => 'average scores'}
-= render :partial => @grouping_type, :locals => {:data => @data, :sum_type => 'average_score'}
+=render 'scoring_scheme', :scoring_scheme => @scoring_scheme
+= render :partial => @grouping_type, :locals => {:data => @data, :sum_type => :average_score, :sum_head => sum_header(:average_score, @show_from)}

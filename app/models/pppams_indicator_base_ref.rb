@@ -1,6 +1,7 @@
 class PppamsIndicatorBaseRef < ActiveRecord::Base
   has_many :pppams_indicators
   belongs_to :pppams_category_base_ref
+  has_and_belongs_to_many :pppams_references
   accepts_nested_attributes_for :pppams_indicators
   named_scope :current_facilities, lambda { |indicator_base_id|
     { :select => sanitize_sql_array(["facilities.id,

@@ -94,10 +94,21 @@ function populate(value, ending) {
       aDropDownOptions.filter('[value='+value+']').attr('selected', 'selected');
 }
 
+function referenceSelectorInitializer() {
+  jQuery('input[name^="pppams_indicator_base_ref[pppams_reference_ids]"]').change(function(e) {
+    var text = jQuery(this).closest('tr').find('td:last').text();
+    if(jQuery(this).is(':checked')) {
+      jQuery("li:contains('"+text+"')").show()
+    } else {
+      jQuery("li:contains('"+text+"')").hide()
+    }
+  });
+
+}
 
 jQuery(document).ready( function() {
     fillDownInitializer();
-    scoreFilterSelecltor();
+    referenceSelectorInitializer();
 });
 
 

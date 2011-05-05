@@ -11,6 +11,10 @@ describe PppamsIndicatorBaseRef do
   it "should create a new instance given valid attributes" do
     PppamsIndicatorBaseRef.create!(@valid_attributes)
   end
+
+  describe "relations" do
+    specify {subject.should respond_to(:pppams_references)}
+  end
   describe "current_facilities" do
     before(:all) do
       Facility.all.each { |facility| facility.destroy }

@@ -3,17 +3,45 @@
 </h1>
 <% form_for(@pppams_indicator_base_ref) do |f| %>
   <%= f.error_messages %>
-
-  <p>
-    <%= f.label :question %><br />
-    <%= f.text_area :question %>
-  </p>
-  <p>
-    Category<br />
-    <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, PppamsCategoryBaseRef.all.collect {|a| [a.name, a.id]}, :include_blank => true %>
-  </p>
-  <p>
-    <span style="display:block; float:right"><a class="fill_down">Fill down</a></span>
+  <div style='float: left;'>
+    <p>
+      <%= f.label :question %><br />
+      <%= f.text_area :question %>
+    </p>
+    <p>
+      Category<br />
+      <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, PppamsCategoryBaseRef.all.collect {|a| [a.name, a.id]}, :include_blank => true %>
+    </p>
+  </div>
+  <div style='float: left; height: 405px; overflow: scroll; width: 390px; margin-left: 20px'>
+    <table style='width: 355px'>
+      <thead>
+        <tr>
+          <th colspan='2'></th>
+          <th>Reference Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% PppamsReference.find(:all, :order => 'name asc').each do |pr| %>
+          <tr>
+            <td><%=check_box_tag 'pppams_indicator_base_ref[pppams_reference_ids][]', pr.id, @pppams_indicator_base_ref.pppams_reference_ids.include?(pr.id) %> </td>
+            <td><%=link_to image_tag('edit_icon.png', :alt => 'Edit Reference'), edit_pppams_reference_path(pr.id), :title => 'Edit Reference'%></td>
+            <td><%= pr.html%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div style='float: left; clear: right; height: 405px; width: 300px; margin-left: 20px'>
+    <p><strong> Currently selected references: </strong></p>
+    <ul style='margin-left: 0; padding-left: 0'>
+      <% PppamsReference.find(:all, :order => 'name asc').each do |pr| %>
+        <li style="display: <%= @pppams_indicator_base_ref.pppams_reference_ids.include?(pr.id) ? 'block' : 'none'%>"> <%= pr.html%></li>
+      <% end %>
+    </ul>
+  </div>
+  <p  style="clear: left">
+    <span style="display:block; float:right; clear: left"><a class="fill_down">Fill down</a></span>
     <strong>Facilities Using this Global Indicator</strong>
   </p>
   <table class="fill_downable">

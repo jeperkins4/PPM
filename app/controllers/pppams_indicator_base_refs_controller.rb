@@ -76,6 +76,7 @@ class PppamsIndicatorBaseRefsController < ApplicationController
       result
     end
     new_attributes[:pppams_indicators_attributes]=new_indicators
+    new_attributes[:pppams_reference_ids]= [] unless new_attributes[:pppams_reference_ids]
     respond_to do |format|
       if @pppams_indicator_base_ref.update_attributes(new_attributes)
         flash[:notice] = 'The Global Indicator was successfully updated.'

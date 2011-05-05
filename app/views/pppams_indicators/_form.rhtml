@@ -15,5 +15,3 @@
 <%= select_month(@pppams_indicator.start_month.nil? ? Date.today : @pppams_indicator.start_month, :add_month_numbers => true, :field_name => 'start_month', :prefix => 'pppams_indicator')%>
 
 </p>
-
-<%= collection_select_multiple_pppams_references :pppams_indicator, :pppams_references, {}, {:size => 30} %>

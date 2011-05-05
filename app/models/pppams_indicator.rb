@@ -34,7 +34,7 @@ class PppamsIndicator < ActiveRecord::Base
                                          date,
                                          date,
                                          "%:#{date.month}:%"],
-                        :include => {:pppams_indicator_base_ref => :pppams_category_base_ref},
+                        :include => {:pppams_indicator_base_ref => [:pppams_category_base_ref, :pppams_references]},
                         :order => 'pppams_category_base_refs.name')
   end
 

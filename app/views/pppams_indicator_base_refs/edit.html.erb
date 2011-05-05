@@ -3,7 +3,7 @@
 </h1>
 <% form_for(@pppams_indicator_base_ref) do |f| %>
   <%= f.error_messages %>
-  <div style='float: left;'>
+  <div style='float: left;margin-right: 20px'>
     <p>
       <%= f.label :question %><br />
       <%= f.text_area :question %>
@@ -13,8 +13,8 @@
       <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, PppamsCategoryBaseRef.all.collect {|a| [a.name, a.id]}, :include_blank => true %>
     </p>
   </div>
-  <div style='float: left; height: 405px; overflow: scroll; width: 390px; margin-left: 20px'>
-    <table style='width: 355px'>
+  <div style='float: left; height: 405px; overflow: scroll; width: 390px; '>
+    <table style='width: 355px; margin-left: 0px'>
       <thead>
         <tr>
           <th colspan='2'></th>

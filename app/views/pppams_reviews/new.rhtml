@@ -8,6 +8,7 @@
 
 <div id='pppams_review_edit'>
 
+  <%= render 'references', :references => @pppams_indicator.pppams_references %>
 <% form_tag :action => 'create' do %>
   <%= render :partial => 'form' %>
   <%= submit_tag "Create" %>

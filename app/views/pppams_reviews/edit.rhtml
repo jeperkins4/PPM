@@ -4,12 +4,11 @@
 
 <p><label>Created on: </label><%= @pppams_review.created_on.strftime('%m-%d-%Y') %> by Test Manager &nbsp;&nbsp;&nbsp;<%= link_to "Delete", { :action => 'destroy', :id => @pppams_review }, :confirm => 'Are you sure?', :method => :post %></p> 
 
-
 <%= error_messages_for 'pppams_review' %>
 
 
 <div id='pppams_review_edit'>
-
+  <%= render 'references', :references => @pppams_indicator.pppams_references %>
 <% form_tag :action => 'update', :id => @pppams_review do %>
   <%= render :partial => 'form' %>
   <%= submit_tag 'Save' %>

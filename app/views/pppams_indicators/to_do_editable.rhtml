@@ -32,8 +32,13 @@
   <%= new_or_edit_review_link(review, time, pppams_indicator) %></td>
   <% end %>
 
-  <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png", :border=>0, :title => "Edit the way this indicator appears for this facility"), :controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator %></td>
-  <td><%= link_to image_tag("delete_icon.png", :border=>0, :title => "Remove this indicator for this facility"), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
+  <% if @user.is_admin? %>
+    <td><%= link_to image_tag("edit_icon.png", :border=>0, :title => "Edit the way this indicator appears."),
+                                           :controller => 'pppams_indicator_base_refs',
+                                           :action => 'edit',
+                                           :id => pppams_indicator.pppams_indicator_base_ref_id %></td>
+     <td></td>
+   <% end %>
 
     <td><%=h pppams_indicator.question %></td>
     <td><%=h current_review.nil? ? "Live" : current_review.status_text %></td>

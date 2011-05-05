@@ -30,10 +30,10 @@
 
   <% if @user.is_admin? %><td><%= link_to image_tag("edit_icon.png",
                                                       :border=>0,
-                                                      :alt   => "Edit the way this indicator appears for this facility"),
-                                          {:controller => 'pppams_indicators', :action => 'edit', :id => pppams_indicator},
-                                          :title => "Edit the way this indicator appears for this facility"  %></td>
-  <td><%= link_to image_tag("delete_icon.png", :border=>0, :title => "Remove this indicator for this facility"), { :controller => 'pppams_indicators', :action => 'destroy', :id => pppams_indicator }, :confirm => 'Are you sure?', :method => :post %></td><% end %>
+                                                      :alt   => "Edit the way this indicator appears."),
+                                          {:controller => 'pppams_indicator_base_refs', :action => 'edit', :id => pppams_indicator.pppams_indicator_base_ref_id},
+                                          :title => "Edit the way this indicator appears."  %></td>
+  <td></td><% end %>
     <td><%=h pppams_indicator.id %></td>
     <td><%=h pppams_indicator.question %></td>
     <td><%=h current_review.nil? ? "Live" : current_review.status_text %></td>

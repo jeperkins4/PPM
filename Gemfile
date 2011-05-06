@@ -1,15 +1,13 @@
 source 'http://rubygems.org'
 
-gem 'rails', '2.3.11'
-
+gem 'i18n'
 gem 'mysql', '2.8.1'
-gem 'will_paginate', '~> 2.3.11',
-    :require => 'will_paginate'
-
+gem 'rails', '2.3.11'
+gem 'will_paginate', '~> 2.3.11'
 gem "calendar_date_select", '1.16.1'
 gem 'haml', '3.0.25'
 
-group :development, :test, :cucumber do
+#group :development, :test, :cucumber do
 #  gem 'rails-footnotes'
 #  gem 'faker'
 #  gem 'cucumber-rails', '= 0.3.2'
@@ -23,4 +21,4 @@ group :development, :test, :cucumber do
 #  gem 'rspec-rails', "~> 1.3.3"
 #  gem 'ruby-debug'
 #  gem 'spork', '~> 0.8.4'
-end
+#end

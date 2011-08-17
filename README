@@ -179,4 +179,5 @@ test
 
 vendor
   External libraries that the application depends on. Also includes the plugins subdirectory.
+  euatahaeou
   This directory is in the load path.

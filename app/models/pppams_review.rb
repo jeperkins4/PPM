@@ -86,11 +86,11 @@ class PppamsReview < ActiveRecord::Base
 	     access_level = this_user_type.access_level.id
        if !["", "Submitted", "Review"].index(review.status).nil? or this_user_type.user_type == "SuperAdministrator" 
 	    return true
-	    break
+	    #break
        end 
        if access_level == 1 and review.status != "Locked"
 	    return true
-	    break
+	    #break
        end
        return false
     end

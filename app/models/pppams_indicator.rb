@@ -91,7 +91,7 @@ class PppamsIndicator < ActiveRecord::Base
     currents = PppamsIndicator.find_current(this_month, this_facility)
     if currents.length == 0 
       return [0,0]
-      break
+#      break
     end
     id_range = "(" + currents.collect {|x| x.id.to_s}.join(",") + ")"
     lowerlimit = this_month.beginning_of_month

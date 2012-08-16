@@ -294,6 +294,11 @@ ActiveRecord::Schema.define(:version => 20101011214130) do
   add_index "pppams_indicator_base_refs", ["pppams_category_base_ref_id"], :name => "pppams_cat_base_id"
   add_index "pppams_indicator_base_refs", ["question"], :name => "question", :length => {"question"=>"15"}
 
+  create_table "pppams_indicator_base_refs_pppams_references", :id => false, :force => true do |t|
+    t.integer "pppams_indicator_base_ref_id", :null => false
+    t.integer "pppams_reference_id",          :null => false
+  end
+
   create_table "pppams_indicators", :force => true do |t|
     t.integer  "frequency",                    :default => 1
     t.integer  "start_month",                  :default => 1
@@ -309,15 +314,6 @@ ActiveRecord::Schema.define(:version => 20101011214130) do
   add_index "pppams_indicators", ["good_months"], :name => "category_good_months", :length => {"good_months"=>"4"}
   add_index "pppams_indicators", ["good_months"], :name => "good_months", :length => {"good_months"=>"4"}
   add_index "pppams_indicators", ["pppams_indicator_base_ref_id"], :name => "pppams_indicator_base_ref_id"
-
-  create_table "pppams_indicators_pppams_references", :id => false, :force => true do |t|
-    t.integer "pppams_indicator_id", :null => false
-    t.integer "pppams_reference_id", :null => false
-  end
-
-  add_index "pppams_indicators_pppams_references", ["pppams_indicator_id", "pppams_reference_id"], :name => "indicator_reference"
-  add_index "pppams_indicators_pppams_references", ["pppams_indicator_id"], :name => "index_pppams_indicators_pppams_references_on_pppams_indicator_id"
-  add_index "pppams_indicators_pppams_references", ["pppams_reference_id"], :name => "index_pppams_indicators_pppams_references_on_pppams_reference_id"
 
   create_table "pppams_issue_follow_ups", :force => true do |t|
     t.text    "follow_up"

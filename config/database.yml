@@ -6,21 +6,21 @@ production:
   adapter: mysql
   database: privateprison_production
   username: root
-  password: root123
+  password: 
   host: 127.0.0.1
 
 development:
   adapter: mysql
   database: privateprison_development
   username: root
-  password: root123
+  password: 
   host: 127.0.0.1
 
 test: &TEST
   adapter: mysql
   database: privateprison_test
   username: root
-  password: root123
+  password: 
   host: 127.0.0.1
 cucumber:
   <<: *TEST

@@ -6,7 +6,14 @@ gem 'rails', '2.3.11'
 gem 'will_paginate', '~> 2.3.11'
 gem "calendar_date_select", '1.16.1'
 gem 'haml', '3.0.25'
+gem 'rails-footnotes'
 
+group :test do
+  gem 'rspec', '~> 1.3'
+  gem 'rspec-rails', '~> 1.3'
+  gem 'test-unit', '~> 1.2.3'
+  gem 'webrat'
+end
 #group :development, :test, :cucumber do
 #  gem 'rails-footnotes'
 #  gem 'faker'

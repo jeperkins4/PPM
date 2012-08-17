@@ -11,8 +11,8 @@
  	      <p>
 			<b>Facility: </b><br />
 		
-				<%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
-				<%= session[:facility].facility %>
+				<%= f.text_field :facility_id, :value => session[:facility].try(:id), :style => 'display:none;' %>
+				<%= session[:facility].try(:facility) %>
 		
 		  </p>
  		</td>

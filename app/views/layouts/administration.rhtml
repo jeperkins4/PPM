@@ -44,7 +44,7 @@
               <% else -%> 
                 <div id='search'>
                   <label class='accessibility'>Managing:</label>
-                  <%= session[:facility].facility %>
+                  <%= session[:facility].try(:facility) %>
                 </div>
               <% end -%>
           <% end -%>

@@ -132,7 +132,7 @@ class ApplicationController < ActionController::Base
   def setup_session(user)
     unless user.nil?
       session[:user_id] = user.id
-      session[:user] = user.firstname + ' ' + user.lastname
+      session[:user] = [user.firstname,user.lastname].join(" ")
       session[:user_type] = user.user_type.user_type
       session[:name] = user.name
       session[:access_level] = user.user_type.access_level.access_level

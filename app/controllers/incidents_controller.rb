@@ -13,7 +13,7 @@ class IncidentsController < ApplicationController
     @incidents = Incident.paginate :order => 'incident_date, mins',
                   :per_page => 20,
                   :page => params[:page],
-                  :conditions => ['investigation_closed = ? and facility_id = ?', @status, session[:facility].id]
+                  :conditions => ['investigation_closed = ? and facility_id = ?', @status, session[:facility].try(:id)]
     
     respond_to do |format|
       format.html # index.rhtml

@@ -9,6 +9,8 @@
 
   <% @me = [] %>
 
+  <% @accountability_logs = AccountabilityLogs.filtered_logs(session[:acct_begin_date],session[:acct_end_date]) %>
+  
   <% session[:acct_begin_date].upto(session[:acct_end_date]) do |x| %>
     <% @me += [[x.month, x.year]] %>
   <% end %>
@@ -50,13 +52,10 @@
         <% @row_sum = 0 -%>
         <% @notes = [] -%>
         <% @column_sum = [] -%>
-                
-              
                       
         <tr><td><%= question.question %></td>
     
           <%  @me.each do |date|  %>
-
 
 
           <% if session[:facility].class.to_s == 'Junk' %>

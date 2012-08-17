@@ -149,7 +149,7 @@ class ReportsController < ApplicationController
       @status = 4
     when 'All'
       @search_string += " and (nci_status <> ? OR 1=1)"
-      @status = 42 #All_HACKITY_HACK
+      @status = 42 # TODO All_HACKITY_HACK
     end
     if session[:facility].class.to_s == 'Junk'
     session[:report] = NonCompIssue.find :all,

@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'i18n'
 gem 'mysql', '2.8.1'
-gem 'rails', '2.3.11'
+gem 'rails', '~> 2.3.11'
 gem 'will_paginate', '~> 2.3.11'
 gem "calendar_date_select", '1.16.1'
 gem 'haml', '3.0.25'

@@ -96,7 +96,7 @@
   </p></td>
   </tr>
   <tr><td colspan=2> 
-    <%= submit_tag "Save" %>
+    <%= submit_tag "Save", :disable_with => 'Please wait...', :onclick => 'submit(); return true;' %>
   </p></td>
   </tr>
   </table><br />

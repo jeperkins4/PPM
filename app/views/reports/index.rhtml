@@ -1,7 +1,6 @@
 <h2>Report Dashboard</h2>
 
-
-<% remote_form_for(:report, :action => :index, :method => 'post' ) do |f| %>
+<% remote_form_for(:report, :action => :index, :method => 'post', :loading => "$('loading').show();", :loaded => "$('loading').hide();") do |f| %>
 <table>
 	<tr>
 		<td width='15%'>Report Type:</td>
@@ -17,10 +16,12 @@
 		<td></td>
 	</tr>
 	<tr>
-		<td colspan="2"><br /><%= submit_tag "Build Report",:disable_with => "Please wait...", :onclick => "submit(); document.getElementById('spinner').innerHTML=\"<img src='images/spinner.gif'/>\";" %><div id = 'spinner'></div></td>
+		<td colspan="2"><br /><%= f.submit "Build Report",:id => 'build', :disable_with => "Please wait...", :onclick => "submit(); return true;" %>
+    </td>
                 
 	</tr>
         
 </table>
 
+<%= image_tag 'spinner.gif', :style => 'display: none;', :id => 'loading' %>
 <% end -%>

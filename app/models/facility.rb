@@ -15,6 +15,8 @@ class Facility < ActiveRecord::Base
   has_many :non_comp_issues
   has_many :pppams_issues
 
+  validates_presence_of :facility
+
   named_scope :with_indicator_base, lambda { |base_ref_id| 
     { :joins => "LEFT OUTER JOIN pppams_indicators ON pppams_indicators.facility_id = facilities.id",
       :conditions => ["pppams_indicators.pppams_indicator_base_ref_id = ?", base_ref_id]

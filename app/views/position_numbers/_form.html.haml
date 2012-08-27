@@ -1,0 +1,14 @@
+= simple_form_for(@position_number) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :position_id
+    = f.input :position_num
+    = f.input :position_type_id
+    = f.input :waiver_approval_date
+    = f.input :active
+    = f.input :inactive_on
+    = f.input :inactive_comment
+
+  .form-actions
+    = f.button :submit

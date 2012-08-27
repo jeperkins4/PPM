@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Facility:
+  = @inmate_count.facility_id
+%p
+  %b Inmate count:
+  = @inmate_count.inmate_count
+%p
+  %b Collected on:
+  = @inmate_count.collected_on
+%p
+  %b Custody type:
+  = @inmate_count.custody_type_id
+
+= link_to 'Edit', edit_inmate_count_path(@inmate_count)
+\|
+= link_to 'Back', inmate_counts_path

@@ -1,0 +1,48 @@
+%p#notice= notice
+
+%p
+  %b Facility:
+  = @non_comp_issue.facility_id
+%p
+  %b Nci status:
+  = @non_comp_issue.nci_status
+%p
+  %b Details:
+  = @non_comp_issue.details
+%p
+  %b Requirement:
+  = @non_comp_issue.requirement
+%p
+  %b Discovered on:
+  = @non_comp_issue.discovered_on
+%p
+  %b Notified on:
+  = @non_comp_issue.notified_on
+%p
+  %b Cap due on:
+  = @non_comp_issue.cap_due_on
+%p
+  %b Cap review on:
+  = @non_comp_issue.cap_review_on
+%p
+  %b Resolved on:
+  = @non_comp_issue.resolved_on
+%p
+  %b Created by:
+  = @non_comp_issue.created_by_id
+%p
+  %b Updated by:
+  = @non_comp_issue.updated_by_id
+%p
+  %b Notes:
+  = @non_comp_issue.notes
+%p
+  %b Issue number:
+  = @non_comp_issue.issue_number
+%p
+  %b Conclusion:
+  = @non_comp_issue.conclusion
+
+= link_to 'Edit', edit_non_comp_issue_path(@non_comp_issue)
+\|
+= link_to 'Back', non_comp_issues_path

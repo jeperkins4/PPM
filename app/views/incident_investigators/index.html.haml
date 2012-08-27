@@ -1,0 +1,21 @@
+%h1 Listing incident_investigators
+
+%table
+  %tr
+    %th Investigator
+    %th Incident
+    %th
+    %th
+    %th
+
+  - @incident_investigators.each do |incident_investigator|
+    %tr
+      %td= incident_investigator.investigator_id
+      %td= incident_investigator.incident_id
+      %td= link_to 'Show', incident_investigator
+      %td= link_to 'Edit', edit_incident_investigator_path(incident_investigator)
+      %td= link_to 'Destroy', incident_investigator, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Incident investigator', new_incident_investigator_path

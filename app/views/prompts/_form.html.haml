@@ -1,0 +1,12 @@
+= simple_form_for(@prompt) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :question
+    = f.input :description
+    = f.input :context_id
+    = f.input :used_in_total
+    = f.input :active
+
+  .form-actions
+    = f.button :submit

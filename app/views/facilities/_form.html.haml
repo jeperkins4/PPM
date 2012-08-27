@@ -1,0 +1,18 @@
+= simple_form_for(@facility) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :shortname
+    = f.input :address1
+    = f.input :address2
+    = f.input :city
+    = f.input :state
+    = f.input :zip
+    = f.input :phone
+    = f.input :warden
+    = f.input :contract_monitor
+    = f.input :pppams_started_on
+
+  .form-actions
+    = f.button :submit

@@ -1,0 +1,31 @@
+= simple_form_for(@incident) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :incident_on
+    = f.input :reported_on
+    = f.input :inspector_general_on
+    = f.input :description
+    = f.input :incident_type_id
+    = f.input :facility_id
+    = f.input :contract_manager_notified_on
+    = f.input :bureau_notified_on
+    = f.input :warden_notified_on
+    = f.input :facility_investigation_completed_on
+    = f.input :action_type_id
+    = f.input :incident_type_other
+    = f.input :incident_class_id
+    = f.input :investigator_id
+    = f.input :mins
+    = f.input :action_type_other
+    = f.input :designee_name
+    = f.input :contract_manager_notified
+    = f.input :warden_notified
+    = f.input :bureau_notified
+    = f.input :facility_investigation_complete
+    = f.input :investigation_closed
+    = f.input :investigation_closed_on
+    = f.input :entity_closing
+
+  .form-actions
+    = f.button :submit

@@ -1,0 +1,19 @@
+= simple_form_for(@pppams_review) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :pppams_indicator_id
+    = f.input :doc_count
+    = f.input :score
+    = f.input :observation_ref
+    = f.input :documentation_ref
+    = f.input :interview_ref
+    = f.input :status
+    = f.input :notes
+    = f.input :created_by_id
+    = f.input :updated_by_id
+    = f.input :submit_count
+    = f.input :real_creation_on
+
+  .form-actions
+    = f.button :submit

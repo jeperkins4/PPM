@@ -1,0 +1,9 @@
+= simple_form_for(@incident_investigator) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :investigator_id
+    = f.input :incident_id
+
+  .form-actions
+    = f.button :submit

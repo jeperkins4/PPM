@@ -1,0 +1,25 @@
+%h1 Listing follow_ups
+
+%table
+  %tr
+    %th Comment
+    %th Commented at
+    %th Incident
+    %th User
+    %th
+    %th
+    %th
+
+  - @follow_ups.each do |follow_up|
+    %tr
+      %td= follow_up.comment
+      %td= follow_up.commented_at
+      %td= follow_up.incident_id
+      %td= follow_up.user_id
+      %td= link_to 'Show', follow_up
+      %td= link_to 'Edit', edit_follow_up_path(follow_up)
+      %td= link_to 'Destroy', follow_up, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Follow up', new_follow_up_path

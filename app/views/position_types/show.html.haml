@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @position_type.name
+%p
+  %b Description:
+  = @position_type.description
+%p
+  %b Deductable:
+  = @position_type.deductable
+%p
+  %b Deductable days:
+  = @position_type.deductable_days
+%p
+  %b Facility:
+  = @position_type.facility_id
+
+= link_to 'Edit', edit_position_type_path(@position_type)
+\|
+= link_to 'Back', position_types_path

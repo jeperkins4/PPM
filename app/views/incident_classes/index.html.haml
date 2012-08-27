@@ -1,0 +1,21 @@
+%h1 Listing incident_classes
+
+%table
+  %tr
+    %th Name
+    %th Description
+    %th
+    %th
+    %th
+
+  - @incident_classes.each do |incident_class|
+    %tr
+      %td= incident_class.name
+      %td= incident_class.description
+      %td= link_to 'Show', incident_class
+      %td= link_to 'Edit', edit_incident_class_path(incident_class)
+      %td= link_to 'Destroy', incident_class, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Incident class', new_incident_class_path

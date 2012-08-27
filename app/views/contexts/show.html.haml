@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @context.title
+%p
+  %b Description:
+  = @context.description
+%p
+  %b Position:
+  = @context.position
+
+= link_to 'Edit', edit_context_path(@context)
+\|
+= link_to 'Back', contexts_path

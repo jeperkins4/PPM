@@ -1,0 +1,56 @@
+.page-header
+  %h1 
+    Incident: Mins # #{incident.mins}
+    .pull-right
+      = link_to 'Edit', edit_incident_path(@incident), :class => 'btn'
+      = link_to 'Back', incidents_path, :class => 'btn'
+
+%dl
+  %dt Facility:
+  %dd= @incident.facility_name
+  %dt Incident on:
+  %dd= @incident.incident_on
+  %dt Reported on:
+  %dd= @incident.reported_on
+  %dt Inspector general on:
+  %dd= @incident.inspector_general_on
+  %dt Description:
+  %dd= @incident.description
+  %dt Incident type:
+  %dd= @incident.incident_type_name
+  %dt Contract manager notified on:
+  %dd= @incident.contract_manager_notified_on
+  %dt Bureau notified on:
+  %dd= @incident.bureau_notified_on
+  %dt Warden notified on:
+  %dd= @incident.warden_notified_on
+  %dt Facility investigation completed on:
+  %dd= @incident.facility_investigation_completed_on
+  %dt Action type:
+  %dd= @incident.action_type_name
+  %dt Incident type other:
+  %dd= @incident.incident_type_other
+  %dt Incident class:
+  %dd= @incident.incident_class_name
+  %dt Investigator:
+  %dd= @incident.investigator_name
+  %dt Mins:
+  %dd= @incident.mins
+  %dt Action type other:
+  %dd= @incident.action_type_other
+  %dt Designee name:
+  %dd= @incident.designee_name
+  %dt Contract manager notified:
+  %dd= @incident.contract_manager_notified
+  %dt Warden notified:
+  %dd= @incident.warden_notified
+  %dt Bureau notified:
+  %dd= @incident.bureau_notified
+  %dt Facility investigation complete:
+  %dd= @incident.facility_investigation_complete
+  %dt Investigation closed:
+  %dd= @incident.investigation_closed
+  %dt Investigation closed on:
+  %dd= @incident.investigation_closed_on
+  %dt Entity closing:
+  %dd= @incident.entity_closing

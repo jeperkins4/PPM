@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @position.title
+%p
+  %b Position type:
+  = @position.position_type_id
+%p
+  %b Salary:
+  = @position.salary
+%p
+  %b Description:
+  = @position.description
+
+= link_to 'Edit', edit_position_path(@position)
+\|
+= link_to 'Back', positions_path

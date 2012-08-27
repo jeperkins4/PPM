@@ -1,0 +1,21 @@
+= simple_form_for(@non_comp_issue) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :facility_id
+    = f.input :nci_status
+    = f.input :details
+    = f.input :requirement
+    = f.input :discovered_on
+    = f.input :notified_on
+    = f.input :cap_due_on
+    = f.input :cap_review_on
+    = f.input :resolved_on
+    = f.input :created_by_id
+    = f.input :updated_by_id
+    = f.input :notes
+    = f.input :issue_number
+    = f.input :conclusion
+
+  .form-actions
+    = f.button :submit

@@ -1,0 +1,39 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @pppams_report_filter.name
+%p
+  %b Start on:
+  = @pppams_report_filter.start_on
+%p
+  %b End on:
+  = @pppams_report_filter.end_on
+%p
+  %b Report type:
+  = @pppams_report_filter.report_type
+%p
+  %b Facility filter:
+  = @pppams_report_filter.facility_filter
+%p
+  %b Status filter:
+  = @pppams_report_filter.status_filter
+%p
+  %b Category filter:
+  = @pppams_report_filter.category_filter
+%p
+  %b Indicator filter:
+  = @pppams_report_filter.indicator_filter
+%p
+  %b Created by:
+  = @pppams_report_filter.created_by_id
+%p
+  %b Updated by:
+  = @pppams_report_filter.updated_by_id
+%p
+  %b Score filter:
+  = @pppams_report_filter.score_filter
+
+= link_to 'Edit', edit_pppams_report_filter_path(@pppams_report_filter)
+\|
+= link_to 'Back', pppams_report_filters_path

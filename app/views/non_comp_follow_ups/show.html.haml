@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Comment:
+  = @non_comp_follow_up.comment
+%p
+  %b Non comp issue:
+  = @non_comp_follow_up.non_comp_issue_id
+%p
+  %b Created by:
+  = @non_comp_follow_up.created_by_id
+%p
+  %b Updated by:
+  = @non_comp_follow_up.updated_by_id
+
+= link_to 'Edit', edit_non_comp_follow_up_path(@non_comp_follow_up)
+\|
+= link_to 'Back', non_comp_follow_ups_path

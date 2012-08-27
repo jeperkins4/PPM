@@ -1,0 +1,11 @@
+= simple_form_for(@pppams_issue_follow_up) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :comment
+    = f.input :pppams_issue_id
+    = f.input :created_by_id
+    = f.input :updated_by_id
+
+  .form-actions
+    = f.button :submit

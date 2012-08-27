@@ -1,0 +1,23 @@
+.page-header
+  %h1 
+    Positions
+    .pull-right
+      = link_to 'Add', new_position_path, :class => 'btn btn-primary'
+
+%table#positions.table.table-bordered.table-striped.dataTable
+  %tr
+    %th Title
+    %th Position type
+    %th Salary
+    %th Description
+    %th
+
+  - @positions.each do |position|
+    %tr
+      %td= link_to position.title, position
+      %td= position.position_type_id
+      %td= position.salary
+      %td= position.description
+      %td 
+        = link_to 'Edit', edit_position_path(position)
+        = link_to 'Destroy', position, :confirm => 'Are you sure?', :method => :delete

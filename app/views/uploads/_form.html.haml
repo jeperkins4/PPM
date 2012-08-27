@@ -1,0 +1,11 @@
+= simple_form_for(@upload) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :uploadable_id
+    = f.input :uploadable_type
+    = f.input :name
+    = f.input :user_id
+
+  .form-actions
+    = f.button :submit

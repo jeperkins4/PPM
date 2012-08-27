@@ -1,0 +1,2 @@
+module PppamsIssueFollowUpsHelper
+end

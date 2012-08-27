@@ -1,0 +1,18 @@
+= simple_form_for(@pppams_report_filter) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :start_on
+    = f.input :end_on
+    = f.input :report_type
+    = f.input :facility_filter
+    = f.input :status_filter
+    = f.input :category_filter
+    = f.input :indicator_filter
+    = f.input :created_by_id
+    = f.input :updated_by_id
+    = f.input :score_filter
+
+  .form-actions
+    = f.button :submit

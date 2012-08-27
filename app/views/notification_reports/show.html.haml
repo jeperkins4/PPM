@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @notification_report.user_id
+%p
+  %b Facility:
+  = @notification_report.facility_id
+%p
+  %b Eom offset:
+  = @notification_report.eom_offset
+
+= link_to 'Edit', edit_notification_report_path(@notification_report)
+\|
+= link_to 'Back', notification_reports_path

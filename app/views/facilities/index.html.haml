@@ -1,0 +1,23 @@
+.page-header
+  %h1 
+    Listing Facilities
+    .pull-right
+      = link_to 'Add', new_facility_path, :class => 'btn btn-primary'
+
+%table#facilities.table.table-bordered.table-striped.dataTable
+  %tr
+    %th Name
+    %th Contract Manager
+    %th Warden
+    %th Phone
+    %th
+
+  - @facilities.each do |facility|
+    %tr
+      %td= link_to facility.name, facility
+      %td= facility.contract_monitor
+      %td= facility.warden
+      %td= facility.phone
+      %td
+        = link_to t('edit'), edit_facility_path(facility), :class => 'btn'
+        = link_to t('destroy'), facility, :confirm => 'Are you sure?', :method => :delete, :class => 'btn'

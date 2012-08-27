@@ -1,0 +1,23 @@
+= simple_form_for(@pppams_issue) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :pppams_issue_number
+    = f.input :pppams_issue_status
+    = f.input :receiver
+    = f.input :received_on
+    = f.input :facility_id
+    = f.input :reported_by
+    = f.input :inmate_details
+    = f.input :inmate_id
+    = f.input :description
+    = f.input :cm_response_due_on
+    = f.input :cm_response_on
+    = f.input :resolved_on
+    = f.input :category
+    = f.input :pppams_issue_id
+    = f.input :created_by_id
+    = f.input :updated_by_id
+
+  .form-actions
+    = f.button :submit

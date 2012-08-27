@@ -1,0 +1,21 @@
+%h1 Listing position_histories
+
+%table
+  %tr
+    %th Position
+    %th Salary
+    %th
+    %th
+    %th
+
+  - @position_histories.each do |position_history|
+    %tr
+      %td= position_history.position_id
+      %td= position_history.salary
+      %td= link_to 'Show', position_history
+      %td= link_to 'Edit', edit_position_history_path(position_history)
+      %td= link_to 'Destroy', position_history, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Position history', new_position_history_path

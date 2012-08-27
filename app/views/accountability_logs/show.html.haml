@@ -1,0 +1,27 @@
+%p#notice= notice
+
+%p
+  %b Facility:
+  = @accountability_log.facility_id
+%p
+  %b Context:
+  = @accountability_log.context_id
+%p
+  %b Prompt:
+  = @accountability_log.prompt_id
+%p
+  %b Response:
+  = @accountability_log.response
+%p
+  %b Log year:
+  = @accountability_log.log_year
+%p
+  %b Log month:
+  = @accountability_log.log_month
+%p
+  %b Logged at:
+  = @accountability_log.logged_at
+
+= link_to 'Edit', edit_accountability_log_path(@accountability_log)
+\|
+= link_to 'Back', accountability_logs_path

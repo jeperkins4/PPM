@@ -1,0 +1,17 @@
+.page-header
+  %h1 
+    Access Levels
+    .pull-right
+      = link_to 'New Access level', new_access_level_path, :class => 'btn btn-primary'
+      
+%table#access_levels.table.table-bordered.table-striped.dataTable
+  %tr
+    %th Name
+    %th Description
+    %th
+
+  - @access_levels.each do |access_level|
+    %tr
+      %td= access_level.name
+      %td= access_level.description
+      %td= link_to 'Edit', edit_access_level_path(access_level)

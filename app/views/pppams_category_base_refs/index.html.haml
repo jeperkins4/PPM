@@ -1,0 +1,21 @@
+%h1 Listing pppams_category_base_refs
+
+%table
+  %tr
+    %th Name
+    %th Pppams category group
+    %th
+    %th
+    %th
+
+  - @pppams_category_base_refs.each do |pppams_category_base_ref|
+    %tr
+      %td= pppams_category_base_ref.name
+      %td= pppams_category_base_ref.pppams_category_group_id
+      %td= link_to 'Show', pppams_category_base_ref
+      %td= link_to 'Edit', edit_pppams_category_base_ref_path(pppams_category_base_ref)
+      %td= link_to 'Destroy', pppams_category_base_ref, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Pppams category base ref', new_pppams_category_base_ref_path

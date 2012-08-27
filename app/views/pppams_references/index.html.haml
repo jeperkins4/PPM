@@ -1,0 +1,21 @@
+%h1 Listing pppams_references
+
+%table
+  %tr
+    %th Name
+    %th Url
+    %th
+    %th
+    %th
+
+  - @pppams_references.each do |pppams_reference|
+    %tr
+      %td= pppams_reference.name
+      %td= pppams_reference.url
+      %td= link_to 'Show', pppams_reference
+      %td= link_to 'Edit', edit_pppams_reference_path(pppams_reference)
+      %td= link_to 'Destroy', pppams_reference, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Pppams reference', new_pppams_reference_path

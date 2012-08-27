@@ -1,0 +1,25 @@
+%h1 Listing non_comp_follow_ups
+
+%table
+  %tr
+    %th Comment
+    %th Non comp issue
+    %th Created by
+    %th Updated by
+    %th
+    %th
+    %th
+
+  - @non_comp_follow_ups.each do |non_comp_follow_up|
+    %tr
+      %td= non_comp_follow_up.comment
+      %td= non_comp_follow_up.non_comp_issue_id
+      %td= non_comp_follow_up.created_by_id
+      %td= non_comp_follow_up.updated_by_id
+      %td= link_to 'Show', non_comp_follow_up
+      %td= link_to 'Edit', edit_non_comp_follow_up_path(non_comp_follow_up)
+      %td= link_to 'Destroy', non_comp_follow_up, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Non comp follow up', new_non_comp_follow_up_path

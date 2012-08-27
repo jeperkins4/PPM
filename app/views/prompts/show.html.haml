@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Question:
+  = @prompt.question
+%p
+  %b Description:
+  = @prompt.description
+%p
+  %b Context:
+  = @prompt.context_id
+%p
+  %b Used in total:
+  = @prompt.used_in_total
+%p
+  %b Active:
+  = @prompt.active
+
+= link_to 'Edit', edit_prompt_path(@prompt)
+\|
+= link_to 'Back', prompts_path

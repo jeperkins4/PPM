@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Investigator:
+  = @incident_investigator.investigator_id
+%p
+  %b Incident:
+  = @incident_investigator.incident_id
+
+= link_to 'Edit', edit_incident_investigator_path(@incident_investigator)
+\|
+= link_to 'Back', incident_investigators_path

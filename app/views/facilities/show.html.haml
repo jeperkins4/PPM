@@ -1,0 +1,39 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @facility.name
+%p
+  %b Shortname:
+  = @facility.shortname
+%p
+  %b Address1:
+  = @facility.address1
+%p
+  %b Address2:
+  = @facility.address2
+%p
+  %b City:
+  = @facility.city
+%p
+  %b State:
+  = @facility.state
+%p
+  %b Zip:
+  = @facility.zip
+%p
+  %b Phone:
+  = @facility.phone
+%p
+  %b Warden:
+  = @facility.warden
+%p
+  %b Contract monitor:
+  = @facility.contract_monitor
+%p
+  %b Pppams started on:
+  = @facility.pppams_started_on
+
+= link_to 'Edit', edit_facility_path(@facility)
+\|
+= link_to 'Back', facilities_path

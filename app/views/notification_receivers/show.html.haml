@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @notification_receiver.user_id
+%p
+  %b Facility:
+  = @notification_receiver.facility_id
+%p
+  %b Status:
+  = @notification_receiver.status
+
+= link_to 'Edit', edit_notification_receiver_path(@notification_receiver)
+\|
+= link_to 'Back', notification_receivers_path

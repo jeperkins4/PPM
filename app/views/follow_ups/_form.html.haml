@@ -1,0 +1,11 @@
+= simple_form_for(@follow_up) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :comment
+    = f.input :commented_at
+    = f.input :incident_id
+    = f.input :user_id
+
+  .form-actions
+    = f.button :submit

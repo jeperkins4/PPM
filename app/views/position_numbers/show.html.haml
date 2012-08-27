@@ -1,0 +1,27 @@
+%p#notice= notice
+
+%p
+  %b Position:
+  = @position_number.position_id
+%p
+  %b Position num:
+  = @position_number.position_num
+%p
+  %b Position type:
+  = @position_number.position_type_id
+%p
+  %b Waiver approval date:
+  = @position_number.waiver_approval_date
+%p
+  %b Active:
+  = @position_number.active
+%p
+  %b Inactive on:
+  = @position_number.inactive_on
+%p
+  %b Inactive comment:
+  = @position_number.inactive_comment
+
+= link_to 'Edit', edit_position_number_path(@position_number)
+\|
+= link_to 'Back', position_numbers_path

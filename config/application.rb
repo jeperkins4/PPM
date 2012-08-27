@@ -60,5 +60,15 @@ module PrivatePrisons
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.generators do |g|
+      g.controller_specs false
+      g.view_specs false
+      g.helper_specs false
+      g.template_engine :haml
+      g.test_framework      :rspec, fixture: true
+      g.fixture_replacement :fabrication, :dir => 'spec/fabricators'
+      g.stylesheets false
+    end
   end
 end

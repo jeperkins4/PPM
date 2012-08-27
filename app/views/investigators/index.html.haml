@@ -1,0 +1,26 @@
+.page-header
+  %h1
+    Investigators
+    .pull-right
+      = link_to 'Add', new_investigator_path, :class => 'btn btn-primary'
+
+%table#investigators.table.table-bordered.table-striped.dataTable
+  %tr
+    %th Name
+    %th Phone
+    %th Email
+    %th Entity
+    %th Facility
+    %th
+
+  - @investigators.each do |investigator|
+    %tr
+      %td= link_to investigator.name, investigator
+      %td= investigator.phone
+      %td= investigator.email
+      %td= investigator.entity
+      %td= investigator.facility_name
+      %td= link_to 'Edit', edit_investigator_path(investigator)
+      %td= link_to 'Destroy', investigator, :confirm => 'Are you sure?', :method => :delete
+%br
+

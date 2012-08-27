@@ -1,0 +1,21 @@
+%h1 Listing pppams_indicator_base_refs
+
+%table
+  %tr
+    %th Question
+    %th Pppams category base ref
+    %th
+    %th
+    %th
+
+  - @pppams_indicator_base_refs.each do |pppams_indicator_base_ref|
+    %tr
+      %td= pppams_indicator_base_ref.question
+      %td= pppams_indicator_base_ref.pppams_category_base_ref_id
+      %td= link_to 'Show', pppams_indicator_base_ref
+      %td= link_to 'Edit', edit_pppams_indicator_base_ref_path(pppams_indicator_base_ref)
+      %td= link_to 'Destroy', pppams_indicator_base_ref, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Pppams indicator base ref', new_pppams_indicator_base_ref_path

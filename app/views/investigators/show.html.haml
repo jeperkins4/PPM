@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Firstname:
+  = @investigator.firstname
+%p
+  %b Lastname:
+  = @investigator.lastname
+%p
+  %b Phone:
+  = @investigator.phone
+%p
+  %b Email:
+  = @investigator.email
+%p
+  %b Entity:
+  = @investigator.entity
+%p
+  %b Facility:
+  = @investigator.facility_id
+
+= link_to 'Edit', edit_investigator_path(@investigator)
+\|
+= link_to 'Back', investigators_path

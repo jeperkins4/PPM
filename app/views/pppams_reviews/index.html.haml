@@ -1,0 +1,41 @@
+%h1 Listing pppams_reviews
+
+%table
+  %tr
+    %th Pppams indicator
+    %th Doc count
+    %th Score
+    %th Observation ref
+    %th Documentation ref
+    %th Interview ref
+    %th Status
+    %th Notes
+    %th Created by
+    %th Updated by
+    %th Submit count
+    %th Real creation on
+    %th
+    %th
+    %th
+
+  - @pppams_reviews.each do |pppams_review|
+    %tr
+      %td= pppams_review.pppams_indicator_id
+      %td= pppams_review.doc_count
+      %td= pppams_review.score
+      %td= pppams_review.observation_ref
+      %td= pppams_review.documentation_ref
+      %td= pppams_review.interview_ref
+      %td= pppams_review.status
+      %td= pppams_review.notes
+      %td= pppams_review.created_by_id
+      %td= pppams_review.updated_by_id
+      %td= pppams_review.submit_count
+      %td= pppams_review.real_creation_on
+      %td= link_to 'Show', pppams_review
+      %td= link_to 'Edit', edit_pppams_review_path(pppams_review)
+      %td= link_to 'Destroy', pppams_review, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Pppams review', new_pppams_review_path

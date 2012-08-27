@@ -1,0 +1,29 @@
+.page-header
+  %h1 
+    Employees
+    .pull-right
+      = link_to 'Add', new_employee_path, :class => 'btn btn-primary'
+
+%table#employees.table.table-bordered.table-striped.dataTable
+  %tr
+    %th Name
+    %th Facility
+    %th Emplid
+    %th Active
+    %th Tea status
+    %th
+
+  - @employees.each do |employee|
+    %tr
+      %td= link_to employee.name, employee
+      %td= employee.facility_name
+      %td= employee.emplid
+      %td= employee.active
+      %td= employee.tea_status
+      %td
+        = link_to t('edit'), edit_employee_path(employee), :class => 'btn'
+        = link_to t('destroy'), employee, :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger'
+
+%br
+
+= link_to 'New Employee', new_employee_path

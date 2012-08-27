@@ -1,4 +1,45 @@
 PrivatePrisons::Application.routes.draw do
+  resources :homes
+  resources :uploads
+  resources :prompts
+  resources :pppams_reviews
+  resources :pppams_report_filters
+  resources :pppams_references
+  resources :pppams_issues
+  resources :pppams_issue_follow_ups
+  resources :pppams_indicators
+  resources :pppams_indicator_base_refs
+  resources :pppams_category_base_refs
+  resources :position_histories
+  resources :notifications
+  resources :notification_reports
+  resources :notification_receivers
+  resources :non_comp_issues
+  resources :non_comp_follow_ups
+  resources :investigators
+  resources :inmate_counts
+  resources :incidents
+  resources :incident_investigators
+  resources :follow_ups
+  resources :employee_position_histories
+  resources :position_numbers
+  resources :positions
+  resources :position_types
+  resources :contexts
+  resources :accountability_log_details
+  resources :accountability_logs
+  resources :pppams_category_groups
+  resources :incident_types
+  resources :incident_classes
+  resources :action_types
+  resources :custody_types
+  resources :user_types
+  resources :employees
+  resources :facilities
+  resources :access_levels
+  devise_for :users
+
+  root :to => "homes#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

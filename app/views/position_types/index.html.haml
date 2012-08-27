@@ -1,0 +1,26 @@
+.page-header
+  %h1 
+    Position Types
+    .pull-right
+      = link_to 'Add', new_position_type_path, :class => 'btn btn-primary'
+
+%table#position_types.table.table-bordered.table-striped.dataTable
+  %tr
+    %th Name
+    %th Description
+    %th Deductable
+    %th Deduction days
+    %th Facility
+    %th
+
+  - @position_types.each do |position_type|
+    %tr
+      %td= link_to position_type.name, position_type
+      %td= position_type.description
+      %td= position_type.deductable
+      %td= position_type.deduction_days
+      %td= position_type.facility_id
+      %td= link_to 'Edit', edit_position_type_path(position_type)
+
+%br
+

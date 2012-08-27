@@ -1,0 +1,25 @@
+%h1 Listing pppams_issue_follow_ups
+
+%table
+  %tr
+    %th Comment
+    %th Pppams issue
+    %th Created by
+    %th Updated by
+    %th
+    %th
+    %th
+
+  - @pppams_issue_follow_ups.each do |pppams_issue_follow_up|
+    %tr
+      %td= pppams_issue_follow_up.comment
+      %td= pppams_issue_follow_up.pppams_issue_id
+      %td= pppams_issue_follow_up.created_by_id
+      %td= pppams_issue_follow_up.updated_by_id
+      %td= link_to 'Show', pppams_issue_follow_up
+      %td= link_to 'Edit', edit_pppams_issue_follow_up_path(pppams_issue_follow_up)
+      %td= link_to 'Destroy', pppams_issue_follow_up, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Pppams issue follow up', new_pppams_issue_follow_up_path

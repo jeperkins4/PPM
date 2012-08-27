@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @custody_type.name
+%p
+  %b Description:
+  = @custody_type.description
+
+= link_to 'Edit', edit_custody_type_path(@custody_type)
+\|
+= link_to 'Back', custody_types_path

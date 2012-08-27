@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Comment:
+  = @follow_up.comment
+%p
+  %b Commented at:
+  = @follow_up.commented_at
+%p
+  %b Incident:
+  = @follow_up.incident_id
+%p
+  %b User:
+  = @follow_up.user_id
+
+= link_to 'Edit', edit_follow_up_path(@follow_up)
+\|
+= link_to 'Back', follow_ups_path

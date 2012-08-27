@@ -1,0 +1,12 @@
+= simple_form_for(@employee_position_history) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :position_number_id
+    = f.input :employee_id
+    = f.input :start_date
+    = f.input :end_date
+    = f.input :salary
+
+  .form-actions
+    = f.button :submit

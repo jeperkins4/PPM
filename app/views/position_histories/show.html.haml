@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Position:
+  = @position_history.position_id
+%p
+  %b Salary:
+  = @position_history.salary
+
+= link_to 'Edit', edit_position_history_path(@position_history)
+\|
+= link_to 'Back', position_histories_path

@@ -1,0 +1,25 @@
+%h1 Listing inmate_counts
+
+%table
+  %tr
+    %th Facility
+    %th Inmate count
+    %th Collected on
+    %th Custody type
+    %th
+    %th
+    %th
+
+  - @inmate_counts.each do |inmate_count|
+    %tr
+      %td= inmate_count.facility_id
+      %td= inmate_count.inmate_count
+      %td= inmate_count.collected_on
+      %td= inmate_count.custody_type_id
+      %td= link_to 'Show', inmate_count
+      %td= link_to 'Edit', edit_inmate_count_path(inmate_count)
+      %td= link_to 'Destroy', inmate_count, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Inmate count', new_inmate_count_path

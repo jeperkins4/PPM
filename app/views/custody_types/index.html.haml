@@ -1,0 +1,18 @@
+.page-header
+  %h1 
+    Custody Types
+    .pull-right
+      = link_to 'Add', new_custody_type_path, :class => 'btn btn-primary'
+    
+
+%table#custody_types.table.table-bordered.table-striped.dataTable
+  %tr
+    %th Name
+    %th Description
+    %th
+
+  - @custody_types.each do |custody_type|
+    %tr
+      %td= link_to custody_type.name, custody_type
+      %td= custody_type.description
+      %td= link_to 'Edit', edit_custody_type_path(custody_type)

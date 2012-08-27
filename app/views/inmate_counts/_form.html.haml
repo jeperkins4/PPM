@@ -1,0 +1,11 @@
+= simple_form_for(@inmate_count) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :facility_id
+    = f.input :inmate_count
+    = f.input :collected_on
+    = f.input :custody_type_id
+
+  .form-actions
+    = f.button :submit

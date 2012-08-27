@@ -1,0 +1,14 @@
+= simple_form_for(@accountability_log) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :facility_id
+    = f.input :context_id
+    = f.input :prompt_id
+    = f.input :response
+    = f.input :log_year
+    = f.input :log_month
+    = f.input :logged_at
+
+  .form-actions
+    = f.button :submit

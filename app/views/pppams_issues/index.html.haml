@@ -1,0 +1,49 @@
+%h1 Listing pppams_issues
+
+%table
+  %tr
+    %th Pppams issue number
+    %th Pppams issue status
+    %th Receiver
+    %th Received on
+    %th Facility
+    %th Reported by
+    %th Inmate details
+    %th Inmate
+    %th Description
+    %th Cm response due on
+    %th Cm response on
+    %th Resolved on
+    %th Category
+    %th Pppams issue
+    %th Created by
+    %th Updated by
+    %th
+    %th
+    %th
+
+  - @pppams_issues.each do |pppams_issue|
+    %tr
+      %td= pppams_issue.pppams_issue_number
+      %td= pppams_issue.pppams_issue_status
+      %td= pppams_issue.receiver
+      %td= pppams_issue.received_on
+      %td= pppams_issue.facility_id
+      %td= pppams_issue.reported_by
+      %td= pppams_issue.inmate_details
+      %td= pppams_issue.inmate_id
+      %td= pppams_issue.description
+      %td= pppams_issue.cm_response_due_on
+      %td= pppams_issue.cm_response_on
+      %td= pppams_issue.resolved_on
+      %td= pppams_issue.category
+      %td= pppams_issue.pppams_issue_id
+      %td= pppams_issue.created_by_id
+      %td= pppams_issue.updated_by_id
+      %td= link_to 'Show', pppams_issue
+      %td= link_to 'Edit', edit_pppams_issue_path(pppams_issue)
+      %td= link_to 'Destroy', pppams_issue, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Pppams issue', new_pppams_issue_path

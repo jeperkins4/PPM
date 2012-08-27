@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Comment:
+  = @pppams_issue_follow_up.comment
+%p
+  %b Pppams issue:
+  = @pppams_issue_follow_up.pppams_issue_id
+%p
+  %b Created by:
+  = @pppams_issue_follow_up.created_by_id
+%p
+  %b Updated by:
+  = @pppams_issue_follow_up.updated_by_id
+
+= link_to 'Edit', edit_pppams_issue_follow_up_path(@pppams_issue_follow_up)
+\|
+= link_to 'Back', pppams_issue_follow_ups_path

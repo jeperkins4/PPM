@@ -1,0 +1,45 @@
+%h1 Listing non_comp_issues
+
+%table
+  %tr
+    %th Facility
+    %th Nci status
+    %th Details
+    %th Requirement
+    %th Discovered on
+    %th Notified on
+    %th Cap due on
+    %th Cap review on
+    %th Resolved on
+    %th Created by
+    %th Updated by
+    %th Notes
+    %th Issue number
+    %th Conclusion
+    %th
+    %th
+    %th
+
+  - @non_comp_issues.each do |non_comp_issue|
+    %tr
+      %td= non_comp_issue.facility_id
+      %td= non_comp_issue.nci_status
+      %td= non_comp_issue.details
+      %td= non_comp_issue.requirement
+      %td= non_comp_issue.discovered_on
+      %td= non_comp_issue.notified_on
+      %td= non_comp_issue.cap_due_on
+      %td= non_comp_issue.cap_review_on
+      %td= non_comp_issue.resolved_on
+      %td= non_comp_issue.created_by_id
+      %td= non_comp_issue.updated_by_id
+      %td= non_comp_issue.notes
+      %td= non_comp_issue.issue_number
+      %td= non_comp_issue.conclusion
+      %td= link_to 'Show', non_comp_issue
+      %td= link_to 'Edit', edit_non_comp_issue_path(non_comp_issue)
+      %td= link_to 'Destroy', non_comp_issue, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Non comp issue', new_non_comp_issue_path

@@ -1,0 +1,17 @@
+.page-header
+  %h1 
+    Incident Types
+    .pull-right
+      = link_to 'Add', new_incident_type_path, :class => 'btn btn-primary'
+
+%table#incident_types.table.table-bordered.table-striped.dataTable
+  %tr
+    %th Name
+    %th Description
+    %th
+
+  - @incident_types.each do |incident_type|
+    %tr
+      %td= link_to incident_type.name, incident_type
+      %td= incident_type.description
+      %td= link_to 'Edit', edit_incident_type_path(incident_type)

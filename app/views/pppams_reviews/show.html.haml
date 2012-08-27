@@ -1,0 +1,42 @@
+%p#notice= notice
+
+%p
+  %b Pppams indicator:
+  = @pppams_review.pppams_indicator_id
+%p
+  %b Doc count:
+  = @pppams_review.doc_count
+%p
+  %b Score:
+  = @pppams_review.score
+%p
+  %b Observation ref:
+  = @pppams_review.observation_ref
+%p
+  %b Documentation ref:
+  = @pppams_review.documentation_ref
+%p
+  %b Interview ref:
+  = @pppams_review.interview_ref
+%p
+  %b Status:
+  = @pppams_review.status
+%p
+  %b Notes:
+  = @pppams_review.notes
+%p
+  %b Created by:
+  = @pppams_review.created_by_id
+%p
+  %b Updated by:
+  = @pppams_review.updated_by_id
+%p
+  %b Submit count:
+  = @pppams_review.submit_count
+%p
+  %b Real creation on:
+  = @pppams_review.real_creation_on
+
+= link_to 'Edit', edit_pppams_review_path(@pppams_review)
+\|
+= link_to 'Back', pppams_reviews_path

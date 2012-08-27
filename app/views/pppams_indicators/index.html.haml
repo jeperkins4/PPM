@@ -1,0 +1,31 @@
+%h1 Listing pppams_indicators
+
+%table
+  %tr
+    %th Frequency
+    %th Start month
+    %th Good months
+    %th Pppams indicator base ref
+    %th Inactive on
+    %th Facility
+    %th Active on
+    %th
+    %th
+    %th
+
+  - @pppams_indicators.each do |pppams_indicator|
+    %tr
+      %td= pppams_indicator.frequency
+      %td= pppams_indicator.start_month
+      %td= pppams_indicator.good_months
+      %td= pppams_indicator.pppams_indicator_base_ref_id
+      %td= pppams_indicator.inactive_on
+      %td= pppams_indicator.facility_id
+      %td= pppams_indicator.active_on
+      %td= link_to 'Show', pppams_indicator
+      %td= link_to 'Edit', edit_pppams_indicator_path(pppams_indicator)
+      %td= link_to 'Destroy', pppams_indicator, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Pppams indicator', new_pppams_indicator_path

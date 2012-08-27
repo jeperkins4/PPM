@@ -1,0 +1,9 @@
+= simple_form_for(@pppams_indicator_base_ref) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :question
+    = f.input :pppams_category_base_ref_id
+
+  .form-actions
+    = f.button :submit

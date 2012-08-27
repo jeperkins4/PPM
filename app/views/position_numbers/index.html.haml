@@ -1,0 +1,15 @@
+.page-header
+  %h1 
+    Position Numbers
+    .pull-right
+      = link_to 'Add', new_position_number_path, :class => 'btn btn-primary'
+
+%table#position_numbers.table.table-bordered.table-striped.dataTable{:data => {:source => position_numbers_url(format: 'json') }}
+  %thead
+    %tr
+      %th Position num
+      %th Position
+      %th Position type
+      %th Waiver approval date
+      %th
+  %tbody

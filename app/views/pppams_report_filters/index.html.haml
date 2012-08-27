@@ -1,0 +1,39 @@
+%h1 Listing pppams_report_filters
+
+%table
+  %tr
+    %th Name
+    %th Start on
+    %th End on
+    %th Report type
+    %th Facility filter
+    %th Status filter
+    %th Category filter
+    %th Indicator filter
+    %th Created by
+    %th Updated by
+    %th Score filter
+    %th
+    %th
+    %th
+
+  - @pppams_report_filters.each do |pppams_report_filter|
+    %tr
+      %td= pppams_report_filter.name
+      %td= pppams_report_filter.start_on
+      %td= pppams_report_filter.end_on
+      %td= pppams_report_filter.report_type
+      %td= pppams_report_filter.facility_filter
+      %td= pppams_report_filter.status_filter
+      %td= pppams_report_filter.category_filter
+      %td= pppams_report_filter.indicator_filter
+      %td= pppams_report_filter.created_by_id
+      %td= pppams_report_filter.updated_by_id
+      %td= pppams_report_filter.score_filter
+      %td= link_to 'Show', pppams_report_filter
+      %td= link_to 'Edit', edit_pppams_report_filter_path(pppams_report_filter)
+      %td= link_to 'Destroy', pppams_report_filter, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Pppams report filter', new_pppams_report_filter_path

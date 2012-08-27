@@ -1,0 +1,23 @@
+%h1 Listing notification_receivers
+
+%table
+  %tr
+    %th User
+    %th Facility
+    %th Status
+    %th
+    %th
+    %th
+
+  - @notification_receivers.each do |notification_receiver|
+    %tr
+      %td= notification_receiver.user_id
+      %td= notification_receiver.facility_id
+      %td= notification_receiver.status
+      %td= link_to 'Show', notification_receiver
+      %td= link_to 'Edit', edit_notification_receiver_path(notification_receiver)
+      %td= link_to 'Destroy', notification_receiver, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Notification receiver', new_notification_receiver_path

@@ -1,0 +1,25 @@
+.page-header
+  %h1 
+    Employee Position History
+    .pull-right
+      
+%table#employee_position_histories.table.table-bordered.table-striped.dataTable
+  %tr
+    %th Position number
+    %th Employee
+    %th Start date
+    %th End date
+    %th Salary
+    %th
+    %th
+
+  - @employee_position_histories.each do |employee_position_history|
+    %tr
+      %td= employee_position_history.position_number.try(:position_name)
+      %td= employee_position_history.employee_name
+      %td= employee_position_history.start_date
+      %td= employee_position_history.end_date
+      %td= employee_position_history.salary
+      %td= link_to 'Show', employee_position_history
+      %td= link_to 'Edit', edit_employee_position_history_path(employee_position_history)
+      %td= link_to 'Destroy', employee_position_history, :confirm => 'Are you sure?', :method => :delete

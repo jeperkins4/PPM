@@ -1,0 +1,31 @@
+%h1 Listing accountability_logs
+
+%table
+  %tr
+    %th Facility
+    %th Context
+    %th Prompt
+    %th Response
+    %th Log year
+    %th Log month
+    %th Logged at
+    %th
+    %th
+    %th
+
+  - @accountability_logs.each do |accountability_log|
+    %tr
+      %td= accountability_log.facility_id
+      %td= accountability_log.context_id
+      %td= accountability_log.prompt_id
+      %td= accountability_log.response
+      %td= accountability_log.log_year
+      %td= accountability_log.log_month
+      %td= accountability_log.logged_at
+      %td= link_to 'Show', accountability_log
+      %td= link_to 'Edit', edit_accountability_log_path(accountability_log)
+      %td= link_to 'Destroy', accountability_log, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Accountability log', new_accountability_log_path

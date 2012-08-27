@@ -1,0 +1,54 @@
+%p#notice= notice
+
+%p
+  %b Pppams issue number:
+  = @pppams_issue.pppams_issue_number
+%p
+  %b Pppams issue status:
+  = @pppams_issue.pppams_issue_status
+%p
+  %b Receiver:
+  = @pppams_issue.receiver
+%p
+  %b Received on:
+  = @pppams_issue.received_on
+%p
+  %b Facility:
+  = @pppams_issue.facility_id
+%p
+  %b Reported by:
+  = @pppams_issue.reported_by
+%p
+  %b Inmate details:
+  = @pppams_issue.inmate_details
+%p
+  %b Inmate:
+  = @pppams_issue.inmate_id
+%p
+  %b Description:
+  = @pppams_issue.description
+%p
+  %b Cm response due on:
+  = @pppams_issue.cm_response_due_on
+%p
+  %b Cm response on:
+  = @pppams_issue.cm_response_on
+%p
+  %b Resolved on:
+  = @pppams_issue.resolved_on
+%p
+  %b Category:
+  = @pppams_issue.category
+%p
+  %b Pppams issue:
+  = @pppams_issue.pppams_issue_id
+%p
+  %b Created by:
+  = @pppams_issue.created_by_id
+%p
+  %b Updated by:
+  = @pppams_issue.updated_by_id
+
+= link_to 'Edit', edit_pppams_issue_path(@pppams_issue)
+\|
+= link_to 'Back', pppams_issues_path

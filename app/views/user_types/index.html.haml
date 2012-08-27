@@ -1,0 +1,19 @@
+.page-header
+  %h1 
+    User Types
+    .pull-right
+      = link_to 'Add', new_user_type_path, :class => 'btn btn-primary'
+
+%table#user_types.table.table-bordered.table-striped.dataTable
+  %tr
+    %th Name
+    %th Description
+    %th Access level
+    %th
+
+  - @user_types.each do |user_type|
+    %tr
+      %td= link_to user_type.name, user_type
+      %td= user_type.description
+      %td= user_type.access_level.try(:name)
+      %td= link_to 'Edit', edit_user_type_path(user_type)

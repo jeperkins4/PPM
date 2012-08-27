@@ -1,0 +1,14 @@
+= simple_form_for(@pppams_indicator) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :frequency
+    = f.input :start_month
+    = f.input :good_months
+    = f.input :pppams_indicator_base_ref_id
+    = f.input :inactive_on
+    = f.input :facility_id
+    = f.input :active_on
+
+  .form-actions
+    = f.button :submit

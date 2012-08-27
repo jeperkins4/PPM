@@ -1,0 +1,2 @@
+module EmployeePositionHistoriesHelper
+end

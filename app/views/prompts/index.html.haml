@@ -1,0 +1,27 @@
+%h1 Listing prompts
+
+%table
+  %tr
+    %th Question
+    %th Description
+    %th Context
+    %th Used in total
+    %th Active
+    %th
+    %th
+    %th
+
+  - @prompts.each do |prompt|
+    %tr
+      %td= prompt.question
+      %td= prompt.description
+      %td= prompt.context_id
+      %td= prompt.used_in_total
+      %td= prompt.active
+      %td= link_to 'Show', prompt
+      %td= link_to 'Edit', edit_prompt_path(prompt)
+      %td= link_to 'Destroy', prompt, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Prompt', new_prompt_path

@@ -1,0 +1,19 @@
+%h1 Listing pppams_category_groups
+
+%table
+  %tr
+    %th Name
+    %th
+    %th
+    %th
+
+  - @pppams_category_groups.each do |pppams_category_group|
+    %tr
+      %td= pppams_category_group.name
+      %td= link_to 'Show', pppams_category_group
+      %td= link_to 'Edit', edit_pppams_category_group_path(pppams_category_group)
+      %td= link_to 'Destroy', pppams_category_group, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Pppams category group', new_pppams_category_group_path

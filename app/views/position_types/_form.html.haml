@@ -1,0 +1,12 @@
+= simple_form_for(@position_type) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :description
+    = f.input :deductable
+    = f.input :deductable_days
+    = f.input :facility_id
+
+  .form-actions
+    = f.button :submit

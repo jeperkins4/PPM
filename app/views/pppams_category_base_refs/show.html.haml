@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @pppams_category_base_ref.name
+%p
+  %b Pppams category group:
+  = @pppams_category_base_ref.pppams_category_group_id
+
+= link_to 'Edit', edit_pppams_category_base_ref_path(@pppams_category_base_ref)
+\|
+= link_to 'Back', pppams_category_base_refs_path

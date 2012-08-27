@@ -1,0 +1,17 @@
+.page-header
+  %h1 
+    Incidents
+    .pull-right
+      = link_to 'Add', new_incident_path, :class => 'btn btn-primary'
+
+%table#incidents.table.table-bordered.table-striped.dataTable{:data => {:source => incidents_url(format: 'json') }}
+  %thead
+    %tr
+      %th Mins
+      %th Incident Date
+      %th Days Open
+      %th Incident Type
+      %th Contract Manager Notified 
+      %th Action Type
+      %th
+  %tbody

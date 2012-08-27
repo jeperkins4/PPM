@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Facility:
+  = @employee.facility_id
+%p
+  %b Firstname:
+  = @employee.firstname
+%p
+  %b Lastname:
+  = @employee.lastname
+%p
+  %b Emplid:
+  = @employee.emplid
+%p
+  %b Active:
+  = @employee.active
+%p
+  %b Tea status:
+  = @employee.tea_status
+
+= link_to 'Edit', edit_employee_path(@employee)
+\|
+= link_to 'Back', employees_path

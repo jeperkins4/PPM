@@ -2,7 +2,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-if false
+if true
   puts "Processing Access Levels"
   AccessLevel.destroy_all
   Legacy::AccessLevel.all.each do |c|
@@ -20,7 +20,7 @@ if false
   puts "User count is #{User.count}"
   User.create!(:username => 'jeperkins4', :email => 'jeperkins4@gmail.com', :firstname => 'John', :lastname => 'Perkins', :user_type_id => 4, :password => 'asdfasdf', :password_confirmation => 'asdfasdf')
   Legacy::User.all.each do |c|
-  #  User.create!(:id => c.id, :username => c.name, :email => c.email, :firstname => c.firstname, :lastname => c.lastname, :user_type_id => c.user_type_id, :inactive_on => c.inactive_on, :inactive_comment => c.inactive_comment )
+#    User.create!(:id => c.id, :username => c.name, :email => c.email, :firstname => c.firstname, :lastname => c.lastname, :user_type_id => c.user_type_id, :inactive_on => c.inactive_on, :inactive_comment => c.inactive_comment )
   end
 
   puts "Processing Action Types"
@@ -29,7 +29,7 @@ if false
     ActionType.create!(:id => c.id, :name => c.action, :description => c.description)
   end
 
-  if false
+  if true
     puts "Processing Accountability Log Details"
     AccountabilityLogDetail.destroy_all
     Legacy::AccountabilityLogDetail.all.each do |c|
@@ -76,7 +76,7 @@ if false
     Facility.create!(:id => c.id, :name => c.facility, :shortname => c.shortname, :address1 => c.address1, :address2 => c.address2, :city => c.city, :state => c.state, :zip => c.zip, :phone => c.phone, :warden => c.warden, :contract_monitor => c.contract_monitor, :pppams_started_on => c.pppams_started_on)
   end
 
-  if false
+  if false # This join does not exist
     puts "Processing Join Table between Custody Types and Facilities"
     Legacy::FacilityCustody.all.each do |c|
       facility = Facility.find(c.facility_id)
@@ -92,7 +92,7 @@ end
     IncidentType.create!(:id => c.id, :name => c.incident_type, :description => c.description)
   end
 
-if false
+if true
   puts "Processing Incidents" 
   Incident.destroy_all
   Legacy::Incident.all.each do |c|
@@ -130,4 +130,10 @@ if false
   Legacy::Position.all.each do |c|
     Position.create!(:id => c.id, :title => c.title, :position_type_id => c.position_type_id, :description => c.description, :salary => c.salary)
   end
+end
+
+puts "Processing Prompts"
+Prompt.destroy_all
+Legacy::Prompt.all.each do |c|
+  Prompt.create(:id => c.id, :question => c.question, :description => c.description, :context_id => c.context_id, :used_in_total => c.used_in_total, :active => c.active)
 end

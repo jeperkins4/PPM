@@ -1,19 +1,32 @@
 # Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 asInitVals = new Array()
 $ ->
-  oTable = $('#incidents').dataTable
+  $(".datepicker").datepicker 
+    setStartDate: "2012-01-01"
+
+  oTable = $('#accountability').dataTable
     sDom: "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
     sPaginationType: "bootstrap"
-    bAutoWidth: false
-    aoColumns: [{"sWidth": "55px"},{'sWidth':'70px'},{'sWidth':'70px'},{'sWidth':'70px'},{'sWidth':'70px'},{'sWidth':'90px'},{'sWidth':'40px'}]
-    bProcessing: true
-    bServerSide: true
-    sAjaxSource: $('#incidents').data('source')
+    #bProcessing: true
+    #bServerSide: true
+    #sAjaxSource: $('#accountability').data('source')
+    sScrollX: "100%"
+    sScrollXInner: "150%"
+    bScrollCollapse: true
+
+  new FixedColumns(oTable,
+    iLeftColumns: 0
+    iRightColumns: 1
+  )
+  
+  $("#advanced").modal show: false
 
   $("tfoot input").keyup ->
-    # Filter on the column (the index) of this element 
-    oTable.fnFilter @value, $("tfoot input").index(this)
+      
+      # Filter on the column (the index) of this element 
+      oTable.fnFilter @value, $("tfoot input").index(this)
     
     #
     #	 * Support functions to provide a little bit of 'user friendlyness' to the textboxes in 

@@ -1,4 +1,13 @@
 PrivatePrisons::Application.routes.draw do
+  resources :reports do
+    collection do
+      get 'inmate'
+      get 'accountability'
+      post 'generate'
+    end
+    member do
+    end
+  end
   resources :homes
   resources :uploads
   resources :prompts

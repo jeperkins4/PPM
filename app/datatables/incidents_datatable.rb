@@ -35,11 +35,18 @@ private
   end
 
   def fetch_incidents
+    search_columns = ['mins','incident_on','days_open','incident_types.name','contract_manager_notified_on','action_types.name']
     incidents = Incident.includes([:action_type, :incident_type]).select('incident_types.name as incident_type_name, incidents.mins, incidents.incident_on, incidents.days_open, incidents.contract_manager_notified, :action_types.name as action_types_name').order("#{sort_column} #{sort_direction}")
     incidents = incidents.page(page_count).per(per_page)
     if params[:sSearch].present?
       q = params[:sSearch]
       incidents = incidents.where("incidents.mins like :search or incident_type.name like :search", search: "%#{q}%")
+    end
+    search_columns.each_with_index do |col, i|
+      field = "sSearch_#{i}"
+      if params[field.to_sym].present?
+        incidents = incidents.where("#{col} like :search", search: "%#{params[field.to_sym]}%")
+      end
     end
     incidents
   end
@@ -53,7 +60,7 @@ private
   end
 
   def sort_column
-    columns = %w[mins incident_on days_open incident_type_name contract_manager_notified_on action_type_name]
+    columns = %w[mins incident_on days_open incident_type_name contract_manager_notified_on action_types.name]
     columns[params[:iSortCol_0].to_i]
   end
 

@@ -13,6 +13,7 @@ gem 'carrierwave'
 gem 'clerk' # Adds userstamping 
 gem 'kaminari'
 gem 'squeel'
+gem 'thin'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -31,6 +32,7 @@ group :assets do
 end
 
 group :development do
+  gem 'debugger'
   gem 'hpricot'  # Used to migrate erb to haml
   gem 'ruby_parser'  # Used to migrate erb to haml
 end

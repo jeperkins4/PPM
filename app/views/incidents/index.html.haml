@@ -14,4 +14,19 @@
       %th Contract Manager Notified 
       %th Action Type
       %th
+  %tfoot
+    %tr
+      %th
+        = text_field_tag(:mins, nil, :class => 'search_init span1')
+      %th
+        = text_field_tag(:incident_on, nil, :class => 'search_init span2')
+      %th
+        = text_field_tag(:days_open, nil, :class => 'search_init span2')
+      %th
+        = text_field_tag(:incident_type, nil, :class => 'search_init span2')
+      %th
+        = text_field_tag(:notified, nil, :class => 'search_init span2')
+      %th
+        = text_field_tag(:action_type_name, nil, :class => 'search_init span2')
+      %th
   %tbody

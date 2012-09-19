@@ -2,11 +2,17 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :facility_id, :collection => Facility.all
-    = f.input :name, :collection => ['Incident', 'Non Comp Issue','Accountability'], :label => 'Report Type:', :include_blank => 'Choose Type'
+    = f.input :facility_id, :collection => Facility.all, :include_blank => 'All'
+    = f.input :name, :collection => ['Incident', 'Non Comp Issue','Pppams Issue','Accountability'], :label => 'Report Type:', :include_blank => 'Choose Type'
     = f.input :use_date, :collection => ['No','Yes'], :include_blank => false, :input_html => {:class => 'span1'}
     = f.input :start_date, :as => :date, :start_year => Date.today.year - 5, :end_year => Date.today.year + 5, :discard_day => true, :order => [:month, :year], :input_html => { :class => 'span2' }
     = f.input :end_date, :as => :date, :start_year => Date.today.year - 5, :end_year => Date.today.year + 5, :discard_day => true, :order => [:month, :year], :input_html => { :class => 'span2' }
+    = f.input :status, :collection => ['Open','Closed','All'], :include_blank => false, :required => false
+    = f.input :mins_number, :required => false
+    = f.input :category, :collection => ['Annual Report Information'], :required => false
+    = f.input :pppams_issue_number, :required => false
+    = f.input :incident_type_id, :collection => IncidentType.all, :required => false
+    = f.input :issue_number, :required => false
     = f.input :build, :as => :boolean, :label => 'Ready to Build:'
 
   .form-actions

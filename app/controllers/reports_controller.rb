@@ -18,14 +18,29 @@ class ReportsController < ApplicationController
     end_year = params[:report]['end_date(3i)'].to_i
     end_date = Date.new(end_day, end_month, end_year)
 
-    @results, @months = Report.accountability(start_date, end_date, {:facility_id => facility.id})
-    puts "Class is {@months.class}"
-    respond_to do |format|
-      format.html { render 'accountability' }
-      format.json { head :no_content }
+    case params[:report][:name]
+    when 'Accountability'
+      begin
+        @results, @months = Report.accountability(start_date, end_date, {:facility_id => facility.id})
+      rescue
+        @results, @months = Report.accountability(start_date, end_date) 
+      end
+      respond_to do |format|
+        format.html { render 'accountability' }
+        format.json { head :no_content }
+      end
+    when 'Incident'
+      @incidents, @months = Report.incident(params[:report][:status])
+      respond_to do |format|
+        format.html { render 'incident' }
+        format.json { head :no_content }
+      end
     end
   end
 
   def accountability
+  end
+
+  def incident
   end
 end

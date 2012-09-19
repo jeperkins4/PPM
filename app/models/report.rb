@@ -10,9 +10,12 @@ class Report
       logs = AccountabilityLog.joins(:prompt).where('facility_id = ? and logged_at >= ? and logged_at <= ?',options[:facility_id], start_date, end_date).order([:log_year, :log_month]).group_by(&:prompt_id)
     end
    
-    Context.all(:order => 'title').each do |category|
+    Context.all(:order => 'position').each do |category|
       questions = category.prompts.order('question')  
       filter_questions = category.prompts.where(:used_in_total => true)
+      #unless options[:facility_id].blank?
+      #  alogs = AccountabilityLog.where(:facility_id => options[:facility_id], :prompt_id => filter_questions.map(&:id)).group_by{|l|l.logged_at.strftime '%Y %m'}
+      #end
       prompts = []
       questions.each do |question|
         sum = 0
@@ -45,7 +48,9 @@ class Report
               count = 0
             end
             row_sum += count.to_f
-            column_sum << AccountabilityLog.where(:facility_id => options[:facility_id], :log_month => month, :log_year => year, :prompt_id => filter_questions.map(&:id)).map{|f|f.response.to_f}.reduce(:+) 
+            d = [year,month.to_s.rjust(2,'0')].join(" ")
+            #column_sum << alogs[d].map{|f|f.response.to_f}.reduce(:+) unless alogs[d].nil? 
+            column_sum << AccountabilityLog.where(:facility_id => options[:facility_id], :log_month => month, :log_year => year, :prompt_id => filter_questions.map(&:id)).map{|f|f.response.to_f}.reduce(:+)
             notes << AccountabilityLogDetail.where(:facility_id => options[:facility_id], :context_id => category.id, :log_month => month, :log_year => year)
 
           end
@@ -54,8 +59,16 @@ class Report
         end # End Months
         prompts << {:question => question.question, :used_in_total => question.used_in_total, :row_sum => row_sum, :column_sum => column_sum, :notes => notes, :monthly => monthly}
       end # End Questions
-      report << {:title => category.title, :prompts => prompts}
+      report << {:title => category.title, :shortname => category.shortname, :prompts => prompts}
     end # End Context
+    return report, months
+  end
+
+  def self.incident(status)
+    is_closed = (status != 'Open')
+    report = []
+    months = []
+    report = Incident.where(:investigation_closed => is_closed)
     return report, months
   end
 end

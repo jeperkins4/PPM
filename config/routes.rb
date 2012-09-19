@@ -3,6 +3,7 @@ PrivatePrisons::Application.routes.draw do
     collection do
       get 'inmate'
       get 'accountability'
+      get 'incident'
       post 'generate'
     end
     member do

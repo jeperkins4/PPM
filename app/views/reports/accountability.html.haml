@@ -1,20 +1,29 @@
 .page-header
   %h1 Accountability
-%table#accountability.print.table.table-bordered.table-striped.dataTable
-  - @results.each do |result|
-    %tr
-      %th(colspan="#{@months.size+3}")= result[:title]
-    %tr
-      %th Questions
-      - @months.each do |month|
-        %th= Date::MONTHNAMES[month.first]
-      %th Total
-      %th Avg.
-    - result[:prompts].each do |prompt|
+- @results.each do |result|
+  %h4= result[:title]
+  %table.table.table-bordered.table-striped.dataTable{:id => "#{result[:shortname]}"}
+    %thead
       %tr
-        %td= prompt[:question]
-        - prompt[:monthly].each do |m|
-          %td= m[:count]
-        %td= prompt[:row_sum]
-        %td= number_with_precision(prompt[:row_sum]*1.0/prompt[:monthly].size, {:precision => 2})
-          
+        %th Questions
+        - @months.each do |month|
+          %th= Date::MONTHNAMES[month.first]
+        %th Total
+        %th Avg.
+    %tbody
+      - result[:prompts].each do |prompt|
+        %tr
+          %td= prompt[:question]
+          - prompt[:monthly].each do |m|
+            %td= m[:count]
+          %td= prompt[:row_sum]
+          %td= number_with_precision(prompt[:row_sum]*1.0/prompt[:monthly].size, {:precision => 2})
+    %tfoot
+      - final = result[:prompts].last 
+      %tr
+        %th Total:
+        - final[:column_sum].each do |s|
+          %th= s.to_f
+        %th
+        %th
+  %div

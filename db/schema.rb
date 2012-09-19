@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823173753) do
+ActiveRecord::Schema.define(:version => 20120911143305) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20120823173753) do
     t.integer  "position"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "shortname"
   end
 
   create_table "custody_types", :force => true do |t|

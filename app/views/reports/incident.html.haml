@@ -1,0 +1,24 @@
+.page-header
+  %h1 Incidents
+%table#incidents.table.table-striped.table-bordered.dataTable
+  %thead
+    %tr
+      %th Mins #
+      %th Incident Date
+      %th Days Open
+      %th Incident Type
+      %th Class
+      %th Investigator
+  %tfoot
+    %tr
+      %th
+  %tbody
+    - @incidents.each do |incident|
+      %tr
+        %td= incident.mins
+        %td= incident.incident_on
+        %td= incident.days_open
+        %td= incident.incident_type.try(:name)
+        %td= incident.incident_class.try(:name)
+        %td= incident.investigator.try(:name)
+

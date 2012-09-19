@@ -14,14 +14,6 @@ $ ->
     $("#report_category").parent().parent().hide()
     $("#report_pppams_issue_number").parent().parent().hide()
 
-  $('#report_use_date').change -> 
-    if $("#report_use_date").val() is "Yes"
-      $("#report_start_date_1i").parent().parent().show()
-      $("#report_end_date_1i").parent().parent().show()
-    else
-      $("#report_start_date_1i").parent().parent().hide()
-      $("#report_end_date_1i").parent().parent().hide()
-
   $('#report_name').change -> 
     if $("#report_name").val() is ""
       $("#report_use_date").parent().parent().hide()
@@ -46,6 +38,8 @@ $ ->
       $("#report_status").parent().parent().show()
       $("#report_issue_number").parent().parent().show()
       $("#report_mins_number").parent().parent().hide()
+      $("#report_start_date_1i").parent().parent().hide()
+      $("#report_end_date_1i").parent().parent().hide()
       $("#report_incident_type_id").parent().parent().hide()
       $("#report_category").parent().parent().hide()
       $("#report_pppams_issue_number").parent().parent().hide()
@@ -56,11 +50,15 @@ $ ->
       $("#report_category").parent().parent().show()
       $("#report_mins_number").parent().parent().hide()
       $("#report_issue_number").parent().parent().hide()
+      $("#report_start_date_1i").parent().parent().hide()
+      $("#report_end_date_1i").parent().parent().hide()
       $("#report_incident_type_id").parent().parent().hide()
     else
       $("#report_use_date").parent().parent().show()
       $("#report_status").parent().parent().hide()
       $("#report_mins_number").parent().parent().hide()
+      $("#report_start_date_1i").parent().parent().hide()
+      $("#report_end_date_1i").parent().parent().hide()
       $("#report_incident_type_id").parent().parent().hide()
       $("#report_issue_number").parent().parent().hide()
       $("#report_category").parent().parent().hide()

@@ -1,23 +1,24 @@
-%h1 Listing contexts
+.page-header
+  %h1 
+    Listing contexts
+    .pull-right
+      = link_to 'Add', new_context_path
 
-%table
+%table#contexts.table.table-striped.table-bordered.dataTable
   %tr
     %th Title
+    %th Shortname
     %th Description
     %th Position
-    %th
-    %th
     %th
 
   - @contexts.each do |context|
     %tr
-      %td= context.title
+      %td= link_to context.title, context
+      %td= context.shortname
       %td= context.description
       %td= context.position
-      %td= link_to 'Show', context
-      %td= link_to 'Edit', edit_context_path(context)
-      %td= link_to 'Destroy', context, :confirm => 'Are you sure?', :method => :delete
+      %td
+        = link_to 'Edit', edit_context_path(context)
+        = link_to 'Destroy', context, :confirm => 'Are you sure?', :method => :delete
 
-%br
-
-= link_to 'New Context', new_context_path

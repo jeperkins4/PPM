@@ -1,6 +1,4 @@
 module PppamsIndicatorBaseRefsHelper
-<<<<<<< HEAD
-=======
   def indicator_link(facility, *args)
     options = args.extract_options!
     if options[:editable] && !facility[:inactive_on]
@@ -78,6 +76,4 @@ module PppamsIndicatorBaseRefsHelper
       facility[:start_month]
     end
   end
-
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8
 end

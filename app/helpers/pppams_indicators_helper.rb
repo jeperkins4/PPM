@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-module PppamsIndicatorsHelper
-end
-=======
 module PppamsIndicatorsHelper
 
   def back_link

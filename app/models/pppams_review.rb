@@ -1,41 +1,40 @@
 class PppamsReview < ActiveRecord::Base
-<<<<<<< HEAD
+
+  include Userstamped
+
+  NEW_SCORE_CUTOFF= Date.parse(APP_CONFIG['new_review_score_cutoff']).to_date
+
+  OLD_SCORES= [
+                ['',''],
+                ['0 - Non-performance', 0],
+                ['4 - Partial Performance',4],
+                ['5',5],
+                ['6',6],
+                ['7 - Satisfactory',7],
+                ['8',8],
+                ['9',9],
+                ['10 - Commendable',10]
+              ]
+
+  NEW_SCORES=[
+               ['Compliant',1],
+               ['Non-Compliant', 0],
+               ['Not Applicable','']
+             ]
+
+  belongs_to :pppams_indicator
+  has_many :uploads, :as => :uploadable
+  validates_presence_of [:score, :observation_ref, :documentation_ref, :interview_ref]
+  validates_presence_of [:notes], :message => "must be filled in if the score is not 7 or 8.", :if => :justify_score?
+  belongs_to :created_by, :class_name => "User", :foreign_key => "created_by"
+  belongs_to :updated_by, :class_name => "User", :foreign_key => "updated_by"
+
+  before_save :update_submit_count
+  after_save :generate_status_notifications
+
+  delegate :facility, :to => :pppams_indicator
+
   attr_accessible :created_by_id, :doc_count, :documentation_ref, :interview_ref, :notes, :observation_ref, :pppams_indicator_id, :real_creation_on, :score, :status, :submit_count, :updated_by_id
-=======
-  
-    include Userstamped
-
-    NEW_SCORE_CUTOFF= Date.parse(APP_CONFIG['new_review_score_cutoff']).to_date
-
-    OLD_SCORES= [
-                  ['',''],
-                  ['0 - Non-performance', 0],
-                  ['4 - Partial Performance',4],
-                  ['5',5],
-                  ['6',6],
-                  ['7 - Satisfactory',7],
-                  ['8',8],
-                  ['9',9],
-                  ['10 - Commendable',10]
-                ]
-
-    NEW_SCORES=[
-                 ['Compliant',1],
-                 ['Non-Compliant', 0],
-                 ['Not Applicable','']
-               ]
-
-    belongs_to :pppams_indicator
-    has_many :uploads, :as => :uploadable
-    validates_presence_of [:score, :observation_ref, :documentation_ref, :interview_ref]
-    validates_presence_of [:notes], :message => "must be filled in if the score is not 7 or 8.", :if => :justify_score?
-    belongs_to :created_by, :class_name => "User", :foreign_key => "created_by"
-    belongs_to :updated_by, :class_name => "User", :foreign_key => "updated_by"
-
-    before_save :update_submit_count
-    after_save :generate_status_notifications
-
-    delegate :facility, :to => :pppams_indicator
 
     def self.earliest
       PppamsReview.find(:all).nil? ? PppamsReview.find(:first, :order =>  "created_on ASC").created_on.year : Time.now.year
@@ -168,5 +167,4 @@ class PppamsReview < ActiveRecord::Base
     end
   end
 
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8
 end

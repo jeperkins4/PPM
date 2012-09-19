@@ -1,7 +1,5 @@
 class NotificationReceiver < ActiveRecord::Base
-<<<<<<< HEAD
   attr_accessible :facility_id, :status, :user_id
-=======
   
   DeliveryInterval = 20
 
@@ -135,6 +133,4 @@ class NotificationReceiver < ActiveRecord::Base
     end
     keys
   end
-
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8
 end

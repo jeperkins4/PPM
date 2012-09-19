@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 class UserType < ActiveRecord::Base
   belongs_to :access_level
   has_many :users
@@ -6,10 +5,6 @@ class UserType < ActiveRecord::Base
   attr_accessible :id, :access_level_id, :description, :name
 
   delegate :name, :to => :access_level, :prefix => true, :allow_nil => false
-end
-=======
-class UserType < ActiveRecord::Base
-  belongs_to :access_level
 
   def self.administrator
     find_by_user_type('Administrator')
@@ -24,4 +19,3 @@ class UserType < ActiveRecord::Base
     find_by_user_type('SuperAdministrator')
   end
 end
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8

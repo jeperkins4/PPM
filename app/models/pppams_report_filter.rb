@@ -1,7 +1,5 @@
 class PppamsReportFilter < ActiveRecord::Base
-<<<<<<< HEAD
   attr_accessible :category_filter, :created_by_id, :end_on, :facility_filter, :indicator_filter, :name, :report_type, :score_filter, :start_on, :status_filter, :updated_by_id
-=======
 
   serialize :facility_filter
   serialize :statius_filter
@@ -64,5 +62,4 @@ class PppamsReportFilter < ActiveRecord::Base
     [ouput, ouput2]
   end
 
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8
 end

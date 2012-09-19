@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Examples:
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
@@ -138,13 +137,3 @@ Prompt.destroy_all
 Legacy::Prompt.all.each do |c|
   Prompt.create(:id => c.id, :question => c.question, :description => c.description, :context_id => c.context_id, :used_in_total => c.used_in_total, :active => c.active)
 end
-=======
-require 'active_record/fixtures'
-# All environments
-all_seeds = Dir["db/seeds/*.csv"].map { |file| File.basename(file, '.csv').to_sym }
-Fixtures.create_fixtures('db/seeds', all_seeds)
-
-#The current environment
-environment_specific_seeds = Dir["db/seeds/#{Rails.env}/*.csv"].map { |file| File.basename(file, '.csv').to_sym }
-Fixtures.create_fixtures("db/seeds/#{Rails.env}", environment_specific_seeds)
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8

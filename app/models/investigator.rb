@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 class Investigator < ActiveRecord::Base
   belongs_to :facility
 
@@ -10,8 +9,3 @@ class Investigator < ActiveRecord::Base
     [firstname,lastname].join(" ")
   end
 end
-=======
-class Investigator < ActiveRecord::Base
-  belongs_to :facility
-end
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8

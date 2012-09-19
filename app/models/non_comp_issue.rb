@@ -1,7 +1,5 @@
 class NonCompIssue < ActiveRecord::Base
-<<<<<<< HEAD
   attr_accessible :cap_due_on, :cap_review_on, :conclusion, :created_by_id, :details, :discovered_on, :facility_id, :issue_number, :nci_status, :notes, :notified_on, :requirement, :resolved_on, :updated_by_id
-=======
     belongs_to :facility
     has_many :non_comp_follow_ups
     has_many :uploads, :as => :uploadable
@@ -33,7 +31,4 @@ class NonCompIssue < ActiveRecord::Base
         self.nci_status =  4
       end
     end
-
-
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8
 end

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 class PositionNumber < ActiveRecord::Base
   attr_accessible :id, :active, :inactive_comment, :inactive_on, :position_id, :position_num, :position_type_id, :waiver_approval_date
 
@@ -8,13 +7,9 @@ class PositionNumber < ActiveRecord::Base
 
   delegate :title, :to => :position, :prefix => true, :allow_nil => true
   delegate :name, :to => :position_type, :prefix => true, :allow_nil => true
-end
-=======
-class PositionNumber < ActiveRecord::Base
-  belongs_to :position
+
   validate_on_create :ensure_active_position_num_unique
   has_one :employee_position
-  has_many :employee_position_hists
   validates_presence_of [:position_id, :position_num, :position_type]
   validates_each :active_flag, :if => :changed_active_flag do |record, attr, value|
     if record.id && EmployeePosition.first(:select => 'id', :conditions => "position_number_id = #{record.id}")
@@ -63,4 +58,3 @@ class PositionNumber < ActiveRecord::Base
     changed.include? 'active_flag'
   end
 end
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8

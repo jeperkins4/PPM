@@ -1,8 +1,4 @@
 class PppamsIndicator < ActiveRecord::Base
-<<<<<<< HEAD
-  attr_accessible :active_on, :facility_id, :frequency, :good_months, :inactive_on, :pppams_indicator_base_ref_id, :start_month
-end
-=======
   belongs_to :pppams_indicator_base_ref
   belongs_to :facility
   has_many :pppams_reviews
@@ -15,6 +11,8 @@ end
   delegate :pppams_category_base_ref, :to => :pppams_indicator_base_ref
   delegate :pppams_category_base_ref_id, :to => :pppams_indicator_base_ref
   delegate :pppams_references, :to => :pppams_indicator_base_ref
+
+  attr_accessible :active_on, :facility_id, :frequency, :good_months, :inactive_on, :pppams_indicator_base_ref_id, :start_month
 
   #Find indicators that are from the given facility
   #and whose facility started pppams after given date
@@ -157,5 +155,3 @@ end
            )
   end
 end
- 
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8

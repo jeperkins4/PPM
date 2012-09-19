@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 class Context < ActiveRecord::Base
   has_many :prompts
   attr_accessible :id, :shortname, :description, :position, :title
 
-  validates_uniqueness_of :shortname
+  validates_uniqueness_of :title, :shortname
 
   def self.accountability(start_date,end_date)
     report = []
@@ -25,9 +24,3 @@ class Context < ActiveRecord::Base
     end
   end
 end
-=======
-class Context < ActiveRecord::Base
-  has_many :prompts
-  validates_uniqueness_of :title
-end
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8

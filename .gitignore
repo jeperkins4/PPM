@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #----------------------------------------------------------------------------
 # Ignore these files when commiting to a git repository.
 #
@@ -76,7 +75,6 @@ pickle-email-*.html
 
 # vim artifacts
 **.swp
-=======
 *.rbc
 *.sassc
 .sass-cache
@@ -93,4 +91,3 @@ capybara-*.html
 **.orig
 rerun.txt
 pickle-email-*.html
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8

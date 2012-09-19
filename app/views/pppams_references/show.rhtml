@@ -1,9 +1,0 @@
-<p>
-  <b>Name:</b> <%=h @pppams_reference.name %>
-</p>
-<p>
-  <b>Url:</b> <%=h @pppams_reference.url%>
-</p>
-
-<%= link_to 'Edit', :action => 'edit', :id => @pppams_reference, :pppams_category_id => params[:pppams_category_id]  %> |
-<%= link_to 'Back', :action => 'index', :pppams_category_id => params[:pppams_category_id] %>

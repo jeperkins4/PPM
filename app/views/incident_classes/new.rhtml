@@ -1,9 +1,0 @@
-<h2>New Incident Class</h2>
-
-<%= error_messages_for :incident_class %>
-
-<% form_for(:incident_class, :url => incident_classes_path) do |f| %>
-  <%= render :partial => 'form', :locals => {:f => f} %>
-<% end %>
-
-<%= link_to 'Back', incident_classes_path %>

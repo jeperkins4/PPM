@@ -1,8 +1,0 @@
-<% for column in PppamsReview.content_columns %>
-<p>
-  <b><%= column.human_name %>:</b> <%=h @pppams_review.send(column.name) %>
-</p>
-<% end %>
-
-<%= link_to 'Edit', :action => 'edit', :id => @pppams_review %> |
-<%= link_to 'Back', :action => 'list' %>

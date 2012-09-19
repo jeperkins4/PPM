@@ -1,8 +1,0 @@
-<% for column in PppamsCategoryGroup.content_columns %>
-<p>
-  <b><%= column.human_name %>:</b> <%=h @pppams_category_group.send(column.name) %>
-</p>
-<% end %>
-
-<%= link_to 'Edit', :action => 'edit', :id => @pppams_category_group %> |
-<%= link_to 'Back', :action => 'list' %>

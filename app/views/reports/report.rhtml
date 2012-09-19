@@ -1,3 +1,0 @@
-<% unless session[:report].nil? -%>
-	<%= render :partial => session[:type].gsub(" ", "_").downcase, :locals => {:excel => 0}%>
-<% end -%>

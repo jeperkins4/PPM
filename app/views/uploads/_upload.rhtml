@@ -1,6 +1,0 @@
-<% upload = @upload unless @upload.blank? %>
-<% file_id = "uploaded_file_#{upload.id}" %>
-<div ondblclick = "document.frames['RSIFrame'].location.href='/uploads/downloadFile/<%= upload.id %>'" class = 'file_type_<%= upload.file_type%> dragable_file' id='<%= file_id %>'>
-<%= upload.name %>
-</div>
-<%= draggable_element(file_id, :revert=>true) %>

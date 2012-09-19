@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 PrivatePrisons::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -37,31 +36,3 @@ PrivatePrisons::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 end
-=======
-# Settings specified here will take precedence over those in config/environment.rb
-
-# In the development environment your application's code is reloaded on
-# every request.  This slows down response time but is perfect for development
-# since you don't have to restart the webserver when you make code changes.
-#config.cache_classes = true
-
-# Log error messages when you accidentally call methods on nil.
-#config.whiny_nils = true
-
-config.gem 'rails-footnotes'
-
-# Show full error reports and disable caching
-config.action_controller.consider_all_requests_local = true
-config.action_controller.perform_caching             = false
-config.cache_classes = false
-#config.action_view.cache_template_extensions         = false
-#config.action_view.debug_rjs                         = true
-
-# Don't care if the mailer can't send
-config.action_mailer.raise_delivery_errors = false
-
-config.action_controller.session_store = :active_record_store
-
-config.action_mailer.smtp_settings = { :address => 'localhost',
-                                       :port => 2525}
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8

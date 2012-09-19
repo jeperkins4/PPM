@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Bureau of Private Prison Monitoring / Specialized Services / Business Operations / Department of Management Services - DMS</title>
+    <link rel="Skip Nav" href="#startcontent" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-language" content="en-US" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+    <meta name="author" content="Department of Management Services" />
+    <meta name="copyright" content="Department of Management Services" />
+    <meta name="description" content="The administrative arm of the State of Florida government" />
+    <meta name="MSSmartTagsPreventParsing" content="TRUE" />
+    <%= default_js%>
+    <%= stylesheet_link_tag 'grids', 'dms', :media => 'screen' %>
+    <%= stylesheet_link_tag 'grids', 'dms_print', :media => 'print' %>
+	<style type="text/css">
+		body{
+			background:#F2F2DC;
+		}
+		#report_container{
+			margin:0 auto;
+		}
+	</style>
+</head>
+<body>
+	<div class='no_print'>
+    <%= link_to "Back to Reports Dashboard",  "#{request.env["HTTP_REFERER"]}" %><br />
+    <%= link_to(image_tag("/images/excel_large.gif", :border => 0), :action => 'last_post_to_xls')%><br />
+	</div>
+    <div id="report_container">
+      <% if flash[:notice] %>
+        <div class="notice"><%= flash[:notice] %></div>
+      <% end -%>
+    <%= @content_for_layout -%>
+    </div>
+
+</body>
+</html>

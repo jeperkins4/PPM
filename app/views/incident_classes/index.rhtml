@@ -1,0 +1,23 @@
+<h2>Incident Classes</h2>
+
+<table>
+  <tr>
+    <th>Class</th>
+    <th>Description</th>
+    <th></th>
+  </tr>
+  
+<% for incident_class in @incident_classes %>
+  <tr>
+    <td><%=h incident_class.incident_class %></td>
+    <td><%=h incident_class.description[0..99] %></td>
+    <td><%= link_to 'Show', incident_class_path(incident_class) %>
+    <%= link_to 'Edit', edit_incident_class_path(incident_class) %>
+    <%= link_to 'Destroy', incident_class_path(incident_class), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Incident Class', new_incident_class_path %>

@@ -1,0 +1,26 @@
+<h1>New user_type</h1>
+
+<%= error_messages_for :user_type %>
+
+<% form_for(:user_type, :url => user_types_path) do |f| %>
+  <p>
+    <b>User type</b><br />
+    <%= f.text_field :user_type %>
+  </p>
+
+  <p>
+    <b>Description</b><br />
+    <%= f.text_area :description %>
+  </p>
+
+  <p>
+    <b>Access level</b><br />
+    <%= f.select( "access_level_id", AccessLevel.find(:all).collect {|al| [ al.access_level, al.id ] }, { :include_blank => false })%>
+  </p>
+
+  <p>
+    <%= submit_tag "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', user_types_path %>

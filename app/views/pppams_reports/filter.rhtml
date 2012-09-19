@@ -1,0 +1,48 @@
+<% @hide_search_div = true %>
+
+<h2>PPPAMS Indicator Reporting</h2>
+
+<% if flash[:warning] %>
+<br/>
+<% flash_to_display, level = flash[:warning], 'warning' %>
+<%= content_tag 'div', flash_to_display, :class => "flash #{level}" %>
+<% end %>
+
+<% if PppamsReportFilter.find(:all).length > 0 %>
+  <% if User.current_user.is_admin? %>
+    <p>
+      <legend>Load selections from saved filter: </legend>
+      <%= select("pppams_report_filter", "name", PppamsReportFilter.find(:all).collect {|p| [ p.name, p.id ] }, {:include_blank => true}, {:onchange => "$('delete_filter_button').style.display = 'inline'; new Ajax.Updater('report_filter_body', '/pppams_reports/_form/' + this.options[this.selectedIndex].value, {asynchronous:true, evalScripts:true}); return false;"}) %>
+    </p>
+  <% else %>
+    <p>
+      <legend>Load selections from saved filter: </legend>
+      <%= select("pppams_report_filter", "name", PppamsReportFilter.find(:all).collect {|p| [ p.name, p.id ] }, {:include_blank => true}, {:onchange => "new Ajax.Updater('report_filter_body', '/pppams_reports/_form/' + this.options[this.selectedIndex].value, {asynchronous:true, evalScripts:true}); return false;"}) %>
+    </p>
+  <% end %>
+<% else %>
+  <p>
+    Once you have selected the options you need to create the report you want,
+    <br/>
+    you can save your selections as a filter by pressing the 'Save Filter' button.
+  </p>
+<% end %>
+
+<% form_tag( {:action => 'filter'}, {:name => "report_filter" } ) do %>
+
+  <div class = 'right_buttons'>
+    <%= submit_tag "View Report", :name => 'report_request' %>
+    <div class='right_buttons_spacer'></div>
+    <input type= "button" value="Save Filter" onclick="answer = prompt('What would you like to call this filter?',''); if (answer) { forms['report_filter'].elements['pppams_report_filter[name]'].value = answer; forms['report_filter'].submit();}"/>
+    <input id = 'delete_filter_button' type="button" value="Delete Filter" onclick="answer = confirm('Are you sure?'); if (answer) { selector = getElementById('pppams_report_filter_name'); forms['report_filter'].elements['pppams_report_filter[name]'].value = selector.options[selector.selectedIndex].value; forms['report_filter'].submit();}"/>
+  </div>
+
+  <div id = "report_filter_body">
+    <%= render :partial => 'form' %>
+  </div>
+
+  <input type= "button" value="Save Filter" onclick="answer = prompt('What would you like to call this filter?',''); if (answer) { forms['report_filter'].elements['pppams_report_filter[name]'].value = answer; forms['report_filter'].submit();}"/>
+  <div class='right_buttons_spacer'></div>
+  <%= submit_tag "View Report", :name => 'report_request' %>
+
+<% end %>

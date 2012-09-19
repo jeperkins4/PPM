@@ -1,0 +1,15 @@
+ <p>
+    <b>Follow Up</b><br />
+    <%= f.text_area :follow_up %>
+  </p>
+
+  <p>
+    <b>Follow Up Date</b><br />
+    <%= f.date_select :follow_up_date %>
+  </p>
+  
+  <%= f.text_field :incident_id, :value => params[:incident_id], :style => 'display:none;' %>
+
+  <p>
+    <%= submit_tag "Save" %>
+  </p>

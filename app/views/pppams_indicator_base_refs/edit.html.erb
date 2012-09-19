@@ -1,0 +1,82 @@
+<h1>
+  Editing Global Indicator
+</h1>
+<% form_for(@pppams_indicator_base_ref) do |f| %>
+  <%= f.error_messages %>
+  <div style='float: left;margin-right: 20px'>
+    <p>
+      <%= f.label :question %><br />
+      <%= f.text_area :question %>
+    </p>
+    <p>
+      Category<br />
+      <%= select :pppams_indicator_base_ref, :pppams_category_base_ref_id, PppamsCategoryBaseRef.all.collect {|a| [a.name, a.id]}, :include_blank => true %>
+    </p>
+  </div>
+  <div style='float: left; height: 405px; overflow: scroll; width: 390px; '>
+    <table style='width: 355px; margin-left: 0px'>
+      <thead>
+        <tr>
+          <th colspan='2'></th>
+          <th>Reference Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% PppamsReference.find(:all, :order => 'name asc').each do |pr| %>
+          <tr>
+            <td><%=check_box_tag 'pppams_indicator_base_ref[pppams_reference_ids][]', pr.id, @pppams_indicator_base_ref.pppams_reference_ids.include?(pr.id) %> </td>
+            <td><%=link_to image_tag('edit_icon.png', :alt => 'Edit Reference'), edit_pppams_reference_path(pr.id), :title => 'Edit Reference'%></td>
+            <td><%= pr.html%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div style='float: left; clear: right; height: 405px; width: 300px; margin-left: 20px'>
+    <p><strong> Currently selected references: </strong></p>
+    <ul style='margin-left: 0; padding-left: 0'>
+      <% PppamsReference.find(:all, :order => 'name asc').each do |pr| %>
+        <li style="display: <%= @pppams_indicator_base_ref.pppams_reference_ids.include?(pr.id) ? 'block' : 'none'%>"> <%= pr.html%></li>
+      <% end %>
+    </ul>
+  </div>
+  <p  style="clear: left">
+    <span style="display:block; float:right; clear: left"><a class="fill_down">Fill down</a></span>
+    <strong>Facilities Using this Global Indicator</strong>
+  </p>
+  <table class="fill_downable">
+    <thead>
+      <tr>
+        <th>Facility</th>
+        <th>Status</th>
+        <th>Becomes active on</th>
+        <th>Frequency</th>
+        <th>Start Month</th>
+        <th>Becomes inactive on</th>
+      </tr>
+      </thead>
+      <tbody>
+        <% count = 0; @facilities.each do |facility_id, facility| %>
+          <% facility[:count] = count %>
+          <tr>
+            <td><%= indicator_link(facility, :editable => true)%>
+                <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][facility_id]", facility_id %>
+                <%= hidden_field_tag "pppams_indicator_base_ref[pppams_indicators_attributes][#{count}][id]", facility[:indicator_id] %>
+            </td>
+            <td><%= active?(facility)%></td>
+            <td><%= active_on(facility, :editable => true) %></td>
+            <td><%= frequency(facility, :editable => true) %></td>
+            <td><%= start_month(facility, :editable => true) %></td>
+            <td><%= inactive_on(facility, :editable => true) %></td>
+           </tr>
+         <% count += 1; end %>
+      </tbody>
+    </table>
+    <p>
+      <%= f.submit 'Update' %>
+    </p>
+  <% end %>
+<p>
+  <%= link_to 'Show', @pppams_indicator_base_ref %> |
+  <%= link_to "Back to Global Category", edit_pppams_category_base_ref_path(@pppams_indicator_base_ref.pppams_category_base_ref_id)%>
+</p>

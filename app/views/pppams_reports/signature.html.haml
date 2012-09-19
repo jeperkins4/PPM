@@ -1,0 +1,33 @@
+%span.float-right= "#{@show_from.strftime('%m/%d/%Y')} - #{@show_to.strftime('%m/%d/%Y')}"
+%h1 PRIVATE PRISON PROGRAM ACCOUNTABILITY PERFORMANCE RATING PROFILE
+
+%table#sig_table
+  %tr
+    %td Contract Provider
+    %td.signature_line
+    %td Contract Manager
+    %td.signature_line
+  %tr
+    %td Facility Name
+    %td= h @facility.facility
+    %td Printed Name And Signature
+    %td.signature_line
+  %tr
+    %td Number Of Beds
+    %td.signature_line
+    %td Warden Or Designee - Printed
+    %td.signature_line
+  %tr
+    %td County
+    %td.signature_line
+    %td Name And Signature
+    %td.blank.signature_line
+
+%h2{ :style => "text-align:center;" } Program Performance By Indicator
+.yui-g
+  .yui-u.first
+    =render :partial => 'signature_indicator_groups', :locals => {:groups => @left_side_groups, :date => @show_from}
+  .yui-u
+    =render :partial => 'signature_indicator_groups', :locals => {:groups => @right_side_groups, :date => @show_from}
+= render :partial => 'category_performance_by_groups', :locals => {:groups => @pppams_groups, :date => @show_from}
+

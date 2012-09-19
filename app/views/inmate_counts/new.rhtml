@@ -1,0 +1,21 @@
+<h2>Enter Count</h2>
+
+<%= error_messages_for :inmate_count %>
+
+<% form_for(:inmate_count, :url => inmate_counts_path) do |f| %>
+ <%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
+	<h4><%= session[:facility].facility %></h4>
+	<% @custody_types.each do |custody_type| -%>
+  		<p><b><%= custody_type.custody_type %></b></p>
+    	<p style="margin-left:5px;">
+    		Count:
+			<%= text_field_tag "custody_types[#{custody_type[:id]}]" %>
+  		</p>
+	<% end -%>
+   
+  <p>
+    <%= submit_tag "Save" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', inmate_counts_path %>

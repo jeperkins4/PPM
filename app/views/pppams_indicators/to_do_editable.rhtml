@@ -1,0 +1,52 @@
+
+
+<% currents = PppamsIndicator.find_current(time, session[:facility]) %>
+
+
+<% session[:working_date] = time %>
+
+<form name='year_selector' id='year_selector'>
+  <p><label for='date_selectedyear'>Live indicators this month</label> (<%= time.strftime('%b') %> <%= select_year(Date.today,
+                                                                            :field_name => 'selectedyear',
+                                                                            :start_year => PppamsReview.earliest,
+                                                                            :end_year => PppamsReview.latest ) %>): <%= currents.length %></p>
+</form>
+
+<table>
+  <tr>
+  <th colspan= <%= @user.is_admin? ? 3 : 1 %> class='edit_col'>&nbsp;</th>
+  <th>Question</th>
+  <th>Status</th>
+  <th>References</th>
+  </tr>
+<% id_store = 0 %>  
+<% for pppams_indicator in currents %>
+  <% current_review = pppams_indicator.current_review(time) %>
+  <% if id_store != pppams_indicator.pppams_category_id %>
+  <tr><td colspan= <%= @user.is_admin? ? 6 : 4 %>><p class='cat_heading'><%=h pppams_indicator.pppams_category.name %></p></td></tr>
+  <% end %>
+  <tr <% if current_review.nil? and time.beginning_of_month < Time.now.beginning_of_month %>class='warning_row' <% end %>>
+  <% if time >= Time.now.next_month.beginning_of_month %>
+  <td></td>
+  <% else %>
+  <%= new_or_edit_review_link(review, time, pppams_indicator) %></td>
+  <% end %>
+
+  <% if @user.is_admin? %>
+    <td><%= link_to image_tag("edit_icon.png", :border=>0, :title => "Edit the way this indicator appears."),
+                                           :controller => 'pppams_indicator_base_refs',
+                                           :action => 'edit',
+                                           :id => pppams_indicator.pppams_indicator_base_ref_id %></td>
+     <td></td>
+   <% end %>
+
+    <td><%=h pppams_indicator.question %></td>
+    <td><%=h current_review.nil? ? "Live" : current_review.status_text %></td>
+
+  <td><% for this_ref in pppams_indicator.pppams_references %><%=h this_ref.html %><br/><% end %></td>
+  </tr>
+  <% id_store = pppams_indicator.pppams_category_id %>
+<% end %>
+</table>
+
+

@@ -1,0 +1,8 @@
+<h2>Add Pppams Issue Follow Up</h2>
+
+<%= error_messages_for :pppams_issue_follow_up %>
+<% form_for(:pppams_issue_follow_up, :url => pppams_issue_follow_ups_path) do |f| %>
+ <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Back', pppams_issue_path(@pppams_issue) %>

@@ -1,0 +1,71 @@
+<p>
+  <b>Incident date:</b>
+  <%=h @incident.incident_date %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @incident.description %>
+</p>
+
+<p>
+  <b>Incident type:</b>
+  <%=h (@incident.incident_type) ? @incident.incident_type.incident_type : @incident.incident_type_other  %>
+</p>
+
+<p>
+  <b>Facility:</b>
+  <%=h @incident.facility.facility %>
+</p>
+
+<p>
+  <b>Investigator:</b>
+  <% @investigator = Investigator.find_by_id(@incident.investigator_id) -%>
+  <%=h @investigator.firstname + ' ' + @investigator.lastname  rescue 'Pending' %>
+</p>
+
+<p>
+  <b>Contract manager notified:</b>
+  <%=h ( @incident.contract_manager_notified_date) ? @incident.contract_manager_notified_date : 'No' %>
+</p>
+
+<p>
+  <b>Bureau notified:</b>
+  <%=h (@incident.bureau_notified_date) ? @incident.bureau_notified_date : 'Pending' %>
+</p>
+
+<p>
+  <b>Warden notified:</b>
+  <%=h (@incident.warden_notified_date) ? @incident.warden_notified_date : 'Pending' %>
+</p>
+
+<p>
+  <b>Investigation completed:</b>
+  <%=h (@incident.facility_investigation_complete_date) ? @incident.facility_investigation_complete_date : 'Pending' %>
+</p>
+
+<p>
+  <b>Action type:</b>
+  <%=h @incident.action_type.action rescue 'Pending' %>
+</p>
+
+<%= link_to 'Edit', edit_incident_path(@incident) %> |
+<%= link_to 'Back', request.env['HTTP_REFERER'] %>
+
+<br />
+<br />
+
+
+<fieldset>
+<legend>Follow Ups</legend>	
+<% @follow_ups.each do |follow_up| -%>
+ 
+    <b><%=h follow_up.follow_up_date %></b><br />
+    <p><%=h follow_up.follow_up %>&nbsp;<%= link_to 'View', follow_up_path(@incident.id, follow_up.id) %></p>
+
+ <hr> 
+<% end -%>
+</fieldset>
+<p>
+    <%= link_to 'Add Follow Up', new_follow_up_path(@incident)  %>
+</p>

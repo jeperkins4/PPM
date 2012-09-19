@@ -1,0 +1,10 @@
+<h2>Edit Incident Class</h2>
+
+<%= error_messages_for :incident_class %>
+
+<% form_for(:incident_class, :url => incident_class_path(@incident_class), :html => { :method => :put }) do |f| %>
+   <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Show', incident_class_path(@incident_class) %> |
+<%= link_to 'Back', incident_classes_path %>

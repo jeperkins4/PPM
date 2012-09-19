@@ -1,0 +1,13 @@
+en:
+  app_name: "Private Prisons Monitoring System"
+  pppams_indicator_base_ref: 'Global Indicator'
+  pppams_category_base_ref: 'Global Category'
+  activerecord:
+    models:
+      pppams_indicator_base_ref: 'Global Indicator'
+      pppams_category_base_ref: 'Global Category'
+      pppams_category_group: 'Category Group'
+    attributes:
+      pppams_indicator_base_ref:
+        pppams_category_base_ref: 'Global Category'
+

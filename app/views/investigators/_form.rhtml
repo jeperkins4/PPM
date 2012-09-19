@@ -1,0 +1,34 @@
+<p>
+    <b>First Name</b><br />
+    <%= f.text_field :firstname %>
+  </p>
+
+  <p>
+    <b>Last Name</b><br />
+    <%= f.text_field :lastname %>
+  </p>
+
+  <p>
+    <b>Phone Number</b><br />
+    <%= f.text_field :phone %>
+  </p>
+
+  <p>
+    <b>Email</b><br />
+    <%= f.text_field :email %>
+  </p>
+
+  <p>
+    <b>Entity</b><br />
+    <%= f.text_field :entity %>
+  </p>
+
+  <p>
+    <b>Facility</b><br />
+	<%= f.text_field :facility_id, :value => session[:facility].id, :style => 'display:none;' %>
+	<%= session[:facility].facility %>
+  </p>
+
+  <p>
+    <%= submit_tag "Save" %>
+  </p>

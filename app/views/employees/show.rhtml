@@ -1,0 +1,31 @@
+<p>
+  <b>Facility:</b>
+  <%=h @employee.facility.facility %>
+</p>
+
+<p>
+  <b>First name:</b>
+  <%=h @employee.first_name %>
+</p>
+
+<p>
+  <b>Last name:</b>
+  <%=h @employee.last_name %>
+</p>
+
+<p>
+  <b>Employee Status:</b>
+  <%=h @employee.tea_status.upcase %>
+</p>
+
+<p>
+  <b>Active:</b>
+  <%=h (@employee.active == 1)? "Yes":"No" -%>
+</p>
+
+
+<%= link_to 'Edit', edit_employee_path(@employee) %>
+<%= link_to 'Back', employees_path %>
+<br />
+<br />
+<%= link_to 'Go to Employee/Position Tracking', employee_positions_path %>

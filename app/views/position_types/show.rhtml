@@ -1,0 +1,26 @@
+<p>
+  <b>Facility:</b>
+  <%=h @position_type.facility.facility %>
+</p>
+<p>
+  <b>Type:</b>
+  <%=h @position_type.position_type %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @position_type.description %>
+</p>
+
+<p>
+  <b>Track Position:</b>
+  <%=h (@position_type.deductable== 1)? "Yes":"No" %>
+</p>
+
+<p>
+   <b>Days Allowed Vacant:</b>
+      <%=h (@position_type.deduction_days) %>
+</p>
+
+<%= link_to 'Edit', edit_position_type_path(@position_type) %> |
+<%= link_to 'Back', position_types_path %>

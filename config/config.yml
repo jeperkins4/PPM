@@ -1,0 +1,17 @@
+# Auto-generated template
+default: &default
+  support_email: AppsHelp@mydmsservices.com
+  new_review_score_cutoff: '2010/06/30'
+development:
+  <<: *default
+  domain: 'localhost'
+test:
+  <<: *default
+  domain: 'ppm-test.dms.myflorida.com'
+production:
+  <<: *default
+  domain: 'ppm.dms.myflorida.com'
+  new_review_score_cutoff: '2011/06/30'
+cucumber: 
+  <<: *default
+  domain: 'ppm-test.dms.myflorida.com'

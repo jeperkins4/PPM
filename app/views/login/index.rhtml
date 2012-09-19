@@ -1,0 +1,20 @@
+<h2>Welcome to the Bureau of Private Prison Monitoring System</h2>
+<br />
+<h3>Facility Management, Incident Tracking, Weekly and Monthly Status Reports</h3>
+<br />
+<fieldset>
+    <legend>Please Log In</legend>
+    <% form_tag do -%>
+        <p>
+            <label for="name">Name: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= text_field_tag :name, params[:name] %>
+        </p>
+        <p>
+            <label for="password">Password: </label><%= password_field_tag :password, params[:password] %>
+        </p>
+        <p>
+        	<%= submit_tag "Login" %>
+          <%=  link_to "Forgot password", forgot_password_path %>
+				</p>
+    <% end -%>
+		
+</fieldset>

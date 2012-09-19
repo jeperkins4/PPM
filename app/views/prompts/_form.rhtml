@@ -1,0 +1,28 @@
+<p>
+    <b>Question</b><br />
+    <%= f.text_field :question %>
+  </p>
+
+  <p>
+    <b>Description</b><br />
+    <%= f.text_area :description %>
+  </p>
+
+  <p>
+    <b>Category</b><br />
+	<%= f.select( "context_id", Context.find(:all, :order => :title).collect {|c| [ c.title, c.id ] }, { :include_blank => false })%>
+  </p>
+
+  <p>
+    <b>Used in Category Total</b><br />
+    <%= f.check_box :used_in_total %>
+  </p>
+
+  <p>
+    <b>Active</b><br />
+    <%= f.check_box :active %>
+  </p>
+
+  <p>
+    <%= submit_tag "Save" %>
+  </p>

@@ -1,0 +1,10 @@
+<h1>Edit Action Taken</h1>
+
+<%= error_messages_for :action_type %>
+
+<% form_for(:action_type, :url => action_type_path(@action_type), :html => { :method => :put }) do |f| %>
+ <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Show', action_type_path(@action_type) %> |
+<%= link_to 'Back', action_types_path %>

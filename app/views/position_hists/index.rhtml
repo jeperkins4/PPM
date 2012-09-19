@@ -1,0 +1,32 @@
+<h1>Position History</h1>
+
+<table>
+  <tr>
+  	<th>Facility</th>
+    <th>Position</th>
+    <th>Salary</th>
+    <th>Create date</th>
+	<th></th>
+  </tr>
+  
+<% for position_hist in @position_hists %>
+  <tr>
+    <td><%=h position_hist.position.position_type.facility.facility %></td>
+    <td><%=h position_hist.position.title %></td>
+    <td><%=h number_to_currency(position_hist.salary) %></td>
+    <td><%=h position_hist.create_date %></td>
+    <td><%= link_to 'Show', position_hist_path(position_hist) %> 
+<% if session[:user_type] == 'Web Developer' -%>	
+	<%= link_to 'Edit', edit_position_hist_path(position_hist) %>
+    <%= link_to 'Destroy', position_hist_path(position_hist), :confirm => 'Are you sure?', :method => :delete %>
+<% end -%>
+	</td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<!--
+<%= link_to 'New position_hist', new_position_hist_path %>
+-->

@@ -1,0 +1,29 @@
+
+ <p>
+   <b>Position number</b><br />	
+  <%= f.select("position_number_id", (session[:position]) ? session[:position].position_numbers.find(:all,:conditions=>['id not in (?)', @assigned_numbers],:order => :position_num).collect {|pn| [ pn.position_num, pn.id ] } : '', { :include_blank => true, :selected => (session[:position_number]) ? session[:position_number].id : "" })%>
+ </p>
+	
+  <p>
+    <b>Employee</b><br />
+	<%= f.select("employee_id", (session[:facility]) ? session[:facility].employees.find(:all, :conditions =>['active = 1 and id not in ?',@assigned_employees], :order => :first_name).collect {|em| [ em.first_name + ' ' + em.last_name, em.id ] } : '', { :include_blank => true })-%>
+  </p>
+
+  <p>
+    <b>Start date</b><br />
+    <%= f.date_select(:start_date ,:default => Date.today)-%>
+  </p>
+
+  <p>
+    <b>End date</b><br />
+    <%= f.date_select(:end_date ,:include_blank => true)-%>
+  </p>
+
+  <p>
+    <b>Salary</b><br />
+	<%= (session[:position]) ? number_to_currency(session[:position].salary) : "0.00" %>
+  </p>
+  
+  <p>
+    <%= submit_tag "Save" %>
+  </p>

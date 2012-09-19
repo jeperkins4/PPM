@@ -1,0 +1,40 @@
+<% if session[:access_level] == 'Administrator' -%>
+ 	   <b>Facility:</b>
+	   <%=h @position_number.position.facility.facility %>
+<% end -%>
+
+<p>
+  <b>Position:</b>
+  <%=h @position_number.position.title %>
+</p>
+
+<p>
+  <b>Position Number:</b>
+  <%=h @position_number.position_num %>
+</p>
+<p>
+  <b>Inactive as of:</b>
+  <%=h active(@position_number) %>
+</p>
+
+<p>
+  <b>Inactive comment:</b>
+  <%=h @position_number.inactive_comment %>
+</p>
+
+<p>
+  <b>Special Position Type:</b>
+  <%=h @position_number.position_type.upcase %>
+</p>
+
+<p>
+  <b>Waiver Date:</b>
+  <%=h @position_number.waiver_approval_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_position_number_path(@position_number) %> |
+<%= link_to 'Back', position_numbers_path %>
+<br />
+<br />
+<%= link_to 'Go to Employee/Position Tracking', employee_positions_path %>

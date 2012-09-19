@@ -1,0 +1,13 @@
+<p>
+  <b>Title:</b>
+  <%=h @context.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @context.description %>
+</p>
+
+
+<%= link_to 'Edit', edit_context_path(@context) %> |
+<%= link_to 'Back', contexts_path %>

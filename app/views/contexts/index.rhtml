@@ -1,0 +1,40 @@
+<h2>Accountability Log Categories</h2>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th></th>
+  </tr>
+  
+<% for context in @contexts %>
+  <tr>
+    <td><%=h context.title %></td>
+    <td><%=h context.description %></td>
+    <td><%= link_to 'Show', context_path(context) %> <%= link_to 'Edit', edit_context_path(context) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<p>
+<%= will_paginate @contexts, {:page_links => false, :container => false, :previous_label => 'Previous Page', :next_label => 'Next Page'}%>
+</p>
+
+<%= link_to 'New Accountability Log Category', new_context_path %>
+
+<hr>
+
+<h3>Category Order</h3>
+
+
+<ol id='list_context' class="list">
+	<% @contexts_for_order.each do |context| %>
+    <li id="item_<%= context.id %>" class="list_item">
+      <%= h context.title %><img src="/images/arrow_up.png" /><img src="/images/arrow_down.png" />
+    </li>
+	<% end %>
+</ol>
+<%= sortable_element "list_context" ,
+      :complete => visual_effect(:highlight, "list_context"), 
+      :url => { :action => :reorder_contexts, :list_name => "list_context"} %>

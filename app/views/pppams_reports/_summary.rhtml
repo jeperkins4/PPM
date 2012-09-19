@@ -1,0 +1,95 @@
+<span class='float-right'><%= "#{@show_from.strftime('%m/%d/%Y')} - #{@show_to.strftime('%m/%d/%Y')}" %></span>
+<h1>Summary Data <%= @filter_name == '' ? "" : "- #{@filter_name}" %></h1>
+
+<p>This report shows average scores for the following category / indicator ids:<br/>
+<%= @filter[:category_filter].uniq_numerics.length == 0 ? 'All categories<br/>' : "Category ids: #{@filter[:category_filter].uniq_numerics.join(',')}<br/>" %>
+<%= @filter[:indicator_filter].uniq_numerics.length == 0 ? 'All indicators<br/>' : "Indicator ids: #{@filter[:indicator_filter].uniq_numerics.join(',')}<br/>" %>
+</p>
+<p>For the following facilities:<br/>
+<% if @filter[:facility_filter].uniq_numerics.length == 0 %>
+  All facilities<br/>
+<% else %>
+  <% @filter[:facility_filter].uniq_numerics.collect do |x| %>
+    <%=h Facility.find(x).facility %><br/>
+  <% end %>
+<% end %>
+</p>
+<p>Using the following criteria:<br/>
+Score: 
+<% if @filter[:score_filter].uniq_numerics.length == 0 %>
+  All scores<br/>
+<% else %>
+  <%= @filter[:score_filter].uniq_numerics.join(',') %><br/>
+<% end %>
+Status: 
+<% if @filter[:status_filter].uniq_numerics.length == 0 %>
+  All statuses<br/>
+<% else %>
+  <%= @filter[:status_filter].uniq_numerics.join(',') %><br/>
+<% end %>
+</p>
+
+<% good_ids = @pppamsReviews.collect{|x| x.id} %>
+<% good_ids_clean = @pppamsReviews_clean.collect{|x| x.id} %>
+<% fac_id_store = 0 %>   
+<% id_store = 0 %>
+<% ind_id_store = 0 %>
+<% agg_store = [] %>
+<% av_store = [] %>
+<% last_object_store = [] %>
+<% missing_flag = false %>
+
+<table>
+
+<% for this_indicator in @pppamsIndicators %>
+
+  <% if this_indicator.id == -1 || (fac_id_store != 0 && fac_id_store != this_indicator.pppams_category.facility_id && @group_level == 1) || (id_store != 0 && id_store != this_indicator.pppams_category_id && @group_level == 2 ) || ( ind_id_store != 0 && ind_id_store != this_indicator.id && @group_level == 3) %>
+    <% av_store << agg_store.mean if agg_store.mean > 0 %>
+    <%= output_summary(last_object_store, agg_store, missing_flag) %>
+    <% agg_store = [] %>
+    <% missing_flag = false %>
+  <% end %>
+
+  <% if fac_id_store != 0 && fac_id_store != this_indicator.pppams_category.facility_id && @group_level >= 1 %>
+    <% if @group_level >= 2 %>
+      <tr class='darker'><td>Group Average: </td><td><%= av_store.mean.perc_round_to(2) %></td></tr>
+      <% av_store = [] %>
+    <% end %>
+  <% end %>
+
+  <% if fac_id_store != this_indicator.pppams_category.facility_id && this_indicator.pppams_category.facility_id != -1 && @group_level >= 2 %>
+  <tr class='blankrow'><td colspan=2><h2><%=h this_indicator.pppams_category.facility.facility %></h2></td></tr>
+  <% end %>
+
+  <% if (fac_id_store != this_indicator.pppams_category.facility_id && fac_id_store == 0 ) || (fac_id_store != this_indicator.pppams_category.facility_id && this_indicator.pppams_category.facility_id != -1 && @group_level >= 1) %>
+  <tr>
+  <th class='facility'><%=h ['Average Score - All Facilities', 'Facility', 'Category', 'Indicator'][@group_level] %></th>
+  <% if @group_level != 0 %><th class='average-score'>Average Score</th><% end %>
+  </tr>
+  <% end %>
+
+  <% if this_indicator.pppams_category_id != -1 && id_store != this_indicator.pppams_category_id && @group_level > 2 %>
+    <tr><td colspan = 8><p class='cat_heading'><%=h this_indicator.pppams_category.name %></p></td></tr>
+  <% end %>
+
+  <% start_len = adjust_me = 0 %>
+  <% this_indicator.pppams_reviews.collect do |pr| %>
+    <% agg_store << pr.score if !good_ids.index(pr.id).nil? %>
+    <% start_len += 1 if !good_ids_clean.index(pr.id).nil? %>
+  <% end %>
+  <% unless this_indicator.created_on.nil? %>
+  <% adjust_me_var =  (@show_to - @show_from) - (@show_to - this_indicator.created_on) %>
+  <% adjust_me = (adjust_me_var / (60*60*24*30.5)).to_int if adjust_me_var > 0%>
+  <% end %>
+  <% missing_flag = true if ((this_indicator.good_months.split(":").uniq & @show_span).length  - adjust_me) > start_len %>
+  <% id_store = this_indicator.pppams_category_id %>
+  <% fac_id_store = this_indicator.pppams_category.facility_id %>
+  <% ind_id_store = this_indicator.id %>
+  <% last_object_store = this_indicator %>
+<% end %>
+
+</table>
+
+
+
+

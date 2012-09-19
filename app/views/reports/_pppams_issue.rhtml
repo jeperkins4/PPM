@@ -1,0 +1,84 @@
+<% fac_store = '' %>
+
+<h3 align='center'><%= session[:facility].facility %> Pppams Issue Report (<%= session[:category]%>)<h3>
+
+<% session[:report].each do |pppams_issue| -%>
+<% if fac_store != pppams_issue.facility.facility %>
+<%if fac_store != ''%></table><% end %>
+  <h4><%= pppams_issue.facility.facility %></h4>
+  <table class='print'>
+  <tr><th><b>Pppams Issue Number</b></th>
+  <th><b>Receiver</b></th>
+  <th><b>Inmate's Name:</b></th>
+  <th><b>Inmate's DC Number:</b></th></tr>
+  <% fac_store = pppams_issue.facility.facility %>
+<% end %>
+<% @date_diff = Time.now.to_date - pppams_issue.received_date.to_date -%>
+	 <% if @date_diff.to_i < 30 -%>
+	   <% @bg_color = '#00FF00' -%>
+	 <% end -%>
+	 <% if @date_diff.to_i >= 30 -%>
+	   <% @bg_color = '#FFFF00' -%>
+	 <% end -%>
+	 <% if @date_diff.to_i >= 60 -%>
+	   <% @bg_color = '#FF9900' -%>
+	 <% end -%>
+     <% if @date_diff.to_i >= 90 -%>
+	   <% @bg_color = '#FF3300' -%>	
+     <% end -%>
+
+<tr>
+<% if pppams_issue.pppams_issue_status == 3 -%>
+<td><a href='pppams_issue/<%= pppams_issue.id %>'><%= pppams_issue.pppams_issue_number%> : Closed</a></td>
+<% else -%>
+<td bgcolor="<%= @bg_color rescue '' %>"><a href='pppams_issue/<%= pppams_issue.id %>'><%= pppams_issue.pppams_issue_number%></a></td>
+<% end -%>
+
+<td><%= pppams_issue.receiver %></td>
+<td><%= pppams_issue.inmate_details %></td>
+<td><%= pppams_issue.inmate_id %></td>
+</tr>
+
+<tr>
+	<th><b>Received Date</b></th>
+	<th><b>Date Response Due</b></th>
+	<th><b>Date Response Sent to Complainant</b></th>
+	<th><b>Date Closed</b></th>
+
+
+</tr><tr>
+
+<td><%= pppams_issue.received_date %></td>
+<td><%= pppams_issue.CM_response_due_date %></td>
+<td><%= pppams_issue.CM_response_date %></td>
+<td><%= pppams_issue.resolved_date %></td>
+
+
+</tr><tr>
+
+			<td><b>Reported By (Name & Contact Information):</b></td>
+			<td colspan =3><%= pppams_issue.reported_by %></td>
+
+</tr><tr>
+
+			<td><b>Description:</b></td>
+			<td colspan =3><%= pppams_issue.description %></td>
+</tr>
+
+
+	<% @follow_ups = PppamsIssueFollowUp.find(:all, :conditions => ['pppams_issue_id = ?', pppams_issue.id]) %>
+		<tr>
+			<td><b>Follow Up Date:</b></td>
+			<td colspan=3><b>Follow Up:</b></td>
+		</tr>
+		<% @follow_ups.each do |follow_up| -%>
+		<tr>
+			<td><b><%= follow_up.created_on %></b></td>
+			<td colspan=3><%= follow_up.follow_up %></td>
+		</tr>
+		<% end -%>
+		<tr>
+			<td colspan=4 bgcolor="#999999">&nbsp;</td>
+		</tr>
+<% end -%>
+</table>

@@ -1,0 +1,22 @@
+<h1>Showing Global Category</h1>
+
+<p>
+  <b>Name:</b>
+  <%=h @pppams_category_base_ref.name %>
+</p>
+
+<p>
+  <b>Pppams category group:</b>
+  <%=h @pppams_category_base_ref.pppams_category_group %>
+</p>
+<%= render :partial => 'pppams_indicator_base_refs/pppams_indicator_base_refs',
+           :object => @pppams_category_base_ref.pppams_indicator_base_refs,
+           :locals => {:pppams_category_base_ref_id => @pppams_category_base_ref.id,
+                       :editable => false}
+%>
+<p>
+  <% if @user.is_admin? %>
+    <%= link_to 'Edit', edit_pppams_category_base_ref_path(@pppams_category_base_ref) %> |
+  <% end %>
+  <%= link_to 'Back', pppams_category_base_refs_path %>
+</p>

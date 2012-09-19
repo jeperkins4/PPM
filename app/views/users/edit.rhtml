@@ -1,0 +1,48 @@
+<h2>Editing user</h2>
+
+<%= error_messages_for :user %>
+
+<% form_for(:user, :url => user_path(@user), :html => { :method => :put }) do |f| %>
+  <p>
+    <b>Firstname</b><br />
+    <%= f.text_field :firstname %>
+  </p>
+
+  <p>
+    <b>Lastname</b><br />
+    <%= f.text_field :lastname %>
+  </p>
+
+  <p>
+    <b>Username</b><br />
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <b>User type</b><br />
+    <%= f.select( "user_type_id", UserType.find(:all).collect {|ut| [ ut.user_type, ut.id ] }, { :include_blank => false })%>
+  </p>
+
+  <p>
+    <b>Facility</b><br />
+    <%= f.select( "facility_id", Facility.find(:all).collect {|fa| [ fa.facility, fa.id ] }, { :include_blank => true })%>
+  </p>
+
+  <p>
+    <b>Inactive as of</b><br />
+    <%= f.date_select :inactive_on, :include_blank => true%>
+  </p>
+
+  <p>
+    <b>Inactive comment</b><br />
+    <%= f.text_field :inactive_comment%>
+  </p>
+
+
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', user_path(@user) %> |
+<%= link_to 'Back', users_path %>

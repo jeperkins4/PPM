@@ -1,0 +1,25 @@
+<h2>Incident Types</h2>
+
+<table>
+  <tr>
+    <th>Type</th>
+    <th>Description</th>
+    <th></th>
+  </tr>
+  
+<% for incident_type in @incident_types %>
+  <tr>
+    <td><%=h incident_type.incident_type %></td>
+    <td><%=h incident_type.description %></td>
+    <td><%= link_to 'Show', incident_type_path(incident_type) %>
+    <%= link_to 'Edit', edit_incident_type_path(incident_type) %>
+    <%= link_to 'Destroy', incident_type_path(incident_type), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<p>
+<%= will_paginate @incident_types, :page_links => false, :previous_label => 'Previous Page', :next_label => 'Next Page' %>
+</p>
+<%= link_to 'New Incident Type', new_incident_type_path %>

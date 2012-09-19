@@ -1,0 +1,48 @@
+<h1>Employees</h1>
+<%= link_to 'Add New Employee', new_employee_path %>
+<br /><br />
+
+<br />
+
+<% form_for(:employee, :url => {:action => :set_filter}) do |f| %>
+  <table>
+    <tr>
+      <td>	Filter: <%= select(:id, :filter_drop, [["First Name","first_name"],["Last Name","last_name"],["Employee Status","tea_status"]], {:include_blank=> true})%></td>
+      <td><%= f.text_field :filter_text %></td> <td><%= button_to "Filter" %></td>
+    </tr>
+  </table>
+<% end %>
+<table id="employees">
+  <tr>
+    <th>First name</th>
+    <th>Last name</th>
+    <th>Employee Status</th>
+    <th>Active</th>
+	<th></th>
+  </tr>
+  <% for employee in @employees %>
+    <tr>
+      <td><%=h employee.first_name %></td>
+      <td><%=h employee.last_name %></td>
+      <td><%=h employee.tea_status.upcase %></td>
+      <td><%=h (employee.active == 1)? "Yes":"No" -%></td>
+      <td><%= link_to 'Show', employee_path(employee) %> <%= link_to 'Edit', edit_employee_path(employee) %>
+      <% if session[:access_level] == 'Administrator' -%>	
+        <%= link_to 'Destroy', employee_path(employee), :confirm => 'Are you sure?', :method => :delete %></td>
+      <% end %>
+    </tr>
+  <% end %>
+  <% if @employees.respond_to?(:total_pages) && @employees.total_pages > 1 %>
+    <tr>RESULTS: <%= will_paginate(@employees, :container => false)%></tr>
+  <% end %>
+</table>
+<br />
+<% if @employees.respond_to?(:total_pages) && @employees.total_pages > 1 %>
+  <table>
+    <tr>RESULTS: <%= will_paginate(@employees, :container => false)%></tr>
+  </table>
+<% end %>
+<br />
+
+
+<%= link_to 'Add New Employee', new_employee_path %>

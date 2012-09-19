@@ -1,0 +1,10 @@
+<h1>Edit Investigator</h1>
+
+<%= error_messages_for :investigator %>
+
+<% form_for(:investigator, :url => investigator_path(@investigator), :html => { :method => :put }) do |f| %>
+   <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Show', investigator_path(@investigator) %> |
+<%= link_to 'Back', investigators_path %>

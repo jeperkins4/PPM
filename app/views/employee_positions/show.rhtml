@@ -1,0 +1,31 @@
+<p>
+  <b>Position number:</b>
+  <%=h @employee_position.position_number.position_num %>
+</p>
+
+<p>
+  <b>Employee:</b>
+  <%=h @employee_position.employee.first_name + ' ' + @employee_position.employee.last_name %>
+</p>
+
+<p>
+  <b>Start date:</b>
+  <%=h @employee_position.start_date %>
+</p>
+
+<p>
+  <b>End date:</b>
+  <%=h @employee_position.end_date %>
+</p>
+
+<p>
+  <b>Salary:</b>
+  <%=h @employee_position.position_number.position.salary %>
+</p>
+
+
+<%= link_to 'Edit', edit_employee_position_path(@employee_position) %> |
+<%= link_to 'Back', employee_positions_path %> |
+<%= link_to 'Delete', employee_position_path(@employee_position), :confirm => 'Are you sure?', :method => :delete %>
+
+

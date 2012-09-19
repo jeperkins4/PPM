@@ -1,0 +1,20 @@
+%table
+  %tbody
+    -data.each do |facility_id, facility|
+      %tr.blankrow
+        %td(colspan=2)
+          %h2=facility[:name]
+      -facility[:categories].each do |catetgory_id, category|
+        %tr
+          %th.facility Indicator
+          %th.average-score=sum_head
+        %tr
+          %td(colspan=8)
+            %p.cat_heading=category[:name]
+        -category[:indicators].each do |indicator_id, indicator|
+          %tr{:class => (indicator[:missing_reviews] ? 'warning_row' : '')}
+            %td=indicator[:name]
+            %td=average_or_percent(sum_type, indicator[:percent])
+      %tr.darker
+        %td Group Average:
+        %td=average_or_percent('percent_average', facility[:percent])

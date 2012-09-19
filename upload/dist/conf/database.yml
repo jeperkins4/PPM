@@ -1,0 +1,20 @@
+development:
+  adapter: mysql
+  host: localhost
+  database: privateprison_development
+  username: prison
+  password: prison
+
+test:
+  adapter: mysql
+  database: sample_test
+  username: teh_user
+  password: secrets
+  host: localhost
+
+production:
+  adapter: mysql
+  database: sample_production
+  username: teh_user
+  password: secrets
+  

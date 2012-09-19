@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
@@ -36,4 +37,43 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+=======
+require 'rubygems'
+require 'spork'
+require 'spork/ext/ruby-debug'
+
+ENV["RAILS_ENV"] ||= 'test'
+
+Spork.prefork do
+  require File.dirname(__FILE__) + "/../config/environment" #unless defined?(RAILS_ROOT)
+  require 'spec'
+  require 'spec/autorun'
+  require 'spec/rails'
+  require 'machinist/active_record'
+  require 'faker'
+  require 'sham'
+
+
+end
+
+Spork.each_run do
+  require File.expand_path(File.dirname(__FILE__) + "/blueprints")
+end
+
+
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
+
+Spec::Runner.configure do |config|
+
+  include AuthenticatedTestHelper
+
+  config.use_transactional_fixtures = true
+  config.use_instantiated_fixtures  = false
+  config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
+
+  # Reset machinist tests
+  config.before(:all)    { Sham.reset(:before_all)  }
+  config.before(:each)   { Sham.reset(:before_each) }
+
+>>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8
 end

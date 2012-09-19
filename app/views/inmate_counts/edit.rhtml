@@ -1,0 +1,26 @@
+<h2>Edit Count</h2>
+
+<%= error_messages_for :inmate_count %>
+
+<% form_for(:inmate_count, :url => inmate_count_path(@inmate_count), :html => { :method => :put }) do |f| %>
+  <p><b>Facility</b></p>
+    <h4><%= session[:facility].facility %></h4>
+	<p><b>Inmate Count</b><br />
+	<%= f.text_field :inmate_count %>
+	</p>
+	<p>
+    <b>Custody Type</b><br />
+    <h4><%= @inmate_count.custody_type.custody_type %></h4>
+  </p>
+   <p>
+    <b>Date collected</b><br />
+    <%= @inmate_count.date_collected %>
+  </p>
+  
+   <p>
+    <%= submit_tag "Save" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', inmate_count_path(@inmate_count) %> |
+<%= link_to 'Back', inmate_counts_path %>

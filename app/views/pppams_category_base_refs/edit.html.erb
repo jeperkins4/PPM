@@ -1,0 +1,35 @@
+<h1>Editing Global Category</h1>
+<div class="yui-g">
+  <div class="yui-u first">
+    <% form_for(@pppams_category_base_ref) do |f| %>
+      <%= f.error_messages %>
+      <p>
+        <%= f.label :name %><br />
+        <%= f.text_field :name %>
+      </p>
+      <p>
+        <%= f.label :pppams_category_group_id %><br />
+        <%= select :pppams_category_base_ref, :pppams_category_group_id, @pppams_category_groups, {:include_blank => true } %>
+      </p>
+      <p>
+        <%= f.submit 'Update' %>
+      </p>
+    <% end %>
+  </div>
+  <div class="yui-u">
+    <p><strong> Facilities using this Global Category </strong></p>
+    <ul>
+      <% @facilities_with_base.each do |facility| %>
+        <li><%= facility.facility %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+<%= render :partial => 'pppams_indicator_base_refs/pppams_indicator_base_refs',
+           :object => @pppams_category_base_ref.pppams_indicator_base_refs,
+           :locals => {:pppams_category_base_ref_id => @pppams_category_base_ref.id,
+                       :editable => true}%>
+<p>
+  <%= link_to 'Show', @pppams_category_base_ref %> |
+  <%= link_to 'Back to All Categories', pppams_category_base_refs_path %>
+</p>

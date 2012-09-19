@@ -1,0 +1,30 @@
+<p>
+  <b>Facility:</b>
+  <%=h @position.position_type.facility.facility %>
+</p>
+
+<p>
+  <b>Position type:</b>
+  <%=h @position.position_type.position_type %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%=h @position.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @position.description %>
+</p>
+
+<p>
+  <b>Salary:</b>
+  <%=h number_to_currency(@position.salary) %>
+</p>
+
+<%= link_to 'Edit', edit_position_path(@position) %> |
+<%= link_to 'Back', positions_path %>
+<br />
+<br />
+<%= link_to 'Go to Employee/Position Tracking', employee_positions_path %>

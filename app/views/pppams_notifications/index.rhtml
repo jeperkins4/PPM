@@ -1,0 +1,83 @@
+<h2>PPPAMS Notifications</h2>
+
+<p>For each facility below, select the Status of Report for which you are interested in receiving notifications. You will receive a notification for each Facility and Status that you select when the report's status changes to the selected value.</p>
+
+<form name="pppams_notifications" method="post" action="/pppams_notifications/update_notifications">
+  <table>
+  <tr>
+    <th>Send Status Change Reports ...</th>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <%= radio_button('user', 'notify_method', 'single', :selected => @user.notify_method == 'single') %>
+      <label for="user[notify_method]">As they happen</label><br/>
+      <%= radio_button('user', 'notify_method', 'digest', :selected => @user.notify_method == 'digest') %>
+      <label for="user[notify_method]">Once daily, at: <select name="user[notify_digest_time]">
+        <%= options_for_select(NotificationReceiver.notification_times, @user.notify_digest_time) %>
+      </select></label>
+    </td>
+  </tr>
+  </table>
+  <table>
+    <tr>
+      <th>Facility</th>
+      <th>Report Status:</th>
+    </tr>
+    <% @facilities.sort_by {|a| a.facility}.each do |facility| %>
+    <tr>
+      <td><%=h facility.facility %></td>
+      <td>
+        <% %w(Submitted Review Accepted Locked).each do |status|
+           checked = NotificationReceiver.receives_notifications?(User.current_user, facility, status) %>
+          <% if checked %>
+          <input type="checkbox" name="facility_<%= facility.id %>_<%= status %>" value="1" checked="checked"/>
+          <% else %> 
+          <input type="checkbox" name="facility_<%= facility.id %>_<%= status %>" value="1"/>
+          <% end %>&nbsp;<%= status %>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+  
+  <p style="margin: 1em 0 1em 26em;">
+    <%= submit_tag("Start Over", {:name => 'reset', :id => 'reset_button_1', :type => "reset"}) %>
+    <%= submit_tag("Save Changes") %>
+  </p>
+  
+</form>
+
+<h2>PPPAMS Pending Reports</h2>
+
+<p>For each facility below, check the boxes next to the number of days before the end of the month on which you would like to receive a notification of Pending Reviews. Check the box next to zero to receive a report on the last day of the month. If you select a value greater than the number of days in the given month, the report will be sent on the first day of that month. Below each facility name, an example list of the report generation days for the current month and year will help verify correct offsets.</p>
+
+<form name="pppams_pending" method="post" action="/pppams_notifications/update_reviews">
+  <table>
+    <tr>
+      <th>Facility</th>
+      <th>Number of Days Before the End of the Month:</th>
+    </tr>
+    <% @facilities.sort_by {|a| a.facility}.each do |facility|
+       @notification_reports = NotificationReport.notification_reports(User.current_user, facility)
+       @offsets = @notification_reports.map {|x| x.eom_offset} %>
+    <tr>
+      <td><%=h facility.facility %><br/>
+        <p style="width:20em;color:#666"><small><em>Reports will generate on <%= Time.now.strftime("%B") %> 
+        <%= @notification_reports.map {|x| x.day_this_month}.uniq.reverse.join(', ').gsub(/, (\d+)$/, " and \\1") %>.</em></small></p>
+      </td>
+      <td><% (0..31).each do |n| key = "facility_#{facility.id}_#{n}" %>
+          <%= n < 10 ? %Q{<span style="color:#e4e4c3">0</span>#{n}} : n %><% if @offsets.include?(n) %><input 
+          type="checkbox" name="<%= key %>" value="1" checked="checked" /><% else %><input 
+          type="checkbox" name="<%= key %>" value="1" /><% end %>
+        <%= "<br/>" if (n+1) % 8 == 0 %>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+
+  <p style="margin: 1em 0 1em 36em;">
+    <%= submit_tag("Start Over", {:name => 'reset', :id => 'reset_button_2', :type => "reset"}) %>
+    <%= submit_tag("Save Changes") %>
+  </p>
+</form>

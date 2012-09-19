@@ -1,0 +1,17 @@
+
+<tr>
+    <td>Use Date:</td>
+    <td><%= select :report, :use_date, ["No","Yes"], {:selected => (session[:use_date]) ? session[:use_date] : ''} %>
+</td>
+</tr>
+
+  <%= observe_field(:report_use_date,                           
+                          :url =>  {:action =>'accountability_report'},
+                          :with => "menu") %>
+<tr>
+<td colspan='2' id="daterange">
+<% if session[:use_date] == 'Yes' -%>
+Date Range: <%= date_select :report, :acct_begin_date, :order=> [:month, :year],:discard_day => true,:seleceted => (session[:acct_begin_date]) ? session[:acct_begin_date] : '' %> and <%= date_select :report, :acct_end_date, :order=> [:month, :year],:discard_day => true, :seleceted => (session[:acct_end_date]) ? session[:acct_end_date] : ''  %>
+<% end %>
+</td>
+</tr>

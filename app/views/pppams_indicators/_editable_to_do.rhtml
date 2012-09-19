@@ -1,0 +1,75 @@
+<% currents = PppamsIndicator.find_current(time, session[:facility]) %>
+
+<% id_store = 0 %> 
+
+<% session[:working_date] = time %>
+
+<form name='year_selector' id='year_selector'>
+  <p><label for='date_selectedyear'>Live indicators this month</label> (<%= time.strftime('%b') %> <%= select_year(session[:working_date].nil? ? Date.today : session[:working_date].year, {:field_name => 'selectedyear', :start_year => PppamsReview.earliest - 1, :end_year => PppamsReview.latest + 1} ) %>): <%= currents.length %></p>
+<input type='hidden' value = '<%= session[:working_date].month %>' id='current_month_store' name='current_month_store'>
+</form>
+
+<form name='review_table' id='review_table' action='/pppams_indicators/bulk_update' method='post' target='RSIFrame'>
+
+<span class='bulk_status_changer'>With selected, change status to: <%= select_tag ('pppams_review_new_status', options_for_select( User.current_user.is_admin? ? ['Review','Accepted','Locked']  : ['Submitted'] ) ) %>
+<input type='submit' value='Go'/><br/>
+with note: <textarea onfocus = "var currentTime = new Date();var datestamp = currentTime.getMonth() + 1 + '/' + currentTime.getDate() + '/' + currentTime.getFullYear();if (this.value.indexOf(datestamp) != 0 ) this.value = datestamp + ' (<%= @user.firstname[0,1] %> <%= @user.lastname %>) ' + this.value;" id='pppams_review_bulk_note' name='pppams_review_bulk_note'></textarea></span>
+<div style = 'width: 100%; clear: both;'></div>
+<table>
+<tr>
+<th></th>
+<th></th>
+<th>ID</th>
+<th>Indicator</th>
+<% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by|real_creation_date)$/  } %>
+<th><%= column.human_name %></th>
+<% end %>
+</tr>
+<% for pppams_indicator in currents %>
+  <% current_review = pppams_indicator.current_review(time) %>
+  <% if id_store != pppams_indicator.pppams_category_base_ref_id %>
+  <tr><td colspan = 11><p class='cat_heading'><%=h pppams_indicator.pppams_category_base_ref.name %></p></td></tr>
+  <% end %>
+  <tr <% if (current_review.nil? or current_review.status != 'Locked') and time.beginning_of_month < Time.now.beginning_of_month %>class='warning_row' <% end %>>
+  <% if current_review.nil? %>
+  <td></td>
+  <td><%= new_or_edit_review_link(current_review, time, pppams_indicator)%></td>
+  <% else %>
+  <td><%if current_review.can_edit? %><%= check_box_tag("pppams_review_selector[]", value = current_review.id) %><% end %></td>
+  <td><%= new_or_edit_review_link(current_review, time, pppams_indicator)%></td>
+  <% end %>
+  <td><%=h pppams_indicator.id%></td>
+  <td><%=h pppams_indicator.question%></td>
+  <% for column in PppamsReview.content_columns.reject {|c| c.name =~ /(_on|_by|real_creation_date)$/  } %>
+    <% if current_review.nil? %> 
+        <td> - </td>
+        <% next %>
+    <% end %>
+    <% if column.name == 'status' %>
+        <td><%=h current_review.send(column.name) == "" ? "Submitted" :  current_review.send(column.name) %></td>
+    <% else %>
+        <td><%=h current_review.send(column.name) %></td>
+    <% end %>
+  <% end %>
+  </tr>
+  <% id_store = pppams_indicator.pppams_category_base_ref_id %>
+<% end %>
+</table>
+</form> 
+
+<iframe id="RSIFrame" name="RSIFrame" style="width:0px; height:0px; border: 0px" src="/blank.html" onload = "if (this.contentWindow.document.body.innerHTML == 1) new Ajax.Updater(parent.document.getElementById('nav_results'), '/pppams_indicators/_editable_to_do?time=01-<%= session[:working_date].month %>-<%= session[:working_date].year %>', {asynchronous:true, evalScripts:true, onLoading:function(){$('nav_results').innerHTML = '<p style=\'text-align: center\'>Loading...</p>';}});"></iframe> 
+
+<script>
+$('year_selector')[0].onchange=function(){
+  var newUrl = '/pppams_indicators/_to_do?time=' + '01-' + $("current_month_store").value + '-' + this.options[this.selectedIndex].value;
+
+  new Ajax.Updater('nav_results', newUrl,
+                    {
+                      asynchronous: true,
+                      evalScripts: true,
+                      onLoading: function(){$('nav_results').innerHTML = '<p style="text-align: center">Loading...</p>';}
+                    }
+                  );
+  return false;
+};
+</script>

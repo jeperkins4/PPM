@@ -1,0 +1,29 @@
+<h2>Inmate Counts</h2>
+
+<table>
+  <tr>
+    <th>Inmate count</th>
+    <th>Facility</th>
+    <th>Custody Type</th>
+    <th>Date Collected</th>
+    <th></th>
+  </tr>
+  
+<% for inmate_count in @inmate_counts %>
+  <tr>
+    <td><%=h inmate_count.inmate_count %></td>
+    <td><%=h inmate_count.facility.facility %></td>
+    <td><%=h inmate_count.custody_type.custody_type %></td>
+    <td><%=h inmate_count.date_collected %></td>
+    <td><%= link_to 'Show', inmate_count_path(inmate_count) %>
+	<% if session[:access_level] == 'Administrator' -%>
+    <%= link_to 'Edit', edit_inmate_count_path(inmate_count) %>
+	<% end -%>
+  </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Enter Counts', new_inmate_count_path %>

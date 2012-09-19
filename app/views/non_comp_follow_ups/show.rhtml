@@ -1,0 +1,13 @@
+<p>
+  <b>Non-comp Issue Follow up:</b>
+  <%=h @non_comp_follow_up.follow_up %>
+</p>
+
+<p>
+  <b>Follow up date:</b>
+  <%=h @non_comp_follow_up.created_on %>
+</p>
+
+
+<%= link_to 'Edit', edit_non_comp_follow_up_path(@non_comp_issue) %> |
+<%= link_to 'Back', non_comp_issue_path(@non_comp_issue) %>

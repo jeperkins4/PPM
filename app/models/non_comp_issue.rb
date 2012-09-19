@@ -1,3 +1,39 @@
 class NonCompIssue < ActiveRecord::Base
+<<<<<<< HEAD
   attr_accessible :cap_due_on, :cap_review_on, :conclusion, :created_by_id, :details, :discovered_on, :facility_id, :issue_number, :nci_status, :notes, :notified_on, :requirement, :resolved_on, :updated_by_id
+=======
+    belongs_to :facility
+    has_many :non_comp_follow_ups
+    has_many :uploads, :as => :uploadable
+
+    validates_presence_of :discovery_date
+    validates_presence_of :facility_id
+    validates_presence_of :details
+    validates_presence_of :requirement
+    validates_presence_of :notification_date, :if => :is_resolved?
+    validates_presence_of :cap_due_date, :if => :is_resolved?
+    validates_presence_of :cap_review_date, :if => :is_resolved?
+
+    before_save :set_nci_status
+    
+    def is_resolved?
+      !resolved_date.nil?
+    end
+
+    def set_nci_status
+      if self.notification_date.nil?
+        self.nci_status =  0
+      elsif self.cap_due_date.nil?
+        self.nci_status =  1
+      elsif self.cap_review_date.nil?
+        self.nci_status =  2
+      elsif self.resolved_date.nil?
+        self.nci_status =  3
+      else 
+        self.nci_status =  4
+      end
+    end
+
+
+>>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8
 end

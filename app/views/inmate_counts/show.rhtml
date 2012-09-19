@@ -1,0 +1,23 @@
+<p>
+  <b>Inmate count:</b>
+  <%=h @inmate_count.inmate_count %>
+</p>
+
+<p>
+  <b>Facility:</b>
+  <%=h @inmate_count.facility.facility %>
+</p>
+
+<p>
+  <b>Custody Type:</b>
+  <%=h @inmate_count.custody_type.custody_type %>
+</p>
+
+<p>
+  <b>Date Collected:</b>
+  <%=h @inmate_count.date_collected %>
+</p>
+
+
+<%= link_to 'Edit', edit_inmate_count_path(@inmate_count) %> |
+<%= link_to 'Back', inmate_counts_path %>

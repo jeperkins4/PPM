@@ -1,0 +1,16 @@
+%table
+  %tbody
+    -data.each do |facility_id, facility|
+      %tr.blankrow
+        %td(colspan=2)
+          %h2=facility[:name]
+      %tr
+        %th.facility Category
+        %th.average-score=sum_head
+      -facility[:categories].each do |catetgory_id, category|
+        %tr{:class => (category[:missing_reviews] ? 'warning_row' : '')}
+          %td=category[:name]
+          %td=average_or_percent(sum_type, category[:percent])
+      %tr.darker
+        %td Group Average:
+        %td=average_or_percent('percent_average', facility[:percent])

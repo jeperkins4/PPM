@@ -1,0 +1,30 @@
+<h1>Positions for <%=h @facility.facility%></h1>
+
+<%= link_to 'Create New position', new_position_path %>
+<table>
+  <tr>
+    <th>Position Type</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Salary</th>
+	<th></th>
+  </tr>
+  
+<% for position in @positions %>
+  <tr>
+	<td><%=h position.position_type.position_type %></td>
+	<td><%=h position.title %></td>    
+	<td><%=h position.description %></td>
+    <td><%=h number_to_currency(position.salary) %></td>
+    <td><%= link_to 'Show', position_path(position) %> <%= link_to 'Edit', edit_position_path(position) %>
+<% if session[:access_level] == 'Administrator' -%>
+	<%= link_to 'Destroy', position_path(position), :confirm => 'Are you sure?', :method => :delete %>
+<% end %>	
+	</td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Create New position', new_position_path %>

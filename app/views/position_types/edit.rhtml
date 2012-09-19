@@ -1,0 +1,37 @@
+<h1>Update Position Type</h1>
+
+<%= error_messages_for :position_type %>
+
+<% form_for(:position_type, :url => position_type_path(@position_type), :html => { :method => :put }) do |f| %>
+  <p>
+    <b>Facility:</b><br />
+    <%= @position_type.facility.facility %>
+  </p>
+
+  <p>
+    <b>Type:</b><br />
+    <%= f.text_field :position_type %>
+  </p>
+
+  <p>
+    <b>Description:</b><br />
+    <%= f.text_area :description, :cols => 45, :rows => 3 %>
+  </p>
+  
+      <p>
+    <b>Track Position:</b><br />
+        <%= f.check_box :deductable %>
+  </p>
+  
+   <p>
+   <b>Days Allowed Vacant:</b><br />
+      <%= f.text_field :deduction_days, :size => 5%>
+  </p>
+
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', position_type_path(@position_type) %> |
+<%= link_to 'Back', position_types_path %>

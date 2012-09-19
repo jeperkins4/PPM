@@ -1,0 +1,33 @@
+<p>
+  <b>Firstname:</b>
+  <%=h @investigator.firstname %>
+</p>
+
+<p>
+  <b>Lastname:</b>
+  <%=h @investigator.lastname %>
+</p>
+
+<p>
+  <b>Phone:</b>
+  <%=h @investigator.phone %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%=h @investigator.email %>
+</p>
+
+<p>
+  <b>Entity:</b>
+  <%=h @investigator.entity %>
+</p>
+
+<p>
+  <b>Facility:</b>
+  <%=h @investigator.facility.facility %>
+</p>
+
+
+<%= link_to 'Edit', edit_investigator_path(@investigator) %> |
+<%= link_to 'Back', investigators_path %>

@@ -1,5 +1,6 @@
 class Employee < ActiveRecord::Base
   belongs_to :facility
+<<<<<<< HEAD
   attr_accessible :id, :active, :emplid, :facility_id, :firstname, :lastname, :tea_status
 
   delegate :name, :to => :facility, :prefix => true, :allow_nil => true
@@ -9,4 +10,13 @@ class Employee < ActiveRecord::Base
   def name
     [firstname,lastname].join(" ")
   end
+=======
+  has_one :employee_position
+  has_many :employee_position_hists
+  validates_presence_of :first_name, :last_name
+  validates_presence_of :tea_status  
+  validates_uniqueness_of :first_name, :scope => [:facility_id,:last_name],:case_sensitive => false
+  force_uppercase :include_text => true, :except => :tea_status
+
+>>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8
 end

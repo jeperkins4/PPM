@@ -6,8 +6,6 @@ gem 'rails', '3.2.8'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-gem 'mysql2'
 gem 'decent_exposure'
 gem 'haml-rails'
 gem 'carrierwave'
@@ -34,6 +32,8 @@ group :assets do
 end
 
 group :development do
+  gem 'sqlite3'
+  gem 'mysql2'
   gem 'debugger'
   gem 'hpricot'  # Used to migrate erb to haml
   gem 'ruby_parser'  # Used to migrate erb to haml
@@ -43,6 +43,11 @@ group :test do
   gem 'fabrication'
   gem 'capybara', '~> 1.1.2'
 end
+
+group :production do
+  gem 'pg'
+end
+
 gem 'jquery-rails'
 
 # To use ActiveModel has_secure_password

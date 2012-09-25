@@ -1,5 +1,6 @@
 class ReportsController < ApplicationController
-<<<<<<< HEAD
+  before_filter :authenticate 
+
   expose(:facility) { Facility.find(params[:report][:facility_id]) if params[:report][:facility_id] }
   respond_to :html, :json
   def index
@@ -35,61 +36,17 @@ class ReportsController < ApplicationController
       respond_to do |format|
         format.html { render 'incident' }
         format.json { head :no_content }
-=======
-  before_filter :authenticate 
-  layout 'administration_with_all'
 
-  def index 
-    session[:report] = nil
-    session[:type] = 'Choose Type'
-    session[:use_date] = 'No'
-    session[:status] = 'Open'
-    session[:category] = PppamsIssue.categories[0]
-    session[:begin_date] = ''
-    session[:end_date] = ''
-    session[:acct_begin_date] = nil
-    session[:acct_end_date] = nil
-
-    if request.post?
-      session[:type] = (!params[:report].nil? && params[:report][:report_type]) ? params[:report][:report_type] : 'Choose Type'
-      session[:use_date] = (!params[:report].nil? && params[:report][:use_date])? params[:report][:use_date] : 'No'
-      session[:status] = (!params[:report].nil? && params[:report][:status])? params[:report][:status] : 'Open'
-      session[:category] = (!params[:report].nil? && params[:report][:category])? params[:report][:category] : PppamsIssue.categories[0]
-
-      if session[:use_date] == 'Yes'        
-        params[:report][:begin_date] = Date.new(params[:report].delete('begin_date(1i)').to_i, params[:report].delete('begin_date(2i)').to_i, (params[:report].delete('begin_date(3i)')||1).to_i) if params[:report]['begin_date(3i)']
-        params[:report][:end_date] = Date.new(params[:report].delete('end_date(1i)').to_i, params[:report].delete('end_date(2i)').to_i, (params[:report].delete('end_date(3i)')||1).to_i) if params[:report]['end_date(3i)'] 
-        session[:begin_date] = params[:report][:begin_date]
-        session[:end_date] = params[:report][:end_date]
-        session[:acct_begin_date] = Date.new(params[:report].delete('acct_begin_date(1i)').to_i, params[:report].delete('acct_begin_date(2i)').to_i) if params[:report]['acct_begin_date(1i)'] 
-        session[:acct_end_date] = Date.new(params[:report].delete('acct_end_date(1i)').to_i, params[:report].delete('acct_end_date(2i)').to_i) if params[:report]['acct_end_date(1i)']                  
-      end
-      if !params[:report].nil? && params[:report][:ready] == "1"
-        @excel = false
-        case session[:type].gsub(" ", "_").downcase
-        when 'incident'
-          build_report_incident(@excel)
-        when 'non_comp_issue'
-          build_report_non_comp_issue(@excel)
-        when 'pppams_issue'
-          build_report_pppams_issue(@excel)
-        when 'accountability'
-          if  session[:acct_begin_date] then
-            session[:acct_begin_date] > session[:acct_end_date] ? (flash[:notice] = "Date Range is Invalid"; render :action => 'index' and return) : ""
-          end
-          build_report_accountability(@excel)
-        end
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8
       end
     end
   end
 
-<<<<<<< HEAD
   def accountability
   end
 
   def incident
-=======
+  end
+
   def export_excel
     @excel = true
     case session[:type].gsub(" ", "_").downcase
@@ -267,6 +224,5 @@ class ReportsController < ApplicationController
   
   def report
     render :layout => 'reports'
->>>>>>> 7436653363ecf064fdcfcd2b30df919b5144a2b8
   end
 end

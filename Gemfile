@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+#gem 'rails', '~> 4.0.0.beta', :github => 'rails/rails'
 gem 'rails', '3.2.8'
 
 # Bundle edge Rails instead:
@@ -13,6 +14,7 @@ gem 'carrierwave'
 gem 'clerk' # Adds userstamping 
 gem 'kaminari'
 gem 'squeel'
+gem 'showoff-io'
 gem 'thin'
 
 # Gems used only for assets and not required

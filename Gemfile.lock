@@ -132,6 +132,7 @@ GEM
       railties (>= 3.1.0, < 5.0)
       thor (~> 0.14)
     json (1.7.5)
+    json_pure (1.7.5)
     kaminari (0.13.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -187,6 +188,8 @@ GEM
     rake (0.9.2.2)
     rdoc (3.12)
       json (~> 1.4)
+    rest-client (1.6.1)
+      mime-types (>= 1.16)
     rspec (2.11.0)
       rspec-core (~> 2.11.0)
       rspec-expectations (~> 2.11.0)
@@ -215,6 +218,11 @@ GEM
       rubyzip
     sentient_user (0.3.2)
     sexp_processor (3.2.0)
+    showoff-io (0.3.1)
+      highline (>= 1.6.1)
+      json_pure
+      net-ssh (>= 2.1.0)
+      rest-client (= 1.6.1)
     simple_form (2.0.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
@@ -282,6 +290,7 @@ DEPENDENCIES
   rspec-rails (>= 2.11.0)
   ruby_parser
   sass-rails (~> 3.2.3)
+  showoff-io
   simple_form
   sqlite3
   squeel

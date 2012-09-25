@@ -1,6 +1,10 @@
-%h1 Listing incident_classes
+.page-header
+  %h1 
+    Listing Incident Classes
+    .pull-right
+      = link_to 'New Incident class', new_incident_class_path
 
-%table
+%table#incident_classes.table.table-striped.table-bordered.dataTable
   %tr
     %th Name
     %th Description
@@ -18,4 +22,3 @@
 
 %br
 
-= link_to 'New Incident class', new_incident_class_path

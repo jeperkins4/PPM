@@ -9,7 +9,7 @@ class Employee < ActiveRecord::Base
   validates_presence_of :first_name, :last_name
   validates_presence_of :tea_status  
   #validates_uniqueness_of :first_name, :scope => [:facility_id,:last_name],:case_sensitive => false
-  force_uppercase :include_text => true, :except => :tea_status
+  #force_uppercase :include_text => true, :except => :tea_status
   validates_uniqueness_of :lastname, :scope => [:emplid, :firstname, :facility_id]
 
   def name

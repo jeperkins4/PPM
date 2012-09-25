@@ -73,4 +73,4 @@ gem "database_cleaner", ">= 0.8.0", :group => :test
 gem "launchy", ">= 2.1.2", :group => :test
 gem "devise", ">= 2.1.2", :git => 'git://github.com/plataformatec/devise.git'
 gem 'simple_form'
-gem "therubyracer", :group => :assets, :platform => :ruby
+#gem "therubyracer", :group => :assets, :platform => :ruby
